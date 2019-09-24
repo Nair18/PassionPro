@@ -66,15 +66,15 @@ class SecondLevelCustomer extends Component {
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <View style={styles.thumbnailAlign}>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('#')}>
-              <View style={styles.thumbnailBlock}><Thumbnail size={200} style={styles.thumbnail}/><Text>Classes</Text></View></TouchableOpacity>
+              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Classes</Text></View></TouchableOpacity>
               <TouchableOpacity>
-              <View style={styles.thumbnailBlock}><Thumbnail size={200} style={styles.thumbnail}/><Text>Book a session</Text></View></TouchableOpacity>
+              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Book a session</Text></View></TouchableOpacity>
               <TouchableOpacity>
-              <View style={styles.thumbnailBlock}><Thumbnail size={200} style={styles.thumbnail}/><Text>Compete & Build</Text></View></TouchableOpacity>
+              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Compete & Build</Text></View></TouchableOpacity>
               <TouchableOpacity>
-              <View style={styles.thumbnailBlock}><Thumbnail size={200} style={styles.thumbnail}/><Text>Refer & Earn</Text></View></TouchableOpacity>
+              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Refer & Earn</Text></View></TouchableOpacity>
               <TouchableOpacity>
-              <View style={styles.thumbnailBlock}><Thumbnail size={200} style={styles.thumbnail}/><Text>Profile</Text></View></TouchableOpacity>
+              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Profile</Text></View></TouchableOpacity>
               </View>
               </ScrollView>
               <View style={styles.notificationBlock}>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   thumbnailBlock: {
     marginRight: 10,
-    width: 70
+    width: 80
   },
   notificationButton: {
     backgroundColor: 'white',

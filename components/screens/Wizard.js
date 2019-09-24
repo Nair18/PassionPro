@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Button, Alert } from 'react-native';
-
+import Admin from './Admin';
+import SecondLevelCustomer from './second_level_customer';
+import TrainerPage from './TrainerPage';
 import Step from './Step';
 
 class Wizard extends PureComponent {
+  constructor(props){
+    super(props);
+  }
   static Step = Step;
 
   state = {
@@ -40,7 +45,15 @@ class Wizard extends PureComponent {
   };
 
   _onSubmit = () => {
-    Alert.alert(JSON.stringify(this.state.values));
+    if(this.props.role == 'Trainer'){
+      this.props.navigation.navigate('TrainerPage');
+    }
+    else if(this.props.role == 'Trainee'){
+      this.props.navigation.navigate('SecondLevelCustomer');
+    }
+    else{
+      this.props.navigation.navigate('Admin');
+    }
   };
 
   render() {

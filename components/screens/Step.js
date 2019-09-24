@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {Button,Text} from 'native-base';
+
 class Step extends PureComponent {
   state = {};
+
+
   render() {
     return (
       <View style={styles.root}>
@@ -13,13 +16,14 @@ class Step extends PureComponent {
         <View style={styles.buttonWrapper}>
           <Button
             rounded
+            style={{width: '30%', justifyContent: 'center', backgroundColor: 'black'}}
             disabled={this.props.currentIndex === 0}
             onPress={this.props.prevStep}
           ><Text>Prev</Text></Button>
           {this.props.isLast ? (
-            <Button rounded onPress={this.props.onSubmit}><Text>Submit</Text></Button>
+            <Button rounded style={{width: '30%', justifyContent: 'center', backgroundColor: 'black'}} onPress={this.props.onSubmit}><Text>Submit</Text></Button>
           ) : (
-            <Button rounded onPress={this.props.nextStep}><Text>Next</Text></Button>
+            <Button rounded style={{width: '30%', justifyContent: 'center',  backgroundColor: 'black'}} onPress={this.props.nextStep}><Text>Next</Text></Button>
           )}
         </View>
       </View>
