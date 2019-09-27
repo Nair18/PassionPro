@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import {StyleSheet,View, TouchableOpacity, Modal, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import TrainerPage from './TrainerPage';
 import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
 export default class Trainer extends Component {
   static navigationOptions = {
@@ -25,7 +26,7 @@ export default class Trainer extends Component {
 
         <Content>
           <List>
-            <ListItem avatar>
+            <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerPage')}>
               <Left>
                 <Thumbnail style={{backgroundColor: 'black'}} />
               </Left>

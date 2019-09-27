@@ -1,11 +1,13 @@
 import React, {Fragment,Component} from 'react';
-import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import { EventRegister } from 'react-native-event-listeners';
+import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { Button, Container, Content, View, Text,Item} from 'native-base';
 
 export default class ClientInfo extends Component {
   constructor(props){
     super(props)
     this.state={
+      datas: 'no data'
     }
   }
   static navigationOptions = {
@@ -14,6 +16,18 @@ export default class ClientInfo extends Component {
       headerStyle: {backgroundColor: 'black'},
       headerTintColor: 'white'
   }
+
+  componentWillMount() {
+          this.listener = EventRegister.addEventListener('UpdateClient', (datas) => {
+              this.settingState(datas)
+          })
+  }
+
+  settingState = (datas) => {
+    console.log("Bhai jaan aa gy mein")
+    this.setState({datas})
+  }
+
 
   render(){
     let DATA = [
@@ -51,7 +65,7 @@ export default class ClientInfo extends Component {
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>Karthik Nair</Text>
+                        <Text>{this.state.datas}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -97,6 +111,14 @@ export default class ClientInfo extends Component {
                     </View>
                     <View style={styles.infoView}>
                        <View style={styles.title}>
+                          <Text style={styles.text}>Total Amount Paid</Text>
+                       </View>
+                       <View style={styles.textFormat}>
+                          <Text>{12000 + ' INR'}</Text>
+                       </View>
+                    </View>
+                    <View style={styles.infoView}>
+                       <View style={styles.title}>
                           <Text style={styles.text}>Course </Text>
                        </View>
                        <View style={{flex: 1, marginLeft: 25}}>
@@ -112,8 +134,8 @@ export default class ClientInfo extends Component {
                           </View>
                     </View>
                     <View style={{margin: 50}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('UpdateClient')}>
-                            <Button style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Update the profile</Text></Button>
+                        <TouchableOpacity>
+                            <Button onPress={() => this.props.navigation.navigate('UpdateClient')} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Update the profile</Text></Button>
                         </TouchableOpacity>
                     </View>
                     <View>

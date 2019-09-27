@@ -18,31 +18,41 @@ export default class CourseInfo extends Component {
   _editable = () => {
     this.setState({editable: true})
   }
+  _cancel = () => {
+    this.setState({editable: false})
+  }
+
+  _save = () => {
+  }
   render(){
     return(
        <Container>
          <ScrollView showHorizontalScrollbar={false}>
-         <Content>
+         { this.state.editable === false ? <Content>
                              <View style={styles.imageView}>
                                  <Image source={require('./course-image.jpg')} style={styles.image}/>
                              </View>
-                         </Content>
+                         </Content> : null}
          <Content style={{padding: 15}}>
            <View>
-             <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</TextInput>
+             {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</Text> : <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</TextInput>}
            </View>
-           <View style={{marginTop: 5, justifyContent: 'center', alignItems: 'center'}}>
-             <TextInput editable={this.state.editable} multiline={true} numberOfLines={10} style={{textAlign: 'justify'}}>
+           <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
+             { this.state.editable === false ? <Text multiline={true} style={{textAlign: 'justify'}}>jnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuh
+                                                                                                                                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf
+                                                                                                                                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf
+                                                                                                                                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf, hello karthik
+                                              </Text> :
+             <TextInput multiline={true} style={{textAlign: 'justify'}}>
                jnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuh
                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf
                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf
                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf, hello karthik
-             </TextInput>
+             </TextInput>}
            </View>
-           <View>
-
-            {this.state.editable == true ? <Content><View><Button onPress={this.save} style={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}><Text>Save Changes</Text></Button></View><View style={{marginTop: 5}}><Button style={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}onPress={this.discard}><Text>Cancel</Text></Button></View></Content>: <Button style={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}} onPress={this._editable}><Text>Edit</Text></Button>}
-           </View>
+           {  this.state.editable ?
+                <Content style={{marginTop: 15}}><View><Button style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Save changes</Text></Button></View><View style={{marginTop: 10}}><Button onPress={this._cancel} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Cancel</Text></Button></View></Content> : <Content style={{marginTop: 15}}><View><Button onPress={this._editable} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Edit</Text></Button></View></Content>
+           }
          </Content>
          </ScrollView>
        </Container>

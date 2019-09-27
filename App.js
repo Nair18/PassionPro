@@ -19,6 +19,9 @@ import Admin from './components/screens/Admin';
 import PlanInfo from './components/screens/PlanInfo';
 import ClientInfo from './components/screens/ClientInfo';
 import Trainer from './components/screens/Trainer';
+import Uploader from './components/screens/Uploader';
+import UpdateClient from './components/screens/UpdateClient';
+import UpdateTrainerPage from './components/screens/UpdateTrainerPage';
 //import all the screens we are going to switch
 const App = createStackNavigator({
   //Constant which holds all the screens like index of any book
@@ -37,7 +40,10 @@ const App = createStackNavigator({
     ClientInfo: {screen: ClientInfo},
     TrainerPage: {screen: TrainerPage},
     CourseInfo: {screen: CourseInfo},
-    PlanInfo: {screen: PlanInfo}
+    PlanInfo: {screen: PlanInfo},
+    UpdateClient: {screen: UpdateClient},
+    UpdateTrainerPage: {screen: UpdateTrainerPage},
+    Uploader: {screen: Uploader}
   },
   {
     initialRouteName: 'LandingPage',

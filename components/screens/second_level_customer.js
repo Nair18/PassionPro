@@ -13,11 +13,41 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
-  View,
+  View,ImageBackground
 } from 'react-native';
+
+import faker from 'faker';
+import moment from 'moment';
+import Calendar from '../calendar/Calendar';
+import Events from '../events/Events';
+import type Moment from 'moment';
 import Workspace from './workspace';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Container, Accordion,Thumbnail, Card,ListItem,CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, List, Card,ListItem,CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+
+export type EventType = {
+  date: Moment,
+  title: string,
+  description: string,
+  image: string,
+};
+
+// Generate fake event data
+const FAKE_EVENTS: Array<EventType> = (() => {
+  const startDay = moment().subtract(5, 'days').startOf('day');
+  return [...new Array(64)].map(_ => ({
+    date: startDay.add(4, 'hours').clone(),
+    title: faker.company.companyName(),
+    description: faker.lorem.sentence(),
+    // use random dimensions to get random urls
+    image: faker.image.nightlife(Math.floor(Math.random() * 200) + 100, Math.floor(Math.random() * 200) + 100),
+  }));
+})();
+
+// Filter events by date
+const filterEvents = (date: Moment): ?Array<EventType> =>
+  FAKE_EVENTS.filter(event => event.date.isSame(date, 'day'));
+
 
 class SecondLevelCustomer extends Component {
     constructor(props) {
@@ -28,7 +58,17 @@ class SecondLevelCustomer extends Component {
           //Setting the header of the screen
          header: null
         };
+
+  state = {
+      events: filterEvents(moment()),
+  };
+
+  onSelectDate = (date: Moment) => {
+      this.setState({ events: filterEvents(date) });
+  };
+
   render() {
+    const { events } = this.state;
     const dataArray = [
       { title: "Drink water", content: "drink 1 glass of water in every 30mins" },
       { title: "pre workout meal", content: "6 egg whites and 200g milk oats" },
@@ -61,22 +101,95 @@ class SecondLevelCustomer extends Component {
                 <Title style={styles.headerTitle}>Fitness Center, koramangala</Title>
               </Body>
             </Header>
+
             <ScrollView showsVerticalScrollIndicator={false}>
             <Content padder style={styles.contentBlock}>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              <View style={styles.thumbnailAlign}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('#')}>
-              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Classes</Text></View></TouchableOpacity>
+
               <TouchableOpacity>
-              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Book a session</Text></View></TouchableOpacity>
-              <TouchableOpacity>
-              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Compete & Build</Text></View></TouchableOpacity>
-              <TouchableOpacity>
-              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Refer & Earn</Text></View></TouchableOpacity>
-              <TouchableOpacity>
-              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/><Text>Profile</Text></View></TouchableOpacity>
-              </View>
+              <View style={styles.thumbnailBlock}><Thumbnail large style={styles.thumbnail}/></View></TouchableOpacity>
+
               </ScrollView>
+              <Content style={{marginTop: 20}}>
+                <View>
+                  <Text style={{fontWeight: 'bold', fontSize: 20}}>Classes</Text>
+                </View>
+                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{marginRight: 10, marginTop: 10, backgroundColor: 'black'}}>
+                       <Card style={{width: 250, height: 150}}>
+                        <ImageBackground source={require('./sport.jpg')} style={{width: '100%', height: '100%'}}>
+
+                            <Text style={{fontWeight: 'bold'}}>Class 1</Text>
+
+                        </ImageBackground>
+                        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                             <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>HIIT Classes</Text>
+                           </View>
+                       </Card>
+                    </View>
+
+
+                    <View style={{marginRight: 10, marginTop: 10, backgroundColor: 'black'}}>
+                       <Card style={{width: 250, height: 150}}>
+                                               <ImageBackground source={require('./sport.jpg')} style={{width: '100%', height: '100%'}}>
+
+                                                   <Text style={{fontWeight: 'bold', color: 'white'}}>Class 1</Text>
+
+                                               </ImageBackground>
+                                               <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                                                    <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>Zumba</Text>
+                                                  </View>
+                                              </Card>
+                    </View>
+                  </View>
+                  </ScrollView>
+              </Content>
+              <Content style={{marginTop: 20}}>
+                              <View>
+                                <Text style={{fontWeight: 'bold', fontSize: 20}}>Plans</Text>
+                              </View>
+                                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                                <View style={{flexDirection: 'row'}}>
+                                  <View style={{marginRight: 10, marginTop: 10, backgroundColor: 'black'}}>
+                                     <Card style={{width: 250, height: 150}}>
+                                      <ImageBackground source={require('./meal-plan.jpg')} style={{width: '100%', height: '100%'}}>
+
+                                                                                         <Text style={{fontWeight: 'bold', color: 'white'}}>Class 1</Text>
+
+                                                                                     </ImageBackground>
+                                                                                     <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                                                                                          <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>30 Days Meal Plan</Text>
+                                                                                        </View>
+                                     </Card>
+                                  </View>
+
+
+                                  <View style={{marginRight: 10, marginTop: 10, backgroundColor: 'black'}}>
+                                     <Card style={{width: 250, height: 150}}>
+                                      <ImageBackground source={require('./meal-plan.jpg')} style={{width: '100%', height: '100%'}}>
+
+                                                                                         <Text style={{fontWeight: 'bold', color: 'white'}}>Class 1</Text>
+
+                                                                                     </ImageBackground>
+                                                                                     <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                                                                                          <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>6 weeks Meal Plan</Text>
+                                                                                        </View>
+                                     </Card>
+                                  </View>
+                                </View>
+                                </ScrollView>
+                            </Content>
+              <Content style={{marginTop: 20}}>
+
+                            <View style={styles.container}>
+                                    <StatusBar hidden={true} />
+                                    <Calendar onSelectDate={this.onSelectDate} />
+                                    <Events events={events} />
+                            </View>
+
+              </Content>
+
               <View style={styles.notificationBlock}>
                 <Content>
                   <Text style={styles.notificationText}>Notifications Tile</Text>
@@ -133,7 +246,7 @@ class SecondLevelCustomer extends Component {
                     />
                   </CardItem>
                   <CardItem>
-                      <Text style={{color: 'grey'}}onPress={() => alert("This is add")}>ADD YOUR AGENDA</Text>
+                      <Text style={{color: 'grey'}} onPress={() => alert("This is add")}>ADD YOUR AGENDA</Text>
                   </CardItem>
 
                 </Card>
@@ -151,7 +264,7 @@ const styles = StyleSheet.create({
     paddingTop: 15
   },
   contentBlock: {
-    padding: 5
+
   },
   thumbnailAlign:{
     flexDirection: 'row'
@@ -164,8 +277,10 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   thumbnailBlock: {
-    marginRight: 10,
-    width: 80
+
+    width: 80,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   notificationButton: {
     backgroundColor: 'white',
@@ -190,7 +305,12 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: 'center',
     fontSize: 20
-  }
+  },
+  container: {
+      flex: 1,
+      backgroundColor: '#3F53B1',
+      paddingTop: 20,
+    },
 });
 
 
