@@ -1,7 +1,7 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-import { Button, Container, Content, View, Text,Item, Card, CardItem} from 'native-base';
+import { Button, Container, Content, View, Text,Item, Card, CardItem, Thumbnail} from 'native-base';
 import UpdateTrainerPage from './UpdateTrainerPage';
 import Icon from 'react-native-vector-icons/Ionicons'
 export default class TrainerPage extends Component {
@@ -56,7 +56,7 @@ export default class TrainerPage extends Component {
             <ScrollView showHorizontalScrollbar={false}>
                 <Content>
                     <View style={styles.imageView}>
-                        <Image source={require('./client-profile.png')} style={styles.image}/>
+                        <Thumbnail large source={require('./client-profile.png')} />
                     </View>
                 </Content>
                 <Content>
@@ -239,7 +239,10 @@ const styles = StyleSheet.create({
        aspectRatio: 1,
      },
      imageView: {
-       height: 300
+       height: 100,
+       width: 100,
+       justifyContent: 'center',
+       alignItems: 'center'
      },
      infoView: {
        marginLeft: 15,

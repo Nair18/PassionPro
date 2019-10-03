@@ -66,7 +66,7 @@ export default class Courses extends Component {
 
     return (
     <Fragment>
-      <Container style={{margin: 15}}>
+      <Container >
         <Content>
           <List>
             <ListItem avatar onPress={() => this.props.navigation.navigate('CourseInfo')}>

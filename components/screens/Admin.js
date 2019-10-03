@@ -86,6 +86,7 @@ export default class Admin extends Component {
     return(
       <Fragment>
          <Container style={{backgroundColor: "white"}}>
+
                   <Header noLeft style={styles.header} androidStatusBarColor='#000' iosBarStyle={"light-content"}>
                     <Body>
                       <Title style={styles.headerTitle}>Fitness Center, koramangala</Title>
@@ -171,9 +172,7 @@ export default class Admin extends Component {
 //                              monthFormat={'yyyy'}
 //                              theme={{calendarBackground: '#eca1a6', agendaKnobColor: 'green'}}
 //                            renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-                            style={{
-                               height: 300
-                            }}
+
                           />
                     </View>
 

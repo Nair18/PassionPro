@@ -21,7 +21,7 @@ export default class Events extends Component {
       <View style={styles.container}>
         <ScrollView>
           {events && events.map((event, index) =>
-            <Event event={event} key={index} />)}
+            <Event event={event} key={index} navigation={this.props.navigation} type={this.props.type}/>)}
         </ScrollView>
       </View>
     );

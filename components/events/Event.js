@@ -5,17 +5,21 @@ import {
   Image,
   StyleSheet,
   Text,
-  View,TouchableOpacity,
-  Alert
+  View,TouchableOpacity
 } from 'react-native';
 import {Content} from 'native-base';
+import Workspace from '../screens/workspace';
+import Logs from '../screens/Logs';
 import type { EventType } from '../../App';
 
 export default class Event extends Component {
+  constructor(props){
+   super(props)
+   this.state={
+     type: this.props.type
+   }
+  }
 
-  props: {
-    event: EventType,
-  };
   showAlert= () => {
     Alert.alert(
       'Hello boss'
@@ -31,7 +35,7 @@ export default class Event extends Component {
     } = event;
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress = {this.showAlert}>
+        <TouchableOpacity onPress = {() => this.props.navigation.navigate(this.state.type)}>
         <Content>
 
         <View style={styles.textContainer}>

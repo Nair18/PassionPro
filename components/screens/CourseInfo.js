@@ -1,6 +1,6 @@
 import React, {Fragment,Component} from 'react';
 import {TextInput, StyleSheet, Image, ScrollView} from 'react-native';
-import { Button, Container, Content, View, Text} from 'native-base';
+import { Button, Container, Content, View, Text, Thumbnail} from 'native-base';
 
 export default class CourseInfo extends Component {
   constructor(props){
@@ -30,7 +30,7 @@ export default class CourseInfo extends Component {
          <ScrollView showHorizontalScrollbar={false}>
          { this.state.editable === false ? <Content>
                              <View style={styles.imageView}>
-                                 <Image source={require('./course-image.jpg')} style={styles.image}/>
+                                 <Thumbnail large source={require('./course-image.jpg')} />
                              </View>
                          </Content> : null}
          <Content style={{padding: 15}}>
@@ -38,7 +38,7 @@ export default class CourseInfo extends Component {
              {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</Text> : <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</TextInput>}
            </View>
            <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
-             { this.state.editable === false ? <Text multiline={true} style={{textAlign: 'justify'}}>jnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuh
+             { this.state.editable === false ? <Text selectable multiline={true} style={{textAlign: 'justify'}}>jnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuh
                                                                                                                                 ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf
                                                                                                                                 ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf
                                                                                                                                 ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf, hello karthik
@@ -65,5 +65,12 @@ const styles = StyleSheet.create({
          width: '100%',
          height: undefined,
          aspectRatio: 1,
-       }
+       },
+  imageView: {
+    height: 100,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+
 })

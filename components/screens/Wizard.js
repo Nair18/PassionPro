@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, Text, Button, Alert } from 'react-native';
 import Admin from './Admin';
 import SecondLevelCustomer from './second_level_customer';
-import TrainerPage from './TrainerPage';
+import TrainerSection from './TrainerSection';
 import Step from './Step';
 
 class Wizard extends PureComponent {
@@ -46,7 +46,7 @@ class Wizard extends PureComponent {
 
   _onSubmit = () => {
     if(this.props.role == 'Trainer'){
-      this.props.navigation.navigate('TrainerPage');
+      this.props.navigation.navigate('TrainerSection');
     }
     else if(this.props.role == 'Trainee'){
       this.props.navigation.navigate('SecondLevelCustomer');

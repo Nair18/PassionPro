@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import Clients from './components/screens/Clients';
+import SLCProfile from './components/screens/second_level_customer_profile';
 import SecondLevelCustomer from './components/screens/second_level_customer';
 import Workspace from './components/screens/workspace';
 import Courses from './components/screens/Courses';
@@ -22,6 +23,19 @@ import Trainer from './components/screens/Trainer';
 import Uploader from './components/screens/Uploader';
 import UpdateClient from './components/screens/UpdateClient';
 import UpdateTrainerPage from './components/screens/UpdateTrainerPage';
+import Logs from './components/screens/Logs';
+import StandardWorkout from './components/screens/StandardWorkout';
+import Logging from './components/screens/Logging';
+import PersonalizedWorkout from './components/screens/PersonalizedWorkout';
+import Notification from './components/screens/Notification';
+import BodyWeight from './components/screens/BodyWeight';
+import BodyFat from './components/screens/BodyFat';
+import TrainerSection from './components/screens/TrainerSection';
+import SharedCalendar from './components/screens/SharedCalendar';
+import TrainerClient from './components/screens/TrainerClient';
+import TrainerWorkspace from './components/screens/TrainerWorkspace';
+import TrainerWorkout from './components/screens/TrainerWorkout';
+import CreateWorkout from './components/screens/CreateWorkout';
 //import all the screens we are going to switch
 const App = createStackNavigator({
   //Constant which holds all the screens like index of any book
@@ -43,7 +57,21 @@ const App = createStackNavigator({
     PlanInfo: {screen: PlanInfo},
     UpdateClient: {screen: UpdateClient},
     UpdateTrainerPage: {screen: UpdateTrainerPage},
-    Uploader: {screen: Uploader}
+    Uploader: {screen: Uploader},
+    Logs: {screen: Logs},
+    StandardWorkout: {screen: StandardWorkout},
+    Logging: {screen: Logging},
+    PersonalizedWorkout: {screen: PersonalizedWorkout},
+    Notification: {screen: Notification},
+    SLCProfile: {screen: SLCProfile},
+    BodyWeight: {screen: BodyWeight},
+    BodyFat: {screen: BodyFat},
+    TrainerSection: {screen: TrainerSection},
+    SharedCalendar: {screen: SharedCalendar},
+    TrainerClient: {screen: TrainerClient},
+    TrainerWorkspace: {screen: TrainerWorkspace},
+    TrainerWorkout: {screen: TrainerWorkout},
+    CreateWorkout: {screen: CreateWorkout}
   },
   {
     initialRouteName: 'LandingPage',

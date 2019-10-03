@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import {StyleSheet,View, StatusBar, ScrollView,Picker, Image, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput} from 'react-native';
-import {Container, Content,Input,Item,Button, Text,Card,CardItem,Body,Form,Textarea } from 'native-base';
+import {Container, Content,Input,Item,Button, Text,Card,CardItem,Body,Form,Textarea, Thumbnail } from 'native-base';
 
 import { Header } from 'react-navigation-stack';
 
@@ -155,13 +155,13 @@ export default class CreateStandardPlan extends Component {
       return(
         <Fragment>
            <StatusBar backgroundColor='black' barStyle='light-content' />
-           <Container>
+           <Container >
                 <ScrollView showsVerticalScrollIndicator={false}>
                  <Content>
-                                    <View style={styles.imageView}>
-                                        <Image source={require('./workout.jpg')} style={styles.image}/>
-                                    </View>
-                                </Content>
+                     <View style={styles.imageView}>
+                        <Thumbnail large source={require('./workout.jpg')} />
+                     </View>
+                 </Content>
                 <Content style={{padding: 15}}>
                   <View style={styles.input}>
                       <View>
@@ -170,7 +170,7 @@ export default class CreateStandardPlan extends Component {
 
                   </View>
                   <View style={styles.input}>
-                      <Text rowSpan={5} style={{textAlign: 'justify'}}>lkjihugyftdresdfghjiko lkjsdfghjiko lkjihusdfghjiko lkjitdresdfghjiko ghjiko ko dfghjiko resdfghjiko lkjihugyftdresdfghjiko
+                      <Text selectable rowSpan={5} style={{textAlign: 'justify'}}>lkjihugyftdresdfghjiko lkjsdfghjiko lkjihusdfghjiko lkjitdresdfghjiko ghjiko ko dfghjiko resdfghjiko lkjihugyftdresdfghjiko
                        lkjihugyftdresdfghjiko lkjihugyftdresdfghjiko lkjihugyftdresdfghjiko lkjihugyftdresdfghjiko lkjihugyftdresdfghjiko lkjihugyftdresdfghjiko lkjihugyftdresdfghjiko</Text>
 
                   </View>
@@ -196,11 +196,13 @@ export default class CreateStandardPlan extends Component {
     input: {
       marginTop: 15
     },
-    image: {
-           width: '100%',
-           height: undefined,
-           aspectRatio: 1,
-         },
+
+    imageView: {
+        height: 100,
+        width: 100,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     headings: {
       fontWeight: 'bold'
     },

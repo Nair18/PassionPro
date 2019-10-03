@@ -3,7 +3,7 @@ import { EventRegister } from 'react-native-event-listeners';
 import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
 
-export default class ClientInfo extends Component {
+export default class SLCProfile extends Component {
   constructor(props){
     super(props)
     this.state={
@@ -11,7 +11,7 @@ export default class ClientInfo extends Component {
     }
   }
   static navigationOptions = {
-      title: 'Client Info',
+      title: 'Profile',
       headerTitleStyle: { color: 'white'},
       headerStyle: {backgroundColor: 'black'},
       headerTintColor: 'white'
@@ -61,14 +61,6 @@ export default class ClientInfo extends Component {
                     </View>
                 </Content>
                 <Content>
-                    <View style={styles.infoView}>
-                                          <View style={styles.title}>
-                                            <Text style={styles.text}>Active </Text>
-                                          </View>
-                                          <View style={styles.textFormat}>
-                                            <Text>Yes</Text>
-                                          </View>
-                                        </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
                         <Text style={styles.text}>Name </Text>
@@ -135,13 +127,13 @@ export default class ClientInfo extends Component {
                        </View>
                     </View>
                     <View style={styles.infoView}>
-                                           <View style={styles.title}>
-                                              <Text style={styles.text}>Plans</Text>
-                                           </View>
-                                           <View style={{flex: 1, marginLeft: 25}}>
-                                              {courses}
-                                           </View>
-                                        </View>
+                                                               <View style={styles.title}>
+                                                                  <Text style={styles.text}>Plans</Text>
+                                                               </View>
+                                                               <View style={{flex: 1, marginLeft: 25}}>
+                                                                  {courses}
+                                                               </View>
+                                                            </View>
                     <View style={styles.infoView}>
                        <View style={styles.title}>
                           <Text style={styles.text}>Trainer </Text>
@@ -150,13 +142,6 @@ export default class ClientInfo extends Component {
                             <Text>Baghadeesh</Text>
                           </View>
                     </View>
-
-                    <View style={{margin: 50}}>
-                        <TouchableOpacity>
-                            <Button onPress={() => this.props.navigation.navigate('UpdateClient')} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Update the profile</Text></Button>
-                        </TouchableOpacity>
-                    </View>
-
                 </Content>
             </ScrollView>
         </Container>
@@ -167,11 +152,13 @@ export default class ClientInfo extends Component {
 
 const styles = StyleSheet.create({
      image: {
-
+       width: '100%',
+       height: undefined,
+       aspectRatio: 1,
      },
      imageView: {
-       height: 100,
        width: 100,
+       height: 100,
        justifyContent: 'center',
        alignItems: 'center'
      },
