@@ -1,9 +1,10 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import Logging from './Logging';
-import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Modal} from 'react-native';
+import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Modal, StatusBar} from 'react-native';
 import { Button, Container, Content, View, Text,Item, Input, Card, CardItem,  Textarea} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SearchModal from './SearchModal';
 export default class PersonalizedWorkout extends Component {
   constructor(props){
     super(props)
@@ -14,14 +15,16 @@ export default class PersonalizedWorkout extends Component {
   }
   static navigationOptions = {
       title: 'Workouts',
-      headerTitleStyle: { color: 'white'},
-      headerStyle: {backgroundColor: 'black'},
-      headerTintColor: 'white'
+      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+      headerStyle: {backgroundColor: 'white', elevation: 0},
+      headerTintColor: 'black'
   }
   showModal = () => {
     this.setState({isVisible: true})
   }
-
+  componentDidMount(){
+                  StatusBar.setHidden(false);
+              }
 
   render(){
     return(
@@ -62,7 +65,7 @@ export default class PersonalizedWorkout extends Component {
                                     </View>
                                     <View style={{marginTop: 50}}>
                                         <View>
-                                             <Button style={{backgroundColor: 'white'}}><Text style={{color: 'grey'}}>Select your Exercise</Text></Button>
+                                             <Button onPress={() => {this.props.navigation.navigate('SearchModal')}} style={{backgroundColor: 'white'}}><Text style={{color: 'grey'}}>Select your Exercise</Text></Button>
                                         </View>
                                         <View style={{marginTop: 15}}>
                                             <Item regular>

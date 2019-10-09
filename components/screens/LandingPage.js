@@ -35,10 +35,8 @@ export default class LandingPage extends Component {
               source={require('./landing-image.jpg')}
             />
             <Content style={styles.content}>
-                <View>
-                  <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Your Passion is all we care about!!</Text>
-                </View>
-                <View style={{marginTop: 10}}>
+
+                <View style={{marginLeft: '15%', width: '70%', justifyContent: 'center', alignItems: 'center'}}>
                 <Picker
                   selectedValue={this.state.role}
                   style={{height: 50, width: '100%', backgroundColor: "white"}}
@@ -46,9 +44,9 @@ export default class LandingPage extends Component {
                     this.setState({role: itemValue})
                   }>
                   <Picker.Item label="Select your role" value={null} />
-                  <Picker.Item label="Gym's Customer" value="Trainee" />
-                  <Picker.Item label="Gym's Trainer" value="Trainer" />
-                  <Picker.Item label="Gym's Admin" value="Admin" />
+                  <Picker.Item style={{fontWeight: 'bold'}} label="Customer" value="Trainee" />
+                  <Picker.Item style={{fontWeight: 'bold'}} label="Trainer" value="Trainer" />
+                  <Picker.Item style={{fontWeight: 'bold'}} label="Admin" value="Admin" />
                 </Picker>
                 <View style={styles.button}>
                    <Button block style={{backgroundColor: 'black'}} onPress={this._validate}><Text>Continue</Text></Button>
@@ -74,11 +72,12 @@ const styles = StyleSheet.create({
     content: {
      position: 'absolute',
      top: '40%',
+     width: '100%',
      height: 'auto'
     },
     button: {
       marginTop: 10,
-
+      width: '100%',
       alignItems: 'center'
     }
 });

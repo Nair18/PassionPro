@@ -26,13 +26,17 @@ export default class Logs extends Component {
     static navigationOptions = {
           //Setting the header of the screen
           title: 'Logs',
-          headerStyle: {backgroundColor: 'black'},
+          headerStyle: {backgroundColor: 'white', elevation: 0},
           headerTitleStyle: {
-              color: 'white'
+              color: 'black',
+              fontWeight: 'bold'
             },
-          headerTintColor: 'white',
+          headerTintColor: 'black',
         };
 
+        componentDidMount(){
+            StatusBar.setHidden(false)
+        }
     render(){
         return(
             <Container style={{margin: 15}}>

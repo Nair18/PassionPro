@@ -8,9 +8,9 @@ import { Container, Header, Content, List, ListItem, Form, Textarea, Left, Item,
 export default class Plans extends Component {
   static navigationOptions = {
     title: 'Plans',
-    headerTitleStyle: { color: 'white'},
-    headerStyle: {backgroundColor: 'black'},
-    headerTintColor: 'white'
+    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerTintColor: 'black'
   }
 
   state = {
@@ -40,7 +40,7 @@ export default class Plans extends Component {
                 <Thumbnail source={require('./crisis-plan.jpg')}style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
-                <Text>6 months Muscle Building + Personal Assistance</Text>
+                <Text>Standard Workout Plan</Text>
                 <Text note>Doing what you like will always keep you happy . .</Text>
               </Body>
             </ListItem>

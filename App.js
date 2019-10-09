@@ -36,6 +36,11 @@ import TrainerClient from './components/screens/TrainerClient';
 import TrainerWorkspace from './components/screens/TrainerWorkspace';
 import TrainerWorkout from './components/screens/TrainerWorkout';
 import CreateWorkout from './components/screens/CreateWorkout';
+import CreateMeal from './components/screens/CreateMeal';
+import TrainerMeal from './components/screens/TrainerMeal';
+import SearchModal from './components/screens/SearchModal';
+import ClientCourseInfo from './components/screens/ClientCourseInfo';
+import AdminWorkoutSpace from './components/screens/AdminWorkoutSpace';
 //import all the screens we are going to switch
 const App = createStackNavigator({
   //Constant which holds all the screens like index of any book
@@ -71,7 +76,12 @@ const App = createStackNavigator({
     TrainerClient: {screen: TrainerClient},
     TrainerWorkspace: {screen: TrainerWorkspace},
     TrainerWorkout: {screen: TrainerWorkout},
-    CreateWorkout: {screen: CreateWorkout}
+    CreateWorkout: {screen: CreateWorkout},
+    TrainerMeal: {screen: TrainerMeal},
+    CreateMeal: {screen: CreateMeal},
+    SearchModal: {screen: SearchModal},
+    ClientCourseInfo: {screen: ClientCourseInfo},
+    AdminWorkoutSpace: {screen: AdminWorkoutSpace}
   },
   {
     initialRouteName: 'LandingPage',

@@ -7,9 +7,9 @@ import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Bo
 export default class Clients extends Component {
   static navigationOptions = {
     title: 'Clients',
-    headerTitleStyle: { color: 'white'},
-    headerStyle: {backgroundColor: 'black'},
-    headerTintColor: 'white'
+    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerTintColor: 'black'
   }
 
   state = {

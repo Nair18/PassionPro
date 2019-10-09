@@ -1,6 +1,6 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
-import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar} from 'react-native';
 import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
 
 export default class SLCProfile extends Component {
@@ -12,11 +12,13 @@ export default class SLCProfile extends Component {
   }
   static navigationOptions = {
       title: 'Profile',
-      headerTitleStyle: { color: 'white'},
-      headerStyle: {backgroundColor: 'black'},
-      headerTintColor: 'white'
+      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+      headerStyle: {backgroundColor: 'white', elevation: 0},
+      headerTintColor: 'black'
   }
-
+  componentDidMount(){
+                  StatusBar.setHidden(false);
+              }
   componentWillMount() {
           this.listener = EventRegister.addEventListener('UpdateClient', (datas) => {
               this.settingState(datas)
@@ -55,12 +57,12 @@ export default class SLCProfile extends Component {
         <Container>
 
             <ScrollView showHorizontalScrollbar={false}>
-                <Content>
+                <Content style={{marginLeft: 15, marginRight: 15}}>
                     <View style={styles.imageView}>
                         <Thumbnail large source={require('./client-profile.png')}/>
                     </View>
                 </Content>
-                <Content>
+                <Content style={{margin: 15}}>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
                         <Text style={styles.text}>Name </Text>

@@ -6,7 +6,8 @@ import {
   ScrollView,
   StatusBar,
   FlatList,
-  View,Modal, Alert
+  View,Modal, Alert,
+  Linking
 } from 'react-native';
 import StandardWorkout from './StandardWorkout';
 import PersonalizedWorkout from './PersonalizedWorkout';
@@ -46,13 +47,17 @@ export default class Workspace extends Component {
   static navigationOptions = {
       //Setting the header of the screen
       title: 'Workspace',
-      headerStyle: {backgroundColor: 'black'},
+      headerStyle: {backgroundColor: 'white', elevation: 0},
       headerTitleStyle: {
-          color: 'white'
+          color: 'black',
+          fontWeight: 'bold'
         },
-      headerTintColor: 'white',
+      headerTintColor: 'black',
     };
 
+  componentDidMount(){
+                  StatusBar.setHidden(false);
+              }
   showModal = () => {
     this.setState({isVisible: true})
   }
@@ -67,6 +72,19 @@ export default class Workspace extends Component {
     return(
        <Container >
           <ScrollView showsVerticalScrollIndicator={false}>
+           <View style={{margin: 15}}>
+                                  <Card>
+                                  <CardItem header>
+                                      <Text style={{fontWeight: 'bold'}}>Attachments</Text>
+                                  </CardItem>
+                                  <CardItem>
+                                      <Button style={{backgroundColor: 'black'}} onPress={() => { Linking.openURL('https://www.tutorialspoint.com/react_native/react_native_tutorial.pdf')}}><Text>View PDF for workout plan</Text></Button>
+                                  </CardItem>
+                                  <CardItem>
+                                      <Button style={{backgroundColor: 'black'}}><Text>View PDF for meal plan</Text></Button>
+                                  </CardItem>
+                                  </Card>
+                                </View>
           <Content style={styles.content}>
             <View>
               <Text style={{fontSize: 20, fontWeight: 'bold'}}>Todays Burnout 🔥</Text>

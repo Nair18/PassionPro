@@ -17,10 +17,11 @@ export default class StepForm extends React.Component {
                 //Setting the header of the screen
                title: 'Sign up',
                headerTitleStyle: {
-                 color: 'white'
+                 color: 'black',
+                 fontWeight: 'bold'
                },
-               headerTintColor: 'white',
-               headerStyle: {backgroundColor: 'black', paddingTop: 5}
+               headerTintColor: 'black',
+               headerStyle: {backgroundColor: 'white', paddingTop: 5, elevation: 0}
               };
   render() {
     var role = this.props.navigation.state.params.ROLE

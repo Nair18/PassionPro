@@ -6,6 +6,7 @@ import { Header } from 'react-navigation-stack';
 
 import CourseInfo from './CourseInfo';
 import Plans from './Plans';
+import AdminWorkoutSpace from './AdminWorkoutSpace';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 
@@ -44,31 +45,24 @@ export default class CreateStandardPlan extends Component {
       data: [
              {
                "Day": 'Monday',
-               "workout": [
-                 {
-                   "exercise1": {"name": 'bench press', "reps": 2, "sets": 10, "duration": '10min'},
-                   "exercise-2": {"name": 'shoulder press', "reps": 2, "sets": 10, "duration": '10min'},
-                   "exercise-3": {"name": 'dumbell', "reps": 2, "sets": 10, "duration": '10min'}
-                 }
-               ]
              },
              {
                "Day": 'Tuesday',
-               "workout": {
-
-               }
              },
              {
                "Day": 'Wednesday',
-               "workout": {
-
-               }
              },
              {
                "Day": 'Thursday',
-               "workout": {
-
-               }
+             },
+             {
+               "Day": 'Friday',
+             },
+             {
+               "Day": 'Saturday',
+             },
+             {
+               "Day": 'Sunday',
              }
       ],
 
@@ -79,9 +73,9 @@ export default class CreateStandardPlan extends Component {
 
 
   static navigationOptions = {
-    headerTitleStyle: { color: 'white'},
-    headerStyle: {backgroundColor: 'black'},
-    headerTintColor: 'white'
+    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerTintColor: 'black'
   }
 
   onSelectedItemsChange = selectedItem => {
@@ -126,30 +120,13 @@ export default class CreateStandardPlan extends Component {
           ];
       for(let i=0;i<this.state.data.length;i++){
         card.push(
-          <Card>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('AdminWorkoutSpace')}>
+          <Card style={{marginTop: 10}}>
             <CardItem header style={styles.card_header}>
               <Text style={styles.headings}>{this.state.data[i]["Day"]}</Text>
             </CardItem>
-            <CardItem>
-                <View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Exercise - </Text>
-                  </View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Reps - </Text>
-                  </View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Sets - </Text>
-                  </View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Duration - </Text>
-                  </View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Instruction - </Text>
-                  </View>
-                </View>
-            </CardItem>
           </Card>
+          </TouchableOpacity>
         )
       }
       return(
@@ -165,7 +142,7 @@ export default class CreateStandardPlan extends Component {
                 <Content style={{padding: 15}}>
                   <View style={styles.input}>
                       <View>
-                        <Text style={{fontWeight: 'bold', fontSize: 20}}>6 months body building + personal assistance</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Standard Workout Plan</Text>
                       </View>
 
                   </View>
@@ -175,7 +152,7 @@ export default class CreateStandardPlan extends Component {
 
                   </View>
                   <View style={{margin: 20, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{fontWeight: 'bold', textDecorationLine: 'underline'}}>
+                    <Text style={{fontWeight: 'bold', textDecorationLine: 'underline', fontSize: 20}}>
                        Exercise
                     </Text>
                   </View>
@@ -204,7 +181,8 @@ export default class CreateStandardPlan extends Component {
         alignItems: 'center'
     },
     headings: {
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      fontSize: 20
     },
     card_header: {
       justifyContent: 'center',

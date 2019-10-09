@@ -57,14 +57,14 @@ export default class UpdateTrainerPage extends Component{
     return(
       <Container>
 
-         <Header style={{backgroundColor: 'black'}} androidStatusBarColor='#000' iosBarStyle={"light-content"}>
+         <Header style={{backgroundColor: 'white', elevation: 0}} androidStatusBarColor='#000' iosBarStyle={"light-content"}>
             <Left>
               <Button transparent onPress={this.showModal}>
-                <Icon style={{color: 'white'}} size={25} name='md-arrow-back' />
+                <Icon style={{color: 'black'}} size={25} name='md-arrow-back' />
               </Button>
             </Left>
             <Body>
-              <Title style={{color: 'white'}}>Update Trainer Info</Title>
+              <Title style={{color: 'black'}}>Update Trainer Info</Title>
             </Body>
             <Right>
             </Right>

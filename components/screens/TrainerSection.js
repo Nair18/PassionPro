@@ -66,11 +66,23 @@ export default class Admin extends Component {
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <View style={{flexDirection: 'row'}}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}>
-                            <View style={styles.thumbnailBlock}><Icon size={50} name="md-notifications-outline"/></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Icon size={40} name="md-notifications-outline"/></View>
+                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                <Text>Notification</Text>
+                            </View>
+                            </TouchableOpacity>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate('TrainerClient')}>
-                            <View style={styles.thumbnailBlock}><Icon size={50} name="md-people"></Icon></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Icon size={40} name="md-people"></Icon></View>
+                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                              <Text>Clients</Text>
+                            </View>
+                            </TouchableOpacity>
                         <TouchableOpacity  onPress={() => this.props.navigation.navigate('SLCProfile')}>
-                                                    <View style={styles.thumbnailBlock}><Icon size={50} name="md-person"></Icon></View></TouchableOpacity>
+                                                    <View style={styles.thumbnailBlock}><Icon size={40} name="md-person"></Icon></View>
+                        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                          <Text>Profile</Text>
+                        </View>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
 

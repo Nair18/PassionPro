@@ -25,10 +25,13 @@ import {Container, Accordion,Thumbnail, Card,ListItem,CheckBox, CardItem,Tab,Tab
 export default class Notification extends Component {
     static navigationOptions = {
           title: 'Notifications',
-          headerTitleStyle: { color: 'white'},
-          headerStyle: {backgroundColor: 'black', paddingTop: 15},
-          headerTintColor: 'white'
+          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+          headerStyle: {backgroundColor: 'white',elevation: 0},
+          headerTintColor: 'black'
       }
+    componentDidMount(){
+                    StatusBar.setHidden(false);
+                }
     render(){
         return(
             <Container style={{margin: 15}}>

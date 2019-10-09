@@ -26,10 +26,13 @@ export default class StandardWorkout extends Component {
     }
     static navigationOptions = {
           title: 'Workout',
-          headerTitleStyle: { color: 'white'},
-          headerStyle: {backgroundColor: 'black'},
-          headerTintColor: 'white'
+          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+          headerStyle: {backgroundColor: 'white', elevation: 0},
+          headerTintColor: 'black'
       }
+    componentDidMount(){
+                    StatusBar.setHidden(false);
+                }
     render(){
         return(
             <Container style={{margin: 15}}>

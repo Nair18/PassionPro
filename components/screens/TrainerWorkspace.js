@@ -21,6 +21,8 @@ import TrainerWorkout from './TrainerWorkout';
 import {Agenda} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Calendar} from 'react-native-calendars';
+import {DocumentPicker,
+          DocumentPickerUtil,} from 'react-native-document-picker';
 import {Container, Accordion,Thumbnail, Card,List, ListItem, Item, CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 
@@ -68,6 +70,31 @@ export default class TrainerWorkspace extends Component {
         this.props.navigation.navigate(type)
         this.setState({isVisible: false})
     }
+    async pickFile(){
+        try {
+          const res = await DocumentPicker.show({
+            type: [DocumentPickerUtil.images()],
+          });
+          //Printing the log realted to the file
+          console.log('res : ' + JSON.stringify(res));
+          console.log('URI : ' + res.uri);
+          console.log('Type : ' + res.type);
+          console.log('File Name : ' + res.name);
+          console.log('File Size : ' + res.size);
+          //Setting the state to show single file attributes
+          this.setState({ singleFile: res });
+        } catch (err) {
+          //Handling any exception (If any)
+          if (DocumentPicker.isCancel(err)) {
+            //If user canceled the document selection
+            alert('Canceled from single doc picker');
+          } else {
+            //For Unknown Error
+            alert('Unknown Error: ' + JSON.stringify(err));
+            throw err;
+          }
+        }
+    }
     render(){
 
         return(
@@ -80,10 +107,10 @@ export default class TrainerWorkspace extends Component {
                             <Text style={{fontWeight: 'bold'}}>Save your efforts by uploading pdf</Text>
                         </CardItem>
                         <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={() => { Linking.openURL('https://www.tutorialspoint.com/react_native/react_native_tutorial.pdf')}}><Text>Upload PDF for workout plan</Text></Button>
+                            <Button style={{backgroundColor: 'black'}} onPress={this.pickFile}><Text>Upload PDF for workout plan</Text></Button>
                         </CardItem>
                         <CardItem>
-                            <Button style={{backgroundColor: 'black'}}><Text>Upload PDF for meal plan</Text></Button>
+                            <Button style={{backgroundColor: 'black'}} onPress={this.pickFile}><Text>Upload PDF for meal plan</Text></Button>
                         </CardItem>
                         </Card>
                       </View>

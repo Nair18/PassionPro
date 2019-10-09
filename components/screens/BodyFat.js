@@ -12,6 +12,7 @@ import {
   Dimensions,
   View,
 } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import Workspace from './workspace';
 import Courses from './Courses';
 import Clients from './Clients';
@@ -25,10 +26,13 @@ import {BarChart} from 'react-native-chart-kit';
 export default class BodyWeight extends Component {
     static navigationOptions = {
           title: 'Fat % Tracker',
-          headerTitleStyle: { color: 'white'},
-          headerStyle: {backgroundColor: 'black'},
-          headerTintColor: 'white'
+          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+          headerStyle: {backgroundColor: 'white', elevation: 0},
+          headerTintColor: 'black'
       }
+     componentDidMount(){
+                StatusBar.setHidden(false);
+            }
     render(){
         let chartConfig = {
           backgroundGradientFrom: 'grey',
@@ -45,9 +49,11 @@ export default class BodyWeight extends Component {
             data: [30, 29, 27, 25, 24, 22, 21, 20, 20, 20, 20, 20],
           }]
         }
+
         let screenWidth = Dimensions.get('window').width
+        let height = getStatusBarHeight()
         return(
-            <Container style={{margin: 15}}>
+            <Container style={{marginTop: height, marginLeft: 15, marginRight: 15}}>
                 <Content>
                     <View style={{marginTop: 25}}>
                       <Item regular>

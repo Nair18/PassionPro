@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import BodyFat from './BodyFat';
+import ClientCourseInfo from './ClientCourseInfo';
 import BodyWeight from './BodyWeight';
 import SLCProfile from './second_level_customer_profile';
 import Notification from './Notification';
@@ -58,6 +59,9 @@ class SecondLevelCustomer extends Component {
     constructor(props) {
         //constructor to set default state
         super(props);
+    }
+    componentDidMount(){
+      StatusBar.setHidden(false);
     }
     static navigationOptions = {
           //Setting the header of the screen
@@ -105,7 +109,7 @@ class SecondLevelCustomer extends Component {
   return (
     <Fragment>
 
-    <Container style={{marginTop: height}}>
+    <Container style={{paddingTop: height}}>
          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{padding: 15, flex: 1}}>
               <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>Fitness Center, koramangala</Text>
@@ -129,6 +133,7 @@ class SecondLevelCustomer extends Component {
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                   <View style={{flexDirection: 'row'}}>
                     <View style={{marginRight: 10, marginTop: 10}}>
+                       <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientCourseInfo')}>
                        <Card style={{width: 250, height: 150}}>
                         <ImageBackground source={require('./sport.jpg')} style={{width: '100%', height: '100%'}}>
 
@@ -139,20 +144,23 @@ class SecondLevelCustomer extends Component {
                              <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>HIIT Classes</Text>
                            </View>
                        </Card>
+                       </TouchableOpacity>
                     </View>
 
 
                     <View style={{marginRight: 10, marginTop: 10}}>
+                       <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientCourseInfo')}>
                        <Card style={{width: 250, height: 150}}>
                                                <ImageBackground source={require('./sport.jpg')} style={{width: '100%', height: '100%'}}>
 
-                                                   <Text style={{fontWeight: 'bold', color: 'white'}}>Class 1</Text>
+
 
                                                </ImageBackground>
                                                <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                                                     <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>Zumba</Text>
                                                   </View>
                                               </Card>
+                                              </TouchableOpacity>
                     </View>
                   </View>
                   </ScrollView>
@@ -229,7 +237,7 @@ const styles = StyleSheet.create({
     paddingTop: '5%'
   },
   contentBlock: {
-     marginTop: 15
+
   },
   thumbnailAlign:{
     flexDirection: 'row'

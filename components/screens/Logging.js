@@ -1,6 +1,6 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
-import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar} from 'react-native';
 import { Button, Container, Content, View, Text,Item, Input} from 'native-base';
 
 export default class Logging extends Component {
@@ -12,11 +12,13 @@ export default class Logging extends Component {
   }
   static navigationOptions = {
       title: 'Tracker',
-      headerTitleStyle: { color: 'white'},
-      headerStyle: {backgroundColor: 'black'},
-      headerTintColor: 'white'
+      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+      headerStyle: {backgroundColor: 'white', elevation: 0},
+      headerTintColor: 'black'
   }
-
+  componentDidMount(){
+                      StatusBar.setHidden(false);
+                  }
   render(){
     return(
         <Container style={{margin: 15}}>

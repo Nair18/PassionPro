@@ -17,6 +17,7 @@
     "react-native-calendars": "^1.212.0",
     "react-native-chart-kit": "^3.6.1",
     "react-native-date-picker": "^2.7.0",
+    "react-native-document-picker": "^3.2.4",
     "react-native-event-listeners": "^1.0.3",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-hyperlink": "0.0.16",

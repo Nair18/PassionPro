@@ -25,10 +25,13 @@ import {LineChart} from 'react-native-chart-kit';
 export default class BodyWeight extends Component {
     static navigationOptions = {
           title: 'Weight Tracker',
-          headerTitleStyle: { color: 'white'},
-          headerStyle: {backgroundColor: 'black'},
-          headerTintColor: 'white'
+          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+          headerStyle: {backgroundColor: 'white', elevation: 0},
+          headerTintColor: 'black'
       }
+    componentDidMount(){
+       StatusBar.setHidden(false);
+    }
     render(){
         let chartConfig = {
           backgroundGradientFrom: 'grey',

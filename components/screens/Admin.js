@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import Workspace from './workspace';
+import SharedCalendar from './SharedCalendar';
 import Courses from './Courses';
 import Clients from './Clients';
 import Plans from './Plans';
@@ -26,6 +27,7 @@ export default class Admin extends Component {
     this.state = {
       date: new Date(),
       visible: false,
+
       items: {}
     }
   }
@@ -36,31 +38,7 @@ export default class Admin extends Component {
   showModal = (bool) => {
      this.setState({visible: bool})
   }
-    loadItems = (day) => {
-      setTimeout(() => {
-        for (let i = -15; i < 85; i++) {
-          const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-          const strTime = this.timeToString(time);
-          if (!this.state.items[strTime]) {
-            this.state.items[strTime] = [];
-            const numItems = Math.floor(Math.random() * 5);
-            for (let j = 0; j < numItems; j++) {
-              this.state.items[strTime].push({
-                name: 'Item for ' + strTime,
-                height: Math.max(50, Math.floor(Math.random() * 150))
-              });
-            }
-          }
-        }
-        //console.log(this.state.items);
-        const newItems = {};
-        Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-        this.setState({
-          items: newItems
-        });
-      }, 1000);
-      // console.log(`Load Items for ${day.year}-${day.month}`);
-    }
+
 
     renderItem = (item) => {
       return (
@@ -83,6 +61,23 @@ export default class Admin extends Component {
       return date.toISOString().split('T')[0];
     }
   render(){
+    Date.prototype.monthNames = [
+              "January", "February", "March",
+              "April", "May", "June",
+              "July", "August", "September",
+              "October", "November", "December"
+            ];
+            Date.prototype.dayName = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            Date.prototype.getDayName = function() {
+                  return this.dayName[this.getDay()];
+                };
+            Date.prototype.getMonthName = function() {
+              return this.monthNames[this.getMonth()];
+            };
+            Date.prototype.getShortMonthName = function () {
+              return this.getMonthName().substr(0, 3);
+            };
+            var today = new Date();
     return(
       <Fragment>
          <Container style={{backgroundColor: "white"}}>
@@ -109,8 +104,7 @@ export default class Admin extends Component {
                     <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} large style={styles.thumbnail}/><Text>Requests</Text></View></TouchableOpacity>
                     <TouchableOpacity key={6}>
                     <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} large style={styles.thumbnail}/><Text>Profile</Text></View></TouchableOpacity>
-                    <TouchableOpacity key={7}>
-                    <View style={styles.thumbnailBlock}><Thumbnail source={require('./qr.jpg')} large style={styles.thumbnail}/><Text>Scan</Text></View></TouchableOpacity>
+
                     </View>
                     </ScrollView>
                     </View>
@@ -147,33 +141,24 @@ export default class Admin extends Component {
                    </Content>
                    <Content>
                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{fontWeight: 'bold'}}>Calender</Text>
+                    <Text style={{fontWeight: 'bold'}}>Activity Calender</Text>
                    </View>
-                   <View style={styles.calendar}>
-                    <Agenda
-                            items={this.state.items}
-                            loadItemsForMonth={this.loadItems}
-                            selected={'2017-05-16'}
-                            renderItem={this.renderItem}
-                            renderEmptyDate={this.renderEmptyDate}
-                            rowHasChanged={this.rowHasChanged}
-                            pastScrollRange={50}
-                            futureScrollRange={50}
-//                             markingType={'period'}
-//                             markedDates={{
-//                                '2017-05-08': {textColor: '#666'},
-//                                '2017-05-09': {textColor: '#666'},
-//                                '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-//                                '2017-05-21': {startingDay: true, color: 'blue'},
-//                                '2017-05-22': {endingDay: true, color: 'gray'},
-//                                '2017-05-24': {startingDay: true, color: 'gray'},
-//                                '2017-05-25': {color: 'gray'},
-//                                '2017-05-26': {endingDay: true, color: 'gray'}}}
-//                              monthFormat={'yyyy'}
-//                              theme={{calendarBackground: '#eca1a6', agendaKnobColor: 'green'}}
-//                            renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+                   <View style={{margin: 15}}>
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('SharedCalendar')}>
+                         <Card>
+                            <CardItem style={{justifyContent: 'center', alignItems: 'center'}}>
+                              <View>
+                                <Icon name="md-calendar" size={50}/>
+                              </View>
 
-                          />
+                            </CardItem>
+                            <CardItem style={{justifyContent: 'center', alignItems: 'center'}}>
+                               <View>
+                                  <Text style={{fontWeight: 'bold', fontSize: 25}}>{today.getDayName() + " "+ today.getDate() + " " + today.getShortMonthName()}</Text>
+                               </View>
+                            </CardItem>
+                         </Card>
+                      </TouchableOpacity>
                     </View>
 
                    </Content>
@@ -207,8 +192,9 @@ export default class Admin extends Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: 'black',
-    paddingTop: 15
+    backgroundColor: 'white',
+    paddingTop: 15,
+    elevation: 0
   },
   thumbnailAlign:{
     flexDirection: 'row',
@@ -266,8 +252,9 @@ const styles = StyleSheet.create({
       paddingTop: 30
     },
   headerTitle: {
-    color: 'white',
+    color: 'black',
     flex: 3,
+    fontWeight: 'bold',
     justifyContent: 'center',
     fontSize: 20
   }
