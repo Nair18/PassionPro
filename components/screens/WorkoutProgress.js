@@ -97,7 +97,10 @@ export default class WorkoutProgress extends Component{
                             })
                    }
 
-
+      componentWillUnmount(){
+        this.focusListener.remove();
+        AppState.removeEventListener('change', this._handleAppStateChange);
+      }
       onPressArrowLeft() {
         calendarDate = calendarDate.add(-1, 'month');
         this.updateCalendarDate();
