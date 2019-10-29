@@ -11,12 +11,6 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import Workspace from './workspace';
-import Courses from './Courses';
-import Clients from './Clients';
-import Plans from './Plans';
-import Trainer from './Trainer';
-import {Agenda} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Calendar} from 'react-native-calendars';
 import CreateWorkout from './CreateWorkout';

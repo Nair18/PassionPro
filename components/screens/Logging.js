@@ -36,11 +36,6 @@ export default class Logging extends Component {
                 </View>
                 <View style={{marginTop: 10}}>
                   <Item>
-                    <Input placeholder="Calories burnt" />
-                  </Item>
-                </View>
-                <View style={{marginTop: 10}}>
-                  <Item>
                     <Input placeholder="duration"/>
                   </Item>
                 </View>

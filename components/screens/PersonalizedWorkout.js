@@ -65,7 +65,9 @@ export default class PersonalizedWorkout extends Component {
                                     </View>
                                     <View style={{marginTop: 50}}>
                                         <View>
-                                             <Button onPress={() => {this.props.navigation.navigate('SearchModal')}} style={{backgroundColor: 'white'}}><Text style={{color: 'grey'}}>Select your Exercise</Text></Button>
+                                           <Item>
+                                             <Input placeholder="Name your exercise"/>
+                                           </Item>
                                         </View>
                                         <View style={{marginTop: 15}}>
                                             <Item regular>

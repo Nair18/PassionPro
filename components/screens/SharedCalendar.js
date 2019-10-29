@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Calendar} from 'react-native-calendars';
 import moment from 'moment';
-import {Container,Content, Card, CardItem, List, Item, Text} from 'native-base';
+import {Container,Content, Card, CardItem, List, Item, Text, ListItem} from 'native-base';
 import CalendarDayComponent from '../CalendarDayComponent';
 import CalendarHeaderComponent from '../CalendarHeaderComponent';
 
@@ -108,12 +108,12 @@ class SharedCalendar extends Component {
             </CardItem>
             <CardItem>
                 <List>
-                    <Item style={{marginTop: 5}}>
+                    <ListItem style={{marginTop: 5}}>
                         <Text>Created workout plan for Anjum</Text>
-                    </Item>
-                    <Item style={{marginTop: 5}}>
+                    </ListItem>
+                    <ListItem style={{marginTop: 5}}>
                         <Text>Created workout plan for Prakash</Text>
-                    </Item>
+                    </ListItem>
                 </List>
             </CardItem>
 

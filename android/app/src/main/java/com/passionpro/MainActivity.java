@@ -1,6 +1,8 @@
 package com.passionpro;
 
 import com.facebook.react.ReactActivity;
+import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends ReactActivity {
 
@@ -12,4 +14,8 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "PassionPro";
     }
+
+
+
+
 }

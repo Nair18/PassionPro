@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //For react-navigation 3.0+
 //import { createAppContainer, createStackNavigator } from 'react-navigation';
 //For react-navigation 4.0+
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator} from 'react-navigation-stack';
 import Clients from './components/screens/Clients';
 import SLCProfile from './components/screens/second_level_customer_profile';
@@ -13,7 +13,8 @@ import Courses from './components/screens/Courses';
 import Plans from './components/screens/Plans';
 import CreateStandardPlan from './components/screens/CreateStandardPlan'
 import TrainerPage from './components/screens/TrainerPage';
-import StepForm from './components/screens/step_form';
+import StepFormTrainer from './components/screens/step_form_trainer';
+import StepFormCustomer from './components/screens/step_form_customer';
 import LandingPage from './components/screens/LandingPage';
 import CourseInfo from './components/screens/CourseInfo';
 import Admin from './components/screens/Admin';
@@ -41,50 +42,116 @@ import TrainerMeal from './components/screens/TrainerMeal';
 import SearchModal from './components/screens/SearchModal';
 import ClientCourseInfo from './components/screens/ClientCourseInfo';
 import AdminWorkoutSpace from './components/screens/AdminWorkoutSpace';
+import WorkoutProgress from './components/screens/WorkoutProgress';
+import Login from './components/screens/Login';
+import SplashScreen from './components/screens/SplashScreen';
+import CustomerNotification from './components/screens/CustomerNotification';
+import TrainerCreateWorkout from './components/screens/TrainerCreateWorkout';
+import TrainerProfile from './components/screens/TrainerProfile';
+import Request from './components/screens/Request';
+import TrainerRequest from './components/screens/TrainerRequest';
+import ClientRequest from './components/screens/ClientRequest';
+import TrainerRequestInfo from './components/screens/TrainerRequestInfo';
+import ClientRequestInfo from './components/screens/ClientRequestInfo';
+import QuickClient from './components/screens/QuickClient';
+import RequestProcessingPage from './components/screens/RequestProcessingPage';
 //import all the screens we are going to switch
-const App = createStackNavigator({
-  //Constant which holds all the screens like index of any book
+
+// To see all the requests in the chrome Dev tools in the network tab.
+
+const Auth = createStackNavigator({
     LandingPage: {screen: LandingPage},
-    StepForm: {screen: StepForm},
-    SecondLevelCustomer: { screen: SecondLevelCustomer },
+    StepFormTrainer: {screen: StepFormTrainer},
+    StepFormCustomer: {screen: StepFormCustomer},
+    Login: {screen: Login},
+});
+
+const AdminPage = createStackNavigator({
     Admin: {screen: Admin},
     Courses: {screen: Courses},
     Clients: {screen: Clients},
-    //First entry by default be our first screen
-    //if we do not define initialRouteName
-    Workspace: { screen: Workspace },
     Plans: {screen: Plans},
-    CreateStandardPlan: {screen: CreateStandardPlan},
     Trainer: {screen: Trainer},
+    PlanInfo: {screen: PlanInfo},
+    CreateStandardPlan: {screen: CreateStandardPlan},
+    CourseInfo: {screen: CourseInfo},
+    UpdateClient: {screen: UpdateClient},
     ClientInfo: {screen: ClientInfo},
     TrainerPage: {screen: TrainerPage},
-    CourseInfo: {screen: CourseInfo},
-    PlanInfo: {screen: PlanInfo},
-    UpdateClient: {screen: UpdateClient},
+    AdminWorkoutSpace: {screen: AdminWorkoutSpace},
     UpdateTrainerPage: {screen: UpdateTrainerPage},
-    Uploader: {screen: Uploader},
-    Logs: {screen: Logs},
-    StandardWorkout: {screen: StandardWorkout},
-    Logging: {screen: Logging},
-    PersonalizedWorkout: {screen: PersonalizedWorkout},
-    Notification: {screen: Notification},
-    SLCProfile: {screen: SLCProfile},
-    BodyWeight: {screen: BodyWeight},
-    BodyFat: {screen: BodyFat},
+    CreateWorkout: {screen: CreateWorkout},
+    Request: {screen: Request},
+    ClientRequest: {screen: ClientRequest},
+    TrainerRequest: {screen: TrainerRequest},
+    TrainerRequestInfo: {screen: TrainerRequestInfo},
+    ClientRequestInfo: {screen: ClientRequestInfo},
+    QuickClient: {screen: QuickClient}
+  },
+  {
+    initialRouteName: 'Admin'
+  }
+)
+
+const Customer = createStackNavigator({
+     SecondLevelCustomer: { screen: SecondLevelCustomer },
+     WorkoutProgress: {screen: WorkoutProgress},
+     BodyWeight: {screen: BodyWeight},
+     BodyFat: {screen: BodyFat},
+     CustomerNotification: {screen: CustomerNotification},
+     SLCProfile: {screen: SLCProfile},
+     Workspace: { screen: Workspace },
+     ClientCourseInfo: {screen: ClientCourseInfo},
+     PersonalizedWorkout: {screen: PersonalizedWorkout},
+     StandardWorkout: {screen: StandardWorkout},
+     Logging: {screen: Logging},
+     },
+     {
+        initialRouteName: 'SecondLevelCustomer'
+     }
+);
+const PersonalTrainer = createStackNavigator({
+  //Constant which holds all the screens like index of any book
     TrainerSection: {screen: TrainerSection},
+    Notification: {screen: Notification},
     SharedCalendar: {screen: SharedCalendar},
     TrainerClient: {screen: TrainerClient},
     TrainerWorkspace: {screen: TrainerWorkspace},
+    TrainerProfile: {screen: TrainerProfile},
+    Uploader: {screen: Uploader},
     TrainerWorkout: {screen: TrainerWorkout},
-    CreateWorkout: {screen: CreateWorkout},
     TrainerMeal: {screen: TrainerMeal},
     CreateMeal: {screen: CreateMeal},
     SearchModal: {screen: SearchModal},
-    ClientCourseInfo: {screen: ClientCourseInfo},
-    AdminWorkoutSpace: {screen: AdminWorkoutSpace}
+    TrainerCreateWorkout: {screen: TrainerCreateWorkout}
   },
   {
-    initialRouteName: 'LandingPage',
+    initialRouteName: 'TrainerSection'
   }
-);
+  );
+
+  const App = createSwitchNavigator({
+   Admin: {
+      screen: AdminPage
+   },
+   Auth: {
+      screen: Auth,
+   },
+   SplashScreen: {
+      screen: SplashScreen,
+   },
+   SecondLevelCustomer: {
+      screen: Customer
+   },
+   RequestProcessingPage: {
+       screen: RequestProcessingPage
+   },
+   TrainerSection: {
+      screen: PersonalTrainer,
+    },
+  },
+  {
+     initialRouteName: 'SplashScreen'
+  }
+  );
 export default createAppContainer(App);

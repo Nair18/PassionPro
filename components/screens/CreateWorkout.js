@@ -9,13 +9,6 @@ import {
   View,ImageBackground
 } from 'react-native';
 
-import faker from 'faker';
-import moment from 'moment';
-import Calendar from '../calendar/Calendar';
-import Events from '../events/Events';
-import type Moment from 'moment';
-import Workspace from './workspace';
-import Logging from './Logging';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, Accordion,Thumbnail, List, Card, Input, Textarea, Item, ListItem,CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 

@@ -1,13 +1,16 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
-import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, AppState, AsyncStorage} from 'react-native';
 import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 export default class ClientInfo extends Component {
   constructor(props){
     super(props)
     this.state={
-      datas: 'no data'
+      data: this.props.navigation.state.params.DATA,
+      courseInfo: null,
+      traineeSub: null,
+      traineeList: null
     }
   }
   static navigationOptions = {
@@ -17,10 +20,104 @@ export default class ClientInfo extends Component {
       headerTintColor: 'black'
   }
 
-  componentWillMount() {
-          this.listener = EventRegister.addEventListener('UpdateClient', (datas) => {
-              this.settingState(datas)
-          })
+  _handleAppStateChange = (nextAppState) => {
+          if (
+            this.state.appState.match(/inactive|background/) &&
+            nextAppState === 'active'
+          ) {
+            console.log('App has come to the foreground!');
+          }
+          this.setState({appState: nextAppState});
+    };
+  componentDidMount(){
+            console.log("id has been retrieved", this.state.id)
+            AppState.addEventListener('change', this._handleAppStateChange);
+            const { navigation } = this.props;
+            console.log("pagal bana rhe hai")
+            this.focusListener = navigation.addListener('didFocus', () => {
+                    console.log("The screen is focused")
+                  });
+            var key  = this.retrieveItem('key').then(res =>
+               this.setState({auth_key: res}, () => console.log("brother pls", res))
+               ).then(() => {
+                    if(this.state.auth_key !== null){
+//                        this.fetchDetails()
+                    }
+               })
+        }
+
+        fetchDetails = () => {
+            console.log("what is the id ", this.state.id)
+            let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/trainees/', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': this.state.auth_key,
+                }
+            })
+            .then(
+                res => {
+                    if(res.status === 200){
+                        return res.json()
+                    }
+                    else{
+                        this.setState({loading: false})
+                                                       Alert.alert(
+                                                         'OOps!',
+                                                         'Something went wrong ...',
+                                                          [
+                                                              {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                          ],
+                                                          {cancelable: false},
+                                                       );
+                    }
+                }
+            ).then(res => this.setState({traineeList: res["trainees"]})).then(
+
+                fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/subscriptions/', {
+                                          method: 'GET',
+                                          headers: {
+                                              'Accept': 'application/json',
+                                              'Content-Type': 'application/json',
+                                              'Authorization': this.state.auth_key,
+                                          }
+                                      })
+                                      .then(
+                                          res => {
+                                              if(res.status === 200){
+                                                  return res.json()
+                                              }
+                                              else{
+                                                  this.setState({loading: false})
+                                                                                 Alert.alert(
+                                                                                   'OOps!',
+                                                                                   'Something went wrong ...',
+                                                                                    [
+                                                                                        {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                                                    ],
+                                                                                    {cancelable: false},
+                                                                                 );
+                                              }
+                                          }
+                                      ).then(res => this.setState({traineeSub: res["subscriptions"]}, () => console.log("bhai wtf is this", this.state.coursetype)))
+            )
+        }
+
+  async retrieveItem(key) {
+                  try {
+                    const retrievedItem =  await AsyncStorage.getItem(key);
+                    console.log("key retrieved")
+                    return retrievedItem;
+                  } catch (error) {
+                    console.log(error.message);
+                  }
+                  return;
+        }
+  componentWillUnmount() {
+        // Remove the event listener
+        this.focusListener.remove();
+        AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
   settingState = (datas) => {
@@ -55,6 +152,8 @@ export default class ClientInfo extends Component {
         <Container>
 
             <ScrollView showHorizontalScrollbar={false}>
+              {this.state.data !== null ?
+              <Content>
                 <Content>
                     <View style={styles.imageView}>
                         <Thumbnail large source={require('./client-profile.png')}/>
@@ -66,15 +165,15 @@ export default class ClientInfo extends Component {
                                             <Text style={styles.text}>Active </Text>
                                           </View>
                                           <View style={styles.textFormat}>
-                                            <Text>Yes</Text>
+                                            <Text>{this.state.data["active"]}</Text>
                                           </View>
-                                        </View>
+                    </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>{this.state.datas}</Text>
+                        <Text>{this.state.data["trainee_name"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -107,7 +206,7 @@ export default class ClientInfo extends Component {
                           <Text style={styles.text}>Membership start date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                          <Text>29-02-2019</Text>
+                          <Text>{this.state.data["start"]}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -115,7 +214,7 @@ export default class ClientInfo extends Component {
                          <Text style={styles.text}>Membership end date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                         <Text>29-02-2020</Text>
+                         <Text>{this.start.data["end"]}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -158,6 +257,7 @@ export default class ClientInfo extends Component {
                     </View>
 
                 </Content>
+              </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
             </ScrollView>
         </Container>
        </Fragment>

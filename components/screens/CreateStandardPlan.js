@@ -1,13 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import {StyleSheet,View, StatusBar, ScrollView,Picker, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput} from 'react-native';
 import {Container, Content,Input,Item,Button, Text,Card,CardItem,Body,Form,Textarea } from 'native-base';
-
+import ModalSelector from 'react-native-modal-selector';
 import { Header } from 'react-navigation-stack';
-
-import CourseInfo from './CourseInfo';
-import Plans from './Plans';
 import Icon from 'react-native-vector-icons/Ionicons';
-import MultiSelect from 'react-native-multiple-select';
+
 
 export default class CreateStandardPlan extends Component {
   constructor(props){
@@ -85,6 +82,9 @@ export default class CreateStandardPlan extends Component {
     headerTintColor: 'black'
   }
 
+  componentDidMount(){
+
+  }
   onSelectedItemsChange = selectedItem => {
       this.setState({ selectedItem });
     };
@@ -125,64 +125,46 @@ export default class CreateStandardPlan extends Component {
               label: 'Estonia',
             },
           ];
-      for(let i=0;i<this.state.data.length;i++){
-        card.push(
-          <Card>
-            <CardItem header style={styles.card_header}>
-              <Text style={styles.headings}>{this.state.data[i]["Day"]}</Text>
-            </CardItem>
-            <CardItem>
-                <View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Exercise - </Text>
-                  </View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Reps - </Text>
-                  </View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Sets - </Text>
-                  </View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Duration - </Text>
-                  </View>
-                  <View style={{flex: 1}}>
-                    <Text style={styles.headings}>Instruction - </Text>
-                  </View>
-                </View>
-            </CardItem>
-            <TouchableOpacity onPress={() => this.setModalVisible(true)}>
-                <CardItem footer style={styles.background}>
-                    <Text>Add Workout</Text>
-                </CardItem>
-            </TouchableOpacity>
-          </Card>
-        )
-      }
+
       return(
         <Fragment>
            <StatusBar backgroundColor='black' barStyle='light-content' />
            <Container style={{padding: 15}}>
-                <ScrollView showsVerticalScrollIndicator={false}>
+              <ScrollView showsVerticalScrollIndicator={false}>
                 <Content>
                   <View style={styles.input}>
                     <Item regular>
                       <Input placeholder="Name of the Plan"/>
                     </Item>
-
-                    <TouchableOpacity><View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10}}><Button block style={styles.button}><Text>Select Course Type</Text></Button></View></TouchableOpacity>
                   </View>
+                  <View style={{marginTop: 15}}>
+                    <ModalSelector
+                        placeholder="Select a course type"
+                        initValue={this.state.courseTypeName}
+                        data={this.state.coursetype}
+                        keyExtractor= {item => item.id}
+                        labelExtractor= {item => item.name}
+                        initValue={this.state.courseType}
+                        supportedOrientations={['landscape']}
+                        accessible={true}
+                        scrollViewAccessibilityLabel={'Scrollable options'}
+                        cancelButtonAccessibilityLabel={'Cancel Button'}
+                        onChange={(option)=>{
+                        this.setState({courseType: option.id, courseTypeName: option.name})
+                        }}>
+                        <TextInput
+                            style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
+                            editable={false}
+                            placeholder="Select the course type"
+                            value={this.state.courseTypeName}
+                        />
+
+                    </ModalSelector>
+                    </View>
                   <View style={styles.input}>
                     <Item regular>
                       <Textarea rowSpan={5} placeholder="Description of the plan" />
                     </Item>
-                  </View>
-                  <View style={{margin: 20, justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{fontWeight: 'bold', textDecorationLine: 'underline'}}>
-                       Exercise
-                    </Text>
-                  </View>
-                  <View>
-                    {card}
                   </View>
                   <View style={styles.buttonView}>
                     <TouchableOpacity>
@@ -191,69 +173,8 @@ export default class CreateStandardPlan extends Component {
                   </View>
 
                 </Content>
-                </ScrollView>
+              </ScrollView>
            </Container>
-             <Modal
-                       animationType="slide"
-                       transparent={false}
-                       visible={this.state.visible}
-                       onRequestClose={() => {
-                         () => this.setModalVisible(false)
-                       }}>
-                       <View style={{margin: 15}}>
-                         <TouchableOpacity onPress={() => this.setModalVisible(false)}>
-                         <Icon name="md-close" size={30}/>
-                         </TouchableOpacity>
-                   </View>
-                       <Content style={styles.content}>
-                         <Form>
-                            <View style={{marginTop: 10, marginLeft: 15, marginRight: 15}}>
-                              <MultiSelect
-                                        hideTags
-                                        items={this.state.items}
-                                        uniqueKey="id"
-                                        ref={(component) => { this.multiSelect = component }}
-                                        onSelectedItemsChange={this.onSelectedItemsChange}
-                                        selectedItems={this.state.selectedItem}
-                                        selectText="Pick Items"
-                                        searchInputPlaceholderText="Search Items..."
-                                        onChangeInput={ (text)=> console.log(text)}
-                                        altFontFamily="ProximaNova-Light"
-                                        tagRemoveIconColor="#CCC"
-                                        tagBorderColor="#CCC"
-                                        tagTextColor="#CCC"
-                                        single={true}
-                                        selectedItemTextColor="#CCC"
-                                        selectedItemIconColor="#CCC"
-                                        itemTextColor="#000"
-                                        displayKey="name"
-                                        searchInputStyle={{ color: '#CCC' }}
-                                        submitButtonColor="#CCC"
-                                        submitButtonText="Submit"
-                                      />
-                            </View>
-                            <Item style={{marginTop: 10, marginLeft: 15, marginRight: 15}}>
-                               <Input placeholder="Exercise Name" />
-                            </Item>
-                            <Item style={{marginTop: 10, marginLeft: 15, marginRight: 15}}>
-                               <Input placeholder="Reps" />
-                            </Item>
-                            <Item style={{marginTop: 10, marginLeft: 15, marginRight: 15}}>
-                               <Input placeholder="Sets" />
-                            </Item>
-                            <Item style={{marginTop: 10, marginLeft: 15, marginRight: 15}}>
-                               <Textarea row={5} placeholder="Instructions" />
-                            </Item>
-                            <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
-
-                            <Button rounded style={{backgroundColor: 'black'}}>
-                              <Text>Submit</Text>
-                            </Button>
-                            </View>
-                         </Form>
-                       </Content>
-                     </Modal>
-
         </Fragment>
       );
     }

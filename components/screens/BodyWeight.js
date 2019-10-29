@@ -10,27 +10,134 @@ import {
   Modal,
   TouchableHighlight,
   Dimensions,
+  AppState,
+  AsyncStorage,
+  Alert,
   View,
 } from 'react-native';
-import Workspace from './workspace';
-import Courses from './Courses';
-import Clients from './Clients';
-import Plans from './Plans';
-import Trainer from './Trainer';
 import {Agenda} from 'react-native-calendars';
+import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Container, Content, Button, Text, Item, Input} from 'native-base';
+import {Container, Content, Button, Text, Item, Input, List, ListItem, Spinner} from 'native-base';
 import {LineChart} from 'react-native-chart-kit';
 
 export default class BodyWeight extends Component {
+    constructor(props){
+      super(props)
+      this.state = {
+        weight: null,
+        weightList: null,
+        onProcess: false
+      }
+    }
+
     static navigationOptions = {
           title: 'Weight Tracker',
           headerTitleStyle: { color: 'black', fontWeight: 'bold'},
           headerStyle: {backgroundColor: 'white', elevation: 0},
           headerTintColor: 'black'
       }
-    componentDidMount(){
-       StatusBar.setHidden(false);
+
+         async retrieveItem(key) {
+                 try {
+                   const retrievedItem =  await AsyncStorage.getItem(key);
+                   console.log("key retrieved")
+                   return retrievedItem;
+                 } catch (error) {
+                   console.log(error.message);
+                 }
+                 return
+             }
+
+         componentDidMount(){
+             StatusBar.setHidden(false);
+             console.log("bros in didmount")
+                    AppState.addEventListener('change', this._handleAppStateChange);
+                     const { navigation } = this.props;
+                     console.log("pagal bana rhe hai")
+                     this.focusListener = navigation.addListener('didFocus', () => {
+                             var key  = this.retrieveItem('key').then(res =>
+                             this.setState({auth_key: res}, () => console.log("brother pls", res))
+                             ).then(() => this.fetchDetails())
+                     });
+         }
+         _handleAppStateChange = (nextAppState) => {
+                   if (
+                     this.state.appState.match(/inactive|background/) &&
+                     nextAppState === 'active'
+                   ) {
+                        this.fetchDetails()
+                        console.log('App has come to the foreground!');
+                   }
+                   this.setState({appState: nextAppState});
+                 };
+         fetchDetails = () => {
+                 fetch(constants.API + 'current/trainee/logs/weight',{
+                  method: 'GET',
+                     headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': this.state.auth_key,
+                      },
+                 }).then(response => {
+                     if (response.status === 200) {
+                     return response.json();
+                      } else {
+                         Alert.alert(
+                             'OOps!',
+                             'Something went wrong ...',
+                         [
+                             {text: 'OK', onPress: () => console.log('OK Pressed')},
+                         ],
+                         {cancelable: false},
+                         );
+                      }
+                      }).then(res => {
+                      this.setState({weightList: res["logs"].reverse()}, () => console.log("fetched yayyy!!"))
+                      })
+             }
+
+             onSubmit = () => {
+                this.setState({onProcess: true})
+                fetch(constants.API + 'current/trainee/logs/weight',{
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': this.state.auth_key,
+                    },
+                    body: JSON.stringify({
+                        'weight': this.state.weight
+                    })
+                    }).then(response => {
+                        if (response.status === 200) {
+                        this.fetchDetails()
+                        Alert.alert(
+                            'Yayy!!',
+                            'Your body fat recorded ...',
+                            [
+                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                            ],
+                            {cancelable: false},
+                        );
+                        this.setState({onProcess: false})
+                        }
+                        else {
+                                 this.setState({onProcess: false})
+                                Alert.alert(
+                                    'OOps!',
+                                    'Something went wrong ...',
+                                     [
+                                        {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                     ],
+                                     {cancelable: false},
+                                );
+                        }
+                    })
+             }
+    componentWillUnmount(){
+        this.focusListener.remove();
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
     render(){
         let chartConfig = {
@@ -53,27 +160,38 @@ export default class BodyWeight extends Component {
         let screenWidth = Dimensions.get('window').width
         return(
             <Container style={{margin: 15}}>
+                {this.state.weightList !== null ?
                 <Content>
                     <View style={{marginTop: 25}}>
                       <Item regular>
-                        <Input keyboardType="numeric" placeholder="enter your current weight" />
+                        <Input keyboardType="numeric" placeholder="enter your current weight" onChangeText={text => this.setState({weight: text})}/>
                       </Item>
                     </View>
                     <View style={{marginTop: 25, justifyContent: 'center', alignItems: 'center'}}>
-                        <Button block style={{backgroundColor: 'black'}}><Text style={{color: 'white'}}>Add</Text></Button>
+                        {this.state.onProcess === false ?
+                          <Button block onPress={this.onSubmit} style={{backgroundColor: 'black'}}><Text style={{color: 'white'}}>Add</Text></Button> :
+                          <Spinner color="black" />}
                     </View>
-                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 25}}>
-                        <Text style={{fontWeight: 'bold'}}>Chart</Text>
+                    <View style={{marginTop: 25}}>
+                        <Text style={{fontWeight: 'bold'}}>Current Weight</Text>
+                        <Text note>last updated {this.state.weightList.length> 0 ? this.state.weightList[0]["date"].split("T")[0]: null}</Text>
+                    </View>
+                    <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 60}}>{this.state.weightList.length > 0 ? this.state.weightList[0]["weight"] : "NA"}</Text>kg</Text>
+                    </View>
+                    <View style={{marginTop: 25}}>
+                        <Text style={{fontWeight: 'bold'}}>Logged Body Weights</Text>
                     </View>
                     <View style={{marginTop: 10}}>
-                        <LineChart
-                          data={data}
-                          width={screenWidth}
-                          height={220}
-                          chartConfig={chartConfig}
-                        />
+                        <List>
+                            {this.state.weightList !== null ? this.state.weightList.map(weight =>
+                            <ListItem style={{justifyContent: 'space-between'}}>
+                                <Text>{weight["date"].split("T")[0]}</Text>
+                                <Text>{weight["weight"]}kg</Text>
+                            </ListItem>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
+                        </List>
                     </View>
-                </Content>
+                </Content> : <Content><View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ...</Text></View></Content>}
             </Container>
         );
     }

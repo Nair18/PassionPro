@@ -1,5 +1,4 @@
 import React, {Fragment,Component} from 'react';
-import Uploader from './Uploader';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,16 +9,22 @@ import {
   Modal,
   TouchableHighlight,
   View,
+  Alert,
+  AsyncStorage,
+  AppState,
 } from 'react-native';
-import Workspace from './workspace';
-import SharedCalendar from './SharedCalendar';
+import constants from '../constants';
+import PassKey from './PassKey';
+import Overview from './Overview';
 import Courses from './Courses';
 import Clients from './Clients';
 import Plans from './Plans';
 import Trainer from './Trainer';
-import {Agenda} from 'react-native-calendars';
+import Request from './Request';
+import ProfileSkeleton from './ProfileSkeleton'
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Container, Accordion,Thumbnail, Card,ListItem,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, Card,ListItem, Textarea, CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 export default class Admin extends Component {
   constructor(props){
@@ -27,8 +32,16 @@ export default class Admin extends Component {
     this.state = {
       date: new Date(),
       visible: false,
-
-      items: {}
+      data: '',
+      error: '',
+      appState: AppState.currentState,
+      items: {},
+      gymDetails: null,
+      overview: null,
+      auth_key: null,
+      loading: true,
+      loading2: true,
+      gymId: null
     }
   }
   static navigationOptions = {
@@ -39,27 +52,111 @@ export default class Admin extends Component {
      this.setState({visible: bool})
   }
 
+  componentDidMount() {
+      AppState.addEventListener('change', this._handleAppStateChange);
+      const { navigation } = this.props;
+      console.log("pagal bana rhe hai")
+      this.focusListener = navigation.addListener('didFocus', () => {
+        console.log("focusing admin screen")
+        var key  = this.retrieveItem('key').then(res =>
+                      this.setState({auth_key: res}, () => console.log("brother pls", res))
+                    ).then(() => this.fetchDetails())
+      });
 
-    renderItem = (item) => {
-      return (
-        <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
-      );
-    }
+  }
+  async retrieveItem(key) {
+          try {
+            const retrievedItem =  await AsyncStorage.getItem(key);
+            console.log("key retrieved")
+            return retrievedItem;
+          } catch (error) {
+            console.log(error.message);
+          }
+          return;
+  }
+  fetchDetails = () => {
+    console.log("Api fetch going to be called")
+    this.setState({loading: true})
+    console.log("auth key fetched", this.state.auth_key)
+    fetch(constants.API + 'current/admin/gyms',{
+                                  method: 'GET',
+                                  headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json',
+                                    'Authorization': this.state.auth_key,
+                                  },
+                            })
+                           .then(response => {
+                             if (response.status === 200) {
+                               return response.json();
+                             } else {
+                               this.setState({loading: false})
+                               Alert.alert(
+                                 'OOps!',
+                                 'Something went wrong ...',
+                                  [
+                                      {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                  ],
+                                  {cancelable: false},
+                               );
+                             }
+                           }).then(res => {
+                             this.setState({gymDetails: res, loading: false})
+                             return res["data"]["gyms"]
+                           }).then( id => {
+                                if(id !== null){
+                                    id = id[0]["id"]
+                                    this.setState({gymId: id})
+                                    fetch(constants.API + 'current/admin/gyms/'+id+'/overview', {
+                                        method: 'GET',
+                                        headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json',
+                                            'Authorization': this.state.auth_key,
+                                        }
+                                    }).then(res => {
+                                        if(res.status === 200){
+                                            return res.json();
+                                        }
+                                        else{
+                                            this.setState({loading2: false})
+                                            Alert.alert(
+                                            'OOps!',
+                                            'Something went wrong ...',
+                                            [
+                                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                            ],
+                                            {cancelable: false},
+                                          );
+                                        }
+                                    }).then( res => this.setState({overview: res, loading2: false}))
+                                }
+                           }
+                          ).catch((error) => {
 
-    renderEmptyDate = () => {
-      return (
-        <View style={styles.emptyDate}><Text>This is empty date!</Text><Button><Text>Create</Text></Button></View>
-      );
-    }
+                          });
 
-    rowHasChanged = (r1, r2) => {
-      return r1.name !== r2.name;
-    }
+  }
+  componentWillUnmount() {
+      // Remove the event listener
+      this.focusListener.remove();
+      AppState.removeEventListener('change', this._handleAppStateChange);
+  }
 
-    timeToString = (time) => {
+  _handleAppStateChange = (nextAppState) => {
+      if (
+        this.state.appState.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        this.fetchDetails()
+        console.log('App has come to the foreground!');
+      }
+      this.setState({appState: nextAppState});
+    };
+  timeToString = (time) => {
       const date = new Date(time);
       return date.toISOString().split('T')[0];
-    }
+  }
   render(){
     Date.prototype.monthNames = [
               "January", "February", "March",
@@ -80,85 +177,108 @@ export default class Admin extends Component {
             var today = new Date();
     return(
       <Fragment>
-         <Container style={{backgroundColor: "white"}}>
-
-                  <Header noLeft style={styles.header} androidStatusBarColor='#000' iosBarStyle={"light-content"}>
-                    <Body>
-                      <Title style={styles.headerTitle}>Fitness Center, koramangala</Title>
-                    </Body>
-                  </Header>
+         {(this.state.overview === null) ? <ProfileSkeleton/> :
+         (<Container style={{backgroundColor: "white"}}>
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flex: 2, padding: 15}}>
+                        <Text style={{fontWeight: 'bold', fontSize: 25}}>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["name"] : "Loading ..."}</Text>
+                        <Text>koramangala</Text>
+                    </View>
+                  </View>
                   <ScrollView showsVerticalScrollIndicator={false}>
                   <Content padder style={styles.contentBlock}>
-                    <View>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <View style={styles.thumbnailAlign}>
-                    <TouchableOpacity key={1} onPress={() => this.props.navigation.navigate('Courses')}>
-                    <View style={styles.thumbnailBlock}><Thumbnail large source={require('./bank-icon.jpg')}style={styles.thumbnail}/><Text>Courses</Text></View></TouchableOpacity>
-                    <TouchableOpacity key={2} onPress={() => this.props.navigation.navigate('Plans')}>
-                    <View style={styles.thumbnailBlock}><Thumbnail large source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text>Plans</Text></View></TouchableOpacity>
-                    <TouchableOpacity key={3} onPress={() => this.props.navigation.navigate('Clients')}>
-                    <View style={styles.thumbnailBlock}><Thumbnail source={require('./client.png')}large style={styles.thumbnail}/><Text>Clients</Text></View></TouchableOpacity>
-                    <TouchableOpacity key={4} onPress={() => this.props.navigation.navigate('Trainer')}>
-                    <View style={styles.thumbnailBlock}><Thumbnail large source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text>Trainers</Text></View></TouchableOpacity>
-                    <TouchableOpacity key={5} onPress={() => this.props.navigation.navigate('Uploader')}>
-                    <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} large style={styles.thumbnail}/><Text>Requests</Text></View></TouchableOpacity>
-                    <TouchableOpacity key={6}>
-                    <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} large style={styles.thumbnail}/><Text>Profile</Text></View></TouchableOpacity>
-
-                    </View>
-                    </ScrollView>
-                    </View>
+                     <View>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                            <View style={styles.thumbnailAlign}>
+                                <TouchableOpacity key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail large source={require('./bank-icon.jpg')}style={styles.thumbnail}/><Text>Courses</Text></View></TouchableOpacity>
+                                <TouchableOpacity key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail large source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text>Plans</Text></View></TouchableOpacity>
+                                <TouchableOpacity key={3} onPress={() => this.props.navigation.navigate('Clients', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./client.png')}large style={styles.thumbnail}/><Text>Clients</Text></View></TouchableOpacity>
+                                <TouchableOpacity key={4} onPress={() => this.props.navigation.navigate('Trainer', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail large source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text>Trainers</Text></View></TouchableOpacity>
+                                <TouchableOpacity key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} large style={styles.thumbnail}/><Text>Requests</Text></View></TouchableOpacity>
+                                <TouchableOpacity key={6} >
+                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} large style={styles.thumbnail}/><Text>Profile</Text></View></TouchableOpacity>
+                            </View>
+                         </ScrollView>
+                      </View>
                   </Content>
-                  <Content >
-                  <View style={{margin: 15}}>
-                    <Tabs>
-                      <Tab heading="Updates" activeTabStyle={{backgroundColor: '#3e4444'}} tabStyle={{backgroundColor: '#3e4444'}}>
-                         <Content style={styles.card}>
-                         <Card>
-                           <CardItem header>
-                             <Text>Updates</Text>
-                           </CardItem>
-                           <CardItem footer>
-                             <Text>Footer</Text>
-                           </CardItem>
-                         </Card>
-                         </Content>
-                      </Tab>
-                      <Tab heading="Overview" activeTabStyle={{backgroundColor: '#3e4444'}} tabStyle={{backgroundColor: '#3e4444'}}>
-                         <Content style={styles.card}>
-                         <Card style={styles.card}>
-                           <CardItem header>
-                             <Text>Overview</Text>
-                           </CardItem>
-                           <CardItem footer>
-                             <Text>Footer</Text>
-                           </CardItem>
-                         </Card>
-                         </Content>
-                      </Tab>
-                    </Tabs>
-                   </View>
-                   </Content>
-                   <Content>
-                   <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{fontWeight: 'bold'}}>Activity Calender</Text>
-                   </View>
-                   <View style={{margin: 15}}>
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('SharedCalendar')}>
-                         <Card>
-                            <CardItem style={{justifyContent: 'center', alignItems: 'center'}}>
-                              <View>
-                                <Icon name="md-calendar" size={50}/>
-                              </View>
+                   <Content style={{margin: 15}}>
+                   <View>
+                        <View>
+                            <Text style={{fontWeight: 'bold'}}>Overview</Text>
+                        </View>
+                         <View style={{marginTop: 10}}>
+                                             <View style={{flexDirection: 'row'}}>
+                                                 <View style={{flex: 1}}>
+                                                     <TouchableOpacity activeOpacity={0.5} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
+                                                     <Card style={{height: 200}}>
+                                                         <CardItem header>
+                                                             <Text>New members in last 1 month</Text>
+                                                         </CardItem>
+                                                         <CardItem>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["members_in_month"]["count"] : null}</Text>clients</Text>
+                                                         </CardItem>
+                                                     </Card>
+                                                     </TouchableOpacity>
+                                                 </View>
+                                                 <View style={{flex: 1}}>
+                                                     <TouchableOpacity activeOpacity={0.5}>
+                                                     <Card style={{height: 200}}>
+                                                        <CardItem>
+                                                             <Text>Currently taking personal training</Text>
+                                                        </CardItem>
+                                                        <CardItem>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["all_pt_members"]["count"] : null}</Text>clients</Text>
+                                                        </CardItem>
+                                                     </Card>
+                                                     </TouchableOpacity>
+                                                 </View>
+                                             </View>
+                                             <View style={{flexDirection: 'row'}}>
+                                                 <View style={{flex: 1}}>
+                                                     <TouchableOpacity activeOpacity={0.5}>
+                                                     <Card style={{height: 200}}>
+                                                        <CardItem header>
+                                                             <Text>Personal training expires in 1 month for</Text>
+                                                        </CardItem>
+                                                        <CardItem>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["pt_expiring"]["count"] : null}</Text>clients</Text>
+                                                        </CardItem>
+                                                     </Card>
+                                                     </TouchableOpacity>
+                                                 </View>
+                                                 <View style={{flex: 1}}>
+                                                     <TouchableOpacity activeOpacity={0.5}>
+                                                     <Card style={{height: 200}}>
+                                                        <CardItem>
+                                                             <Text>Gym Membership expires in 1 month for</Text>
+                                                        </CardItem>
+                                                        <CardItem>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["membership_expiring"]["count"] : null }</Text>clients</Text>
+                                                        </CardItem>
+                                                     </Card>
+                                                     </TouchableOpacity>
+                                                 </View>
+                                             </View>
 
-                            </CardItem>
-                            <CardItem style={{justifyContent: 'center', alignItems: 'center'}}>
-                               <View>
-                                  <Text style={{fontWeight: 'bold', fontSize: 25}}>{today.getDayName() + " "+ today.getDate() + " " + today.getShortMonthName()}</Text>
-                               </View>
-                            </CardItem>
-                         </Card>
-                      </TouchableOpacity>
+                                       </View>
+                   </View>
+                   <View style={{marginTop: 15}}>
+                    <Text style={{fontWeight: 'bold'}}>Write up</Text>
+                   </View>
+                   <View style={{marginTop: 10}}>
+                      <Card>
+                        <CardItem header>
+                            <Textarea rowSpan={5} placeholder="Send notifications to trainers and clients..."/>
+                        </CardItem>
+                        <CardItem footer style={{justifyContent: 'center', alignItems: 'center'}}>
+                            <Button style={{backgroundColor: 'black'}}><Text>Post</Text></Button>
+                        </CardItem>
+                      </Card>
                     </View>
 
                    </Content>
@@ -184,7 +304,7 @@ export default class Admin extends Component {
                             </View>
                           </Modal>
 
-         </Container>
+         </Container>)}
       </Fragment>
     );
   }

@@ -1,15 +1,32 @@
 import React, { Component, Fragment } from 'react';
-import {StyleSheet,View, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput} from 'react-native';
+import {StyleSheet,View, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput, AppState,AsyncStorage} from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import { Header } from 'react-navigation-stack';
 import CourseInfo from './CourseInfo';
+import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
-
-import { Container, Content, List, ListItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
+import ListSkeleton from './ListSkeleton';
+import { Container, Content, List, ListItem, Form, Textarea, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
 export default class Courses extends Component {
   constructor(props){
     super(props)
+    this.state = {
+          modalVisible: false,
+          selectedItems: [],
+          courseType: null,
+          duration: "days",
+          description: null,
+          days: null,
+          courseList: null,
+          coursetype: null,
+          auth_key: null,
+          onProcess: false,
+          loading: true,
+          courseTypeName: 'Select the course type',
+          courseName: null,
+          id: this.props.navigation.state.params.ID
+        };
   }
   static navigationOptions = {
     title: 'Courses',
@@ -18,13 +35,108 @@ export default class Courses extends Component {
     headerTintColor: 'black'
   }
 
-  state = {
-      modalVisible: false,
-      selectedItems: [],
-      courseType: "Select a course type",
-      duration: "Select the duration"
-    };
 
+  _handleAppStateChange = (nextAppState) => {
+        if (
+          this.state.appState.match(/inactive|background/) &&
+          nextAppState === 'active'
+        ) {
+          this.fetchDetails()
+          console.log('App has come to the foreground!');
+        }
+        this.setState({appState: nextAppState});
+      };
+  componentDidMount(){
+        console.log("id has been retrieved", this.state.id)
+        AppState.addEventListener('change', this._handleAppStateChange);
+        const { navigation } = this.props;
+        console.log("pagal bana rhe hai")
+        this.focusListener = navigation.addListener('didFocus', () => {
+                console.log("The screen is focused")
+                var key  = this.retrieveItem('key').then(res =>
+                           this.setState({auth_key: res}, () => console.log("brother pls", res))
+                           ).then(() => {
+                                if(this.state.auth_key !== null){
+                                    this.fetchDetails()
+                                }
+                           })
+        });
+    }
+
+    componentWillUnmount() {
+          // Remove the event listener
+          this.focusListener.remove();
+          AppState.removeEventListener('change', this._handleAppStateChange);
+      }
+    fetchDetails = () => {
+        this.setState({loading: true})
+        let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth_key,
+            }
+        })
+        .then(
+            res => {
+                if(res.status === 200){
+                    return res.json()
+                }
+                else{
+                    this.setState({loading: false})
+                                                   Alert.alert(
+                                                     'OOps!',
+                                                     'Something went wrong ...',
+                                                      [
+                                                          {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                      ],
+                                                      {cancelable: false},
+                                                   );
+                }
+            }
+        ).then(res => this.setState({courseList: res["courses"], loading: false})).then(
+
+            fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/coursetypes/', {
+                                      method: 'GET',
+                                      headers: {
+                                          'Accept': 'application/json',
+                                          'Content-Type': 'application/json',
+                                          'Authorization': this.state.auth_key,
+                                      }
+                                  })
+                                  .then(
+                                      res => {
+                                          if(res.status === 200){
+                                              return res.json()
+                                          }
+                                          else{
+                                              this.setState({loading: false})
+                                                                             Alert.alert(
+                                                                               'OOps!',
+                                                                               'Something went wrong ...',
+                                                                                [
+                                                                                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                                                ],
+                                                                                {cancelable: false},
+                                                                             );
+                                          }
+                                      }
+                                  ).then(res => this.setState({coursetype: res["data"]}, () => console.log("bhai wtf is this", this.state.coursetype)))
+        )
+
+
+    }
+    async retrieveItem(key) {
+              try {
+                const retrievedItem =  await AsyncStorage.getItem(key);
+                console.log("key retrieved")
+                return retrievedItem;
+              } catch (error) {
+                console.log(error.message);
+              }
+              return;
+      }
     setModalVisible(visible) {
       this.setState({modalVisible: visible});
     }
@@ -34,51 +146,68 @@ export default class Courses extends Component {
       this.setState({ selectedItems });
     };
 
-  render() {
-    let items = [{
-              id: '92iijs7yta',
-              name: 'Ondo',
-            }, {
-              id: 'a0s0a8ssbsd',
-              name: 'Ogun',
-            }, {
-              id: '16hbajsabsd',
-              name: 'Calabar',
-            }, {
-              id: 'nahs75a5sg',
-              name: 'Lagos',
-            }, {
-              id: '667atsas',
-              name: 'Maiduguri',
-            }, {
-              id: 'hsyasajs',
-              name: 'Anambra',
-            }, {
-              id: 'djsjudksjd',
-              name: 'Benue',
-            }, {
-              id: 'sdhyaysdj',
-              name: 'Kaduna',
-            }, {
-              id: 'suudydjsjd',
-              name: 'Abuja',
-            }];
+    onSubmit = () => {
+        this.setState({onProcess: true})
+        fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth_key
+            },
+            body: JSON.stringify(
+              {
+                "course_type": this.state.courseType,
+                "duration": this.state.days,
+                "days": this.state.duration,
+                "name": this.state.courseName,
+                "description": this.state.description
+              }
+            )
+        })
+        .then(res => {
+            if(res.status === 200){
+                this.setState({modalVisible: false, onProcess: false})
+                this.fetchDetails()
+                Alert.alert(
+                   'Yayyy!!',
+                   'Course added successfully. Adding to your course list ...',
+                   [
+                      {text: 'OK', onPress: () => console.log('OK Pressed')},
+                   ],
+                   {cancelable: false}
+                );
+            }
+            else{
+                Alert.alert(
+                    'Oh Snap!',
+                    'Something went wrong',
+                     [
+                       {text: 'OK', onPress: () => console.log('OK Pressed')},
+                     ],
+                    {cancelable: false},
+                );
+            }
+        })
 
+    }
+  render() {
     return (
     <Fragment>
       <Container >
         <Content>
           <List>
+            {this.state.coursetype !== null && this.state.courseList !== null ? this.state.courseList.map(course =>
             <ListItem avatar onPress={() => this.props.navigation.navigate('CourseInfo')}>
-              <Left>
+              <Left style={{margin: 5}}>
                 <Thumbnail source={require('./bank-icon.jpg')} style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
-                <Text>Zumba Class</Text>
-                <Text note>Doing what you like will always keep you happy . .</Text>
+                <Text>{course["name"]}</Text>
+                <Text note>{course["course_type"]}</Text>
               </Body>
 
-            </ListItem>
+            </ListItem>): <ListSkeleton/>}
           </List>
         </Content>
         <View style={styles.addButton}>
@@ -88,7 +217,7 @@ export default class Courses extends Component {
                   </View>
       </Container>
 
-      <View style={{marginTop: 22}}>
+      <View>
         <Modal
           animationType="slide"
           transparent={false}
@@ -103,48 +232,47 @@ export default class Courses extends Component {
       </View>
           <Content style={styles.content}>
             <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset = {Header.HEIGHT + 20}  behavior="padding" enabled>
-            <Form>
+            {this.state.coursetype !== null ?
+            (<Form>
                <View style={{margin: 15}}>
-
                        <ModalSelector
                            placeholder="Select a course type"
-                           data={items}
+                           initValue={this.state.courseTypeName}
+                           data={this.state.coursetype}
                            keyExtractor= {item => item.id}
                            labelExtractor= {item => item.name}
-                           initValue="Select something yummy!"
+                           initValue={this.state.courseType}
                            supportedOrientations={['landscape']}
                            accessible={true}
                            scrollViewAccessibilityLabel={'Scrollable options'}
                            cancelButtonAccessibilityLabel={'Cancel Button'}
-                           onChange={(option)=>{ this.setState({courseType:option.id})}}>
+                           onChange={(option)=>{
+                            this.setState({courseType: option.id, courseTypeName: option.name})
+                           }}>
 
                            <TextInput
                              style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
                              editable={false}
-                             placeholder="Select something yummy!"
-                             value={this.state.courseType}
+                             placeholder="Select the course type"
+                             value={this.state.courseTypeName}
                            />
                          </ModalSelector>
                </View>
-                <View style={{marginLeft: 15, marginRight: 15}}>
-                  <Text note>Didnt find the course type you wanted, type your course type below!!</Text>
-                </View>
-                <Item style={{margin: 15}}>
-                   <Input placeholder="Create your course type" />
-                </Item>
+
                <Item style={{margin: 15}}>
-                  <Input placeholder="Course Name" />
+                  <Input placeholder="Course Name" onChangeText={(text) => this.setState({courseName: text})}/>
                </Item>
                <Item style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
-                  <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Description" />
+                  <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Description" onChangeText={text => this.setState({description: text})}/>
                </Item>
 
                <Item regular style={{marginLeft: 15,marginRight: 15,marginTop: 10,  flexDirection: 'row'}}>
-                                <Input placeholder="duration" keyboardType='numeric' style={{flex: 1,  backgroundColor: "#CCC"}}/>
+                                <Input placeholder="duration" keyboardType='numeric' onChangeText={text => this.setState({days: text})} style={{flex: 1,  backgroundColor: "#CCC"}}/>
                                 <Picker
                                               note
                                               mode="dropdown"
                                               style={{ width: 5, flex: 1 }}
+                                              selectedValue={this.state.duration}
                                               onValueChange={(itemValue, itemIndex) =>
                                                   this.setState({duration: itemValue})
                                                 }
@@ -161,11 +289,12 @@ export default class Courses extends Component {
 
 
                <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
-               <Button rounded style={{backgroundColor: 'black'}}>
+               {this.state.onProcess === false ?
+               <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
                  <Text>Submit</Text>
-               </Button>
+               </Button> : <Spinner color="black"/>}
                </View>
-            </Form>
+            </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
             </KeyboardAvoidingView>
           </Content>
         </Modal>
@@ -178,8 +307,8 @@ export default class Courses extends Component {
 const styles = StyleSheet.create({
   addButton: {
     position: 'absolute',
-    right: 10,
-    bottom: 10,
+    right: 30,
+    bottom: 30,
   },
   content: {
 

@@ -20,10 +20,7 @@ export default class UpdateTrainerPage extends Component{
   }
   componentDidMount() {
         this.props.navigation.setParams({ increaseCount: this._increaseCount })
-        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-          this.showModal() // works best when the goBack is async
-          return true;
-        });
+
     }
 
     showModal = () => {
@@ -48,7 +45,7 @@ export default class UpdateTrainerPage extends Component{
       this.props.navigation.goBack()
     }
     componentWillUnmount() {
-        this.backHandler.remove();
+
     }
   _changeNumber = (value) => {
      this.setState({number: value})
@@ -110,7 +107,7 @@ export default class UpdateTrainerPage extends Component{
 
 
             <View style={{margin: 25}}>
-              <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}}><Text>End Membership</Text></Button>
+              <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}}><Text>End Contract</Text></Button>
             </View>
         </Content>
         </ScrollView>

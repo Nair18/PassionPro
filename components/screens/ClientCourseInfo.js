@@ -33,15 +33,19 @@ export default class ClientCourseInfo extends Component {
                                  <Thumbnail large source={require('./course-image.jpg')} />
                              </View>
                          </Content>
-         <Content style={{padding: 15}}>
+         <Content style={{margin: 15}}>
            <View>
              <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</Text>
            </View>
            <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
-              <Text selectable multiline={true} style={{textAlign: 'justify'}}>jnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuh
-                                                                                                                                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf
-                                                                                                                                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf
-                                                                                                                                ubnk n,bhufkrn kjnkjhijnlmlknhuihef knihihjf,e kloihjiomojoh9hwef knihhfowhiuhjnkhubnk n,bhuf, hello karthik
+              <Text selectable multiline={true}>Yoga is an East Indian method of mind/body exercise designed to
+                                                                                stretch, strengthen, and enhance muscle tone through the practice of asanas
+                                                                                (poses) and pranayama (breathing exercises). Yoga practice plus meditation helps decrease stress
+                                                                                and increase energy levels while improving focus, concentration, and self-realization. The variety of
+                                                                                health benefits a yoga practice offers are: for inner harmony, balance, and overall well-being, for spiritual
+                                                                                connection and growth or for stretching and strengthening a variety of muscle groups involved in a yoga practice.
+                                                                                This course is designed to assist any and all of those goals through support and guidance in a safe and nurturing learning
+                                                                                environment. Students will be required to purchase a yoga mat.
                                               </Text>
            </View>
 

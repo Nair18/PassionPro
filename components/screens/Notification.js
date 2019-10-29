@@ -12,12 +12,7 @@ import {
   View,
   Linking
 } from 'react-native';
-import Workspace from './workspace';
 import Hyperlink from 'react-native-hyperlink'
-import Courses from './Courses';
-import Clients from './Clients';
-import Plans from './Plans';
-import Trainer from './Trainer';
 import {Agenda} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, Accordion,Thumbnail, Card,ListItem,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
@@ -44,13 +39,13 @@ export default class Notification extends Component {
                             </CardItem>
                             <CardItem>
                                 <Hyperlink linkStyle={ { color: '#2980b9'} } linkDefault={true}>
-                                    <Text style={ { fontSize: 15 } }>
+                                    <Text selectable style={ { fontSize: 15 } }>
                                       This Valentine’s Day, get them something they’ll love from our weekly ad: https://docs.aws.amazon.com/rekognition/latest/dg/rekognition-dg.pdf
                                     </Text>
                                   </Hyperlink>
                             </CardItem>
                             <CardItem >
-                              <Button onPress={() => { Linking.openURL('https://www.tutorialspoint.com/react_native/react_native_tutorial.pdf')}}><Text>Open</Text></Button>
+                              <Button onPress={() => { Linking.openURL('https://neilpatel.com/ubersuggest/')}}><Text>Open</Text></Button>
                             </CardItem>
                         </Card>
                     </View>

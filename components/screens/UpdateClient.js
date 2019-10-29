@@ -17,9 +17,7 @@ export default class UpdateClient extends Component{
   }
 
   componentDidMount() {
-      this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-        this.showModal() // works best when the goBack is async
-        return true;
+
       });
   }
 
@@ -45,7 +43,7 @@ export default class UpdateClient extends Component{
     this.props.navigation.goBack()
   }
   componentWillUnmount() {
-      this.backHandler.remove();
+
   }
 
 
@@ -55,6 +53,10 @@ export default class UpdateClient extends Component{
 
   _changeNumber = (value) => {
      this.setState({number: value})
+  }
+
+  buttonPress = () => {
+    alert("this is bomb")
   }
   render(){
     return(
@@ -69,6 +71,7 @@ export default class UpdateClient extends Component{
              <Title style={{color: 'black'}}>Update Client Info</Title>
            </Body>
            <Right>
+                <Button transparent><Text style={{color: 'white'}}>save</Text></Button>
            </Right>
         </Header>
         <ScrollView>
@@ -173,6 +176,7 @@ export default class UpdateClient extends Component{
             <View style={{margin: 25}}>
               <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}}><Text>End Membership</Text></Button>
             </View>
+
         </Content>
         </ScrollView>
 

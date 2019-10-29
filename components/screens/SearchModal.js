@@ -2,7 +2,7 @@ import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import Logging from './Logging';
 import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Modal, StatusBar} from 'react-native';
-import { Button, Container, Content, View, Text,Item, Input, List, Card, CardItem,  Textarea} from 'native-base';
+import { Button, Container, Content, View, Text,Item,ListItem, Input, List, Card, CardItem,  Textarea} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -62,9 +62,9 @@ export default class SearchModal extends Component {
                           <ScrollView>
                           {this.state.data.map(item =>
                             <TouchableOpacity>
-                            <Item>
+                            <ListItem>
                                 <Text>{item}</Text>
-                            </Item>
+                            </ListItem>
                             </TouchableOpacity>
                           )}
                           </ScrollView>

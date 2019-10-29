@@ -19,10 +19,8 @@ export default class SLCProfile extends Component {
   componentDidMount(){
                   StatusBar.setHidden(false);
               }
-  componentWillMount() {
-          this.listener = EventRegister.addEventListener('UpdateClient', (datas) => {
-              this.settingState(datas)
-          })
+  componentWillUnMount() {
+
   }
 
   settingState = (datas) => {

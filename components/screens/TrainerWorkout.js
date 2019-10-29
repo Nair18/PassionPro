@@ -8,6 +8,7 @@ import {
   TouchableNativeFeedback,
   StatusBar,
   Modal,
+  Alert,
   TouchableHighlight,
   View,
 } from 'react-native';
@@ -19,7 +20,7 @@ import Trainer from './Trainer';
 import {Agenda} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Calendar} from 'react-native-calendars';
-import CreateWorkout from './CreateWorkout';
+import TrainerCreateWorkout from './TrainerCreateWorkout';
 import {Container, Accordion,Thumbnail, Card,List, ListItem, Item, CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 export default class TrainerWorkout extends Component {
@@ -41,8 +42,18 @@ export default class TrainerWorkout extends Component {
 
     selectExercise = (index) => {
         console.log("index", index)
-        this.props.navigation.navigate('CreateWorkout');
+        this.props.navigation.navigate('TrainerCreateWorkout');
         this.setState({isVisible: false})
+    }
+    _deleteCard = () => {
+        Alert.alert(
+            'Deleted',
+            'Post deleted',
+            [
+                {text: 'OK', onPress: () => console.log("OK Pressed")}
+            ],
+            {cancelable: false}
+        )
     }
     render(){
         let exercise = ['Triceps', 'Chest', 'Shoulders', 'Biceps', 'Core', 'Back', 'Forearms', 'Upper Legs', 'Glutes', 'Cardio', 'Calves']
@@ -53,7 +64,12 @@ export default class TrainerWorkout extends Component {
                     <View>
                         <Card>
                            <CardItem header>
-                              <Text style={{fontWeight: 'bold'}}>Bench Press</Text>
+                              <Left>
+                                <Text style={{fontWeight: 'bold'}}>Bench Press</Text>
+                              </Left>
+                              <Right>
+                                <Icon onPress={this._deleteCard} size={20} name="md-close" />
+                              </Right>
                            </CardItem>
                            <CardItem style={{flexDirection: 'row'}}>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Sets</Text>
@@ -82,7 +98,7 @@ export default class TrainerWorkout extends Component {
                                     <Content>
                                      <View  style={{minHeight: 500, width: '100%'}}  >
                                         <View style={{margin: 15}}>
-                                            <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
+                                            <TouchableOpacity activeOpacity={0.8} onPress={() => {this.setState({isVisible: false})}}>
                                                 <Icon size={25} name="md-arrow-back"/>
                                             </TouchableOpacity>
                                         </View>

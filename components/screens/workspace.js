@@ -89,7 +89,7 @@ export default class Workspace extends Component {
             <View>
               <Text style={{fontSize: 20, fontWeight: 'bold'}}>Todays Burnout 🔥</Text>
             </View>
-            <TouchableOpacity onPress={this.showModal}>
+            <TouchableOpacity activeOpacity={0.8} onPress={this.showModal}>
             <View style={styles.cardListView}>
 
                 <Card style={styles.cardView} >
@@ -104,7 +104,7 @@ export default class Workspace extends Component {
             <View>
                {data.map(item =>
                 <View style={styles.cardListView}>
-                   <TouchableOpacity>
+                   <TouchableOpacity activeOpacity={0.8}>
                      <Card style={randomStyle()}>
                         <Text style={styles.cardText}>{item.key}</Text>
                      </Card>
@@ -123,7 +123,7 @@ export default class Workspace extends Component {
                     {/*All views of Modal*/}
                      <View>
                         <View style={{margin: 25}}>
-                            <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
+                            <TouchableOpacity activeOpacity={0.8} onPress={() => {this.setState({isVisible: false})}}>
                                 <Icon size={10} name="md-arrow-back"/>
                             </TouchableOpacity>
                         </View>

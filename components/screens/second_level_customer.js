@@ -14,22 +14,27 @@ import {
   ScrollView,
   StatusBar,
   FlatList,
+  AsyncStorage,
+  AppState,
   View,ImageBackground
 } from 'react-native';
+import ProfileSkeleton from './ProfileSkeleton';
+import IconBadge from 'react-native-icon-badge';
+import store from 'react-native-simple-store';
+import constants from '../constants';
+import WorkoutProgress from './WorkoutProgress';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import BodyFat from './BodyFat';
 import ClientCourseInfo from './ClientCourseInfo';
 import BodyWeight from './BodyWeight';
 import SLCProfile from './second_level_customer_profile';
-import Notification from './Notification';
-import faker from 'faker';
+import CustomerNotification from './CustomerNotification';
 import moment from 'moment';
 import Calendar from '../calendar/Calendar';
-import Events from '../events/Events';
 import type Moment from 'moment';
 import Workspace from './workspace';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Container, Accordion,Thumbnail, List, Card,ListItem,CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, List, Card,ListItem,CheckBox, CardItem, Header,Badge, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 export type EventType = {
   date: Moment,
@@ -38,56 +43,87 @@ export type EventType = {
   image: string,
 };
 
-// Generate fake event data
-const FAKE_EVENTS: Array<EventType> = (() => {
-  const startDay = moment().subtract(5, 'days').startOf('day');
-  return [...new Array(64)].map(_ => ({
-    date: startDay.add(4, 'hours').clone(),
-    title: faker.company.companyName(),
-    description: faker.lorem.sentence(),
-    // use random dimensions to get random urls
-    image: faker.image.nightlife(Math.floor(Math.random() * 200) + 100, Math.floor(Math.random() * 200) + 100),
-  }));
-})();
-
-// Filter events by date
-const filterEvents = (date: Moment): ?Array<EventType> =>
-  FAKE_EVENTS.filter(event => event.date.isSame(date, 'day'));
-
-
 class SecondLevelCustomer extends Component {
     constructor(props) {
         //constructor to set default state
         super(props);
+        this.state = {
+            auth_key: null,
+            courseInfo: null,
+            BadgeCount: 1
+        }
     }
+
+    async retrieveItem(key) {
+        try {
+          const retrievedItem =  await AsyncStorage.getItem(key);
+          console.log("key retrieved")
+          return retrievedItem;
+        } catch (error) {
+          console.log(error.message);
+        }
+        return
+    }
+
     componentDidMount(){
       StatusBar.setHidden(false);
+      console.log("bros in didmount")
+       AppState.addEventListener('change', this._handleAppStateChange);
+        const { navigation } = this.props;
+        console.log("pagal bana rhe hai")
+        this.focusListener = navigation.addListener('didFocus', () => {
+                var key  = this.retrieveItem('key').then(res =>
+                this.setState({auth_key: res}, () => console.log("brother pls", res))
+                ).then(() => this.fetchDetails())
+        });
+    }
+    componentWillUnmount(){
+        this.focusListener.remove();
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
+    _handleAppStateChange = (nextAppState) => {
+          if (
+            this.state.appState.match(/inactive|background/) &&
+            nextAppState === 'active'
+          ) {
+            this.fetchDetails()
+            console.log('App has come to the foreground!');
+          }
+          this.setState({appState: nextAppState});
+        };
+    fetchDetails = () => {
+        fetch(constants.API + 'current/trainee/courses',{
+         method: 'GET',
+            headers: {
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Authorization': this.state.auth_key,
+             },
+        }).then(response => {
+            if (response.status === 200) {
+            return response.json();
+             } else {
+                this.setState({loading: false})
+                Alert.alert(
+                    'OOps!',
+                    'Something went wrong ...',
+                [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false},
+                );
+             }
+             }).then(res => {
+             this.setState({courseInfo: res})
+             }).then(console.log("fetched the api data", this.state.courseInfo))
     }
     static navigationOptions = {
           //Setting the header of the screen
          header: null
-        };
-
-  state = {
-      events: filterEvents(moment()),
-      type: 'Workspace'
-  };
-
-  onSelectDate = (date: Moment) => {
-      this.setState({ events: filterEvents(date) });
-      if( new Date() > date){
-        this.setState({type: 'Logs'})
-      }
-  };
+    };
 
   render() {
     let height = getStatusBarHeight();
-    const { events } = this.state;
-    const dataArray = [
-      { title: "Drink water", content: "drink 1 glass of water in every 30mins" },
-      { title: "pre workout meal", content: "6 egg whites and 200g milk oats" },
-      { title: "post workout meal", content: "4 chappatees and 200g boiled brown rice" }
-    ];
     Date.prototype.monthNames = [
       "January", "February", "March",
       "April", "May", "June",
@@ -109,19 +145,32 @@ class SecondLevelCustomer extends Component {
   return (
     <Fragment>
 
-    <Container style={{paddingTop: height}}>
-         <ScrollView showsVerticalScrollIndicator={false}>
+    <Container>
+         {this.state.courseInfo !== null ?
+         <Content>
             <View style={{padding: 15, flex: 1}}>
-              <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>Fitness Center, koramangala</Text>
+                 <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>Fitness Center, koramangala</Text>
             </View>
-
+         <ScrollView showsVerticalScrollIndicator={false}>
 
             <Content padder style={styles.contentBlock}>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Notification')}>
-                <View style={styles.thumbnailBlock}><Icon size={50} name="md-notifications-outline"/></View></TouchableOpacity>
-              <TouchableOpacity  onPress={() => this.props.navigation.navigate('SLCProfile')}>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('CustomerNotification')}>
+                <IconBadge
+                    MainElement={<View style={styles.thumbnailBlock}><Icon size={50} name="md-notifications-outline"/></View>}
+                    BadgeElement={
+                          <Text style={{color:'#FFFFFF'}}>{this.state.BadgeCount}</Text>
+                        }
+                        IconBadgeStyle={
+                          {width:30,
+                          height:30,
+                          backgroundColor: 'black'}
+                        }
+                        Hidden={this.state.BadgeCount==0}
+                />
+                </TouchableOpacity>
+              <TouchableOpacity  activeOpacity={0.8} onPress={() => this.props.navigation.navigate('SLCProfile')}>
                 <View style={styles.thumbnailBlock}><Icon size={50} name="md-person"></Icon></View></TouchableOpacity>
 
               </View>
@@ -131,49 +180,40 @@ class SecondLevelCustomer extends Component {
                   <Text style={{fontWeight: 'bold'}}>Fitness Programs</Text>
                 </View>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
                   <View style={{flexDirection: 'row'}}>
-                    <View style={{marginRight: 10, marginTop: 10}}>
-                       <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientCourseInfo')}>
+                    {this.state.courseInfo !== null ? (this.state.courseInfo["courses"].map(item =>
+                    <View style={{marginTop: 10, marginRight: 10}}>
+                       <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('ClientCourseInfo')}>
                        <Card style={{width: 250, height: 150}}>
-                        <ImageBackground source={require('./sport.jpg')} style={{width: '100%', height: '100%'}}>
-
-                            <Text style={{fontWeight: 'bold'}}>Class 1</Text>
-
+                        <ImageBackground source={require('./dumbbell.jpg')} style={{width: '100%', height: '100%'}}>
                         </ImageBackground>
                         <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
-                             <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>HIIT Classes</Text>
+                             <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold', marginLeft: 30}}>{item["name"]}</Text>
                            </View>
                        </Card>
                        </TouchableOpacity>
-                    </View>
-
-
-                    <View style={{marginRight: 10, marginTop: 10}}>
-                       <TouchableOpacity onPress={() => this.props.navigation.navigate('ClientCourseInfo')}>
-                       <Card style={{width: 250, height: 150}}>
-                                               <ImageBackground source={require('./sport.jpg')} style={{width: '100%', height: '100%'}}>
-
-
-
-                                               </ImageBackground>
-                                               <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
-                                                    <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>Zumba</Text>
-                                                  </View>
-                                              </Card>
-                                              </TouchableOpacity>
-                    </View>
+                    </View>)) : null}
                   </View>
                   </ScrollView>
               </Content>
 
               <Content style={{marginTop: 20}}>
                             <View>
-                                <Text style={{fontWeight: 'bold'}}>Daily Calendar</Text>
+                                <Text style={{fontWeight: 'bold'}}>Workspace</Text>
                             </View>
                             <View style={styles.container}>
-                                    <StatusBar hidden={true} />
-                                    <Calendar onSelectDate={this.onSelectDate} />
-                                    <Events events={events} navigation={this.props.navigation} type={this.state.type}/>
+                                   <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('Workspace')}>
+                                   <Card style={{backgroundColor: '#251e20', justifyContent: 'center', alignItems: 'center'}}>
+                                      <CardItem header style={{backgroundColor: '#251e20'}}>
+                                            <Icon style={{color: 'white'}} size={50} name="md-bicycle"/>
+                                      </CardItem>
+                                      <CardItem footer style={{backgroundColor: '#251e20'}}>
+                                            <Text style={{fontWeight: 'bold', fontSize: 20 , color: 'white'}}>Get Set Go </Text>
+                                            <Icon style={{color: 'white'}}size={30} name="md-arrow-round-forward"/>
+                                      </CardItem>
+                                   </Card>
+                                   </TouchableOpacity>
                             </View>
 
               </Content>
@@ -184,7 +224,7 @@ class SecondLevelCustomer extends Component {
                 <View style={{flexDirection: 'row'}}>
 
                     <View style={{flex: 1, marginTop: 10}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('BodyWeight')}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('BodyWeight')}>
                         <Card style={{height: 200, width: '100%'}}>
 
                                 <ImageBackground source={require('./i1.jpg')} style={{width: '100%', height: '100%', opacity: 0.5}}/>
@@ -198,7 +238,7 @@ class SecondLevelCustomer extends Component {
 
 
                     <View style={{flex: 1, marginTop: 10 }}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('BodyFat')}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('BodyFat')}>
                         <Card style={{height: 200, width: '100%'}}>
 
                                 <ImageBackground source={require('./i2.jpg')} style={{width: '100%', height: '100%', opacity: 0.5}}/>
@@ -212,11 +252,11 @@ class SecondLevelCustomer extends Component {
                 </View>
 
                    <View style={{marginTop: 10}}>
-                                           <TouchableOpacity>
+                                           <TouchableOpacity activeOpacity={0.8} onPress= {() => this.props.navigation.navigate('WorkoutProgress')}>
                                            <Card style={{height: 200, width: '100%'}}>
                                                <ImageBackground source={require('./ii3.jpg')} style={{width: '100%', height: '100%', opacity: 0.5}}/>
                                                <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
-                                                  <Text style={{color: 'black', fontSize: 25, fontWeight: 'bold', fontStyle: 'comic'}}>Workout</Text>
+                                                  <Text style={{color: 'black', fontSize: 25, fontWeight: 'bold', fontStyle: 'comic'}}>Workout Logs</Text>
                                                </View>
                                            </Card>
                                            </TouchableOpacity>
@@ -225,6 +265,7 @@ class SecondLevelCustomer extends Component {
               </Content>
               </Content>
             </ScrollView>
+         </Content> : <ProfileSkeleton/>}
           </Container>
 
           </Fragment>
@@ -276,13 +317,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-
   container: {
-      flex: 1,
-      backgroundColor: '#3F53B1',
-      paddingTop: 20,
-      marginTop: 20,
-    },
+    marginTop: 10
+  }
 });
 
 

@@ -16,6 +16,7 @@ import Workspace from './workspace';
 import Courses from './Courses';
 import Clients from './Clients';
 import Plans from './Plans';
+
 import Trainer from './Trainer';
 import TrainerWorkout from './TrainerWorkout';
 import {Agenda} from 'react-native-calendars';
@@ -70,31 +71,7 @@ export default class TrainerWorkspace extends Component {
         this.props.navigation.navigate(type)
         this.setState({isVisible: false})
     }
-    async pickFile(){
-        try {
-          const res = await DocumentPicker.show({
-            type: [DocumentPickerUtil.images()],
-          });
-          //Printing the log realted to the file
-          console.log('res : ' + JSON.stringify(res));
-          console.log('URI : ' + res.uri);
-          console.log('Type : ' + res.type);
-          console.log('File Name : ' + res.name);
-          console.log('File Size : ' + res.size);
-          //Setting the state to show single file attributes
-          this.setState({ singleFile: res });
-        } catch (err) {
-          //Handling any exception (If any)
-          if (DocumentPicker.isCancel(err)) {
-            //If user canceled the document selection
-            alert('Canceled from single doc picker');
-          } else {
-            //For Unknown Error
-            alert('Unknown Error: ' + JSON.stringify(err));
-            throw err;
-          }
-        }
-    }
+
     render(){
 
         return(
@@ -107,10 +84,10 @@ export default class TrainerWorkspace extends Component {
                             <Text style={{fontWeight: 'bold'}}>Save your efforts by uploading pdf</Text>
                         </CardItem>
                         <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={this.pickFile}><Text>Upload PDF for workout plan</Text></Button>
+                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader')}><Text>Upload PDF for workout plan</Text></Button>
                         </CardItem>
                         <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={this.pickFile}><Text>Upload PDF for meal plan</Text></Button>
+                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader')}><Text>Upload PDF for meal plan</Text></Button>
                         </CardItem>
                         </Card>
                       </View>
@@ -118,7 +95,7 @@ export default class TrainerWorkspace extends Component {
                         <View>
                            {data.map(item =>
                                <View style={styles.cardListView}>
-                                 <TouchableOpacity onPress={this.showModal}>
+                                 <TouchableOpacity activeOpacity={0.8} onPress={this.showModal}>
                                    <Card style={randomStyle()}>
                                       <Text style={styles.cardText}>{item.key}</Text>
                                    </Card>

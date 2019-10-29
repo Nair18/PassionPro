@@ -19,6 +19,7 @@ class CalendarHeaderComponent extends React.Component {
             {this.props.headerData.calendarDate}
           </Text>
           <TouchableOpacity
+            activeOpacity={0.8}
             style={styles.iconContainer}
             onPress={this.props.onPressArrowLeft}
           >
@@ -28,6 +29,7 @@ class CalendarHeaderComponent extends React.Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
+            activeOpacity={0.8}
             style={styles.iconContainer}
             onPress={this.props.onPressArrowRight}
           >
@@ -37,6 +39,7 @@ class CalendarHeaderComponent extends React.Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
+            activeOpacity={0.8}
             style={[
               styles.iconContainer, {
                 opacity: this.props.horizontal ? 0.2 : 1
@@ -51,6 +54,7 @@ class CalendarHeaderComponent extends React.Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
+            activeOpacity={0.8}
             style={[
               styles.iconContainer, {
                 opacity: this.props.horizontal ? 1 : 0.2

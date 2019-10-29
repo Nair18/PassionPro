@@ -3,9 +3,6 @@ import {StyleSheet,View, StatusBar, ScrollView,Picker, Image, TouchableOpacity, 
 import {Container, Content,Input,Item,Button, Text,Card,CardItem,Body,Form,Textarea, Thumbnail } from 'native-base';
 
 import { Header } from 'react-navigation-stack';
-
-import CourseInfo from './CourseInfo';
-import Plans from './Plans';
 import AdminWorkoutSpace from './AdminWorkoutSpace';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
