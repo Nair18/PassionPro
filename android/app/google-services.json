@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "232021554738",
+    "firebase_url": "https://third-current-256014.firebaseio.com",
+    "project_id": "third-current-256014",
+    "storage_bucket": "third-current-256014.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232021554738:android:1093546d3f3fad7ce4ee2b",
+        "android_client_info": {
+          "package_name": "com.passionpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232021554738-dtqm06rigab53cmgcivr7f3eu1g8v8qv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC7aJ-BlZI6Le8rW9seq5x2mPHJukiAK8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232021554738-dtqm06rigab53cmgcivr7f3eu1g8v8qv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -20,18 +20,10 @@ export default class ClientInfo extends Component {
       headerTintColor: 'black'
   }
 
-  _handleAppStateChange = (nextAppState) => {
-          if (
-            this.state.appState.match(/inactive|background/) &&
-            nextAppState === 'active'
-          ) {
-            console.log('App has come to the foreground!');
-          }
-          this.setState({appState: nextAppState});
-    };
+
   componentDidMount(){
             console.log("id has been retrieved", this.state.id)
-            AppState.addEventListener('change', this._handleAppStateChange);
+
             const { navigation } = this.props;
             console.log("pagal bana rhe hai")
             this.focusListener = navigation.addListener('didFocus', () => {
@@ -117,7 +109,7 @@ export default class ClientInfo extends Component {
   componentWillUnmount() {
         // Remove the event listener
         this.focusListener.remove();
-        AppState.removeEventListener('change', this._handleAppStateChange);
+
   }
 
   settingState = (datas) => {

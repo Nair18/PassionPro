@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, {Fragment,Component} from 'react';
+import React, {Fragment,Component, PureComponent} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import ProfileSkeleton from './ProfileSkeleton';
 import IconBadge from 'react-native-icon-badge';
-import store from 'react-native-simple-store';
+
 import constants from '../constants';
 import WorkoutProgress from './WorkoutProgress';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -43,7 +43,9 @@ export type EventType = {
   image: string,
 };
 
-class SecondLevelCustomer extends Component {
+
+
+class SecondLevelCustomer extends PureComponent {
     constructor(props) {
         //constructor to set default state
         super(props);
@@ -68,7 +70,7 @@ class SecondLevelCustomer extends Component {
     componentDidMount(){
       StatusBar.setHidden(false);
       console.log("bros in didmount")
-       AppState.addEventListener('change', this._handleAppStateChange);
+
         const { navigation } = this.props;
         console.log("pagal bana rhe hai")
         this.focusListener = navigation.addListener('didFocus', () => {
@@ -79,18 +81,9 @@ class SecondLevelCustomer extends Component {
     }
     componentWillUnmount(){
         this.focusListener.remove();
-        AppState.removeEventListener('change', this._handleAppStateChange);
+
     }
-    _handleAppStateChange = (nextAppState) => {
-          if (
-            this.state.appState.match(/inactive|background/) &&
-            nextAppState === 'active'
-          ) {
-            this.fetchDetails()
-            console.log('App has come to the foreground!');
-          }
-          this.setState({appState: nextAppState});
-        };
+
     fetchDetails = () => {
         fetch(constants.API + 'current/trainee/courses',{
          method: 'GET',
@@ -156,7 +149,7 @@ class SecondLevelCustomer extends Component {
             <Content padder style={styles.contentBlock}>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
               <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('CustomerNotification')}>
+              <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('CustomerNotification')}>
                 <IconBadge
                     MainElement={<View style={styles.thumbnailBlock}><Icon size={50} name="md-notifications-outline"/></View>}
                     BadgeElement={
@@ -170,7 +163,7 @@ class SecondLevelCustomer extends Component {
                         Hidden={this.state.BadgeCount==0}
                 />
                 </TouchableOpacity>
-              <TouchableOpacity  activeOpacity={0.8} onPress={() => this.props.navigation.navigate('SLCProfile')}>
+              <TouchableOpacity  activeOpacity={1} onPress={() => this.props.navigation.navigate('SLCProfile')}>
                 <View style={styles.thumbnailBlock}><Icon size={50} name="md-person"></Icon></View></TouchableOpacity>
 
               </View>
@@ -184,7 +177,7 @@ class SecondLevelCustomer extends Component {
                   <View style={{flexDirection: 'row'}}>
                     {this.state.courseInfo !== null ? (this.state.courseInfo["courses"].map(item =>
                     <View style={{marginTop: 10, marginRight: 10}}>
-                       <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('ClientCourseInfo')}>
+                       <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('ClientCourseInfo')}>
                        <Card style={{width: 250, height: 150}}>
                         <ImageBackground source={require('./dumbbell.jpg')} style={{width: '100%', height: '100%'}}>
                         </ImageBackground>
@@ -203,7 +196,7 @@ class SecondLevelCustomer extends Component {
                                 <Text style={{fontWeight: 'bold'}}>Workspace</Text>
                             </View>
                             <View style={styles.container}>
-                                   <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('Workspace')}>
+                                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Workspace')}>
                                    <Card style={{backgroundColor: '#251e20', justifyContent: 'center', alignItems: 'center'}}>
                                       <CardItem header style={{backgroundColor: '#251e20'}}>
                                             <Icon style={{color: 'white'}} size={50} name="md-bicycle"/>
@@ -224,7 +217,7 @@ class SecondLevelCustomer extends Component {
                 <View style={{flexDirection: 'row'}}>
 
                     <View style={{flex: 1, marginTop: 10}}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('BodyWeight')}>
+                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('BodyWeight')}>
                         <Card style={{height: 200, width: '100%'}}>
 
                                 <ImageBackground source={require('./i1.jpg')} style={{width: '100%', height: '100%', opacity: 0.5}}/>
@@ -238,7 +231,7 @@ class SecondLevelCustomer extends Component {
 
 
                     <View style={{flex: 1, marginTop: 10 }}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('BodyFat')}>
+                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('BodyFat')}>
                         <Card style={{height: 200, width: '100%'}}>
 
                                 <ImageBackground source={require('./i2.jpg')} style={{width: '100%', height: '100%', opacity: 0.5}}/>
@@ -252,7 +245,7 @@ class SecondLevelCustomer extends Component {
                 </View>
 
                    <View style={{marginTop: 10}}>
-                                           <TouchableOpacity activeOpacity={0.8} onPress= {() => this.props.navigation.navigate('WorkoutProgress')}>
+                                           <TouchableOpacity activeOpacity={1} onPress= {() => this.props.navigation.navigate('WorkoutProgress')}>
                                            <Card style={{height: 200, width: '100%'}}>
                                                <ImageBackground source={require('./ii3.jpg')} style={{width: '100%', height: '100%', opacity: 0.5}}/>
                                                <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>

@@ -175,14 +175,14 @@ export default class TrainerPage extends Component {
                                                       <View style={{flex: 1}}>
                                                          <Text>Zumba class</Text>
                                                       </View>
-                                                      <TouchableOpacity activeOpacity={0.8}>
+                                                      <TouchableOpacity activeOpacity={1}>
                                                          <View style={{flex: 1}}>
                                                             <Icon size={20} name="md-close"/>
                                                          </View>
                                                       </TouchableOpacity>
                                                    </View>
                                                 </CardItem>
-                                                   <TouchableOpacity activeOpacity={0.8}>
+                                                   <TouchableOpacity activeOpacity={1}>
                                                       <CardItem footer style={{backgroundColor: 'grey'}}>
                                                          <Text>Add Course</Text>
                                                       </CardItem>
@@ -200,14 +200,14 @@ export default class TrainerPage extends Component {
                                                                           <View style={{flex: 1}}>
                                                                              <Text>Chaganlal</Text>
                                                                           </View>
-                                                                          <TouchableOpacity activeOpacity={0.8}>
+                                                                          <TouchableOpacity activeOpacity={1}>
                                                                              <View style={{flex: 1}}>
                                                                                 <Icon size={20} name="md-close"/>
                                                                              </View>
                                                                           </TouchableOpacity>
                                                                        </View>
                                                                     </CardItem>
-                                                                       <TouchableOpacity activeOpacity={0.8}>
+                                                                       <TouchableOpacity activeOpacity={1}>
                                                                           <CardItem footer style={{backgroundColor: 'grey'}}>
                                                                              <Text>Add Clients</Text>
                                                                           </CardItem>
@@ -216,7 +216,7 @@ export default class TrainerPage extends Component {
                                                                 </View>
 
                     <View style={{margin: 50}}>
-                        <TouchableOpacity activeOpacity={0.8}>
+                        <TouchableOpacity activeOpacity={1}>
                             <Button onPress={() => this.props.navigation.navigate('UpdateTrainerPage')} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Update the profile</Text></Button>
                         </TouchableOpacity>
                     </View>

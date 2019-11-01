@@ -23,6 +23,7 @@ import ClientInfo from './components/screens/ClientInfo';
 import Trainer from './components/screens/Trainer';
 import Uploader from './components/screens/Uploader';
 import UpdateClient from './components/screens/UpdateClient';
+import PdfViewer from './components/screens/PdfViewer';
 import UpdateTrainerPage from './components/screens/UpdateTrainerPage';
 import Logs from './components/screens/Logs';
 import StandardWorkout from './components/screens/StandardWorkout';
@@ -55,6 +56,7 @@ import TrainerRequestInfo from './components/screens/TrainerRequestInfo';
 import ClientRequestInfo from './components/screens/ClientRequestInfo';
 import QuickClient from './components/screens/QuickClient';
 import RequestProcessingPage from './components/screens/RequestProcessingPage';
+
 //import all the screens we are going to switch
 
 // To see all the requests in the chrome Dev tools in the network tab.
@@ -105,6 +107,8 @@ const Customer = createStackNavigator({
      PersonalizedWorkout: {screen: PersonalizedWorkout},
      StandardWorkout: {screen: StandardWorkout},
      Logging: {screen: Logging},
+     PdfViewer: {screen: PdfViewer}
+
      },
      {
         initialRouteName: 'SecondLevelCustomer'

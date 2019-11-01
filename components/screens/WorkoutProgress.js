@@ -6,12 +6,15 @@ import {
   ScrollView,
   StatusBar,
   FlatList,
-  View,ImageBackground
+  View,ImageBackground,
+  AppState,
+  AsyncStorage,
 } from 'react-native';
 
 import moment from 'moment';
 import type Moment from 'moment';
 import { Calendar} from 'react-native-calendars';
+import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, Accordion,Thumbnail, List, Card,ListItem,CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
@@ -52,7 +55,7 @@ export default class WorkoutProgress extends Component{
                componentDidMount(){
                    StatusBar.setHidden(false);
                    console.log("bros in didmount")
-                          AppState.addEventListener('change', this._handleAppStateChange);
+
                            const { navigation } = this.props;
                            console.log("pagal bana rhe hai")
                            this.focusListener = navigation.addListener('didFocus', () => {
@@ -61,16 +64,7 @@ export default class WorkoutProgress extends Component{
                                    ).then(() => this.fetchDetails())
                            });
                }
-               _handleAppStateChange = (nextAppState) => {
-                         if (
-                           this.state.appState.match(/inactive|background/) &&
-                           nextAppState === 'active'
-                         ) {
-                              this.fetchDetails()
-                              console.log('App has come to the foreground!');
-                         }
-                         this.setState({appState: nextAppState});
-                       };
+
                fetchDetails = () => {
                        fetch(constants.API + 'current/trainee/sets',{
                         method: 'GET',

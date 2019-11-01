@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment, PureComponent} from 'react';
 import {Picker,View,TouchableOpacity,Dimensions,StyleSheet,Image, StatusBar} from 'react-native';
 import {Header,Content,Container, Text,Button} from 'native-base';
 import StepFormTrainer from './step_form_trainer';
@@ -6,7 +6,9 @@ import StepFormCustomer from './step_form_customer';
 import Login from './Login';
 
 const deviceWidth = Dimensions.get('window').width;
-export default class LandingPage extends Component {
+
+
+export default class LandingPage extends PureComponent {
    constructor(props){
      super(props)
      this.state = {

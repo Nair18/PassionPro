@@ -1,4 +1,4 @@
-import React, {Fragment,Component} from 'react';
+import React, {Fragment,Component,PureComponent} from 'react';
 import Uploader from './Uploader';
 import {
   SafeAreaView,
@@ -21,7 +21,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, Content, Button, Text, Item, Input, List, ListItem, Spinner} from 'native-base';
 import {LineChart} from 'react-native-chart-kit';
 
-export default class BodyWeight extends Component {
+
+export default class BodyWeight extends PureComponent {
     constructor(props){
       super(props)
       this.state = {
@@ -52,7 +53,7 @@ export default class BodyWeight extends Component {
          componentDidMount(){
              StatusBar.setHidden(false);
              console.log("bros in didmount")
-                    AppState.addEventListener('change', this._handleAppStateChange);
+
                      const { navigation } = this.props;
                      console.log("pagal bana rhe hai")
                      this.focusListener = navigation.addListener('didFocus', () => {
@@ -61,16 +62,7 @@ export default class BodyWeight extends Component {
                              ).then(() => this.fetchDetails())
                      });
          }
-         _handleAppStateChange = (nextAppState) => {
-                   if (
-                     this.state.appState.match(/inactive|background/) &&
-                     nextAppState === 'active'
-                   ) {
-                        this.fetchDetails()
-                        console.log('App has come to the foreground!');
-                   }
-                   this.setState({appState: nextAppState});
-                 };
+
          fetchDetails = () => {
                  fetch(constants.API + 'current/trainee/logs/weight',{
                   method: 'GET',
@@ -137,7 +129,7 @@ export default class BodyWeight extends Component {
              }
     componentWillUnmount(){
         this.focusListener.remove();
-        AppState.removeEventListener('change', this._handleAppStateChange);
+
     }
     render(){
         let chartConfig = {

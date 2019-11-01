@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment,PureComponent } from 'react';
 import {StyleSheet,View, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput, AppState,AsyncStorage} from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import { Header } from 'react-navigation-stack';
@@ -6,9 +6,11 @@ import CourseInfo from './CourseInfo';
 import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
-import ListSkeleton from './ListSkeleton';
+import PageLoader from './PageLoader';
 import { Container, Content, List, ListItem, Form, Textarea, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
-export default class Courses extends Component {
+
+
+export default class Courses extends PureComponent {
   constructor(props){
     super(props)
     this.state = {
@@ -36,19 +38,10 @@ export default class Courses extends Component {
   }
 
 
-  _handleAppStateChange = (nextAppState) => {
-        if (
-          this.state.appState.match(/inactive|background/) &&
-          nextAppState === 'active'
-        ) {
-          this.fetchDetails()
-          console.log('App has come to the foreground!');
-        }
-        this.setState({appState: nextAppState});
-      };
+
   componentDidMount(){
         console.log("id has been retrieved", this.state.id)
-        AppState.addEventListener('change', this._handleAppStateChange);
+
         const { navigation } = this.props;
         console.log("pagal bana rhe hai")
         this.focusListener = navigation.addListener('didFocus', () => {
@@ -66,7 +59,7 @@ export default class Courses extends Component {
     componentWillUnmount() {
           // Remove the event listener
           this.focusListener.remove();
-          AppState.removeEventListener('change', this._handleAppStateChange);
+
       }
     fetchDetails = () => {
         this.setState({loading: true})
@@ -207,7 +200,7 @@ export default class Courses extends Component {
                 <Text note>{course["course_type"]}</Text>
               </Body>
 
-            </ListItem>): <ListSkeleton/>}
+            </ListItem>): <PageLoader/>}
           </List>
         </Content>
         <View style={styles.addButton}>

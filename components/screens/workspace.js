@@ -56,8 +56,8 @@ export default class Workspace extends Component {
     };
 
   componentDidMount(){
-                  StatusBar.setHidden(false);
-              }
+    StatusBar.setHidden(false);
+  }
   showModal = () => {
     this.setState({isVisible: true})
   }
@@ -78,7 +78,7 @@ export default class Workspace extends Component {
                                       <Text style={{fontWeight: 'bold'}}>Attachments</Text>
                                   </CardItem>
                                   <CardItem>
-                                      <Button style={{backgroundColor: 'black'}} onPress={() => { Linking.openURL('https://www.tutorialspoint.com/react_native/react_native_tutorial.pdf')}}><Text>View PDF for workout plan</Text></Button>
+                                      <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('PdfViewer', {URL: 'https://www.tutorialspoint.com/amazon_web_services/amazon_web_services_tutorial.pdf'})}><Text>View PDF for workout plan</Text></Button>
                                   </CardItem>
                                   <CardItem>
                                       <Button style={{backgroundColor: 'black'}}><Text>View PDF for meal plan</Text></Button>
@@ -89,7 +89,7 @@ export default class Workspace extends Component {
             <View>
               <Text style={{fontSize: 20, fontWeight: 'bold'}}>Todays Burnout 🔥</Text>
             </View>
-            <TouchableOpacity activeOpacity={0.8} onPress={this.showModal}>
+            <TouchableOpacity activeOpacity={1} onPress={this.showModal}>
             <View style={styles.cardListView}>
 
                 <Card style={styles.cardView} >
@@ -104,7 +104,7 @@ export default class Workspace extends Component {
             <View>
                {data.map(item =>
                 <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={0.8}>
+                   <TouchableOpacity activeOpacity={1}>
                      <Card style={randomStyle()}>
                         <Text style={styles.cardText}>{item.key}</Text>
                      </Card>
@@ -123,7 +123,7 @@ export default class Workspace extends Component {
                     {/*All views of Modal*/}
                      <View>
                         <View style={{margin: 25}}>
-                            <TouchableOpacity activeOpacity={0.8} onPress={() => {this.setState({isVisible: false})}}>
+                            <TouchableOpacity activeOpacity={1} onPress={() => {this.setState({isVisible: false})}}>
                                 <Icon size={10} name="md-arrow-back"/>
                             </TouchableOpacity>
                         </View>

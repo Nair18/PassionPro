@@ -34,7 +34,7 @@ export default class Overview extends Component {
               <View style={{marginTop: 10}}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{flex: 1}}>
-                            <TouchableOpacity activeOpacity={0.5} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: data!==null ? data["members_in_month"]["details"] : null})}>
+                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: data!==null ? data["members_in_month"]["details"] : null})}>
                             <Card style={{height: 200}}>
                                 <CardItem header>
                                     <Text>New members in last 1 month</Text>
@@ -46,7 +46,7 @@ export default class Overview extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{flex: 1}}>
-                            <TouchableOpacity activeOpacity={0.5}>
+                            <TouchableOpacity activeOpacity={1}>
                             <Card style={{height: 200}}>
                                <CardItem>
                                     <Text>Currently taking personal training</Text>
@@ -60,7 +60,7 @@ export default class Overview extends Component {
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{flex: 1}}>
-                            <TouchableOpacity activeOpacity={0.5}>
+                            <TouchableOpacity activeOpacity={1}>
                             <Card style={{height: 200}}>
                                <CardItem header>
                                     <Text>Personal training expires in 1 month for</Text>
@@ -72,7 +72,7 @@ export default class Overview extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{flex: 1}}>
-                            <TouchableOpacity activeOpacity={0.5}>
+                            <TouchableOpacity activeOpacity={1}>
                             <Card style={{height: 200}}>
                                <CardItem>
                                     <Text>Gym Membership expires in 1 month for</Text>

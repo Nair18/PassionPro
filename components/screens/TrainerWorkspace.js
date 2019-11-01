@@ -22,8 +22,7 @@ import TrainerWorkout from './TrainerWorkout';
 import {Agenda} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Calendar} from 'react-native-calendars';
-import {DocumentPicker,
-          DocumentPickerUtil,} from 'react-native-document-picker';
+
 import {Container, Accordion,Thumbnail, Card,List, ListItem, Item, CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 
@@ -84,10 +83,10 @@ export default class TrainerWorkspace extends Component {
                             <Text style={{fontWeight: 'bold'}}>Save your efforts by uploading pdf</Text>
                         </CardItem>
                         <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader')}><Text>Upload PDF for workout plan</Text></Button>
+                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader', {URL: "https://happy-independence.herokuapp.com/"})}><Text>Upload PDF for workout plan</Text></Button>
                         </CardItem>
                         <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader')}><Text>Upload PDF for meal plan</Text></Button>
+                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader', {URL: "https://happy-independence.herokuapp.com/"})}><Text>Upload PDF for meal plan</Text></Button>
                         </CardItem>
                         </Card>
                       </View>

@@ -98,7 +98,7 @@ export default class TrainerWorkout extends Component {
                                     <Content>
                                      <View  style={{minHeight: 500, width: '100%'}}  >
                                         <View style={{margin: 15}}>
-                                            <TouchableOpacity activeOpacity={0.8} onPress={() => {this.setState({isVisible: false})}}>
+                                            <TouchableOpacity activeOpacity={1} onPress={() => {this.setState({isVisible: false})}}>
                                                 <Icon size={25} name="md-arrow-back"/>
                                             </TouchableOpacity>
                                         </View>

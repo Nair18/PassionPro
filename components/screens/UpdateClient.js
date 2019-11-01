@@ -16,10 +16,7 @@ export default class UpdateClient extends Component{
       }
   }
 
-  componentDidMount() {
 
-      });
-  }
 
   showModal = () => {
     Alert.alert(
@@ -42,9 +39,7 @@ export default class UpdateClient extends Component{
     EventRegister.emit('UpdateClient', 'it works!!!')
     this.props.navigation.goBack()
   }
-  componentWillUnmount() {
 
-  }
 
 
   static navigationOptions = {

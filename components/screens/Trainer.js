@@ -1,12 +1,14 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, PureComponent } from 'react';
 import {StyleSheet,View, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TrainerPage from './TrainerPage';
 import DatePicker from 'react-native-datepicker';
 import constants from '../constants';
-import ListSkeleton from './ListSkeleton';
+import PageLoader from './PageLoader';
 import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Label,Text } from 'native-base';
-export default class Trainer extends Component {
+
+
+export default class Trainer extends PureComponent {
   constructor(props){
     super(props)
     this.state = {
@@ -30,7 +32,7 @@ export default class Trainer extends Component {
     }
 
   componentDidMount() {
-        AppState.addEventListener('change', this._handleAppStateChange);
+
         const { navigation } = this.props;
         console.log("pagal bana rhe hai")
         this.focusListener = navigation.addListener('didFocus', () => {
@@ -86,19 +88,10 @@ export default class Trainer extends Component {
     componentWillUnmount() {
         // Remove the event listener
         this.focusListener.remove();
-        AppState.removeEventListener('change', this._handleAppStateChange);
+
     }
 
-  _handleAppStateChange = (nextAppState) => {
-        if (
-          this.state.appState.match(/inactive|background/) &&
-          nextAppState === 'active'
-        ) {
-          console.log('App has come to the foreground!');
-          this.fetchDetails()
-        }
-        this.setState({appState: nextAppState});
-  };
+
   render() {
     return (
     <Fragment>
@@ -115,7 +108,7 @@ export default class Trainer extends Component {
                 <Text>{trainer["name"]}</Text>
                 <Text note>Doing what you like will always keep you happy . .</Text>
               </Body>
-            </ListItem>): <ListSkeleton/>}
+            </ListItem>): <PageLoader/>}
           </List>
         </Content>
         <View style={styles.addButton}>
@@ -134,7 +127,7 @@ export default class Trainer extends Component {
             this.setModalVisible(false)
           }}>
           <View style={{margin: 15}}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => this.setModalVisible(false)}>
+            <TouchableOpacity activeOpacity={1} onPress={() => this.setModalVisible(false)}>
             <Icon name="md-close" size={30}/>
             </TouchableOpacity>
       </View>
@@ -167,7 +160,7 @@ export default class Trainer extends Component {
                   </Picker>
                </Item>
                <Item style={styles.item}>
-
+                  <Label>Contract Start Date</Label>
                   <DatePicker
                           style={{width: 200}}
                           date={this.state.date}

@@ -1,12 +1,12 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment,PureComponent} from 'react';
 import {Picker,View,TouchableOpacity,Dimensions,Alert,ActivityIndicator,StyleSheet,Image, StatusBar, AsyncStorage} from 'react-native';
 import {Header,Content,Container, Text,Button, List, ListItem, Input, Spinner}from 'native-base';
 import Admin from './Admin';
 import constants from '../constants';
-import store from 'react-native-simple-store';
+import firebase from '../utils/firebase';
 
 
-export default class Login extends Component {
+export default class Login extends PureComponent {
     constructor(props){
         super(props);
         this.state = {
@@ -20,6 +20,12 @@ export default class Login extends Component {
           headerTitleStyle: { color: 'black', fontWeight: 'bold'},
           headerStyle: {backgroundColor: 'white', elevation: 0},
           headerTintColor: 'black'
+      }
+      componentDidMount(){
+        const fcmToken = firebase.messaging().getToken().then( token =>
+            console.log(token)
+        )
+        console.log(fcmtoken)
       }
       _storeData = async (key,data) => {
         console.log("hitting it hard")
@@ -59,7 +65,7 @@ export default class Login extends Component {
                     .then(res => {
                         console.log("yeah yaha aa gya bloop bloop", res["accessToken"])
                         this._storeData('key',"Bearer " + res["accessToken"])
-                        store.push("key", "Bearer "+ res["accessToken"]);
+
                         this.setState({loading: false}, () => {
                             if(res["roles"] !== null && res["roles"].length === 2){
                                 this._storeData('role', 'Admin2')

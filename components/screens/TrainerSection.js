@@ -65,19 +65,19 @@ export default class Admin extends Component {
             <Content style={{margin: 15}}>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('Notification')}>
+                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Notification')}>
                             <View style={styles.thumbnailBlock}><Icon size={40} name="md-notifications-outline"/></View>
                             <View style={{justifyContent: 'center', alignItems: 'center'}}>
                                 <Text>Notification</Text>
                             </View>
                             </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('TrainerClient')}>
+                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerClient')}>
                             <View style={styles.thumbnailBlock}><Icon size={40} name="md-people"></Icon></View>
                             <View style={{justifyContent: 'center', alignItems: 'center'}}>
                               <Text>Clients</Text>
                             </View>
                             </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('TrainerProfile')}>
+                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerProfile')}>
                                                     <View style={styles.thumbnailBlock}><Icon size={40} name="md-person"></Icon></View>
                         <View style={{justifyContent: 'center', alignItems: 'center'}}>
                           <Text>Profile</Text>
@@ -97,7 +97,7 @@ export default class Admin extends Component {
                                 <Textarea rowSpan={5} placeholder="Share your today's thought with your clients"/>
                             </Item>
                         </CardItem>
-                        <TouchableOpacity activeOpacity={0.8}>
+                        <TouchableOpacity activeOpacity={1}>
                             <CardItem footer style={{justifyContent: 'center', alignItems: 'center'}}>
 
                                     <Button block style={{backgroundColor: 'black'}}><Text> <Icon size={30} style={{color: 'white'}} name="md-send"/> </Text></Button>
@@ -112,7 +112,7 @@ export default class Admin extends Component {
                     <Text style={{fontWeight: 'bold'}}>Activity Calendar</Text>
                 </View>
                 <View style={{marginTop: 15}}>
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => this.props.navigation.navigate('SharedCalendar')}>
+                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('SharedCalendar')}>
                     <Card>
                         <CardItem style={{justifyContent: 'center', alignItems: 'center'}}>
                             <View>

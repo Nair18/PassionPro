@@ -86,7 +86,7 @@ class CalendarDayComponent extends React.Component {
           }
         </View>
         <TouchableOpacity
-          activeOpacity={0.8}
+          activeOpacity={1}
           style={[styles.content, contentStyle.content]}
           onPress={this.onDayPress}
         >

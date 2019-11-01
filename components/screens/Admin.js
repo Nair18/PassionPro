@@ -1,4 +1,4 @@
-import React, {Fragment,Component} from 'react';
+import React, {Fragment,Component,PureComponent} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -26,7 +26,8 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, Accordion,Thumbnail, Card,ListItem, Textarea, CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
-export default class Admin extends Component {
+
+export default class Admin extends PureComponent {
   constructor(props){
     super(props)
     this.state = {
@@ -53,7 +54,7 @@ export default class Admin extends Component {
   }
 
   componentDidMount() {
-      AppState.addEventListener('change', this._handleAppStateChange);
+
       const { navigation } = this.props;
       console.log("pagal bana rhe hai")
       this.focusListener = navigation.addListener('didFocus', () => {
@@ -140,19 +141,10 @@ export default class Admin extends Component {
   componentWillUnmount() {
       // Remove the event listener
       this.focusListener.remove();
-      AppState.removeEventListener('change', this._handleAppStateChange);
+
   }
 
-  _handleAppStateChange = (nextAppState) => {
-      if (
-        this.state.appState.match(/inactive|background/) &&
-        nextAppState === 'active'
-      ) {
-        this.fetchDetails()
-        console.log('App has come to the foreground!');
-      }
-      this.setState({appState: nextAppState});
-    };
+
   timeToString = (time) => {
       const date = new Date(time);
       return date.toISOString().split('T')[0];
@@ -190,17 +182,17 @@ export default class Admin extends Component {
                      <View>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             <View style={styles.thumbnailAlign}>
-                                <TouchableOpacity key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
+                                <TouchableOpacity activeOpacity={1} key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail large source={require('./bank-icon.jpg')}style={styles.thumbnail}/><Text>Courses</Text></View></TouchableOpacity>
-                                <TouchableOpacity key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
+                                <TouchableOpacity activeOpacity={1} key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail large source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text>Plans</Text></View></TouchableOpacity>
-                                <TouchableOpacity key={3} onPress={() => this.props.navigation.navigate('Clients', {ID: this.state.gymId})}>
+                                <TouchableOpacity activeOpacity={1} key={3} onPress={() => this.props.navigation.navigate('Clients', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./client.png')}large style={styles.thumbnail}/><Text>Clients</Text></View></TouchableOpacity>
-                                <TouchableOpacity key={4} onPress={() => this.props.navigation.navigate('Trainer', {ID: this.state.gymId})}>
+                                <TouchableOpacity activeOpacity={1} key={4} onPress={() => this.props.navigation.navigate('Trainer', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail large source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text>Trainers</Text></View></TouchableOpacity>
-                                <TouchableOpacity key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId})}>
+                                <TouchableOpacity activeOpacity={1} key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} large style={styles.thumbnail}/><Text>Requests</Text></View></TouchableOpacity>
-                                <TouchableOpacity key={6} >
+                                <TouchableOpacity activeOpacity={1} key={6} >
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} large style={styles.thumbnail}/><Text>Profile</Text></View></TouchableOpacity>
                             </View>
                          </ScrollView>
@@ -214,7 +206,7 @@ export default class Admin extends Component {
                          <View style={{marginTop: 10}}>
                                              <View style={{flexDirection: 'row'}}>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={0.5} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
+                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
                                                      <Card style={{height: 200}}>
                                                          <CardItem header>
                                                              <Text>New members in last 1 month</Text>
@@ -226,7 +218,7 @@ export default class Admin extends Component {
                                                      </TouchableOpacity>
                                                  </View>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={0.5}>
+                                                     <TouchableOpacity activeOpacity={1}>
                                                      <Card style={{height: 200}}>
                                                         <CardItem>
                                                              <Text>Currently taking personal training</Text>
@@ -240,7 +232,7 @@ export default class Admin extends Component {
                                              </View>
                                              <View style={{flexDirection: 'row'}}>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={0.5}>
+                                                     <TouchableOpacity activeOpacity={1}>
                                                      <Card style={{height: 200}}>
                                                         <CardItem header>
                                                              <Text>Personal training expires in 1 month for</Text>
@@ -252,7 +244,7 @@ export default class Admin extends Component {
                                                      </TouchableOpacity>
                                                  </View>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={0.5}>
+                                                     <TouchableOpacity activeOpacity={1}>
                                                      <Card style={{height: 200}}>
                                                         <CardItem>
                                                              <Text>Gym Membership expires in 1 month for</Text>

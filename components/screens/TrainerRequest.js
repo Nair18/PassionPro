@@ -45,12 +45,12 @@ export default class TrainerRequest extends Component {
         }
         componentWillUnmount(){
             this.focusListener.remove();
-            AppState.removeEventListener('change', this._handleAppStateChange);
+
         }
         componentDidMount(){
           StatusBar.setHidden(false);
           console.log("bros in didmount")
-           AppState.addEventListener('change', this._handleAppStateChange);
+
             const { navigation } = this.props;
             console.log("pagal bana rhe hai", this.state.id)
             this.focusListener = navigation.addListener('didFocus', () => {
@@ -59,16 +59,7 @@ export default class TrainerRequest extends Component {
                     ).then(() => this.fetchDetails())
             });
         }
-        _handleAppStateChange = (nextAppState) => {
-              if (
-                this.state.appState.match(/inactive|background/) &&
-                nextAppState === 'active'
-              ) {
-                this.fetchDetails()
-                console.log('App has come to the foreground!');
-              }
-              this.setState({appState: nextAppState});
-            };
+
         fetchDetails = () => {
             fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/requests',{
              method: 'GET',

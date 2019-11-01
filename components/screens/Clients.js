@@ -1,12 +1,15 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, PureComponent } from 'react';
 import {StyleSheet,View, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UpdateClient from './UpdateClient';
 import ClientInfo from './ClientInfo';
 import constants from '../constants';
-import ListSkeleton from './ListSkeleton';
-import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
-export default class Clients extends Component {
+import PageLoader from './PageLoader';
+import DatePicker from 'react-native-datepicker'
+import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Label,Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
+
+
+export default class Clients extends PureComponent {
   static navigationOptions = {
     title: 'Clients',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
@@ -26,26 +29,17 @@ export default class Clients extends Component {
       this.setState({modalVisible: visible});
   }
 
-  _handleAppStateChange = (nextAppState) => {
-        if (
-          this.state.appState.match(/inactive|background/) &&
-          nextAppState === 'active'
-        ) {
-          this.fetchDetails()
-          console.log('App has come to the foreground!');
-        }
-        this.setState({appState: nextAppState});
-  };
+
 
   componentWillUnmount() {
         // Remove the event listener
         this.focusListener.remove();
-        AppState.removeEventListener('change', this._handleAppStateChange);
+
   }
 
   componentDidMount(){
           console.log("id has been retrieved", this.state.id)
-          AppState.addEventListener('change', this._handleAppStateChange);
+
           const { navigation } = this.props;
           console.log("pagal bana rhe hai")
           this.focusListener = navigation.addListener('didFocus', () => {
@@ -146,7 +140,7 @@ export default class Clients extends Component {
                         <Text>{trainee["name"]}</Text>
                         <Text note>Membership ends on {this.state.traineeSub[index]["end"]}</Text>
                    </Body>
-                </ListItem>) : <ListSkeleton/>}
+                </ListItem>) : <PageLoader/>}
            </List>
             </Content>
                 <View style={styles.addButton}>
@@ -175,7 +169,7 @@ export default class Clients extends Component {
                   <Input placeholder="Name" />
                </Item>
                <Item style={styles.item}>
-                  <Input placeholder="Phone number" />
+                  <Input keyboardType="numeric" placeholder="Phone number" />
                </Item>
                <Item style={styles.item}>
                   <Input placeholder="Email" />
@@ -184,7 +178,7 @@ export default class Clients extends Component {
                  <Input placeholder="Password" />
                </Item>
                <Item style={styles.item}>
-                 <Input placeholder="Age" />
+                 <Input keyboardType="numeric" placeholder="Age" />
                </Item>
                <Item style={styles.item}>
                   <Picker
@@ -209,32 +203,89 @@ export default class Clients extends Component {
 
                     >
                     <Picker.Item label="Select course" value="key0" />
-                    <Picker.Item label="ATM Card" value="key1" />
-                    <Picker.Item label="Debit Card" value="key2" />
-                    <Picker.Item label="Credit Card" value="key3" />
-                    <Picker.Item label="Net Banking" value="key4" />
+                    <Picker.Item label="6 months membership" value="key1" />
+                    <Picker.Item label="Zumba class" value="key2" />
+                    <Picker.Item label="Aerobics classes" value="key3" />
+                    <Picker.Item label="Hip hop class" value="key4" />
+                    <Picker.Item label="Comtemprary dance" value="key5" />
+                                        <Picker.Item label="3 months membership" value="key6" />
+                                        <Picker.Item label="zumba + aerobics class" value="key7" />
+                                        <Picker.Item label="Defence course" value="key8" /><Picker.Item label="ATM Card" value="key9" />
+                                                                                                            <Picker.Item label="Kick boxing class" value="key10" />
+                                                                                                            <Picker.Item label="MMA Training" value="key11" />
+                                                                                                            <Picker.Item label="Bulking Course" value="key12" />
+                                                                                                            <Picker.Item label="Mass gain course" value="key13" />
+                                                                                                                                <Picker.Item label="Bulking Course level-1" value="key14" />
+                                                                                                                                <Picker.Item label="Bulking Course level-2" value="key15" />
+                                                                                                                                <Picker.Item label="Bulking Course level-3" value="key16" />
                    </Picker>
                 </Item>
                 <Item style={styles.item}>
-                                   <Picker
-                                      note
-                                      mode="dropdown"
-                                      style={{ width: 120 }}
+                                  <Label>Start Date</Label>
+                                  <DatePicker
+                                          style={{width: 200}}
+                                          date={this.state.date}
+                                          mode="date"
+                                          placeholder="select start date"
+                                          format="YYYY-MM-DD"
+                                          minDate="2016-05-01"
+                                          maxDate="2016-06-01"
+                                          confirmBtnText="Confirm"
+                                          cancelBtnText="Cancel"
+                                          customStyles={{
+                                            dateIcon: {
+                                              position: 'absolute',
+                                              left: 0,
+                                              top: 4,
+                                              marginLeft: 0
+                                            },
+                                            dateInput: {
+                                              marginLeft: 36
+                                            }
+                                            // ... You can check the source to find the other keys.
+                                          }}
+                                          onDateChange={(date) => {this.setState({date: date})}}
+                                        />
+                               </Item>
+               <Item style={styles.item}>
+                                 <Label>End Date</Label>
+                                 <DatePicker
+                                         style={{width: 200}}
+                                         date={this.state.date}
+                                         mode="date"
+                                         placeholder="select end date"
+                                         format="YYYY-MM-DD"
+                                         minDate="2016-05-01"
+                                         maxDate="2016-06-01"
+                                         confirmBtnText="Confirm"
+                                         cancelBtnText="Cancel"
+                                         customStyles={{
+                                           dateIcon: {
+                                             position: 'absolute',
+                                             left: 0,
+                                             top: 4,
+                                             marginLeft: 0
+                                           },
+                                           dateInput: {
+                                             marginLeft: 36
+                                           }
+                                           // ... You can check the source to find the other keys.
+                                         }}
+                                         onDateChange={(date) => {this.setState({date: date})}}
+                                       />
+                              </Item>
 
-
-                                    >
-                                    <Picker.Item label="Select plan" value="key0" />
-                                    <Picker.Item label="ATM Card" value="key1" />
-                                    <Picker.Item label="Debit Card" value="key2" />
-                                    <Picker.Item label="Credit Card" value="key3" />
-                                    <Picker.Item label="Net Banking" value="key4" />
-                                   </Picker>
-                                </Item>
+                <Item style={styles.item}>
+                                <Input keyboardType="numeric" placeholder="Amount paid" />
+                              </Item>
                <Item style={styles.item}>
                  <Input placeholder="Emergency contact person's name" />
                </Item>
                <Item style={styles.item}>
-                 <Input placeholder="Phone number" />
+                                <Input placeholder="Relation with the person" />
+                              </Item>
+               <Item style={styles.item}>
+                 <Input keyboardType="numeric" placeholder="Emergency Phone number" />
                </Item>
                <View last style={{alignItems: 'center',justifyContent: 'center', margin: 15, }}>
                <Button rounded style={{backgroundColor: 'black'}}>

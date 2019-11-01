@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import {WebView} from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
-export default class Uploader extends Component {
+export default class PdfViewer extends Component {
   state = {
           WEBVIEW_REF: "weViewRed",
           loading: false,
@@ -26,7 +26,7 @@ export default class Uploader extends Component {
              <Header loading={this.state.loading} />
              {this.state.url !== null ?
              <WebView
-               source={{ uri: this.state.url }}
+               source={{ uri: "https://drive.google.com/viewerng/viewer?url="+ this.state.url }}
 
                onLoadStart={() => this.setState({ loading: true })}
                onLoadEnd={() => this.setState({ loading: false })}
@@ -38,7 +38,7 @@ export default class Uploader extends Component {
 
 const Header = ({ loading }) => (
   <View style={styles.header}>
-    <Text style={styles.title}>Upload Meal & Workout Plans</Text>
+    <Text style={styles.title}>PDF Viewer</Text>
     <Text note style={styles.subTitle}>powered by PassionPro</Text>
     {loading ? <ActivityIndicator color="blue" /> : null}
   </View>

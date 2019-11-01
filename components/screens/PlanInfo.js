@@ -117,7 +117,7 @@ export default class CreateStandardPlan extends Component {
           ];
       for(let i=0;i<this.state.data.length;i++){
         card.push(
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('AdminWorkoutSpace')}>
+          <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AdminWorkoutSpace')}>
           <Card style={{marginTop: 10}}>
             <CardItem header style={styles.card_header}>
               <Text style={styles.headings}>{this.state.data[i]["Day"]}</Text>

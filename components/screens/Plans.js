@@ -1,11 +1,13 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment,PureComponent } from 'react';
 import {StyleSheet,View, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import CreateStandardPlan from './CreateStandardPlan';
 import PlanInfo from './PlanInfo';
 import { Container, Header, Content, List, ListItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
-export default class Plans extends Component {
+
+
+export default class Plans extends PureComponent {
   static navigationOptions = {
     title: 'Plans',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
@@ -32,7 +34,7 @@ export default class Plans extends Component {
 
   componentDidMount(){
           console.log("id has been retrieved", this.state.id)
-          AppState.addEventListener('change', this._handleAppStateChange);
+
           const { navigation } = this.props;
           console.log("pagal bana rhe hai")
           this.focusListener = navigation.addListener('didFocus', () => {
@@ -51,7 +53,7 @@ export default class Plans extends Component {
   componentWillUnmount() {
         // Remove the event listener
         this.focusListener.remove();
-        AppState.removeEventListener('change', this._handleAppStateChange);
+
    }
   fetchDetails = () => {
           let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
