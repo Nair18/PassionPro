@@ -3,7 +3,7 @@ import {Picker,View,TouchableOpacity,Dimensions,Alert,ActivityIndicator,StyleShe
 import {Header,Content,Container, Text,Button, List, ListItem, Input, Spinner}from 'native-base';
 import Admin from './Admin';
 import constants from '../constants';
-import firebase from '../utils/firebase';
+
 
 
 export default class Login extends PureComponent {
@@ -22,10 +22,7 @@ export default class Login extends PureComponent {
           headerTintColor: 'black'
       }
       componentDidMount(){
-        const fcmToken = firebase.messaging().getToken().then( token =>
-            console.log(token)
-        )
-        console.log(fcmtoken)
+       //
       }
       _storeData = async (key,data) => {
         console.log("hitting it hard")
