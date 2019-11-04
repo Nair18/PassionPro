@@ -74,7 +74,7 @@ export default class TrainerWorkspace extends Component {
     render(){
 
         return(
-            <Container>
+            <Container style={{backgroundColor: '#f0efef'}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
 
                       <View style={{margin: 15}}>

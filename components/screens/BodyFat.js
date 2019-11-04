@@ -153,7 +153,7 @@ export default class BodyWeight extends PureComponent {
         let height = getStatusBarHeight()
         return(
             <Fragment>
-            <Container style={{marginTop: height, marginLeft: 15, marginRight: 15}}>
+            <Container style={{marginLeft: 15, marginRight: 15}}>
                 {this.state.fatList !== null ?
                 (<Content>
                     <View style={{marginTop: 25}}>

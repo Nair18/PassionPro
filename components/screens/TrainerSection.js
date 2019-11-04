@@ -57,7 +57,7 @@ export default class Admin extends Component {
         };
         var today = new Date();
     return(
-        <Container>
+        <Container style={{backgroundColor: '#f0efef'}}>
             <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{padding: 15}}>
                 <Text style={{fontWeight: 'bold', color: 'black', fontSize: 20}}>Fitness center, koramangala</Text>

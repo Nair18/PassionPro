@@ -54,7 +54,7 @@ class SharedCalendar extends Component {
   render() {
 
     return (
-      <Container>
+      <Container style={{backgroundColor: '#f0efef'}}>
       <Content>
       <View>
         <Calendar

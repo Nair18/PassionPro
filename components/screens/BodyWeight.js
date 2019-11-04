@@ -154,6 +154,7 @@ export default class BodyWeight extends PureComponent {
             <Container style={{margin: 15}}>
                 {this.state.weightList !== null ?
                 <Content>
+
                     <View style={{marginTop: 25}}>
                       <Item regular>
                         <Input keyboardType="numeric" placeholder="enter your current weight" onChangeText={text => this.setState({weight: text})}/>
@@ -183,6 +184,7 @@ export default class BodyWeight extends PureComponent {
                             </ListItem>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
                         </List>
                     </View>
+
                 </Content> : <Content><View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ...</Text></View></Content>}
             </Container>
         );

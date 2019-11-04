@@ -11,6 +11,7 @@ import {
   View,
   Alert,
   AsyncStorage,
+  CheckBox,
   AppState,
 } from 'react-native';
 import constants from '../constants';
@@ -24,7 +25,7 @@ import Request from './Request';
 import ProfileSkeleton from './ProfileSkeleton'
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Container, Accordion,Thumbnail, Card,ListItem, Textarea, CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, Card,ListItem, Spinner,Textarea,Radio, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 
 export default class Admin extends PureComponent {
@@ -42,15 +43,26 @@ export default class Admin extends PureComponent {
       auth_key: null,
       loading: true,
       loading2: true,
-      gymId: null
+      message: null,
+      gymId: null,
+      checked1: false,
+      checked2: false,
+      sendProcess: false,
     }
   }
   static navigationOptions = {
     header: null
   }
 
-  showModal = (bool) => {
-     this.setState({visible: bool})
+  showModal = () => {
+     this.setState({visible: true})
+  }
+  cancelModal = () => {
+    this.setState({visible: false})
+  }
+
+  checkBox = (key) => {
+    console.log("key is printing", key)
   }
 
   componentDidMount() {
@@ -144,6 +156,52 @@ export default class Admin extends PureComponent {
 
   }
 
+  checkCheck1 = () => {
+    console.log("passed1")
+    this.setState({checked1: !this.state.checked1})
+  }
+  checkCheck2 = () => {
+    console.log("passed2")
+    this.setState({checked2: !this.state.checked2})
+  }
+  sendMessage = () => {
+
+    let data = []
+    console.log("checked", this.state.checked1, this.state.checked2)
+    if(this.state.checked1 || this.state.checked2){
+        this.setState({sendProcess: true})
+        if(this.state.checked1){
+            data.push("TRAINER")
+        }
+        if(this.state.checked2){
+            data.push("TRAINEE")
+        }
+        fetch(constants.API + 'current/admin/gyms/'+ this.state.gymId + '/notifications/',{
+                                          method: 'POST',
+                                          headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json',
+                                            'Authorization': this.state.auth_key,
+                                          },
+                                          body: JSON.stringify({
+                                            "message": this.state.message,
+                                            "roles": data
+                                          })
+                                    }).then(res => {
+                                        if(res.status === 200){
+                                            this.setState({sendProcess: false, visible: false})
+                                            Alert.alert("Success", "Message was successfully delivered ...")
+                                        }
+                                        else{
+                                            Alert.alert("OOps!!", "Something went wrong. Message was not delivered ...")
+                                            this.setState({sendProcess: false})
+                                        }
+                                    })
+    }
+    else{
+        Alert.alert('OOps!', 'Please select one option ...')
+    }
+  }
 
   timeToString = (time) => {
       const date = new Date(time);
@@ -170,7 +228,7 @@ export default class Admin extends PureComponent {
     return(
       <Fragment>
          {(this.state.overview === null) ? <ProfileSkeleton/> :
-         (<Container style={{backgroundColor: "white"}}>
+         (<Container style={{backgroundColor: '#f0efef'}}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <View style={{flex: 2, padding: 15}}>
                         <Text style={{fontWeight: 'bold', fontSize: 25}}>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["name"] : "Loading ..."}</Text>
@@ -265,38 +323,68 @@ export default class Admin extends PureComponent {
                    <View style={{marginTop: 10}}>
                       <Card>
                         <CardItem header>
-                            <Textarea rowSpan={5} placeholder="Send notifications to trainers and clients..."/>
+                            <Textarea selectable rowSpan={5} onChangeText={text => this.setState({message: text})} placeholder="Send notifications to trainers and clients..."/>
                         </CardItem>
                         <CardItem footer style={{justifyContent: 'center', alignItems: 'center'}}>
-                            <Button style={{backgroundColor: 'black'}}><Text>Post</Text></Button>
+                            <Button disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Post</Text></Button>
                         </CardItem>
                       </Card>
                     </View>
+                    <Modal
+                                        animationType = {"fade"}
+                                        transparent = {false}
 
+                                        visible = {this.state.visible}
+                                        onRequestClose = {() =>{ this.setState({visible: false}) } }>
+                                        {/*All views of Modal*/}
+                                         <View>
+                                            <View style={{margin: 25}}>
+                                                <TouchableOpacity activeOpacity={1} onPress={() => {this.setState({visible: false})}}>
+                                                    <Icon size={30} name="md-arrow-back"/>
+                                                </TouchableOpacity>
+                                            </View>
+                                            <View style={{margin: 25}}>
+                                                <Text style={{fontWeight: 'bold', fontSize: 20}}>Send to ...</Text>
+                                            </View>
+                                            <View style={{marginTop: '10%', marginLeft: '25%'}}>
+                                                    <ScrollView>
+                                                              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                                                <View style={{flex: 2}}>
+                                                                    <Text>All the trainers</Text>
+                                                                </View>
+                                                                <View style={{flex: 1}}>
+                                                                    <CheckBox
+                                                                        value={this.state.checked1}
+                                                                        onValueChange={this.checkCheck1}
+                                                                    />
+                                                                </View>
+                                                              </View>
+                                                              <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
+                                                                <View style={{flex: 2}}>
+                                                                    <Text>All the clients</Text>
+                                                                </View>
+                                                                <View style={{flex: 1}}>
+                                                                    <CheckBox
+                                                                        value={this.state.checked2}
+                                                                        onValueChange={this.checkCheck2}
+                                                                    />
+                                                                </View>
+                                                              </View>
+
+                                                    </ScrollView>
+                                            </View>
+                                            <View style={{marginTop: '10%', marginLeft:'25%', marginRight: '25%', justifyContent: 'center', alignItems: 'center'}}>
+                                                  {this.state.sendProcess === false ?
+                                                  <Button block style={{backgroundColor: 'black'}} onPress={this.sendMessage}><Text style={{color: "white"}}>Send Message</Text></Button> :
+                                                  <Spinner color="black" />}
+                                            </View>
+                                        </View>
+                                      </Modal>
                    </Content>
                   </ScrollView>
-                  <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={this.state.visible}
-                            onRequestClose={() => {
-                              this.showModal(false)
-                            }}>
-                            <View style={{marginTop: 22}}>
-                              <View>
-                                <Text>Hello World!</Text>
-
-                                <TouchableHighlight
-                                  onPress={() => {
-                                    this.showModal(!this.state.visible);
-                                  }}>
-                                  <Text>Hide Modal</Text>
-                                </TouchableHighlight>
-                              </View>
-                            </View>
-                          </Modal>
 
          </Container>)}
+
       </Fragment>
     );
   }

@@ -3,7 +3,7 @@ import { EventRegister } from 'react-native-event-listeners';
 import {Container,Text, Content, Item, Card, CardItem, Button,Input, Header, Left, Right, Body, Title} from 'native-base';
 import {StyleSheet, View, TouchableOpacity, ScrollView, BackHandler, Modal, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-datepicker';
 
 export default class UpdateClient extends Component{
   constructor(props){
@@ -36,7 +36,7 @@ export default class UpdateClient extends Component{
   }
   closeModal = () => {
     this.setState({isVisible: false})
-    EventRegister.emit('UpdateClient', 'it works!!!')
+
     this.props.navigation.goBack()
   }
 
@@ -58,7 +58,7 @@ export default class UpdateClient extends Component{
       <Container>
         <Header style={{backgroundColor: 'white', elevation: 0}} androidStatusBarColor='#000' iosBarStyle={"light-content"}>
            <Left>
-             <Button transparent onPress={this.showModal}>
+             <Button transparent>
                <Icon style={{color: 'black'}} size={25} name='md-arrow-back' />
              </Button>
            </Left>

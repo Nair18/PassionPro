@@ -70,7 +70,7 @@ export default class Workspace extends Component {
   render(){
     const { navigate } = this.props.navigation;
     return(
-       <Container >
+       <Container style={{backgroundColor: '#f0efef'}}>
           <ScrollView showsVerticalScrollIndicator={false}>
            <View style={{margin: 15}}>
                                   <Card>

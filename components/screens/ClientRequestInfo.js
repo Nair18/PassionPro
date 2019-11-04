@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-datepicker';
 import {Container, Accordion,Thumbnail, Card,ListItem, Textarea, Picker, CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right, Form, Item, Label, Input} from 'native-base';
 
 export default class ClientRequestInfo extends Component {

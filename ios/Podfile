@@ -29,6 +29,8 @@ target 'PassionPro' do
 
 
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'PassionProTests' do
     inherit! :search_paths
     # Pods for testing

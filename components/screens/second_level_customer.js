@@ -35,6 +35,8 @@ import type Moment from 'moment';
 import Workspace from './workspace';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, Accordion,Thumbnail, List, Card,ListItem,CheckBox, CardItem, Header,Badge, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import type {Notification} from 'react-native-firebase';
+import firebase from 'react-native-firebase';
 
 export type EventType = {
   date: Moment,
@@ -69,6 +71,9 @@ class SecondLevelCustomer extends PureComponent {
 
     componentDidMount(){
       StatusBar.setHidden(false);
+      this.checkPermission();
+      this.createNotificationListeners();
+
       console.log("bros in didmount")
 
         const { navigation } = this.props;
@@ -83,6 +88,91 @@ class SecondLevelCustomer extends PureComponent {
         this.focusListener.remove();
 
     }
+
+    async checkPermission() {
+                 const enabled = await firebase.messaging().hasPermission();
+                 if (enabled) {
+                   this.getToken();
+                 } else {
+                   this.requestPermission();
+                 }
+               }
+
+               //3
+    async getToken() {
+                 let fcmToken = await AsyncStorage.getItem('fcmToken');
+                 if (!fcmToken) {
+                   fcmToken = await firebase.messaging().getToken()
+                   .then(fcmToken => {
+                     // user has a device token
+                     console.log('fcmToken:', fcmToken);
+                     AsyncStorage.setItem('fcmToken', fcmToken);
+                   })
+                 }
+                 console.log('fcmToken:', fcmToken);
+               }
+
+               //2
+    async requestPermission() {
+                 try {
+                   await firebase.messaging().requestPermission();
+                   // User has authorised
+                   this.getToken();
+                 } catch (error) {
+                   // User has rejected permissions
+                   console.log("error", error)
+                   console.log('permission rejected');
+                 }
+               }
+
+    async createNotificationListeners() {
+                 /*
+                 * Triggered when a particular notification has been received in foreground
+                 * */
+                 const channelId = new firebase.notifications.Android.Channel('Default', 'Default', firebase.notifications.Android.Importance.High);
+                 firebase.notifications().android.createChannel(channelId);
+
+                 this.notificationListener = firebase.notifications().onNotification((notification) => {
+                   const { title, body } = notification;
+                   console.log('onNotification:', notification);
+
+                     const localNotification = new firebase.notifications.Notification({
+                       sound: 'default',
+                       show_in_foreground: true
+
+                     })
+                     .setSound('default')
+                     .setNotificationId(notification.notificationId)
+                     .setTitle(notification.title)
+                     .setBody(notification.body)
+                     .android.setSmallIcon('ic_launcher')
+                     .android.setChannelId('Default') // e.g. the id you chose above
+                     .android.setPriority(firebase.notifications.Android.Priority.High);
+
+                     firebase.notifications()
+                       .displayNotification(localNotification)
+                       .catch(err => console.error(err));
+                 });
+
+                this.messageListener = firebase.messaging().onMessage((message) => {
+                      //process data message
+                      console.log("JSON.stringify:", JSON.stringify(message));
+                    });
+
+                 /*
+                 * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+                 * */
+
+
+                 /*
+                 * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+                 * */
+
+                 /*
+                 * Triggered for data only payload in foreground
+                 * */
+
+        }
 
     fetchDetails = () => {
         fetch(constants.API + 'current/trainee/courses',{
@@ -138,7 +228,7 @@ class SecondLevelCustomer extends PureComponent {
   return (
     <Fragment>
 
-    <Container>
+    <Container style={{backgroundColor: '#f0efef'}}>
          {this.state.courseInfo !== null ?
          <Content>
             <View style={{padding: 15, flex: 1}}>
@@ -170,7 +260,7 @@ class SecondLevelCustomer extends PureComponent {
               </ScrollView>
               <Content style={{marginTop: 20}}>
                 <View>
-                  <Text style={{fontWeight: 'bold'}}>Fitness Programs</Text>
+                  <Text style={{fontWeight: 'bold', color: 'black'}}>Fitness Programs</Text>
                 </View>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 

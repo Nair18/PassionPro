@@ -144,7 +144,7 @@ export default class ClientInfo extends Component {
         <Container>
 
             <ScrollView showHorizontalScrollbar={false}>
-              {this.state.data !== null ?
+              {this.state.data === null ?
               <Content>
                 <Content>
                     <View style={styles.imageView}>
@@ -157,7 +157,7 @@ export default class ClientInfo extends Component {
                                             <Text style={styles.text}>Active </Text>
                                           </View>
                                           <View style={styles.textFormat}>
-                                            <Text>{this.state.data["active"]}</Text>
+                                            <Text>yes</Text>
                                           </View>
                     </View>
                     <View style={styles.infoView}>
@@ -165,7 +165,7 @@ export default class ClientInfo extends Component {
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>{this.state.data["trainee_name"]}</Text>
+                        <Text>Trainee Randwa</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -198,7 +198,7 @@ export default class ClientInfo extends Component {
                           <Text style={styles.text}>Membership start date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                          <Text>{this.state.data["start"]}</Text>
+                          <Text>1999</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -206,7 +206,7 @@ export default class ClientInfo extends Component {
                          <Text style={styles.text}>Membership end date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                         <Text>{this.start.data["end"]}</Text>
+                         <Text>2099</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
