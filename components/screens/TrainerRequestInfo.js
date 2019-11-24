@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
 import {Container, Accordion,Thumbnail, Card,ListItem, Textarea, CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right, Form, Item, Label, Input} from 'native-base';
 
@@ -40,12 +40,12 @@ export default class TrainerRequestInfo extends Component {
     static navigationOptions = {
               title: 'Request Info',
               headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white', elevation: 0},
+              headerStyle: {backgroundColor: 'white'},
               headerTintColor: 'black'
           }
     render(){
         return(
-            <Container>
+            <Container style={{backgroundColor: 'white'}}>
                 <Content style={{marginLeft: 15, marginRight: 15}}>
                 <Form>
                     <Item floatingLabel>

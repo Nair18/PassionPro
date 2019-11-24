@@ -4,14 +4,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import CreateStandardPlan from './CreateStandardPlan';
 import PlanInfo from './PlanInfo';
-import { Container, Header, Content, List, ListItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
+import constants from '../constants'
+import { Container, Header, Content, List, Spinner, ListItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
 
 
 export default class Plans extends PureComponent {
   static navigationOptions = {
     title: 'Plans',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
   }
 
@@ -21,6 +22,8 @@ export default class Plans extends PureComponent {
       auth_key: null,
       plan: "Select your plan",
       id: this.props.navigation.state.params.ID,
+      planList: null,
+      coursetype: null
     };
 
     setModalVisible(visible) {
@@ -52,11 +55,11 @@ export default class Plans extends PureComponent {
 
   componentWillUnmount() {
         // Remove the event listener
-        this.focusListener.remove();
+//        this.focusListener.remove();
 
    }
   fetchDetails = () => {
-          let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
+          let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/plans/', {
               method: 'GET',
               headers: {
                   'Accept': 'application/json',
@@ -81,7 +84,7 @@ export default class Plans extends PureComponent {
                                                      );
                   }
               }
-          ).then(res => this.setState({courseList: res["courses"]})).then(
+          ).then(res => this.setState({planList: res})).then(
 
               fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/coursetypes/', {
                                         method: 'GET',
@@ -127,20 +130,21 @@ export default class Plans extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container>
+      <Container style={{backgroundColor: '#efe9cc'}}>
 
         <Content>
+          {this.state.planList !== null && this.state.coursetype !== null ? this.state.planList.map(plan =>
           <List>
-            <ListItem avatar onPress={() => this.props.navigation.navigate('PlanInfo')}>
+            <ListItem avatar onPress={() => this.props.navigation.navigate('PlanInfo', {plan_data: plan, plan_id: this.state.plan["id"], gym_id: this.state.id})}>
               <Left>
                 <Thumbnail source={require('./crisis-plan.jpg')}style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
-                <Text>Standard Workout Plan</Text>
-                <Text note>Doing what you like will always keep you happy . .</Text>
+                <Text>{plan["name"]}</Text>
+                <Text note>Last updated: 29-02-2019</Text>
               </Body>
             </ListItem>
-          </List>
+          </List>) : <Spinner color="black"/>}
         </Content>
         <View style={styles.addButton}>
 

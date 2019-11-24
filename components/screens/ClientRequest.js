@@ -22,7 +22,7 @@ export default class ClientRequest extends Component {
     constructor(props){
         super(props)
         this.state={
-            id: this.props.navigation.state.params.ID,
+            id: this.props.ID,
             auth_key: null,
             request: null
         }
@@ -30,7 +30,7 @@ export default class ClientRequest extends Component {
     static navigationOptions = {
               title: 'Client Request',
               headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white', elevation: 0},
+              headerStyle: {backgroundColor: '#eadea6'},
               headerTintColor: 'black'
           }
     async retrieveItem(key) {
@@ -47,18 +47,18 @@ export default class ClientRequest extends Component {
         componentDidMount(){
           StatusBar.setHidden(false);
           console.log("bros in didmount")
-           AppState.addEventListener('change', this._handleAppStateChange);
+
             const { navigation } = this.props;
             console.log("pagal bana rhe hai")
-            this.focusListener = navigation.addListener('didFocus', () => {
+//            this.focusListener = navigation.addListener('didFocus', () => {
                     var key  = this.retrieveItem('key').then(res =>
                     this.setState({auth_key: res}, () => console.log("brother pls", res))
                     ).then(() => this.fetchDetails())
-            });
+//            });
         }
         componentWillUnmount() {
-            this.focusListener.remove();
-            AppState.removeEventListener('change', this._handleAppStateChange);
+//            this.focusListener.remove();
+
           }
         _handleAppStateChange = (nextAppState) => {
               if (
@@ -93,18 +93,23 @@ export default class ClientRequest extends Component {
                     );
                  }
                  }).then(res => {
-                 this.setState({request: res["subscriptions"]})
+                 this.setState({request: res["trainees"]})
                  }).then(console.log("fetched the api data", this.state.request))
         }
     render(){
         return(
-            <Container>
-                <Content>
+            <Container style={{backgroundColor: '#efe9cc'}}>
+                <Content style={{padding: 15}}>
                     <List>
                         {this.state.request !== null ? this.state.request.map(req =>
-                        <ListItem style={{justifyContent: 'space-between'}} onPress={() => this.props.navigation.navigate('ClientRequestInfo')}>
-                            <Text>{req["trainee_name"]}</Text>
-                            <Text note>{req["start"].split("T")[0]}</Text>
+                        <ListItem avatar onPress={() => this.props.navigation.navigate('ClientRequestInfo')}>
+                            <Left>
+                                <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
+                            </Left>
+                            <Body>
+                                <Text>{req["name"]}</Text>
+                                <Text note>{req["age"]}</Text>
+                            </Body>
                         </ListItem>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}
                     </List>
                 </Content>

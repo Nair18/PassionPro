@@ -3,6 +3,7 @@ import {StyleSheet,View, StatusBar, ScrollView,Picker, TouchableOpacity, Modal, 
 import {Container, Content,Input,Item,Button, Text,Card,CardItem,Body,Form,Textarea } from 'native-base';
 import ModalSelector from 'react-native-modal-selector';
 import { Header } from 'react-navigation-stack';
+import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 

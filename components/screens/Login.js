@@ -63,15 +63,37 @@ export default class Login extends PureComponent {
                                    })
         .then((res) =>{
           if(res.status !== 200){
-            this.setState({loading: false})
-            Alert.alert(
-              'OOps!',
-              'Wrong Username/Password',
-              [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              {cancelable: false},
-            );
+            this.setState({loading: false}, () => console.log("error",res))
+            if(res.status === 403){
+                Alert.alert(
+                  'OOps!',
+                  'Your account is not approved ...',
+                  [
+                     {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ],
+                  {cancelable: false},
+                );
+            }
+            else if(res.status === 401){
+                Alert.alert(
+                              'OOps!',
+                              'Wrong Username/Password',
+                              [
+                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                              ],
+                              {cancelable: false},
+                            );
+            }
+            else{
+                Alert.alert(
+                              'OOps!',
+                              'Something went wrong ...',
+                              [
+                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                              ],
+                              {cancelable: false},
+                            );
+            }
           }
           else{
             res.json()

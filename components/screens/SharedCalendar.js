@@ -27,7 +27,7 @@ class SharedCalendar extends Component {
   static navigationOptions = {
             title: 'Activity Calendar',
             headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: 'white', elevation: 0},
+            headerStyle: {backgroundColor: '#eadea6'},
             headerTintColor: 'black'
         }
   onPressArrowLeft() {
@@ -54,7 +54,7 @@ class SharedCalendar extends Component {
   render() {
 
     return (
-      <Container style={{backgroundColor: '#f0efef'}}>
+      <Container style={{backgroundColor: '#efe9cc'}}>
       <Content>
       <View>
         <Calendar

@@ -7,9 +7,11 @@ import {
   StatusBar,
   FlatList,
   View,Modal, Alert,
-  Linking
+  Linking,
+  TextInput,
 } from 'react-native';
 import StandardWorkout from './StandardWorkout';
+import ModalSelector from 'react-native-modal-selector';
 import PersonalizedWorkout from './PersonalizedWorkout';
 
 import {Card, CardItem, Icon, Accordion, Container, Text, Content,List,ListItem, Button} from 'native-base'
@@ -43,11 +45,15 @@ export default class Workspace extends Component {
   }
   state = {
       isVisible: false, //state of modal default false
+      workoutName: null,
+      workoutType: null,
+      workoutSection: null,
+      data: [{"id": 1,"name": "Standard Workout"}, {"id": 2, "name": "Customize Workout"}, {"id": 3, "name": "Workout plan by Ajay"}]
   }
   static navigationOptions = {
       //Setting the header of the screen
       title: 'Workspace',
-      headerStyle: {backgroundColor: 'white', elevation: 0},
+      headerStyle: {backgroundColor: '#eadea6'},
       headerTitleStyle: {
           color: 'black',
           fontWeight: 'bold'
@@ -69,42 +75,45 @@ export default class Workspace extends Component {
   }
   render(){
     const { navigate } = this.props.navigation;
+    workouts = {1: "StandardWorkout", 2: "PersonalizedWorkout"}
     return(
-       <Container style={{backgroundColor: '#f0efef'}}>
+       <Container style={{backgroundColor: '#efe9cc'}}>
           <ScrollView showsVerticalScrollIndicator={false}>
-           <View style={{margin: 15}}>
-                                  <Card>
-                                  <CardItem header>
-                                      <Text style={{fontWeight: 'bold'}}>Attachments</Text>
-                                  </CardItem>
-                                  <CardItem>
-                                      <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('PdfViewer', {URL: 'https://www.tutorialspoint.com/amazon_web_services/amazon_web_services_tutorial.pdf'})}><Text>View PDF for workout plan</Text></Button>
-                                  </CardItem>
-                                  <CardItem>
-                                      <Button style={{backgroundColor: 'black'}}><Text>View PDF for meal plan</Text></Button>
-                                  </CardItem>
-                                  </Card>
-                                </View>
+
           <Content style={styles.content}>
-            <View>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Todays Burnout 🔥</Text>
-            </View>
-            <TouchableOpacity activeOpacity={1} onPress={this.showModal}>
-            <View style={styles.cardListView}>
+            <View style={{margin: 15}}>
+                                   <ModalSelector
+                                       placeholder="Select a course type"
+                                       initValue={this.state.workoutType}
+                                       data={this.state.data}
+                                       keyExtractor= {item => item.id}
+                                       labelExtractor= {item => item.name}
+                                       initValue={this.state.workoutType}
+                                       supportedOrientations={['landscape']}
+                                       accessible={true}
+                                       scrollViewAccessibilityLabel={'Scrollable options'}
+                                       cancelButtonAccessibilityLabel={'Cancel Button'}
+                                       onChange={(option)=>{
+                                        this.setState({workoutType: option.id, workoutName: option.name, workoutSection: workouts[option.id]})
+                                       }}>
 
-                <Card style={styles.cardView} >
-                    <Text style={styles.cardText}>#MovitationalMonday</Text>
-                </Card>
-
-            </View>
-            </TouchableOpacity>
+                                       <TextInput
+                                         style={{borderWidth:1, borderColor:'black', color: 'black', backgroundColor: "white", padding:10, height:50}}
+                                         editable={false}
+                                         placeholder="Select your workout type"
+                                         value={this.state.workoutName}
+                                       />
+                                     </ModalSelector>
+                           </View>
+            {this.state.workoutName !== null ?
+            <Content>
             <View style={styles.cardListView}>
               <Text style={{fontSize: 20, fontWeight: 'bold'}}>Full Week Burnouts 🔥</Text>
             </View>
             <View>
                {data.map(item =>
                 <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1}>
+                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('StandardWorkout')}>
                      <Card style={randomStyle()}>
                         <Text style={styles.cardText}>{item.key}</Text>
                      </Card>
@@ -112,43 +121,9 @@ export default class Workspace extends Component {
                 </View>
                )}
             </View>
+            </Content> : <View><Text></Text></View>}
           </Content>
           </ScrollView>
-          <Modal
-                    animationType = {"fade"}
-                    transparent = {false}
-
-                    visible = {this.state.isVisible}
-                    onRequestClose = {() =>{ this.setState({isVisible: false}) } }>
-                    {/*All views of Modal*/}
-                     <View>
-                        <View style={{margin: 25}}>
-                            <TouchableOpacity activeOpacity={1} onPress={() => {this.setState({isVisible: false})}}>
-                                <Icon size={10} name="md-arrow-back"/>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{marginTop: 50}}>
-                            <ScrollView>
-                                <List>
-
-                                    <ListItem button onPress={() => this.buttonPress('StandardWorkout')}>
-                                        <Text style = {styles.text}>Standard Workout Plan</Text>
-                                    </ListItem>
-
-                                    <ListItem >
-                                        <Text style = {styles.text}>Meal Plan by PT1</Text>
-                                    </ListItem>
-                                    <ListItem >
-                                        <Text style = {styles.text}>Workout Plan by PT1</Text>
-                                    </ListItem>
-                                    <ListItem button onPress={() => this.buttonPress('PersonalizedWorkout')}>
-                                        <Text style = {styles.text}>Customize your todays workout</Text>
-                                    </ListItem>
-                                </List>
-                            </ScrollView>
-                        </View>
-                    </View>
-                  </Modal>
        </Container>
     );
   }

@@ -11,7 +11,7 @@ import {
   View,
   Alert,
   AsyncStorage,
-  CheckBox,
+
   AppState,
 } from 'react-native';
 import constants from '../constants';
@@ -25,7 +25,8 @@ import Request from './Request';
 import ProfileSkeleton from './ProfileSkeleton'
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Container, Accordion,Thumbnail, Card,ListItem, Spinner,Textarea,Radio, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import AdminProfile from './AdminProfile';
+import {Container, Accordion,Thumbnail, Card,ListItem, Spinner,Textarea,Radio, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right,CheckBox} from 'native-base';
 
 
 export default class Admin extends PureComponent {
@@ -228,8 +229,8 @@ export default class Admin extends PureComponent {
     return(
       <Fragment>
          {(this.state.overview === null) ? <ProfileSkeleton/> :
-         (<Container style={{backgroundColor: '#f0efef'}}>
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+         (<Container style={{backgroundColor: '#efe9cc'}}>
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between', elevation: 1, backgroundColor: '#eadea6'}}>
                     <View style={{flex: 2, padding: 15}}>
                         <Text style={{fontWeight: 'bold', fontSize: 25}}>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["name"] : "Loading ..."}</Text>
                         <Text>koramangala</Text>
@@ -241,17 +242,17 @@ export default class Admin extends PureComponent {
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             <View style={styles.thumbnailAlign}>
                                 <TouchableOpacity activeOpacity={1} key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail large source={require('./bank-icon.jpg')}style={styles.thumbnail}/><Text>Courses</Text></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./bank-icon.jpg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Courses</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail large source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text>Plans</Text></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text style={{fontSize: 15}}>Plans</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={3} onPress={() => this.props.navigation.navigate('Clients', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./client.png')}large style={styles.thumbnail}/><Text>Clients</Text></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./client.png')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Clients</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={4} onPress={() => this.props.navigation.navigate('Trainer', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail large source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text>Trainers</Text></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Trainers</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} large style={styles.thumbnail}/><Text>Requests</Text></View></TouchableOpacity>
-                                <TouchableOpacity activeOpacity={1} key={6} >
-                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} large style={styles.thumbnail}/><Text>Profile</Text></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Requests</Text></View></TouchableOpacity>
+                                <TouchableOpacity activeOpacity={1} key={6} onPress={() => this.props.navigation.navigate('AdminProfile')}>
+                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Profile</Text></View></TouchableOpacity>
                             </View>
                          </ScrollView>
                       </View>
@@ -270,19 +271,19 @@ export default class Admin extends PureComponent {
                                                              <Text>New members in last 1 month</Text>
                                                          </CardItem>
                                                          <CardItem>
-                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["members_in_month"]["count"] : null}</Text>clients</Text>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["members_in_month"]["count"] : null}</Text>client(s)</Text>
                                                          </CardItem>
                                                      </Card>
                                                      </TouchableOpacity>
                                                  </View>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={1}>
+                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
                                                      <Card style={{height: 200}}>
                                                         <CardItem>
                                                              <Text>Currently taking personal training</Text>
                                                         </CardItem>
                                                         <CardItem>
-                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["all_pt_members"]["count"] : null}</Text>clients</Text>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["all_pt_members"]["count"] : null}</Text>client(s)</Text>
                                                         </CardItem>
                                                      </Card>
                                                      </TouchableOpacity>
@@ -290,25 +291,25 @@ export default class Admin extends PureComponent {
                                              </View>
                                              <View style={{flexDirection: 'row'}}>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={1}>
+                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
                                                      <Card style={{height: 200}}>
                                                         <CardItem header>
                                                              <Text>Personal training expires in 1 month for</Text>
                                                         </CardItem>
                                                         <CardItem>
-                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["pt_expiring"]["count"] : null}</Text>clients</Text>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["pt_expiring"]["count"] : null}</Text>client(s)</Text>
                                                         </CardItem>
                                                      </Card>
                                                      </TouchableOpacity>
                                                  </View>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={1}>
+                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
                                                      <Card style={{height: 200}}>
                                                         <CardItem>
                                                              <Text>Gym Membership expires in 1 month for</Text>
                                                         </CardItem>
                                                         <CardItem>
-                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["membership_expiring"]["count"] : null }</Text>clients</Text>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["membership_expiring"]["count"] : null }</Text>client(s)</Text>
                                                         </CardItem>
                                                      </Card>
                                                      </TouchableOpacity>
@@ -317,7 +318,7 @@ export default class Admin extends PureComponent {
 
                                        </View>
                    </View>
-                   <View style={{marginTop: 15}}>
+                   <View style={{marginTop: 25}}>
                     <Text style={{fontWeight: 'bold'}}>Write up</Text>
                    </View>
                    <View style={{marginTop: 10}}>
@@ -326,7 +327,7 @@ export default class Admin extends PureComponent {
                             <Textarea selectable rowSpan={5} onChangeText={text => this.setState({message: text})} placeholder="Send notifications to trainers and clients..."/>
                         </CardItem>
                         <CardItem footer style={{justifyContent: 'center', alignItems: 'center'}}>
-                            <Button disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Post</Text></Button>
+                            <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Post</Text></Button>
                         </CardItem>
                       </Card>
                     </View>
@@ -354,8 +355,8 @@ export default class Admin extends PureComponent {
                                                                 </View>
                                                                 <View style={{flex: 1}}>
                                                                     <CheckBox
-                                                                        value={this.state.checked1}
-                                                                        onValueChange={this.checkCheck1}
+                                                                        checked={this.state.checked1}
+                                                                        onPress={this.checkCheck1}
                                                                     />
                                                                 </View>
                                                               </View>
@@ -365,8 +366,8 @@ export default class Admin extends PureComponent {
                                                                 </View>
                                                                 <View style={{flex: 1}}>
                                                                     <CheckBox
-                                                                        value={this.state.checked2}
-                                                                        onValueChange={this.checkCheck2}
+                                                                        checked={this.state.checked2}
+                                                                        onPress={this.checkCheck2}
                                                                     />
                                                                 </View>
                                                               </View>
@@ -398,7 +399,7 @@ const styles = StyleSheet.create({
   },
   thumbnailAlign:{
     flexDirection: 'row',
-    backgroundColor: "white",
+    backgroundColor: "#deb881",
     padding: 5,
   },
   todayPlan: {
@@ -416,7 +417,7 @@ const styles = StyleSheet.create({
   },
   thumbnailBlock: {
     marginRight: 10,
-    width: 80,
+    width: 70,
     justifyContent: 'center',
     alignItems: 'center'
   },

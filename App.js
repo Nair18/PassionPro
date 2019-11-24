@@ -56,8 +56,14 @@ import TrainerRequestInfo from './components/screens/TrainerRequestInfo';
 import ClientRequestInfo from './components/screens/ClientRequestInfo';
 import QuickClient from './components/screens/QuickClient';
 import RequestProcessingPage from './components/screens/RequestProcessingPage';
-
-//import all the screens we are going to switch
+import MembershipDetails from './components/screens/MembershipDetails';
+import PersonalTrainingDetails from './components/screens/PersonalTrainingDetails';
+import TrainerBilling from './components/screens/TrainerBilling';
+import ClientDetails from './components/screens/ClientDetails';
+import AdminProfile from './components/screens/AdminProfile';
+import Contact from './components/screens/contact';
+import AppBilling from './components/screens/AppBilling';
+//import all the screens we are going to switch/
 
 // To see all the requests in the chrome Dev tools in the network tab.
 
@@ -88,7 +94,14 @@ const AdminPage = createStackNavigator({
     TrainerRequest: {screen: TrainerRequest},
     TrainerRequestInfo: {screen: TrainerRequestInfo},
     ClientRequestInfo: {screen: ClientRequestInfo},
-    QuickClient: {screen: QuickClient}
+    QuickClient: {screen: QuickClient},
+    TrainerBilling: {screen: TrainerBilling},
+    ClientDetails: {screen: ClientDetails},
+    MembershipDetails: {screen: MembershipDetails},
+    PersonalTrainingDetails: {screen: PersonalTrainingDetails},
+    AdminProfile: {screen: AdminProfile},
+    Contact: {screen: Contact},
+    AppBilling: {screen: AppBilling}
   },
   {
     initialRouteName: 'Admin'

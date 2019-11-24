@@ -4,6 +4,8 @@ import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-n
 import { Button, Container, Content, View, Text,Item, Card, CardItem, Thumbnail} from 'native-base';
 import UpdateTrainerPage from './UpdateTrainerPage';
 import Icon from 'react-native-vector-icons/Ionicons'
+import TrainerBilling from './TrainerBilling';
+import ClientDetails from './ClientDetails';
 export default class TrainerPage extends Component {
   constructor(props){
     super(props)
@@ -14,7 +16,7 @@ export default class TrainerPage extends Component {
   static navigationOptions = {
       title: 'Trainer Info',
       headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: 'white', elevation: 0},
+      headerStyle: {backgroundColor: '#eadea6'},
       headerTintColor: 'black'
   }
 
@@ -50,14 +52,19 @@ export default class TrainerPage extends Component {
 
     return(
        <Fragment>
-        <Container>
+        <Container style={{backgroundColor: '#efe9cc'}}>
             <ScrollView showHorizontalScrollbar={false}>
-                <Content>
+                <Content style={{padding: 15}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <View style={styles.imageView}>
                         <Thumbnail large source={require('./client-profile.png')} />
                     </View>
+                    <View style={{flex: 1}}>
+                        <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}}><Text>end contract</Text></Button>
+                    </View>
+                    </View>
                 </Content>
-                <Content>
+                <Content style={{padding: 15}}>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
                         <Text style={styles.text}>Name </Text>
@@ -150,7 +157,7 @@ export default class TrainerPage extends Component {
                                         </View>
                     <View style={styles.infoView}>
                        <View style={styles.title}>
-                          <Text style={styles.text}>Salary Offered</Text>
+                          <Text style={styles.text}>Total Salary Offered</Text>
                        </View>
                        <View style={styles.textFormat}>
                           <Text>{12000 + ' INR'}</Text>
@@ -167,7 +174,7 @@ export default class TrainerPage extends Component {
                     <View style={styles.view}>
                                               <Card>
                                                 <CardItem header>
-                                                   <Text style={styles.text}>Courses</Text>
+                                                   <Text style={styles.text}>Classes offered</Text>
                                                 </CardItem>
 
                                                 <CardItem>
@@ -189,39 +196,37 @@ export default class TrainerPage extends Component {
                                                    </TouchableOpacity>
                                               </Card>
                                             </View>
-                    <View style={styles.view}>
-                                                                  <Card>
-                                                                    <CardItem header>
-                                                                       <Text style={styles.text}>Clients</Text>
-                                                                    </CardItem>
 
-                                                                    <CardItem>
-                                                                       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                                          <View style={{flex: 1}}>
-                                                                             <Text>Chaganlal</Text>
-                                                                          </View>
-                                                                          <TouchableOpacity activeOpacity={1}>
-                                                                             <View style={{flex: 1}}>
-                                                                                <Icon size={20} name="md-close"/>
-                                                                             </View>
-                                                                          </TouchableOpacity>
-                                                                       </View>
-                                                                    </CardItem>
-                                                                       <TouchableOpacity activeOpacity={1}>
-                                                                          <CardItem footer style={{backgroundColor: 'grey'}}>
-                                                                             <Text>Add Clients</Text>
-                                                                          </CardItem>
-                                                                       </TouchableOpacity>
-                                                                  </Card>
-                                                                </View>
+                    <View style={{margin: 15, width: '90%'}}>
+                                                        <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('TrainerBilling')}>
+                                                        <View>
+                                                              <Card style={{backgroundColor: '#e5d8bf'}}>
+                                                                  <CardItem style={{backgroundColor: '#d7c79e'}}>
+                                                                      <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                                                          <View style={{flex: 3}}><Text style={{fontWeight: 'bold'}}>Trainer Salary details </Text></View>
+                                                                          <View style={{marginLeft: 10, flex: 1}}><Icon size={20} name="md-arrow-dropright"/></View>
+                                                                      </View>
+                                                                  </CardItem>
+                                                              </Card>
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                       <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('ClientDetails')}>
+                                                        <View style={{marginTop: 10}}>
+                                                             <Card style={{backgroundColor: '#e5d8bf'}}>
+                                                              <CardItem style={{backgroundColor: '#d7c79e'}}>
+                                                                  <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                                                      <View style={{flex: 3}}><Text style={{fontWeight: 'bold'}}>Active Client details </Text></View>
+                                                                      <View style={{marginLeft: 10, flex: 1}}><Icon size={20} name="md-arrow-dropright"/></View>
+                                                                  </View>
+                                                              </CardItem>
+                                                             </Card>
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                  </View>
 
-                    <View style={{margin: 50}}>
-                        <TouchableOpacity activeOpacity={1}>
-                            <Button onPress={() => this.props.navigation.navigate('UpdateTrainerPage')} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Update the profile</Text></Button>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                    </View>
+
+
+
                 </Content>
             </ScrollView>
         </Container>
@@ -240,7 +245,8 @@ const styles = StyleSheet.create({
        height: 100,
        width: 100,
        justifyContent: 'center',
-       alignItems: 'center'
+       alignItems: 'flex-start',
+       flex: 1
      },
      infoView: {
        marginLeft: 15,

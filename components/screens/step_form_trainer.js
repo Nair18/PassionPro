@@ -4,7 +4,7 @@ import {Item} from 'native-base'
 import {Container} from 'native-base';
 import Wizard from './Wizard';
 import Input from './Input';
-
+import DatePicker from 'react-native-datepicker';
 
 export default class StepFormTrainer extends React.Component {
   constructor(props){
@@ -58,9 +58,9 @@ export default class StepFormTrainer extends React.Component {
                  secure: true
                },
                {
-                 placeholder: "Age",
-                 keyboard: 'numeric',
-                 name: 'age',
+                 placeholder: "DOB",
+                 type: "picker",
+                 name: 'dob',
                  placeholder2: "Address",
                  name2: 'address'
                },
@@ -102,23 +102,42 @@ export default class StepFormTrainer extends React.Component {
               {({ onChangeValue, values }) => (
                 <View style={styles.container}>
                   <Item>
-                  {el.type !== 'picker' ? <Input
+                  {el.type === null ? null : (el.type !== 'picker'? <Input
                     onChangeValue={onChangeValue}
                     placeholder={el.placeholder}
                     value={values[el.name]}
                     keyboardType={el.keyboard}
                     name={el.name}
-                  /> : <Picker
-                          placeholder = {el.placeholder}
-                          selectedValue={this.state.gender}
-                          style={{height: 50, width: '90%', alignItems: 'center', backgroundColor: "white"}}
-                          onValueChange={(itemValue, itemIndex) =>
-                            this.setState({gender: itemValue})
-                          }>
-                          <Picker.Item label="Select1" value={null} />
-                          <Picker.Item label="Demo2" value="day1" />
-                          <Picker.Item label="Demo3" value="day2" />
-                        </Picker>}
+                  /> : (<DatePicker
+                           style={{width: 200}}
+                           date={this.state.dob}
+                           mode="date"
+                           placeholder="select your DOB"
+                           format="YYYY-MM-DD"
+                           minDate="1900-05-01"
+                           maxDate= {new Date()}
+                           confirmBtnText="Confirm"
+                           cancelBtnText="Cancel"
+                           customStyles={{
+                               dateIcon: {
+                                   position: 'absolute',
+                                   left: 0,
+                                   top: 4,
+                                   marginLeft: 0
+                               },
+                               dateInput: {
+                                   marginLeft: 36
+                               }
+                                                                                                   // ... You can check the source to find the other keys.
+                           }}
+                           onDateChange={(date) =>
+                                         {
+                                            onChangeValue('dob',date)
+                                            this.setState({dob: date})
+                                         }
+                                        }
+                       />
+                  ))}
                   </Item>
                   <Item style={{marginTop: 10}}>
                   {el.type2 !== 'picker' ? <Input

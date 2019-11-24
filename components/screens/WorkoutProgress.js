@@ -38,7 +38,7 @@ export default class WorkoutProgress extends Component{
       static navigationOptions = {
                 title: 'Activity Calendar',
                 headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-                headerStyle: {backgroundColor: 'white', elevation: 0},
+                headerStyle: {backgroundColor: '#eadea6'},
                 headerTintColor: 'black'
             }
          async retrieveItem(key) {
@@ -93,7 +93,7 @@ export default class WorkoutProgress extends Component{
 
       componentWillUnmount(){
         this.focusListener.remove();
-        AppState.removeEventListener('change', this._handleAppStateChange);
+
       }
       onPressArrowLeft() {
         calendarDate = calendarDate.add(-1, 'month');
@@ -119,7 +119,7 @@ export default class WorkoutProgress extends Component{
 
     render(){
         return(
-            <Container>
+            <Container style={{backgroundColor: '#efe9cc'}}>
 
                <Content>
                     <View>

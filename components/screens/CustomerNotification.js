@@ -24,7 +24,7 @@ export default class CustomerNotification extends Component {
     static navigationOptions = {
           title: 'Notifications',
           headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: 'white',elevation: 0},
+          headerStyle: {backgroundColor: '#eadea6'},
           headerTintColor: 'black'
       }
 
@@ -125,7 +125,7 @@ export default class CustomerNotification extends Component {
 
     render(){
         return(
-            <Container style={{margin: 15}}>
+            <Container style={{padding: 15, backgroundColor: '#efe9cc'}}>
                 <ScrollView>
                 <Content>
                     <View>

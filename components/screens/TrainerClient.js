@@ -25,12 +25,12 @@ export default class TrainerClient extends Component {
     static navigationOptions = {
             title: 'Clients',
             headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: 'white', elevation: 0},
+            headerStyle: {backgroundColor: '#eadea6'},
             headerTintColor: 'black'
           }
     render(){
         return(
-            <Container>
+            <Container style={{backgroundColor: '#efe9cc'}}>
                 <Content>
                     <List>
                        <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerWorkspace')}>

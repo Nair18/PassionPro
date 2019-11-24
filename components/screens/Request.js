@@ -12,29 +12,32 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TrainerRequest from './TrainerRequest';
+import ClientRequest from './ClientRequest';
 
-import {Container,List, Card,ListItem, Textarea, CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container,List, Card,Header, Tab, Tabs, ListItem,TabHeading, Textarea, CheckBox, CardItem, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 export default class Request extends Component{
+    constructor(props){
+        super(props);
+    }
     static navigationOptions = {
               title: 'Requests',
               headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white', elevation: 0},
+              headerStyle: {backgroundColor: '#eadea6', elevation: 0},
               headerTintColor: 'black'
     }
     render(){
+
         return(
-            <Container>
-                <Content style={{marginTop: 20, marginLeft: 15, marginRight: 15}}>
-                    <List>
-                        <ListItem onPress={() => this.props.navigation.navigate('TrainerRequest', {ID: this.props.navigation.state.params.ID})}>
-                            <Text>Trainer</Text>
-                        </ListItem>
-                        <ListItem onPress={() => this.props.navigation.navigate('ClientRequest', {ID: this.props.navigation.state.params.ID})}>
-                            <Text>Client</Text>
-                        </ListItem>
-                    </List>
-                </Content>
+            <Container style={{backgroundColor: '#efe9cc'}}>
+                        <Tabs>
+                          <Tab heading={<TabHeading style={{backgroundColor: '#eadea6'}}><Text style={{color: 'black'}}>Trainer</Text></TabHeading>}>
+                            <TrainerRequest ID = {this.props.navigation.state.params.ID} navigation = {this.props.navigation}/>
+                          </Tab>
+                          <Tab heading={<TabHeading style={{backgroundColor: '#eadea6'}}><Text style={{color: 'black'}}>Clients</Text></TabHeading>}>
+                            <ClientRequest ID = {this.props.navigation.state.params.ID} navigation = {this.props.navigation}/>
+                          </Tab>
+                        </Tabs>
             </Container>
         );
     }

@@ -2,8 +2,9 @@ import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar} from 'react-native';
 import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
-
-export default class SLCProfile extends Component {
+import Icon from 'react-native-vector-icons/Ionicons';
+import AppBilling from './AppBilling';
+export default class AdminProfile extends Component {
   constructor(props){
     super(props)
     this.state={
@@ -19,7 +20,7 @@ export default class SLCProfile extends Component {
   componentDidMount(){
                   StatusBar.setHidden(false);
               }
-  componentWillUnMount() {
+  componentWillMount() {
 
   }
 
@@ -53,20 +54,28 @@ export default class SLCProfile extends Component {
     return(
        <Fragment>
         <Container style={{backgroundColor: '#efe9cc'}}>
+                <View style={styles.addButton}>
+                                        <Button rounded style={{height: 50, width: 150, alignItems: 'center', backgroundColor: '#d1274b', justifyContent: 'center'}}><Text><Icon size={20} name="md-power"/> Logout </Text></Button>
+                                    </View>
 
             <ScrollView showHorizontalScrollbar={false}>
-                <Content style={{marginLeft: 15, marginRight: 15}}>
-                    <View style={styles.imageView}>
-                        <Thumbnail large source={require('./client-profile.png')}/>
+                <Content style={{padding: 15}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={styles.imageView}>
+                            <Thumbnail large source={require('./client-profile.png')}/>
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Button block style={{backgroundColor: "black", justifyContent: 'center', alignItems: 'center'}}><Text> Help ? </Text></Button>
+                        </View>
                     </View>
                 </Content>
-                <Content style={{margin: 15}}>
+                <Content style={{padding: 15}}>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>{this.state.datas}</Text>
+                        <Text>Baghadeesh</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -79,7 +88,7 @@ export default class SLCProfile extends Component {
                     </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                        <Text style={styles.text}>Mobile </Text>
+                        <Text style={styles.text}>Username/Mobile </Text>
                       </View>
                       <View style={styles.textFormat}>
                          <Text>9979090670</Text>
@@ -96,51 +105,14 @@ export default class SLCProfile extends Component {
 
                     <View style={styles.infoView}>
                        <View style={styles.title}>
-                          <Text style={styles.text}>Membership start date </Text>
+                          <Text style={styles.text}>Contract start date </Text>
                        </View>
                        <View style={styles.textFormat}>
                           <Text>29-02-2019</Text>
                        </View>
                     </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                         <Text style={styles.text}>Membership end date </Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                         <Text>29-02-2020</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Total Amount Paid</Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                          <Text>{12000 + ' INR'}</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Course </Text>
-                       </View>
-                       <View style={{flex: 1, marginLeft: 25}}>
-                          {courses}
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                                                               <View style={styles.title}>
-                                                                  <Text style={styles.text}>Plans</Text>
-                                                               </View>
-                                                               <View style={{flex: 1, marginLeft: 25}}>
-                                                                  {courses}
-                                                               </View>
-                                                            </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Trainer </Text>
-                       </View>
-                          <View style={styles.textFormat}>
-                            <Text>Baghadeesh</Text>
-                          </View>
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+                        <Button style={{backgroundColor: "black"}} onPress={() => this.props.navigation.navigate('AppBilling')}><Text>Billing Details</Text></Button>
                     </View>
                 </Content>
             </ScrollView>
@@ -159,8 +131,7 @@ const styles = StyleSheet.create({
      imageView: {
        width: 100,
        height: 100,
-       justifyContent: 'center',
-       alignItems: 'center'
+       flex: 1
      },
      text: {
        fontWeight: 'bold',
@@ -177,5 +148,10 @@ const styles = StyleSheet.create({
      },
      title: {
        flex: 1
-     }
+     },
+     addButton: {
+         position: 'absolute',
+         left: '35%',
+         bottom: 10
+       }
 })

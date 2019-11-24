@@ -7,13 +7,13 @@ import constants from '../constants';
 import PageLoader from './PageLoader';
 import DatePicker from 'react-native-datepicker'
 import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Label,Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
-
+import { debounce } from "lodash";
 
 export default class Clients extends PureComponent {
   static navigationOptions = {
     title: 'Clients',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
   }
 
@@ -29,11 +29,17 @@ export default class Clients extends PureComponent {
       this.setState({modalVisible: visible});
   }
 
+  onChangeSearchInput = (text)=> {
+      this.debouncedSearch(text);
+  };
 
+  debouncedSearch = debounce(function (query) {
+      console.log("debouncing")
+  }, 300);
 
   componentWillUnmount() {
         // Remove the event listener
-        this.focusListener.remove();
+//        this.focusListener.remove();
 
   }
 
@@ -82,38 +88,9 @@ export default class Clients extends PureComponent {
                                                      );
                   }
               }
-          ).then(res => this.setState({traineeList: res["trainees"]})).then(
-
-              fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/subscriptions/', {
-                                        method: 'GET',
-                                        headers: {
-                                            'Accept': 'application/json',
-                                            'Content-Type': 'application/json',
-                                            'Authorization': this.state.auth_key,
-                                        }
-                                    })
-                                    .then(
-                                        res => {
-                                            if(res.status === 200){
-                                                return res.json()
-                                            }
-                                            else{
-                                                this.setState({loading: false})
-                                                                               Alert.alert(
-                                                                                 'OOps!',
-                                                                                 'Something went wrong ...',
-                                                                                  [
-                                                                                      {text: 'OK', onPress: () => console.log('OK Pressed')},
-                                                                                  ],
-                                                                                  {cancelable: false},
-                                                                               );
-                                            }
-                                        }
-                                    ).then(res => this.setState({traineeSub: res["subscriptions"]}, () => console.log("bhai wtf is this", this.state.coursetype)))
-          )
+          ).then(res => this.setState({traineeList: res["trainees"]}))
       }
-
-      async retrieveItem(key) {
+      retrieveItem = async (key) => {
                 try {
                   const retrievedItem =  await AsyncStorage.getItem(key);
                   console.log("key retrieved")
@@ -127,18 +104,26 @@ export default class Clients extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container>
+      <Container style={{backgroundColor: '#efe9cc'}}>
 
         <Content>
+         {this.state.traineeList !== null ?
+          <View style={{margin:15}}>
+            <Item rounded>
+                 <Input keyboardType='numeric' onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
+            </Item>
+          </View> : null }
           <List>
-            {this.state.traineeSub !== null ? this.state.traineeList.map((trainee, index) =>
+            {this.state.traineeList !== null ? this.state.traineeList.map((trainee, index) =>
                 <ListItem avatar onPress={() => this.props.navigation.navigate('ClientInfo', {DATA: null})}>
                     <Left>
-                        <Thumbnail source={require('./client-profile.png')} style={{backgroundColor: 'black'}} />
+                        <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
                     </Left>
                    <Body>
-                        <Text>{trainee["name"]}</Text>
-                        <Text note>Membership ends on {this.state.traineeSub[index]["end"]}</Text>
+                        <View>
+                        <Text>Karthik Nair</Text>
+                        <Text note>Membership ends on </Text>
+                        </View>
                    </Body>
                 </ListItem>) : <PageLoader/>}
            </List>
@@ -150,7 +135,7 @@ export default class Clients extends PureComponent {
                 </View>
       </Container>
 
-      <View style={{marginTop: 22}}>
+      <View>
         <Modal
           animationType="slide"
           transparent={false}

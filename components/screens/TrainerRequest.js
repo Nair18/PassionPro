@@ -22,15 +22,16 @@ export default class TrainerRequest extends Component {
     constructor(props){
         super(props)
         this.state={
-            id: this.props.navigation.state.params.ID,
+            id: this.props.ID,
             auth_key: null,
             request: null
+
         }
     }
     static navigationOptions = {
               title: 'Trainer Request',
               headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white', elevation: 0},
+              headerStyle: {backgroundColor: '#eadea6'},
               headerTintColor: 'black'
           }
     async retrieveItem(key) {
@@ -44,7 +45,7 @@ export default class TrainerRequest extends Component {
             return
         }
         componentWillUnmount(){
-            this.focusListener.remove();
+//            this.focusListener.remove();
 
         }
         componentDidMount(){
@@ -53,11 +54,11 @@ export default class TrainerRequest extends Component {
 
             const { navigation } = this.props;
             console.log("pagal bana rhe hai", this.state.id)
-            this.focusListener = navigation.addListener('didFocus', () => {
+//            this.focusListener = navigation.addListener('didFocus', () => {
                     var key  = this.retrieveItem('key').then(res =>
                     this.setState({auth_key: res}, () => console.log("brother pls", res))
                     ).then(() => this.fetchDetails())
-            });
+//            });
         }
 
         fetchDetails = () => {
@@ -83,18 +84,25 @@ export default class TrainerRequest extends Component {
                     );
                  }
                  }).then(res => {
-                 this.setState({request: res["subscriptions"]})
+                 this.setState({request: res["trainers"]})
                  }).then(console.log("fetched the api data", this.state.request))
         }
     render(){
         return(
-            <Container>
-                <Content>
+            <Container style={{backgroundColor: '#efe9cc'}}>
+                <Content style={{padding: 15}}>
                     <List>
                         {this.state.request !== null ? this.state.request.map(req =>
-                        <ListItem style={{justifyContent: 'space-between'}} onPress={() => this.props.navigation.navigate('TrainerRequestInfo')}>
-                            <Text>{req["trainee_name"]}</Text>
-                            <Text note>{req["start"].split("T")[0]}</Text>
+                        <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerRequestInfo')}>
+                            <Left>
+                               <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
+                            </Left>
+                            <Body>
+                                <View>
+                                <Text>{req["name"]}</Text>
+                                <Text note>{req["age"]}</Text>
+                                </View>
+                            </Body>
                         </ListItem>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}
                     </List>
 

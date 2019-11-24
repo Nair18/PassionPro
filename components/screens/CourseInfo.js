@@ -1,18 +1,27 @@
 import React, {Fragment,Component} from 'react';
-import {TextInput, StyleSheet, Image, ScrollView} from 'react-native';
-import { Button, Container, Content, View, Text, Thumbnail} from 'native-base';
-
+import {TextInput, StyleSheet, Image, ScrollView, Alert, AsyncStorage} from 'react-native';
+import { Button, Container, Content, View, Text, Thumbnail, Spinner, Input} from 'native-base';
+import constants from '../constants';
+import PageLoader from './PageLoader';
 export default class CourseInfo extends Component {
   constructor(props){
     super(props)
     this.state={
-      editable: false
+      editable: false,
+      course_id: this.props.navigation.state.params.ID,
+      gym_id: this.props.navigation.state.params.GYM_ID,
+      loading: true,
+      courseInfo: null,
+      courseName: null,
+      courseDescription: null,
+      courseDuration: null,
+      saveProcess: false
     }
   }
   static navigationOptions = {
     title: 'Course Info',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
   }
   _editable = () => {
@@ -24,9 +33,90 @@ export default class CourseInfo extends Component {
 
   _save = () => {
   }
+
+  componentDidMount(){
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+                    var key  = this.retrieveItem('key').then(res =>
+                    this.setState({auth_key: res}, () => console.log("brother pls", res))
+                    ).then(() => this.fetchDetails())
+            });
+  }
+
+  componentWillUnmount(){
+    this.focusListener.remove();
+  }
+
+  async retrieveItem(key) {
+                try {
+                  const retrievedItem =  await AsyncStorage.getItem(key);
+                  console.log("key retrieved")
+                  return retrievedItem;
+                } catch (error) {
+                  console.log(error.message);
+                }
+                return;
+        }
+  saveChange = () => {
+    this.setState({saveProcess: true})
+    console.log("on save call", this.state.courseName, this.state.courseDescription, this.state.courseDuration,this.state.gym_id,this.state.course_id)
+    fetch(constants.API + 'current/admin/gyms/'+ this.state.gym_id + '/courses/' + this.state.course_id, {
+        method: 'PUT',
+        headers: {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json',
+                              'Authorization': this.state.auth_key,
+        },
+        body: JSON.stringify({
+            "description": this.state.courseDescription,
+            "duration": this.state.courseDuration,
+            "name": this.state.courseName
+        })
+    })
+    .then(res => {
+        if(res.status !== 200){
+            Alert.alert('OOps!!', "Something went wrong. Couldn't update ...")
+            this.setState({saveProcess: false})
+        }
+        else{
+            this._cancel()
+            this.setState({saveProcess: false})
+            Alert.alert('Success', 'Course was successfully updated.')
+            this.fetchDetails()
+        }
+
+    })
+  }
+
+
+  fetchDetails = () => {
+    fetch(constants.API + 'current/admin/gyms/'+this.state.gym_id+'/courses/'+this.state.course_id, {
+       method: 'GET',
+       headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                      'Authorization': this.state.auth_key,
+                    },
+    }).then(res => {
+        if(res.status === 200){
+           return res.json()
+        }
+        else{
+            Alert.alert('OOps!','Something went wrong. Please try later ...')
+            return null
+        }
+    }).then( res => {
+        if(res !== null){
+            this.setState({courseInfo: res, courseDuration: res["duration"], courseDescription: res["description"], courseName: res["name"]})
+        }
+    })
+  }
   render(){
+
     return(
-       <Container>
+    <Fragment>
+       {this.state.courseInfo !== null ?
+       <Container style={{backgroundColor: '#efe9cc'}}>
          <ScrollView showHorizontalScrollbar={false}>
          { this.state.editable === false ? <Content>
                              <View style={styles.imageView}>
@@ -35,32 +125,41 @@ export default class CourseInfo extends Component {
                          </Content> : null}
          <Content style={{padding: 15}}>
            <View>
-             {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</Text> : <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</TextInput>}
+             {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>{this.state.courseInfo["name"]}</Text> :
+             <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20, backgroundColor: 'white'}} placeholder="Name" onChangeText = {text => this.setState({courseName: text})}>{this.state.courseInfo["name"]}</TextInput>}
+           </View>
+           <View>
+            {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Duration: {this.state.courseInfo["duration"]} days</Text> :
+            <TextInput  editable={this.state.editable} onChangeText = {text => this.setState({courseDuration: parseInt(text)})} style={{textAlign: 'justify', fontSize: 20, backgroundColor: 'white'}} placeholder="Duration">{this.state.courseInfo["duration"]}</TextInput>}
            </View>
            <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
-             { this.state.editable === false ? <Text selectable multiline={true}>Yoga is an East Indian method of mind/body exercise designed to stretch, strengthen, and enhance muscle tone through the
-                                                                                                                practice of asanas (poses) and pranayama (breathing exercises). Yoga practice plus meditation helps decrease stress and increase energy levels
-                                                                                                                while improving focus, concentration, and self-realization. The variety of health benefits a yoga practice offers are: for inner harmony, balance, and
-                                                                                                                overall well-being, for spiritual connection and growth; or for stretching and strengthening a variety of muscle groups involved in a yoga practice. This
-                                                                                                                course is designed to assist any and all of those goals through support and guidance in a safe and nurturing learning environment. Students will be required to purchase a yoga mat.
-                                              </Text> :
-             <TextInput multiline={true}>
-               Yoga is an East Indian method of mind/body exercise designed to stretch, strengthen, and enhance muscle tone
-               through the practice of asanas (poses) and pranayama (breathing exercises). Yoga practice plus meditation helps
-               decrease stress and increase energy levels while improving focus, concentration, and self-realization. The variety
-               of health benefits a yoga practice offers are: for inner harmony, balance, and overall well-being, for spiritual connection and growth;
-               or for stretching and strengthening a variety of muscle groups involved in a yoga practice. This course is designed to assist any and all
-               of those goals through support and guidance in a safe and nurturing learning environment. Students will be required to purchase a yoga mat.
+             { this.state.editable === false ? <Text selectable multiline={true}>{this.state.courseInfo["description"]}</Text> :
+
+             <TextInput multiline={true} style={{backgroundColor: 'white', width: '100%'}} placeholder="Description" onChangeText={text => this.setState({courseDescription: text})}>
+                 {this.state.courseInfo["description"]}
              </TextInput>}
            </View>
            {  this.state.editable ?
-                <Content style={{marginTop: 15}}><View><Button style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Save changes</Text></Button></View><View style={{marginTop: 10}}><Button onPress={this._cancel} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Cancel</Text></Button></View></Content> : <Content style={{marginTop: 15}}><View><Button onPress={this._editable} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Edit</Text></Button></View></Content>
+                <Content style={{marginTop: 15}}>
+                    {this.state.saveProcess === false ? <Fragment><View>
+                        <Button onPress={this.saveChange} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Save changes</Text></Button>
+                    </View>
+                    <View style={{marginTop: 10}}>
+                        <Button onPress={this._cancel} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Cancel</Text></Button>
+                    </View></Fragment> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
+                </Content> :
+                <Content style={{marginTop: 15}}>
+                    <View>
+                        <Button onPress={this._editable} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Edit</Text></Button>
+                    </View>
+                </Content>
            }
          </Content>
          </ScrollView>
-       </Container>
+       </Container> : <PageLoader /> }
+     </Fragment>
     );
-  }
+}
 }
 
 const styles = StyleSheet.create({

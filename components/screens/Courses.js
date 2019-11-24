@@ -33,7 +33,7 @@ export default class Courses extends PureComponent {
   static navigationOptions = {
     title: 'Courses',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
   }
 
@@ -66,10 +66,10 @@ export default class Courses extends PureComponent {
         let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
             method: 'GET',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': this.state.auth_key,
-            }
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': this.state.auth_key,
+                        }
         })
         .then(
             res => {
@@ -140,6 +140,8 @@ export default class Courses extends PureComponent {
     };
 
     onSubmit = () => {
+        if(courseType){
+        }
         this.setState({onProcess: true})
         fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
             method: 'POST',
@@ -187,11 +189,11 @@ export default class Courses extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container >
+      <Container style={{backgroundColor: '#efe9cc'}}>
         <Content>
           <List>
             {this.state.coursetype !== null && this.state.courseList !== null ? this.state.courseList.map(course =>
-            <ListItem avatar onPress={() => this.props.navigation.navigate('CourseInfo')}>
+            <ListItem key={course["id"]} avatar onPress={() => this.props.navigation.navigate('CourseInfo', {ID: course["id"], GYM_ID: this.state.id})}>
               <Left style={{margin: 5}}>
                 <Thumbnail source={require('./bank-icon.jpg')} style={{backgroundColor: 'black'}} />
               </Left>
@@ -271,10 +273,6 @@ export default class Courses extends PureComponent {
                                                 }
                                             >
                                               <Picker.Item label="days" value="days" />
-                                              <Picker.Item label="weeks" value="weeks" />
-                                              <Picker.Item label="months" value="months" />
-                                              <Picker.Item label="years" value="years" />
-
                                             </Picker>
                               </Item>
 

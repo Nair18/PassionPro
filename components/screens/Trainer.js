@@ -6,7 +6,7 @@ import DatePicker from 'react-native-datepicker';
 import constants from '../constants';
 import PageLoader from './PageLoader';
 import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Label,Text } from 'native-base';
-
+import {debounce} from 'lodash';
 
 export default class Trainer extends PureComponent {
   constructor(props){
@@ -23,7 +23,7 @@ export default class Trainer extends PureComponent {
   static navigationOptions = {
     title: 'Trainers',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
   }
 
@@ -43,6 +43,15 @@ export default class Trainer extends PureComponent {
         });
 
     }
+
+    onChangeSearchInput = (text)=> {
+          this.debouncedSearch(text);
+      };
+
+      debouncedSearch = debounce(function (query) {
+          console.log("debouncing")
+      }, 300);
+
     async retrieveItem(key) {
             try {
               const retrievedItem =  await AsyncStorage.getItem(key);
@@ -95,9 +104,15 @@ export default class Trainer extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container>
+      <Container style={{backgroundColor: '#efe9cc'}}>
 
         <Content>
+          {this.state.trainerList !== null ?
+                    <View style={{margin:15}}>
+                      <Item rounded>
+                           <Input keyboardType='numeric' onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
+                      </Item>
+                    </View> : null }
           <List>
             {this.state.trainerList !== null ? this.state.trainerList.map(trainer =>
             <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerPage')}>
@@ -118,7 +133,7 @@ export default class Trainer extends PureComponent {
                   </View>
       </Container>
 
-      <View style={{marginTop: 22}}>
+      <View >
         <Modal
           animationType="slide"
           transparent={false}
@@ -191,17 +206,7 @@ export default class Trainer extends PureComponent {
                </Item>
 
                <Item style={styles.item}>
-                  <Picker
-                            note
-                            mode="dropdown"
-                            style={{ width: 120 }}
-
-
-                            >
-                            <Picker.Item label="Shift 1" value="key0" />
-                            <Picker.Item label="Shift 2" value="key1" />
-                            <Picker.Item label="Shift 3" value="key2" />
-                  </Picker>
+                  <Input placeholder="Enter the shift" />
                </Item>
                <Item style={styles.item}>
                  <Input placeholder="Emergency contact person's name" />

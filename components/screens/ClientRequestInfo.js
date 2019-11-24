@@ -42,12 +42,12 @@ export default class ClientRequestInfo extends Component {
     static navigationOptions = {
               title: 'Request Info',
               headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white', elevation: 0},
+              headerStyle: {backgroundColor: 'white'},
               headerTintColor: 'black'
           }
     render(){
         return(
-            <Container>
+            <Container style={{backgroundColor: 'white'}}>
                 <Content style={{marginLeft: 15, marginRight: 15}}>
                 <Form>
                     <Item floatingLabel>
@@ -56,8 +56,9 @@ export default class ClientRequestInfo extends Component {
                     </Item>
 
                                             <View style={{margin: 15}}>
+                                                                <Label>Select a Course*</Label>
                                                                 <ModalSelector
-                                                                    placeholder="Select a course type"
+                                                                    placeholder="Select a course"
                                                                     initValue={this.state.courseList}
                                                                     data={this.state.coursetype}
                                                                     keyExtractor= {item => item.id}
@@ -71,9 +72,9 @@ export default class ClientRequestInfo extends Component {
                                                                     this.setState({courseType: option.id, courseTypeName: option.name})
                                                                     }}>
                                                                     <TextInput
-                                                                        style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
+                                                                         style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
                                                                         editable={false}
-                                                                        placeholder="Select the course type"
+                                                                        placeholder="Select the course"
                                                                         value={this.state.courseTypeName}
                                                                     />
 
@@ -126,49 +127,6 @@ export default class ClientRequestInfo extends Component {
                                                <Input value={this.state.gender} onChangeText={text => this.setState({gender: text})}/>
                                          </Item>
 
-                                     <Item regular style={{marginRight: 15, marginLeft: 15, marginTop: 15}}>
-
-                                               <Picker
-                                                                                                    note
-                                                                                                    mode="dropdown"
-                                                                                                    style={{ width: 5, flex: 1 }}
-                                                                                                    selectedValue={this.state.durationType}
-                                                                                                    onValueChange={(itemValue, itemIndex) =>
-                                                                                                    this.setState({durationType: itemValue})
-                                                                                                    }
-                                                                                                >
-                                                                                                     <Picker.Item label="Personal Training ?" value="no" />
-                                                                                                     <Picker.Item label="YES" value="yes" />
-                                                                                                     <Picker.Item label="NO" value="no" />
-
-
-                                                                                                </Picker>
-                                         </Item>
-
-                                            <View style={{margin: 15}}>
-                                                                   <ModalSelector
-                                                                       placeholder="Assign a trainer"
-                                                                       initValue={this.state.ptName}
-                                                                       data={this.state.trainerList}
-                                                                       keyExtractor= {item => item.id}
-                                                                       labelExtractor= {item => item.name}
-                                                                       initValue={this.state.courseType}
-                                                                       supportedOrientations={['landscape']}
-                                                                       accessible={true}
-                                                                       scrollViewAccessibilityLabel={'Scrollable options'}
-                                                                       cancelButtonAccessibilityLabel={'Cancel Button'}
-                                                                       onChange={(option)=>{
-                                                                        this.setState({pt: option.id, ptName: option.name})
-                                                                       }}>
-
-                                                                       <TextInput
-                                                                         style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
-                                                                         editable={false}
-                                                                         placeholder="Assign a trainer"
-                                                                         value={this.state.ptName}
-                                                                       />
-                                                                     </ModalSelector>
-                                                           </View>
 
                     <Item floatingLabel>
                                              <Label>Emergency contact person</Label>

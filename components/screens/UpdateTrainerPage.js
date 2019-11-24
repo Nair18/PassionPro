@@ -3,7 +3,7 @@ import { EventRegister } from 'react-native-event-listeners';
 import {Container,Text, Content, Item, Card, CardItem, Button, Header, Left, Right, Body, Title} from 'native-base';
 import {StyleSheet, View, TextInput, TouchableOpacity, ScrollView, BackHandler, Alert, StatusBar} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-datepicker';
 
 export default class UpdateTrainerPage extends Component{
   constructor(props){
@@ -16,7 +16,10 @@ export default class UpdateTrainerPage extends Component{
   }
 
   static navigationOptions = {
-    header: null
+    title: 'Update Trainer Info',
+                    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+                    headerStyle: {backgroundColor: '#eadea6'},
+                    headerTintColor: 'black'
   }
   componentDidMount() {
         this.props.navigation.setParams({ increaseCount: this._increaseCount })
@@ -52,61 +55,52 @@ export default class UpdateTrainerPage extends Component{
   }
   render(){
     return(
-      <Container>
+      <Container style={{backgroundColor: '#efe9cc'}}>
 
-         <Header style={{backgroundColor: 'white', elevation: 0}} androidStatusBarColor='#000' iosBarStyle={"light-content"}>
-            <Left>
-              <Button transparent onPress={this.showModal}>
-                <Icon style={{color: 'black'}} size={25} name='md-arrow-back' />
-              </Button>
-            </Left>
-            <Body>
-              <Title style={{color: 'black'}}>Update Trainer Info</Title>
-            </Body>
-            <Right>
-            </Right>
-         </Header>
         <ScrollView>
         <Content style={styles.content}>
-          <View style={styles.view}>
-            <Text style={styles.text}>Mobile</Text>
-            <Item regular>
-                <TextInput editable = {true} keyboardType='numeric' value={this.state.number} onChangeText = {(value) => this._changeNumber(value)}/>
-            </Item>
-          </View>
+
           <View style={styles.view}>
              <Text style={styles.text}>Salary Offered</Text>
              <Item regular>
                <TextInput editable = {true} keyboardType='numeric' value={this.state.amount} onChangeText = {(value) => this._changeNumber(value)}/>
              </Item>
           </View>
-          <View style={styles.view}>
-                       <Text style={styles.text}>Total Bonus Offered</Text>
-                       <Item regular>
-                         <TextInput editable = {true} keyboardType='numeric' value={this.state.amount} onChangeText = {(value) => this._changeNumber(value)}/>
-                       </Item>
-                    </View>
+
           <View style={styles.view}>
                        <Text style={styles.text}>Update shift</Text>
                        <Item regular>
                          <TextInput editable = {true} keyboardType='numeric' value={this.state.amount} onChangeText = {(value) => this._changeNumber(value)}/>
                        </Item>
-                    </View>
-
-          <View style={styles.view}>
-            <Text style={styles.text}>Update Contract End Date</Text>
-            <DatePicker
-                  date={this.state.date}
-                  onDateChange={date => this.setState({ date })}
-
-                  mode = 'date'
-                  textColor = '#3e4444'
-            />
           </View>
-          
+          <View style={{marginLeft: 15, marginTop: 25, width: '70%'}}>
+                                    <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails')}>
+                                    <View>
+                                          <Card style={{backgroundColor: '#e5d8bf'}}>
+                                              <CardItem style={{backgroundColor: '#d7c79e'}}>
+                                                  <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                                      <View><Text style={{fontWeight: 'bold'}}>Billing details </Text></View>
+                                                      <View style={{marginLeft: 10}}><Icon size={20} name="md-arrow-dropright"/></View>
+                                                  </View>
+                                              </CardItem>
+                                          </Card>
+                                    </View>
+                                    </TouchableOpacity>
+                                   <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails')}>
+                                    <View>
+                                         <Card style={{backgroundColor: '#e5d8bf'}}>
+                                          <CardItem style={{backgroundColor: '#d7c79e'}}>
+                                              <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                                  <View ><Text style={{fontWeight: 'bold'}}>Active Client details </Text></View>
+                                                  <View style={{marginLeft: 10}}><Icon size={20} name="md-arrow-dropright"/></View>
+                                              </View>
+                                          </CardItem>
+                                         </Card>
+                                    </View>
+                                    </TouchableOpacity>
+                              </View>
 
-
-            <View style={{margin: 25}}>
+          <View style={{margin: 25}}>
               <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}}><Text>End Contract</Text></Button>
             </View>
         </Content>

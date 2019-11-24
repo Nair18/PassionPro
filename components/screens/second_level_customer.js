@@ -227,13 +227,16 @@ class SecondLevelCustomer extends PureComponent {
 
   return (
     <Fragment>
+    {this.state.courseInfo !== null ?
+    <Container style={{backgroundColor: '#efe9cc'}}>
 
-    <Container style={{backgroundColor: '#f0efef'}}>
-         {this.state.courseInfo !== null ?
-         <Content>
-            <View style={{padding: 15, flex: 1}}>
-                 <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>Fitness Center, koramangala</Text>
-            </View>
+
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#eadea6'}}>
+                                <View style={{flex: 2, padding: 15}}>
+                                    <Text style={{fontWeight: 'bold', fontSize: 25}}>Fitness Center</Text>
+                                    <Text>koramangala</Text>
+                                </View>
+                              </View>
          <ScrollView showsVerticalScrollIndicator={false}>
 
             <Content padder style={styles.contentBlock}>
@@ -241,7 +244,7 @@ class SecondLevelCustomer extends PureComponent {
               <View style={{flexDirection: 'row'}}>
               <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('CustomerNotification')}>
                 <IconBadge
-                    MainElement={<View style={styles.thumbnailBlock}><Icon size={50} name="md-notifications-outline"/></View>}
+                    MainElement={<View style={styles.thumbnailBlock}><Thumbnail medium source={require('./chat.png')}style={styles.thumbnail}/></View>}
                     BadgeElement={
                           <Text style={{color:'#FFFFFF'}}>{this.state.BadgeCount}</Text>
                         }
@@ -254,7 +257,7 @@ class SecondLevelCustomer extends PureComponent {
                 />
                 </TouchableOpacity>
               <TouchableOpacity  activeOpacity={1} onPress={() => this.props.navigation.navigate('SLCProfile')}>
-                <View style={styles.thumbnailBlock}><Icon size={50} name="md-person"></Icon></View></TouchableOpacity>
+                <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./profile.jpg')}style={styles.thumbnail}/></View></TouchableOpacity>
 
               </View>
               </ScrollView>
@@ -287,11 +290,11 @@ class SecondLevelCustomer extends PureComponent {
                             </View>
                             <View style={styles.container}>
                                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Workspace')}>
-                                   <Card style={{backgroundColor: '#251e20', justifyContent: 'center', alignItems: 'center'}}>
-                                      <CardItem header style={{backgroundColor: '#251e20'}}>
+                                   <Card style={{backgroundColor: '#deb881', justifyContent: 'center', alignItems: 'center'}}>
+                                      <CardItem header style={{backgroundColor: '#deb881'}}>
                                             <Icon style={{color: 'white'}} size={50} name="md-bicycle"/>
                                       </CardItem>
-                                      <CardItem footer style={{backgroundColor: '#251e20'}}>
+                                      <CardItem footer style={{backgroundColor: '#deb881'}}>
                                             <Text style={{fontWeight: 'bold', fontSize: 20 , color: 'white'}}>Get Set Go </Text>
                                             <Icon style={{color: 'white'}}size={30} name="md-arrow-round-forward"/>
                                       </CardItem>
@@ -348,8 +351,8 @@ class SecondLevelCustomer extends PureComponent {
               </Content>
               </Content>
             </ScrollView>
-         </Content> : <ProfileSkeleton/>}
-          </Container>
+
+          </Container> : <ProfileSkeleton/>}
 
           </Fragment>
   );
@@ -374,13 +377,11 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   thumbnailBlock: {
-    marginRight: 10,
-    width: 90,
-    height: 90,
-    borderRadius: 50,
-    backgroundColor: 'grey',
-    justifyContent: 'center',
-    alignItems: 'center'
+     marginTop: 20,
+     marginRight: 20,
+
+        justifyContent: 'center',
+        alignItems: 'center'
   },
   notificationButton: {
     backgroundColor: 'white',

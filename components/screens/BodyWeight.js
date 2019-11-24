@@ -35,7 +35,7 @@ export default class BodyWeight extends PureComponent {
     static navigationOptions = {
           title: 'Weight Tracker',
           headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: 'white', elevation: 0},
+          headerStyle: {backgroundColor: '#eadea6', elevation: 0},
           headerTintColor: 'black'
       }
 
@@ -106,7 +106,7 @@ export default class BodyWeight extends PureComponent {
                         this.fetchDetails()
                         Alert.alert(
                             'Yayy!!',
-                            'Your body fat recorded ...',
+                            'Your body weight recorded ...',
                             [
                                 {text: 'OK', onPress: () => console.log('OK Pressed')},
                             ],
@@ -151,13 +151,13 @@ export default class BodyWeight extends PureComponent {
         }
         let screenWidth = Dimensions.get('window').width
         return(
-            <Container style={{margin: 15}}>
+            <Container style={{padding: 15, backgroundColor: '#efe9cc'}}>
                 {this.state.weightList !== null ?
                 <Content>
 
                     <View style={{marginTop: 25}}>
                       <Item regular>
-                        <Input keyboardType="numeric" placeholder="enter your current weight" onChangeText={text => this.setState({weight: text})}/>
+                        <Input style={{backgroundColor: 'white'}} keyboardType="numeric" placeholder="enter your current weight" onChangeText={text => this.setState({weight: text})}/>
                       </Item>
                     </View>
                     <View style={{marginTop: 25, justifyContent: 'center', alignItems: 'center'}}>

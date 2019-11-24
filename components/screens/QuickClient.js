@@ -12,20 +12,25 @@ export default class QuickClient extends Component {
   static navigationOptions = {
     title: 'Clients',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
   }
 
   render(){
     let clients = this.props.navigation.state.params.DETAILS
     return(
-        <Container>
-            <Content>
+        <Container style={{backgroundColor: '#efe9cc'}}>
+            <Content style={{padding:15}}>
                 <List>
                     {clients !== null ? clients.map(client =>
-                        <ListItem style={{justifyContent: 'space-between'}} onPress={() => this.props.navigation.navigate('ClientInfo', {DATA: null})}>
-                            <Text>{client["name"]}</Text>
-                            <Text note>Membership ends on  + {client["end_time"] !== null ? client["end_time"].split("T")[0] : "no time"}</Text>
+                        <ListItem avatar onPress={() => this.props.navigation.navigate('ClientInfo', {DATA: null})}>
+                            <Left>
+                               <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
+                            </Left>
+                            <Body>
+                                <Text>{client["name"]}</Text>
+                                <Text note>Membership ends on  + {client["end_time"] !== null ? client["end_time"].split("T")[0] : "no time"}</Text>
+                            </Body>
                         </ListItem>
                     ) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
                 </List>

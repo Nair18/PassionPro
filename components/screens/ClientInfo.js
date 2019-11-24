@@ -1,8 +1,10 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, AppState, AsyncStorage} from 'react-native';
-import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
+import { Button, Container, Content, View, Text,Item, Thumbnail, Card, CardItem, List, ListItem} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MembershipDetails from './MembershipDetails';
+import PersonalTrainingDetails from './PersonalTrainingDetails';
 export default class ClientInfo extends Component {
   constructor(props){
     super(props)
@@ -16,7 +18,7 @@ export default class ClientInfo extends Component {
   static navigationOptions = {
       title: 'Client Info',
       headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: 'white', elevation: 0},
+      headerStyle: {backgroundColor: '#eadea6'},
       headerTintColor: 'black'
   }
 
@@ -123,15 +125,7 @@ export default class ClientInfo extends Component {
       {
         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
         title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
+      }
     ];
 
     let courses = [];
@@ -141,17 +135,15 @@ export default class ClientInfo extends Component {
 
     return(
        <Fragment>
-        <Container>
+        <Container style={{backgroundColor: '#efe9cc'}}>
 
             <ScrollView showHorizontalScrollbar={false}>
               {this.state.data === null ?
               <Content>
-                <Content>
-                    <View style={styles.imageView}>
-                        <Thumbnail large source={require('./client-profile.png')}/>
-                    </View>
+                <Content style={{padding: 15}}>
+                    <Thumbnail source={require('./profile.jpg')} />
                 </Content>
-                <Content>
+                <Content style={{padding: 15}}>
                     <View style={styles.infoView}>
                                           <View style={styles.title}>
                                             <Text style={styles.text}>Active </Text>
@@ -198,7 +190,7 @@ export default class ClientInfo extends Component {
                           <Text style={styles.text}>Membership start date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                          <Text>1999</Text>
+                          <Text>2019-02-01</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -206,48 +198,43 @@ export default class ClientInfo extends Component {
                          <Text style={styles.text}>Membership end date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                         <Text>2099</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Total Amount Paid</Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                          <Text>{12000 + ' INR'}</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Course </Text>
-                       </View>
-                       <View style={{flex: 1, marginLeft: 25}}>
-                          {courses}
+                         <Text>2019-08-01</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
                                            <View style={styles.title}>
-                                              <Text style={styles.text}>Plans</Text>
+                                             <Text style={styles.text}>Total Amount Paid Till Date </Text>
                                            </View>
-                                           <View style={{flex: 1, marginLeft: 25}}>
-                                              {courses}
+                                           <View style={styles.textFormat}>
+                                             <Text>Rs 22000</Text>
                                            </View>
                                         </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Trainer </Text>
-                       </View>
-                          <View style={styles.textFormat}>
-                            <Text>Baghadeesh</Text>
+                    <View style={{marginLeft: 15, marginTop: 25, width: '90%'}}>
+                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails')}>
+                          <View>
+                                <Card style={{backgroundColor: '#e5d8bf'}}>
+                                    <CardItem style={{backgroundColor: '#d7c79e'}}>
+                                        <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <View style={{flex: 3}}><Text style={{fontWeight: 'bold'}}>Gym membership details </Text></View>
+                                            <View style={{marginLeft: 10, flex: 1}}><Icon size={20} name="md-arrow-dropright"/></View>
+                                        </View>
+                                    </CardItem>
+                                </Card>
                           </View>
+                          </TouchableOpacity>
+                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails')}>
+                          <View>
+                               <Card style={{backgroundColor: '#e5d8bf'}}>
+                                <CardItem style={{backgroundColor: '#d7c79e'}}>
+                                    <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                        <View style={{flex: 3}}><Text style={{fontWeight: 'bold'}}>Personal Training details </Text></View>
+                                        <View style={{marginLeft: 10, flex: 1}}><Icon size={20} name="md-arrow-dropright"/></View>
+                                    </View>
+                                </CardItem>
+                               </Card>
+                          </View>
+                          </TouchableOpacity>
                     </View>
-
-                    <View style={{margin: 50}}>
-                        <TouchableOpacity>
-                            <Button onPress={() => this.props.navigation.navigate('UpdateClient')} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Update the profile</Text></Button>
-                        </TouchableOpacity>
-                    </View>
-
                 </Content>
               </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
             </ScrollView>

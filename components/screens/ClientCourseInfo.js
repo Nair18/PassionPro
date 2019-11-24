@@ -12,7 +12,7 @@ export default class ClientCourseInfo extends Component {
   static navigationOptions = {
     title: 'Course Info',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
+    headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
   }
   _editable = () => {
@@ -26,7 +26,7 @@ export default class ClientCourseInfo extends Component {
   }
   render(){
     return(
-       <Container>
+       <Container style={{backgroundColor: '#efe9cc'}}>
          <ScrollView showHorizontalScrollbar={false}>
            <Content>
                              <View style={styles.imageView}>

@@ -57,30 +57,34 @@ export default class Admin extends Component {
         };
         var today = new Date();
     return(
-        <Container style={{backgroundColor: '#f0efef'}}>
+        <Container style={{backgroundColor: '#efe9cc'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#eadea6'}}>
+                                            <View style={{flex: 2, padding: 15}}>
+                                                <Text style={{fontWeight: 'bold', fontSize: 25}}>Fitness Center</Text>
+                                                <Text>koramangala</Text>
+                                            </View>
+                                          </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{padding: 15}}>
-                <Text style={{fontWeight: 'bold', color: 'black', fontSize: 20}}>Fitness center, koramangala</Text>
-            </View>
+
             <Content style={{margin: 15}}>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <View style={{flexDirection: 'row'}}>
                         <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Notification')}>
-                            <View style={styles.thumbnailBlock}><Icon size={40} name="md-notifications-outline"/></View>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./chat.png')}style={styles.thumbnail}/></View>
                             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <Text>Notification</Text>
+                                <Text style={{fontSize: 15}}>Notification</Text>
                             </View>
                             </TouchableOpacity>
                         <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerClient')}>
-                            <View style={styles.thumbnailBlock}><Icon size={40} name="md-people"></Icon></View>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./clients2.png')}style={styles.thumbnail}/></View>
                             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                              <Text>Clients</Text>
+                              <Text style={{fontSize: 15}}>Clients</Text>
                             </View>
                             </TouchableOpacity>
                         <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerProfile')}>
-                                                    <View style={styles.thumbnailBlock}><Icon size={40} name="md-person"></Icon></View>
+                                                    <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./profile.jpg')}style={styles.thumbnail}/></View>
                         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                          <Text>Profile</Text>
+                          <Text style={{fontSize: 15}}>Profile</Text>
                         </View>
                         </TouchableOpacity>
                     </View>
@@ -137,12 +141,9 @@ export default class Admin extends Component {
 
 const styles = StyleSheet.create({
 thumbnailBlock: {
-    marginRight: 10,
-    width: 90,
-    height: 90,
-    borderRadius: 50,
-    backgroundColor: 'grey',
-    justifyContent: 'center',
-    alignItems: 'center'
+   marginRight: 10,
+           width: 80,
+           justifyContent: 'center',
+           alignItems: 'center'
   },
 })

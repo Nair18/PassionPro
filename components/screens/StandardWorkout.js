@@ -21,7 +21,7 @@ export default class StandardWorkout extends Component {
     static navigationOptions = {
           title: 'Workout',
           headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: 'white', elevation: 0},
+          headerStyle: {backgroundColor: '#eadea6'},
           headerTintColor: 'black'
       }
     componentDidMount(){
@@ -29,7 +29,7 @@ export default class StandardWorkout extends Component {
                 }
     render(){
         return(
-            <Container style={{margin: 15}}>
+            <Container style={{padding: 15, backgroundColor: '#efe9cc'}}>
                 <Content>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{fontWeight: 'bold'}}>Believe in Yourself, its possible 💪</Text>

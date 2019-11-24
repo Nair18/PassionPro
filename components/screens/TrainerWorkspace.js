@@ -55,7 +55,7 @@ export default class TrainerWorkspace extends Component {
     static navigationOptions = {
             title: 'Workspace',
             headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: 'white', elevation: 0},
+            headerStyle: {backgroundColor: '#eadea6'},
             headerTintColor: 'black'
           }
     state = {
@@ -74,23 +74,47 @@ export default class TrainerWorkspace extends Component {
     render(){
 
         return(
-            <Container style={{backgroundColor: '#f0efef'}}>
+            <Container style={{backgroundColor: '#efe9cc'}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-
-                      <View style={{margin: 15}}>
-                        <Card>
-                        <CardItem header>
-                            <Text style={{fontWeight: 'bold'}}>Save your efforts by uploading pdf</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader', {URL: "https://happy-independence.herokuapp.com/"})}><Text>Upload PDF for workout plan</Text></Button>
-                        </CardItem>
-                        <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader', {URL: "https://happy-independence.herokuapp.com/"})}><Text>Upload PDF for meal plan</Text></Button>
-                        </CardItem>
-                        </Card>
-                      </View>
                       <Content style={styles.content}>
+                        <View style={{margin: 15}}>
+                                                <Card>
+                                                    <CardItem header style={{backgroundColor: '#d7c79e'}}>
+                                                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Client Summary</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>Name:</Text> Trainee Sharma</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>Gender:</Text> Male</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>Medical Issues:</Text> Leg injury</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>Goal:</Text> fit body in 6 months</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>PT start date:</Text> 2019-09-01</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>PT end date:</Text> 2019-12-01</Text>
+                                                    </CardItem>
+                                                </Card>
+                                            </View>
+
+                        <View style={{marginTop:10}}>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{flex: 2}}>
+                                    <Text style={{fontWeight: 'bold', fontSize: 20}}>Full week chart 🔥</Text>
+                                    <Text note>Last updated 2019-09-01</Text>
+                                </View>
+                                <View style={{flex: 1}}>
+                                    <Button style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Activity</Text></Button>
+                                </View>
+                            </View>
+
+                        </View>
                         <View>
                            {data.map(item =>
                                <View style={styles.cardListView}>
