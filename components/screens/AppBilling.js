@@ -45,7 +45,7 @@ export default class AppBilling extends Component{
 
 
   static navigationOptions = {
-        title: 'Membership Details',
+        title: 'Billing Details',
                         headerTitleStyle: { color: 'black', fontWeight: 'bold'},
                         headerStyle: {backgroundColor: '#eadea6'},
                         headerTintColor: 'black'
@@ -60,7 +60,7 @@ export default class AppBilling extends Component{
   }
   render(){
     return(
-      <Container style={{justifyContent: 'center', alignItems: 'center',backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: '#efe9cc'}}>
         <ScrollView showsVerticalScrollIndicator={false}>
         <Content style={{padding: 15}}>
           <View style={{marginTop: 10}}>
@@ -85,7 +85,7 @@ export default class AppBilling extends Component{
                    <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> 2019-09-10</Text>
                 </CardItem>
                 <CardItem>
-                   <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> Free </Text>
+                   <Text style={{fontWeight: 'bold'}}>Plan Type: <Text style={{color: 'green'}}> Free </Text></Text>
                 </CardItem>
              </Card>
           </View>

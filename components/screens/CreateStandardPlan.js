@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import {StyleSheet,View, StatusBar, ScrollView,Picker, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput} from 'react-native';
-import {Container, Content,Input,Item,Button, Text,Card,CardItem,Body,Form,Textarea } from 'native-base';
+import {StyleSheet,View, StatusBar, ScrollView,Picker, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, AsyncStorage, TextInput} from 'react-native';
+import {Container, Content,Input,Item,Button, Text,Card,CardItem,Spinner, Body,Form,Textarea } from 'native-base';
 import ModalSelector from 'react-native-modal-selector';
 import { Header } from 'react-navigation-stack';
 import constants from '../constants';
+import PageLoader from './PageLoader';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -11,81 +12,53 @@ export default class CreateStandardPlan extends Component {
   constructor(props){
     super(props)
     this.state = {
-      items: [{
-          id: '92iijs7yta',
-          name: 'Ondo',
-        }, {
-          id: 'a0s0a8ssbsd',
-          name: 'Ogun',
-        }, {
-          id: '16hbajsabsd',
-          name: 'Calabar',
-        }, {
-          id: 'nahs75a5sg',
-          name: 'Lagos',
-        }, {
-          id: '667atsas',
-          name: 'Maiduguri',
-        }, {
-          id: 'hsyasajs',
-          name: 'Anambra',
-        }, {
-          id: 'djsjudksjd',
-          name: 'Benue',
-        }, {
-          id: 'sdhyaysdj',
-          name: 'Kaduna',
-        }, {
-          id: 'suudydjsjd',
-          name: 'Abuja',
-        }],
-      data: [
-             {
-               "Day": 'Monday',
-               "workout": [
-                 {
-                   "exercise1": {"name": 'bench press', "reps": 2, "sets": 10, "duration": '10min'},
-                   "exercise-2": {"name": 'shoulder press', "reps": 2, "sets": 10, "duration": '10min'},
-                   "exercise-3": {"name": 'dumbell', "reps": 2, "sets": 10, "duration": '10min'}
-                 }
-               ]
-             },
-             {
-               "Day": 'Tuesday',
-               "workout": {
-
-               }
-             },
-             {
-               "Day": 'Wednesday',
-               "workout": {
-
-               }
-             },
-             {
-               "Day": 'Thursday',
-               "workout": {
-
-               }
-             }
-      ],
-
-      selectedItem: [],
-      visible: false
+      name: null,
+      description: null,
+      coursetype: this.props.navigation.state.params.coursetype,
+      courseType: null,
+      courseTypeName: null,
+      id: this.props.navigation.state.params.ID,
+      visible: false,
+      onProcess: false
     }
   }
 
 
   static navigationOptions = {
-    title: 'Create a Plan',
+    title: 'Create Workout Plan',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
     headerStyle: {backgroundColor: 'white', elevation: 0},
     headerTintColor: 'black'
   }
-
+  async retrieveItem(key) {
+                      try {
+                        const retrievedItem =  await AsyncStorage.getItem(key);
+                        console.log("key retrieved")
+                        return retrievedItem;
+                      } catch (error) {
+                        console.log(error.message);
+                      }
+                      return;
+  }
   componentDidMount(){
+    console.log("id has been retrieved", this.state.id)
+
+              const { navigation } = this.props;
+              console.log("pagal bana rhe hai")
+//              this.focusListener = navigation.addListener('didFocus', () => {
+                    console.log("The screen is focused")
+                    var key  = this.retrieveItem('key').then(res =>
+                                 this.setState({auth_key: res}, () => console.log("brother pls", res))
+                                 ).then(() => {
+                                      if(this.state.auth_key !== null){
+//                                          this.fetchDetails()
+                                      }
+                                 })
+//              });
 
   }
+
+
   onSelectedItemsChange = selectedItem => {
       this.setState({ selectedItem });
     };
@@ -93,54 +66,56 @@ export default class CreateStandardPlan extends Component {
     this.setState({visible: bool})
   }
     _back = () => {
-      this.props.navigation.goBack(this.props.navigation.state.params.go_back_key)
+      if(this.state.name == null || this.state.courseType == null){
+        Alert.alert('Incomplete Info', 'Plan Name and Session Type are mandatory fields')
+        return
+      }
+      this.setState({onProcess: true})
+      fetch(constants.API + 'current/admin/gym/'+ this.state.id + '/plans', {
+                              method: 'POST',
+                              headers: {
+                                  'Accept': 'application/json',
+                                  'Content-Type': 'application/json',
+                                  'Authorization': this.state.auth_key,
+                              },
+                              body: JSON.stringify({
+                                "name": this.state.name,
+                                "description": this.state.description,
+                                "couse_type": this.state.course_type
+                              })
+                          }).then(res => {
+                            if(res.status == 200){
+                                this.setState({onProcess: false})
+                                Alert.alert('✅ Success', 'Successfully added the plan')
+                                this.props.navigation.goBack(this.props.navigation.state.params.go_back_key)
+                            }
+                            else{
+                                this.setState({onProcess: false})
+                                Alert.alert('❌ Failed', 'Something went wrong ...')
+                            }
+                          })
+
 
     }
     render(){
-      let list = [
-        	{Id: 1, Name: 'Test1 Name', Value: 'Test1 Value'},
-        	{Id: 2, Name: 'Test2 Name', Value: 'Test2 Value'},
-        	{Id: 3, Name: 'Test3 Name', Value: 'Test3 Value'},
-        	{Id: 4, Name: 'Test4 Name', Value: 'Test4 Value'}
-        ]
-      let card = []
-      let options = [
-            {
-              key: 'kenya',
-              label: 'Kenya',
-            },
-            {
-              key: 'uganda',
-              label: 'Uganda',
-            },
-            {
-              key: 'libya',
-              label: 'Libya',
-            },
-            {
-              key: 'morocco',
-              label: 'Morocco',
-            },
-            {
-              key: 'estonia',
-              label: 'Estonia',
-            },
-          ];
+
 
       return(
         <Fragment>
            <StatusBar backgroundColor='black' barStyle='light-content' />
            <Container style={{padding: 15}}>
+              {this.state.coursetype !== null ?
               <ScrollView showsVerticalScrollIndicator={false}>
+
                 <Content>
                   <View style={styles.input}>
                     <Item regular>
-                      <Input placeholder="Name of the Plan"/>
+                      <Input placeholder="Name of the Plan" onChangeText = {text => this.setState({name: text})}/>
                     </Item>
                   </View>
                   <View style={{marginTop: 15}}>
                     <ModalSelector
-                        placeholder="Select a course type"
+                        placeholder="Select the Offering Type"
                         initValue={this.state.courseTypeName}
                         data={this.state.coursetype}
                         keyExtractor= {item => item.id}
@@ -156,7 +131,7 @@ export default class CreateStandardPlan extends Component {
                         <TextInput
                             style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
                             editable={false}
-                            placeholder="Select the course type"
+                            placeholder="Select the Offering Type"
                             value={this.state.courseTypeName}
                         />
 
@@ -164,17 +139,19 @@ export default class CreateStandardPlan extends Component {
                     </View>
                   <View style={styles.input}>
                     <Item regular>
-                      <Textarea rowSpan={5} placeholder="Description of the plan" />
+                      <Textarea rowSpan={5} onChangeText = {text => this.setState({description: text})} placeholder="Description of the plan(Optional)" />
                     </Item>
                   </View>
+
                   <View style={styles.buttonView}>
+                    {this.state.onProcess == false ?
                     <TouchableOpacity>
-                      <Button style={styles.button} onPress={this._back}><Text>Submit</Text></Button>
-                    </TouchableOpacity>
+                      <Button style={styles.button} onPress={this._back}><Text>Create Plan</Text></Button>
+                    </TouchableOpacity> : <Spinner color="black" />}
                   </View>
 
                 </Content>
-              </ScrollView>
+              </ScrollView> : <PageLoader />}
            </Container>
         </Fragment>
       );
@@ -201,6 +178,6 @@ export default class CreateStandardPlan extends Component {
       alignItems: 'center'
     },
     button: {
-      backgroundColor: 'black'
+      backgroundColor: '#1d4d4f'
     }
   });

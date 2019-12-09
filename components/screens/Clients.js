@@ -6,7 +6,7 @@ import ClientInfo from './ClientInfo';
 import constants from '../constants';
 import PageLoader from './PageLoader';
 import DatePicker from 'react-native-datepicker'
-import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Label,Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
+import { Container, Header, Content, List, ListItem, Form, Left, Item, Input,Spinner, Label,Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
 import { debounce } from "lodash";
 
 export default class Clients extends PureComponent {
@@ -22,11 +22,25 @@ export default class Clients extends PureComponent {
       traineeList: null,
       traineeSub: null,
       auth_key: null,
+      onProcess: false,
+      address: null,
+      phone: null,
+      emergency_phone: null,
+      emergency_person: null,
+      relation_with_person: null,
+      name: null,
+      amount: null,
+      dob: null,
+      start_date: null,
+      end_date: null,
+      gender: "MALE",
+      email: null,
       id: this.props.navigation.state.params.ID
     };
 
   setModalVisible(visible) {
       this.setState({modalVisible: visible});
+      this.fetchDetails()
   }
 
   onChangeSearchInput = (text)=> {
@@ -34,8 +48,30 @@ export default class Clients extends PureComponent {
   };
 
   debouncedSearch = debounce(function (query) {
-      console.log("debouncing")
-  }, 300);
+       this.setState({onProcess: true})
+      fetch(constants.API + 'current/admin/gyms/'+this.state.id + '/trainee-search?phone='+ query, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth_key,
+        }
+      }).then(res => {
+        if(res.status !== 200){
+            this.setState({onProcess: false})
+            Alert.alert('OOps!!', 'Something went wrong')
+            return null
+        }
+        else{
+//            this.setState({onProcess: false})
+            return res.json()
+        }
+      }).then(res => {
+        if(res !== null){
+            this.setState({traineeList: res["trainees"], onProcess: false}, () => console.log(res, "Hello frands"))
+        }
+      })
+  }, 100);
 
   componentWillUnmount() {
         // Remove the event listener
@@ -48,22 +84,19 @@ export default class Clients extends PureComponent {
 
           const { navigation } = this.props;
           console.log("pagal bana rhe hai")
-          this.focusListener = navigation.addListener('didFocus', () => {
-                console.log("The screen is focused")
-                var key  = this.retrieveItem('key').then(res =>
-                             this.setState({auth_key: res}, () => console.log("brother pls", res))
-                             ).then(() => {
-                                  if(this.state.auth_key !== null){
-                                      this.fetchDetails()
-                                  }
-                             })
-          });
+          console.log("The screen is focused")
+          var key  = this.retrieveItem('key').then(res =>
+             this.setState({auth_key: res}, () => console.log("brother pls", res))
+             ).then(() => {
+                     if(this.state.auth_key !== null){
+                        this.fetchDetails()
+                     }
+             })
+  }
 
-      }
-
-      fetchDetails = () => {
+  fetchDetails = () => {
           console.log("what is the id ", this.state.id)
-          let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/trainees/', {
+          fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/trainees/', {
               method: 'GET',
               headers: {
                   'Accept': 'application/json',
@@ -88,9 +121,9 @@ export default class Clients extends PureComponent {
                                                      );
                   }
               }
-          ).then(res => this.setState({traineeList: res["trainees"]}))
+          ).then(res => this.setState({traineeList: res["trainees"]},() => console.log(res["trainees"])))
       }
-      retrieveItem = async (key) => {
+      async retrieveItem(key){
                 try {
                   const retrievedItem =  await AsyncStorage.getItem(key);
                   console.log("key retrieved")
@@ -101,28 +134,78 @@ export default class Clients extends PureComponent {
                 return;
       }
 
+  onSubmit = () => {
+    console.log(this.state)
+    if(this.state.name === null || this.state.gender === null || this.state.amount === null
+    || this.state.start_date === null || this.state.end_date === null || this.state.phone === null || this.state.email === null){
+        Alert.alert('Incomplete Info', "All '*' fields are mandatory")
+        return
+    }
+    this.setState({onProcess: true})
+    fetch(constants.API + 'current/admin/gyms/trainees/',{
+        method: 'POST',
+        headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json',
+                          'Authorization': this.state.auth_key,
+                 },
+        body: JSON.stringify({
+          "address": this.state.address,
+          "amount": this.state.amount,
+          "dob": this.state.dob,
+          "email": this.state.email,
+          "emergency_person": this.state.emergency_person,
+          "emergency_phone": this.state.emergency_phone,
+          "end_date": this.state.end_date,
+          "gender": this.state.gender,
+          "is_active": true,
+          "name": this.state.name,
+          "passkey": this.state.id,
+          "password": "admin",
+          "phone": this.state.phone,
+          "relation_with_person": this.state.relation_with_person,
+          "start_date": this.state.start_date
+        })
+    }).then(res => {
+            if(res.status === 200){
+                this.setState({onProcess: false})
+                Alert.alert(constants.success, 'Successfully added the client')
+                this.setModalVisible(false)
+            }
+            else if(res.status === 401){
+                this.setState({onProccess: false})
+                this.props.navigation.navigate('LandingPage')
+                return null
+            }
+            else{
+                this.setState({onProcess: false})
+                Alert.alert(constants.failed, 'Something went wrong')
+                return null
+            }
+        })
+  }
   render() {
     return (
     <Fragment>
       <Container style={{backgroundColor: '#efe9cc'}}>
 
         <Content>
-         {this.state.traineeList !== null ?
+         {this.state.traineeList  !== null ?
           <View style={{margin:15}}>
             <Item rounded>
                  <Input keyboardType='numeric' onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
             </Item>
           </View> : null }
           <List>
-            {this.state.traineeList !== null ? this.state.traineeList.map((trainee, index) =>
-                <ListItem avatar onPress={() => this.props.navigation.navigate('ClientInfo', {DATA: null})}>
+            {this.state.traineeList !== null && this.state.onProcess == false ? this.state.traineeList.map((trainee) =>
+                <ListItem avatar onPress={() => this.props.navigation.navigate('ClientInfo', {client_id: trainee["id"], id: this.state.id})}>
                     <Left>
                         <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
                     </Left>
                    <Body>
                         <View>
-                        <Text>Karthik Nair</Text>
-                        <Text note>Membership ends on </Text>
+                        <Text style={{fontWeight: 'bold'}}>{trainee["name"]}</Text>
+                        <Text note>Mobile - {trainee["phone"]}</Text>
                         </View>
                    </Body>
                 </ListItem>) : <PageLoader/>}
@@ -151,70 +234,74 @@ export default class Clients extends PureComponent {
           <Content style={styles.content}>
             <Form>
                <Item style={styles.item}>
-                  <Input placeholder="Name" />
+                  <Label>Name <Text style={{color: 'red'}}>*</Text> - </Label>
+                  <Input onChangeText={text => this.setState({name: text})}/>
                </Item>
                <Item style={styles.item}>
-                  <Input keyboardType="numeric" placeholder="Phone number" />
+                  <Label>Phone <Text style={{color: 'red'}}>*</Text> - </Label>
+                  <Input keyboardType="numeric" onChangeText={text => this.setState({phone: text})} />
                </Item>
                <Item style={styles.item}>
-                  <Input placeholder="Email" />
+                  <Label>Email <Text style={{color: 'red'}}>*</Text> - </Label>
+                  <Input onChangeText={text => this.setState({email: text})} />
                </Item>
                <Item style={styles.item}>
-                 <Input placeholder="Password" />
+                 <Label>DoB</Label>
+                 <DatePicker
+                                                           style={{width: 200}}
+                                                           date={this.state.dob}
+                                                           mode="date"
+                                                           placeholder="Select Date of Birth"
+                                                           format="YYYY-MM-DD"
+                                                           minDate="1900-01-01"
+                                                           maxDate= "2099-01-01"
+                                                           confirmBtnText="Confirm"
+                                                           cancelBtnText="Cancel"
+                                                           customStyles={{
+                                                             dateIcon: {
+                                                               position: 'absolute',
+                                                               left: 0,
+                                                               top: 4,
+                                                               marginLeft: 0
+                                                             },
+                                                             dateInput: {
+                                                               marginLeft: 36
+                                                             }
+                                                             // ... You can check the source to find the other keys.
+                                                           }}
+                                                           onDateChange={(date) => {this.setState({dob: date})}}
+                                                         />
                </Item>
                <Item style={styles.item}>
-                 <Input keyboardType="numeric" placeholder="Age" />
-               </Item>
-               <Item style={styles.item}>
+                  <Label>Gender <Text style={{color: 'red'}}>*</Text> - </Label>
                   <Picker
                   note
                   mode="dropdown"
                   style={{ width: 120 }}
-
+                  selectedValue={this.state.gender}
+                  onValueChange={(itemValue, itemIndex) =>
+                      this.setState({gender: itemValue.toUpperCase()})
+                  }
                   >
-                  <Picker.Item label="Male" value="key0" />
-                  <Picker.Item label="Female" value="key1" />
+                  <Picker.Item label="Male" value="MALE" />
+                  <Picker.Item label="Female" value="FEMALE" />
                   </Picker>
                </Item>
                <Item style={styles.item}>
-                 <Input placeholder="Address" />
+                 <Label>Address - </Label>
+                 <Input onChangeText={text => this.setState({address: text})} />
                </Item>
-               <Item style={styles.item}>
-                   <Picker
-                      note
-                      mode="dropdown"
-                      style={{ width: 120 }}
 
-
-                    >
-                    <Picker.Item label="Select course" value="key0" />
-                    <Picker.Item label="6 months membership" value="key1" />
-                    <Picker.Item label="Zumba class" value="key2" />
-                    <Picker.Item label="Aerobics classes" value="key3" />
-                    <Picker.Item label="Hip hop class" value="key4" />
-                    <Picker.Item label="Comtemprary dance" value="key5" />
-                                        <Picker.Item label="3 months membership" value="key6" />
-                                        <Picker.Item label="zumba + aerobics class" value="key7" />
-                                        <Picker.Item label="Defence course" value="key8" /><Picker.Item label="ATM Card" value="key9" />
-                                                                                                            <Picker.Item label="Kick boxing class" value="key10" />
-                                                                                                            <Picker.Item label="MMA Training" value="key11" />
-                                                                                                            <Picker.Item label="Bulking Course" value="key12" />
-                                                                                                            <Picker.Item label="Mass gain course" value="key13" />
-                                                                                                                                <Picker.Item label="Bulking Course level-1" value="key14" />
-                                                                                                                                <Picker.Item label="Bulking Course level-2" value="key15" />
-                                                                                                                                <Picker.Item label="Bulking Course level-3" value="key16" />
-                   </Picker>
-                </Item>
                 <Item style={styles.item}>
-                                  <Label>Start Date</Label>
+                                  <Label>Start Date <Text style={{color: 'red'}}>*</Text> - </Label>
                                   <DatePicker
                                           style={{width: 200}}
-                                          date={this.state.date}
+                                          date={this.state.start_date}
                                           mode="date"
                                           placeholder="select start date"
                                           format="YYYY-MM-DD"
-                                          minDate="2016-05-01"
-                                          maxDate="2016-06-01"
+                                          minDate="1900-01-01"
+                                          maxDate="2099-01-01"
                                           confirmBtnText="Confirm"
                                           cancelBtnText="Cancel"
                                           customStyles={{
@@ -229,19 +316,19 @@ export default class Clients extends PureComponent {
                                             }
                                             // ... You can check the source to find the other keys.
                                           }}
-                                          onDateChange={(date) => {this.setState({date: date})}}
+                                          onDateChange={(date) => {this.setState({start_date: date})}}
                                         />
                                </Item>
                <Item style={styles.item}>
-                                 <Label>End Date</Label>
+                                 <Label>End Date <Text style={{color: 'red'}}>*</Text> - </Label>
                                  <DatePicker
                                          style={{width: 200}}
-                                         date={this.state.date}
+                                         date={this.state.end_date}
                                          mode="date"
                                          placeholder="select end date"
                                          format="YYYY-MM-DD"
-                                         minDate="2016-05-01"
-                                         maxDate="2016-06-01"
+                                         minDate="1900-01-01"
+                                         maxDate="2099-01-01"
                                          confirmBtnText="Confirm"
                                          cancelBtnText="Cancel"
                                          customStyles={{
@@ -256,27 +343,29 @@ export default class Clients extends PureComponent {
                                            }
                                            // ... You can check the source to find the other keys.
                                          }}
-                                         onDateChange={(date) => {this.setState({date: date})}}
+                                         onDateChange={(date) => {this.setState({end_date: date})}}
                                        />
                               </Item>
 
                 <Item style={styles.item}>
-                                <Input keyboardType="numeric" placeholder="Amount paid" />
+                                <Label>Amount Paid <Text style={{color: 'red'}}>*</Text> - </Label>
+                                <Input keyboardType="numeric" onChangeText={text => this.setState({amount: parseInt(text)})} />
                               </Item>
                <Item style={styles.item}>
-                 <Input placeholder="Emergency contact person's name" />
+                 <Input placeholder="Emergency contact person's name" onChangeText={text => this.setState({emergency_person: text})}/>
                </Item>
                <Item style={styles.item}>
-                                <Input placeholder="Relation with the person" />
+                                <Input placeholder="Relation with the person" onChangeText={text => this.setState({relation_with_person: text})}/>
                               </Item>
                <Item style={styles.item}>
-                 <Input keyboardType="numeric" placeholder="Emergency Phone number" />
+                 <Input keyboardType="numeric" placeholder="Emergency Phone number" onChangeText={text => this.setState({emergency_phone: text})}/>
                </Item>
-               <View last style={{alignItems: 'center',justifyContent: 'center', margin: 15, }}>
-               <Button rounded style={{backgroundColor: 'black'}}>
-                 <Text>Submit</Text>
-               </Button>
-               </View>
+               {this.state.onProcess == false ?
+                    <View last style={{alignItems: 'center',justifyContent: 'center', margin: 15, }}>
+                        <Button style={{backgroundColor: 'black'}} onPress={this.onSubmit}>
+                            <Text>Add Client</Text>
+                        </Button>
+                    </View> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View>}
             </Form>
           </Content>
         </Modal>

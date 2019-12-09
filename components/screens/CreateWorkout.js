@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModalSelector from 'react-native-modal-selector';
 import constants from '../constants';
-import {Container, Accordion,Thumbnail, Spinner, List, Card, Input, Textarea, Item, ListItem,CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, Spinner, List, Card, Input, Label,Textarea, Item, ListItem,CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 export default class CreateWorkout extends Component {
     constructor(props){
@@ -36,9 +36,9 @@ export default class CreateWorkout extends Component {
         }
     }
     static navigationOptions = {
-          title: 'Create Workout',
+          title: 'Add Workout',
           headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: 'white', elevation: 0},
+          headerStyle: {backgroundColor: '#eadea6'},
           headerTintColor: 'black'
       }
 
@@ -47,16 +47,16 @@ export default class CreateWorkout extends Component {
                 console.log("exercise", this.state.exercise)
                 const { navigation } = this.props;
                 console.log("pagal bana rhe hai")
-                this.focusListener = navigation.addListener('didFocus', () => {
+//                this.focusListener = navigation.addListener('didFocus', () => {
                     console.log("The screen is focused")
                      var key  = this.retrieveItem('key').then(res =>
                                  this.setState({auth_key: res}, () => console.log("brother pls", res))
                                  ).then(() => {
                                       if(this.state.auth_key !== null){
-//                                          this.fetchDetails()
+//                                         this.fetchDetails()
                                       }
                                  })
-                });
+//                });
 
             }
 
@@ -67,6 +67,31 @@ export default class CreateWorkout extends Component {
       }
 
       fetchDetails = () => {
+        console.log("fetch mei aaya")
+        fetch(constants.API + 'current/admin/gyms/'+this.state.gym_id + '/exercises', {
+           method: 'GET',
+           headers: {
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Authorization': this.state.auth_key,
+           },
+        }).then(res => {
+            if(res.status === 200){
+                return res.json()
+            }
+            else{
+                Alert.alert(constants.failed, constants.fail_error)
+                return null
+            }
+        }).then(
+            res => {
+                if(res !== null && this.state.exercise){
+                    this.setState({exerciseList: res[this.state.exercise]}, () => console.log(res[this.state.exercise]))
+                }
+            }
+        )
+      }
+      onSubmit = () => {
                 this.setState({onProcess: true})
                 console.log(this.state.gym_id, this.state.plan_id, this.state.day)
                 let course_list = fetch(constants.API + 'current/admin/gym/'+ this.state.gym_id + '/plans/'+this.state.plan_id + '/days/'+this.state.day.toUpperCase(), {
@@ -77,7 +102,7 @@ export default class CreateWorkout extends Component {
                         'Authorization': this.state.auth_key,
                     },
                     body: JSON.stringify({
-                         "duration": this.state.duration,
+                         "duration": parseInt(this.state.duration),
                           "exercise_id": parseInt(this.state.exercise_id),
                           "instruction": this.state.instruction,
                           "reps": this.state.rep,
@@ -90,8 +115,8 @@ export default class CreateWorkout extends Component {
                         if(res.status === 200){
                             this.setState({onProcess: false})
                             Alert.alert(
-                               'Yayy!!',
-                               'Workout added ...',
+                               constants.success,
+                               'Successfully added the workout',
                                [
                                   {text: 'OK', onPress: () => console.log('OK Pressed')},
                                ],
@@ -102,8 +127,8 @@ export default class CreateWorkout extends Component {
                             this.setState({loading: false, onProcess: false})
                                                            console.log(this.state)
                                                            Alert.alert(
-                                                             'OOps!',
-                                                             'Something went wrong ...',
+                                                             constants.failed,
+                                                             'Something went wrong',
                                                               [
                                                                   {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                               ],
@@ -132,14 +157,14 @@ export default class CreateWorkout extends Component {
                 <Content style={{margin: 15}}>
                 {this.state.exercise !== null ?
                     <View style={{marginTop: 15}}>
-                        <View style={{margin: 15}}>
+                        <View>
+                            <Label>Exercise <Text style={{color: 'red'}}>*</Text></Label>
                                                <ModalSelector
-                                                   placeholder="Select exercise"
+                                                   placeholder="Select Exercise"
                                                    initValue={this.state.exerciseName}
                                                    data={this.state.exercise}
                                                    keyExtractor= {item => item.id}
                                                    labelExtractor= {item => item.exercise_name}
-                                                   initValue={this.state.exerciseName}
                                                    supportedOrientations={['landscape']}
                                                    accessible={true}
                                                    scrollViewAccessibilityLabel={'Scrollable options'}
@@ -151,31 +176,36 @@ export default class CreateWorkout extends Component {
                                                    <TextInput
                                                      style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
                                                      editable={false}
-                                                     placeholder="Select the course type"
+                                                     placeholder="Select Exercise"
                                                      value={this.state.exerciseName}
                                                    />
                                                  </ModalSelector>
                                        </View>
                         <View >
                             <Item style={{marginTop: 10}}>
-                               <Input onChangeText = {text => this.setState({set: text})} keyboardType='numeric' placeholder="Sets"/>
+                               <Label>Sets - </Label>
+                                <Input onChangeText = {text => this.setState({set: text})} keyboardType='numeric' />
                             </Item>
                             <Item style={{marginTop: 10}}>
-                                <Input onChangeText = {text => this.setState({rep: text})} keyboardType='numeric' placeholder="Reps"/>
+                                <Label>Reps - </Label>
+                                <Input onChangeText = {text => this.setState({rep: text})} keyboardType='numeric'/>
                             </Item>
                             <Item style={{marginTop: 10}}>
-                                <Input onChangeText = {text => this.setState({weight: text})} keyboardType='numeric' placeholder="Weight(Kg)" />
+                                <Label>Weight(kg) - </Label>
+                                <Input onChangeText = {text => this.setState({weight: text})} keyboardType='numeric'/>
                             </Item>
                             <Item style={{marginTop: 10}}>
-                                <Input onChangeText = {text => this.setState({duration: parseInt(text)})} keyboardType='numeric' placeholder="Duration" />
+                                <Label>Duration(min) - </Label>
+                                <Input onChangeText = {text => this.setState({duration: parseInt(text)})} keyboardType='numeric'/>
                             </Item>
-                            <Item regular style={{marginTop: 10}}>
-                                <Textarea rowSpan={5} onChangeText = {text => this.setState({instruction: text})} placeholder="Instructions"/>
+                            <Item style={{marginTop: 10}}>
+                                <Label>Instruction - </Label>
+                                <Input rowSpan={2} onChangeText = {text => this.setState({instruction: text})}/>
                             </Item>
                         </View>
                         {this.state.onProcess === false ?
                         <View style={{marginTop: 15, justifyContent: 'center', alignItems: 'center'}}>
-                              <Button style={{backgroundColor: 'black'}} onPress={this.fetchDetails}><Text style={{color: 'white'}}>Save</Text></Button>
+                              <Button style={{backgroundColor: 'black'}} onPress={this.onSubmit}><Text style={{color: 'white'}}>Add workout</Text></Button>
                         </View>: <Spinner color="black" />}
                     </View>
                     : <Spinner color="black"/>}

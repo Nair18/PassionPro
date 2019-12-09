@@ -11,7 +11,6 @@ import {
   View,
   Alert,
   AsyncStorage,
-
   AppState,
 } from 'react-native';
 import constants from '../constants';
@@ -22,11 +21,14 @@ import Clients from './Clients';
 import Plans from './Plans';
 import Trainer from './Trainer';
 import Request from './Request';
+import OfflineNotice from './OfflineNotice';
 import ProfileSkeleton from './ProfileSkeleton'
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import Icon from 'react-native-vector-icons/Ionicons';
 import AdminProfile from './AdminProfile';
-import {Container, Accordion,Thumbnail, Card,ListItem, Spinner,Textarea,Radio, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right,CheckBox} from 'native-base';
+import AddExercise from './AddExercise';
+import FinancialHistory from './FinancialHistory';
+import {Container, Badge, Accordion,Thumbnail, Card,ListItem, Spinner,Textarea,Radio, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right,CheckBox} from 'native-base';
 
 
 export default class Admin extends PureComponent {
@@ -106,8 +108,8 @@ export default class Admin extends PureComponent {
                              } else {
                                this.setState({loading: false})
                                Alert.alert(
-                                 'OOps!',
-                                 'Something went wrong ...',
+                                 constants.failed,
+                                 'Something went wrong',
                                   [
                                       {text: 'OK', onPress: () => console.log('OK Pressed')},
                                   ],
@@ -121,6 +123,7 @@ export default class Admin extends PureComponent {
                                 if(id !== null){
                                     id = id[0]["id"]
                                     this.setState({gymId: id})
+
                                     fetch(constants.API + 'current/admin/gyms/'+id+'/overview', {
                                         method: 'GET',
                                         headers: {
@@ -132,16 +135,19 @@ export default class Admin extends PureComponent {
                                         if(res.status === 200){
                                             return res.json();
                                         }
+                                        else if(res.status === 401){
+                                          this.props.navigation.navigate('LandingPage')
+                                        }
                                         else{
                                             this.setState({loading2: false})
                                             Alert.alert(
-                                            'OOps!',
-                                            'Something went wrong ...',
-                                            [
-                                                {text: 'OK', onPress: () => console.log('OK Pressed')},
-                                            ],
-                                            {cancelable: false},
-                                          );
+                                              constants.failed,
+                                              'Something went wrong.',
+                                              [
+                                                 {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                              ],
+                                              {cancelable: false},
+                                            );
                                         }
                                     }).then( res => this.setState({overview: res, loading2: false}))
                                 }
@@ -191,10 +197,10 @@ export default class Admin extends PureComponent {
                                     }).then(res => {
                                         if(res.status === 200){
                                             this.setState({sendProcess: false, visible: false})
-                                            Alert.alert("Success", "Message was successfully delivered ...")
+                                            Alert.alert(constants.success, "Message was successfully delivered.")
                                         }
                                         else{
-                                            Alert.alert("OOps!!", "Something went wrong. Message was not delivered ...")
+                                            Alert.alert(constants.failed, "Something went wrong. Message was not delivered.")
                                             this.setState({sendProcess: false})
                                         }
                                     })
@@ -228,12 +234,18 @@ export default class Admin extends PureComponent {
             var today = new Date();
     return(
       <Fragment>
+         <OfflineNotice/>
          {(this.state.overview === null) ? <ProfileSkeleton/> :
          (<Container style={{backgroundColor: '#efe9cc'}}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between', elevation: 1, backgroundColor: '#eadea6'}}>
-                    <View style={{flex: 2, padding: 15}}>
-                        <Text style={{fontWeight: 'bold', fontSize: 25}}>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["name"] : "Loading ..."}</Text>
-                        <Text>koramangala</Text>
+                    <View style={{padding: 15, flex: 2, fontSize: 25}}>
+                        <Text style={{fontWeight: 'bold'}}>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["name"] : "Loading ..."}</Text>
+                        <Text style={{fontSize: 15}} note>koramangala</Text>
+                    </View>
+                    <View style={{padding:15, justifyContent: 'center', alignItems: 'center'}}>
+                        <Badge success>
+                             <Text>Admin</Text>
+                        </Badge>
                     </View>
                   </View>
                   <ScrollView showsVerticalScrollIndicator={false}>
@@ -251,7 +263,11 @@ export default class Admin extends PureComponent {
                             <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Trainers</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Requests</Text></View></TouchableOpacity>
-                                <TouchableOpacity activeOpacity={1} key={6} onPress={() => this.props.navigation.navigate('AdminProfile')}>
+                                <TouchableOpacity activeOpacity={1} key={6} onPress={() => this.props.navigation.navigate('AddExercise', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./exercise.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Exercise</Text></View></TouchableOpacity>
+                                <TouchableOpacity activeOpacity={1} key={7} onPress={() => this.props.navigation.navigate('Sessions', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./classes.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Offerings</Text></View></TouchableOpacity>
+                                <TouchableOpacity activeOpacity={1} key={8} onPress={() => this.props.navigation.navigate('AdminProfile',{ID: this.state.gymId, navigation: this.props.navigation})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Profile</Text></View></TouchableOpacity>
                             </View>
                          </ScrollView>
@@ -263,53 +279,97 @@ export default class Admin extends PureComponent {
                             <Text style={{fontWeight: 'bold'}}>Overview</Text>
                         </View>
                          <View style={{marginTop: 10}}>
+                                             <View style={{flex: 1}}>
+                                                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('FinancialHistory')}>
+                                                    <Card>
+                                                        <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 80}}>
+                                                            <View>
+                                                                <Text>Total money <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>received</Text> from clients <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>till now</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>2019</Text></Text>
+                                                            </View>
+                                                        </CardItem>
+                                                        <CardItem style={{justifyContent: 'center', alignItems: 'center'}}>
+                                                             <Text style={{fontWeight: 'bold', fontSize: 50}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}>3250000</Text></Text>
+                                                        </CardItem>
+                                                        <CardItem footer style={{justifyContent: 'space-between'}}>
+                                                            <View />
+                                                            <View>
+                                                               <Icon name="md-arrow-round-forward" size={20}/>
+                                                            </View>
+                                                        </CardItem>
+                                                    </Card>
+                                                </TouchableOpacity>
+                                             </View>
                                              <View style={{flexDirection: 'row'}}>
-                                                 <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
-                                                     <Card style={{height: 200}}>
-                                                         <CardItem header>
-                                                             <Text>New members in last 1 month</Text>
+                                                <View style={{flex: 1}}>
+                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["members_in_month"]["details"], id: this.state.gymId})}>
+                                                     <Card>
+                                                         <CardItem style={{backgroundColor: "#f4f4f4", height: 80}}>
+                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4'}}>New members</Text> in last <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>1 month</Text></Text>
                                                          </CardItem>
                                                          <CardItem>
-                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["members_in_month"]["count"] : null}</Text>client(s)</Text>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50, color: '#2c7873'}}>{this.state.overview !== null ? this.state.overview["members_in_month"]["count"] : null}</Text>client(s)</Text>
+                                                         </CardItem>
+                                                         <CardItem footer style={{justifyContent: 'space-between'}}>
+                                                            <View />
+                                                            <View>
+                                                                <Icon name="md-arrow-round-forward" size={20}/>
+                                                            </View>
                                                          </CardItem>
                                                      </Card>
                                                      </TouchableOpacity>
-                                                 </View>
-                                                 <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
-                                                     <Card style={{height: 200}}>
-                                                        <CardItem>
-                                                             <Text>Currently taking personal training</Text>
+                                                </View>
+                                                <View style={{flex: 1}}>
+                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["all_pt_members"]["details"], id: this.state.gymId})}>
+                                                     <Card>
+                                                        <CardItem style={{backgroundColor: "#f4f4f4", height: 80}}>
+                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4'}}>Currently</Text> taking <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>personal training</Text></Text>
                                                         </CardItem>
                                                         <CardItem>
-                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["all_pt_members"]["count"] : null}</Text>client(s)</Text>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50, color: '#2c7873'}}>{this.state.overview !== null ? this.state.overview["all_pt_members"]["count"] : null}</Text>client(s)</Text>
+                                                        </CardItem>
+                                                        <CardItem footer style={{justifyContent: 'space-between'}}>
+                                                            <View />
+                                                            <View>
+                                                               <Icon name="md-arrow-round-forward" size={20}/>
+                                                            </View>
                                                         </CardItem>
                                                      </Card>
                                                      </TouchableOpacity>
-                                                 </View>
+                                                </View>
                                              </View>
                                              <View style={{flexDirection: 'row'}}>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
-                                                     <Card style={{height: 200}}>
-                                                        <CardItem header>
-                                                             <Text>Personal training expires in 1 month for</Text>
+                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["pt_expiring"]["details"], id: this.state.gymId})}>
+                                                     <Card>
+                                                        <CardItem style={{backgroundColor: "#f4f4f4", height: 80}}>
+                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4'}}>Personal training</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d'}}>expires</Text> within <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>1 month</Text> for</Text>
                                                         </CardItem>
                                                         <CardItem>
-                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["pt_expiring"]["count"] : null}</Text>client(s)</Text>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50, color: '#9d0b0b'}}>{this.state.overview !== null ? this.state.overview["pt_expiring"]["count"] : null}</Text>client(s)</Text>
+                                                        </CardItem>
+                                                        <CardItem footer style={{justifyContent: 'space-between'}}>
+                                                        <View />
+                                                        <View>
+                                                            <Icon name="md-arrow-round-forward" size={20}/>
+                                                        </View>
                                                         </CardItem>
                                                      </Card>
                                                      </TouchableOpacity>
                                                  </View>
                                                  <View style={{flex: 1}}>
-                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {DETAILS: this.state.overview["members_in_month"]["details"]})}>
-                                                     <Card style={{height: 200}}>
-                                                        <CardItem>
-                                                             <Text>Gym Membership expires in 1 month for</Text>
+                                                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["membership_expiring"]["details"], id: this.state.gymId})}>
+                                                     <Card>
+                                                        <CardItem  style={{backgroundColor: "#f4f4f4", height: 80}}>
+                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4'}}>Membership</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d'}}>expires</Text> within <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>1 month</Text> for</Text>
                                                         </CardItem>
                                                         <CardItem>
-                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50}}>{this.state.overview !== null ? this.state.overview["membership_expiring"]["count"] : null }</Text>client(s)</Text>
+                                                             <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 50, color: '#9d0b0b'}}>{this.state.overview !== null ? this.state.overview["membership_expiring"]["count"] : null }</Text>client(s)</Text>
+                                                        </CardItem>
+                                                        <CardItem footer style={{justifyContent: 'space-between'}}>
+                                                             <View />
+                                                             <View>
+                                                                 <Icon name="md-arrow-round-forward" size={20}/>
+                                                             </View>
                                                         </CardItem>
                                                      </Card>
                                                      </TouchableOpacity>
@@ -324,9 +384,9 @@ export default class Admin extends PureComponent {
                    <View style={{marginTop: 10}}>
                       <Card>
                         <CardItem header>
-                            <Textarea selectable rowSpan={5} onChangeText={text => this.setState({message: text})} placeholder="Send notifications to trainers and clients..."/>
+                            <Textarea selectable onChangeText={text => this.setState({message: text})} placeholder="Send notifications to trainers and clients..."/>
                         </CardItem>
-                        <CardItem footer style={{justifyContent: 'center', alignItems: 'center'}}>
+                        <CardItem footer style={{justifyContent: 'center', alignItems: 'center', backgroundColor:'#e5dfdf'}}>
                             <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Post</Text></Button>
                         </CardItem>
                       </Card>

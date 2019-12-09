@@ -45,7 +45,7 @@ export default class Notification extends Component {
                                   </Hyperlink>
                             </CardItem>
                             <CardItem >
-                              <Button onPress={() => { Linking.openURL('https://neilpatel.com/ubersuggest/')}}><Text>Open</Text></Button>
+
                             </CardItem>
                         </Card>
                     </View>

@@ -5,7 +5,7 @@ import TrainerPage from './TrainerPage';
 import DatePicker from 'react-native-datepicker';
 import constants from '../constants';
 import PageLoader from './PageLoader';
-import { Container, Header, Content, List, ListItem, Form, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Label,Text } from 'native-base';
+import { Container, Header, Content, List, ListItem, Form, Left, Item,Spinner, Input, Body,Button, Picker, Right, Thumbnail, Label,Text } from 'native-base';
 import {debounce} from 'lodash';
 
 export default class Trainer extends PureComponent {
@@ -15,6 +15,17 @@ export default class Trainer extends PureComponent {
          modalVisible: false,
          id: this.props.navigation.state.params.ID,
          auth_key: null,
+         onProcess: false,
+         name: null,
+         dob: null,
+         start_date: null,
+         certifications: null,
+         relation_with_person: null,
+         emergency_person: null,
+         emergency_phone: null,
+         phone: null,
+         email: null,
+         gender: "MALE",
          date: new Date(),
          trainerList: null,
 
@@ -50,7 +61,7 @@ export default class Trainer extends PureComponent {
 
       debouncedSearch = debounce(function (query) {
           console.log("debouncing")
-      }, 300);
+      }, 100);
 
     async retrieveItem(key) {
             try {
@@ -99,7 +110,56 @@ export default class Trainer extends PureComponent {
         this.focusListener.remove();
 
     }
-
+    onSubmit = () => {
+        console.log("state", this.state)
+        if(this.state.name === null || this.state.email === null || this.state.gender === null ||
+        this.state.phone === null || this.state.start_date === null){
+            Alert.alert(constants.incomplete_info, "All '*' fields are mandatory")
+            return
+        }
+        this.setState({onProcess: true})
+        fetch(constants.API + 'current/admin/gyms/trainers/', {
+            method: 'POST',
+            headers: {
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Authorization': this.state.auth_key,
+            },
+            body: JSON.stringify({
+              "address": this.state.address,
+              "certifications": this.state.certifications,
+              "dob": this.state.dob,
+              "email": this.state.email,
+              "emergency_person": this.state.emergency_person,
+              "emergency_phone": this.state.emergency_phone,
+              "gender": this.state.gender,
+              "amount": 0,
+              "is_active": true,
+              "name": this.state.name,
+              "passkey": this.state.id,
+              "password": "admin",
+              "phone": this.state.phone,
+              "relation_with_person": this.state.relation_with_person,
+              "start_date": this.state.start_date
+            })
+        }).then(res => {
+            if(res.status === 200){
+                this.setState({onProcess: false, modalVisible: false}, () => this.fetchDetails())
+                Alert.alert(constants.success, 'Successfully added trainer')
+                return
+            }
+            else if(res.status === 401){
+                this.setState({onProcess: false})
+                this.props.navigation.navigate('LandingPage')
+                return
+            }
+            else{
+                this.setState({onProcess: false})
+                Alert.alert(constants.failed, constants.fail_error)
+                return
+            }
+        })
+    }
 
   render() {
     return (
@@ -115,13 +175,13 @@ export default class Trainer extends PureComponent {
                     </View> : null }
           <List>
             {this.state.trainerList !== null ? this.state.trainerList.map(trainer =>
-            <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerPage')}>
+            <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerPage', {id: this.state.id, trainer_id: trainer["id"]})}>
               <Left>
                 <Thumbnail source={require('./client-profile.png')} style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
-                <Text>{trainer["name"]}</Text>
-                <Text note>Doing what you like will always keep you happy . .</Text>
+                <Text style={{fontWeight: 'bold'}}>{trainer["name"]}</Text>
+                <Text note>Mobile - {trainer["phone"]}</Text>
               </Body>
             </ListItem>): <PageLoader/>}
           </List>
@@ -149,41 +209,70 @@ export default class Trainer extends PureComponent {
           <Content style={styles.content}>
             <Form>
                <Item style={styles.item}>
-                  <Input placeholder="Name" />
+                  <Label>Name<Text style={{color: 'red'}}>*</Text> - </Label>
+                  <Input onChangeText={text => this.setState({name: text})} />
                </Item>
                <Item style={styles.item}>
-                  <Input placeholder="Phone number" />
+                  <Label>Phone<Text style={{color: 'red'}}>*</Text> - </Label>
+                  <Input keyboardType="numeric" onChangeText={text => this.setState({phone: text})}/>
                </Item>
                <Item style={styles.item}>
-                  <Input placeholder="Email" />
+                  <Label>Email<Text style={{color: 'red'}}>*</Text> - </Label>
+                  <Input onChangeText={text => this.setState({email: text})}/>
                </Item>
-               <Item style={styles.item}>
-                 <Input placeholder="Password" />
-               </Item>
-               <Item style={styles.item}>
-                 <Input placeholder="Age" />
-               </Item>
-               <Item style={styles.item}>
-                  <Picker
-                  note
-                  mode="dropdown"
-                  style={{ width: 120 }}
 
-                  >
-                  <Picker.Item label="Male" value="key0" />
-                  <Picker.Item label="Female" value="key1" />
-                  </Picker>
+               <Item style={styles.item}>
+                 <Label>DOB - </Label>
+                                   <DatePicker
+                                           style={{width: 200}}
+                                           date={this.state.dob}
+                                           mode="date"
+                                           placeholder="select Date of Birth"
+                                           format="YYYY-MM-DD"
+                                           minDate="1900-01-01"
+                                           maxDate="2099-01-01"
+                                           confirmBtnText="Confirm"
+                                           cancelBtnText="Cancel"
+                                           customStyles={{
+                                             dateIcon: {
+                                               position: 'absolute',
+                                               left: 0,
+                                               top: 4,
+                                               marginLeft: 0
+                                             },
+                                             dateInput: {
+                                               marginLeft: 36
+                                             }
+                                             // ... You can check the source to find the other keys.
+                                           }}
+                                           onDateChange={(date) => {this.setState({dob: date})}}
+                                         />
                </Item>
                <Item style={styles.item}>
-                  <Label>Contract Start Date</Label>
+                  <Label>Gender <Text style={{color: 'red'}}>*</Text> - </Label>
+                  <Picker
+                                    note
+                                    mode="dropdown"
+                                    style={{ width: 120 }}
+                                    selectedValue={this.state.gender}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        this.setState({gender: itemValue.toUpperCase()})
+                                    }
+                                    >
+                                    <Picker.Item label="Male" value="MALE" />
+                                    <Picker.Item label="Female" value="FEMALE" />
+                                    </Picker>
+               </Item>
+               <Item style={styles.item}>
+                  <Label>Contract Start Date <Text style={{color: 'red'}}>*</Text></Label>
                   <DatePicker
                           style={{width: 200}}
-                          date={this.state.date}
+                          date={this.state.start_date}
                           mode="date"
                           placeholder="select start date"
                           format="YYYY-MM-DD"
-                          minDate="2016-05-01"
-                          maxDate="2016-06-01"
+                          minDate="1900-01-01"
+                          maxDate="2099-01-01"
                           confirmBtnText="Confirm"
                           cancelBtnText="Cancel"
                           customStyles={{
@@ -198,33 +287,32 @@ export default class Trainer extends PureComponent {
                             }
                             // ... You can check the source to find the other keys.
                           }}
-                          onDateChange={(date) => {this.setState({date: date})}}
+                          onDateChange={(date) => {this.setState({start_date: date})}}
                         />
                </Item>
                <Item style={styles.item}>
-                 <Input placeholder="Address" />
-               </Item>
-
-               <Item style={styles.item}>
-                  <Input placeholder="Enter the shift" />
+                 <Label>Address - </Label>
+                 <Input onChangeText={text => this.setState({address: text})}/>
                </Item>
                <Item style={styles.item}>
-                 <Input placeholder="Emergency contact person's name" />
+                   <Label>Certifications - </Label>
+                   <Input onChangeText={text => this.setState({certifications: text})}/>
                </Item>
                <Item style={styles.item}>
-                 <Input placeholder="Phone number" />
+                 <Input placeholder="Emergency contact person's name" onChangeText={text => this.setState({emergency_person: text})}/>
                </Item>
                <Item style={styles.item}>
-                                <Input placeholder="Certification" />
-                              </Item>
+                 <Input placeholder="Relation with the person" onChangeText={text => this.setState({relation_with_person: text})}/>
+               </Item>
                <Item style={styles.item}>
-                                <Input placeholder="Any medical problem?" />
-                              </Item>
+                 <Input placeholder="Emergency Phone number" keyboardType="numeric" onChangeText={text => this.setState({emergency_phone: text})}/>
+               </Item>
+               {this.state.onProcess == false ?
                <View last style={{alignItems: 'center',justifyContent: 'center', margin: 15, }}>
-               <Button style={{backgroundColor: 'black'}}>
-                 <Text>Submit</Text>
-               </Button>
-               </View>
+                 <Button style={{backgroundColor: 'black'}} onPress={this.onSubmit}>
+                    <Text>Add Trainer</Text>
+                 </Button>
+               </View> : <Spinner color="black" /> }
             </Form>
           </Content>
         </Modal>

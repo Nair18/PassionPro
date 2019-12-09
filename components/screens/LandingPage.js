@@ -40,7 +40,12 @@ export default class LandingPage extends PureComponent {
         this.setState({register: !this.state.register})
    }
 
+   async _checkout(){
+    const retrievedItem = await AsyncStorage.multiRemove(['key', 'role']);
+   }
    componentDidMount(){
+       console.log("calling checkout")
+       this._checkout();
        this.checkPermission();
      }
 
@@ -82,9 +87,8 @@ export default class LandingPage extends PureComponent {
                       }
 
    render(){
-
+     console.log("hello logout")
      return(
-
         <Container style={styles.container}>
             <StatusBar backgroundColor='black' barStyle='light-content' />
             <Image

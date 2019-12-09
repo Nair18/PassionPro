@@ -10,7 +10,7 @@ import { Container, Header, Content, List, Spinner, ListItem, Form, Textarea, Le
 
 export default class Plans extends PureComponent {
   static navigationOptions = {
-    title: 'Plans',
+    title: 'Workout Plans',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
     headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
@@ -40,7 +40,7 @@ export default class Plans extends PureComponent {
 
           const { navigation } = this.props;
           console.log("pagal bana rhe hai")
-          this.focusListener = navigation.addListener('didFocus', () => {
+//          this.focusListener = navigation.addListener('didFocus', () => {
               console.log("The screen is focused")
                var key  = this.retrieveItem('key').then(res =>
                            this.setState({auth_key: res}, () => console.log("brother pls", res))
@@ -49,7 +49,7 @@ export default class Plans extends PureComponent {
                                     this.fetchDetails()
                                 }
                            })
-          });
+//          });
 
       }
 
@@ -140,7 +140,7 @@ export default class Plans extends PureComponent {
                 <Thumbnail source={require('./crisis-plan.jpg')}style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
-                <Text>{plan["name"]}</Text>
+                <Text style={{fontWeight: 'bold'}}>{plan["name"]}</Text>
                 <Text note>Last updated: 29-02-2019</Text>
               </Body>
             </ListItem>
@@ -148,7 +148,7 @@ export default class Plans extends PureComponent {
         </Content>
         <View style={styles.addButton}>
 
-                    <Button  onPress={() => this.props.navigation.navigate('CreateStandardPlan', {go_back_key: this.props.navigation.state.key})} rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}}>
+                    <Button  onPress={() => this.props.navigation.navigate('CreateStandardPlan', {go_back_key: this.props.navigation.state.key, ID: this.state.id, coursetype: this.state.coursetype})} rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}}>
                       <Icon size={30} style={{color: 'white'}}name="md-add" />
                     </Button>
 

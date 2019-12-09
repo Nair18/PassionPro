@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 //For react-navigation 3.0+
 //import { createAppContainer, createStackNavigator } from 'react-navigation';
 //For react-navigation 4.0+
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, createDrawerNavigator } from 'react-navigation';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 import { createStackNavigator} from 'react-navigation-stack';
 import Clients from './components/screens/Clients';
 import SLCProfile from './components/screens/second_level_customer_profile';
@@ -63,6 +64,16 @@ import ClientDetails from './components/screens/ClientDetails';
 import AdminProfile from './components/screens/AdminProfile';
 import Contact from './components/screens/contact';
 import AppBilling from './components/screens/AppBilling';
+import AddExercise from './components/screens/AddExercise';
+import DetailedExercise from './components/screens/DetailedExercise';
+import Sessions from './components/screens/Sessions';
+import FinancialHistory from './components/screens/FinancialHistory';
+import YearwiseExpense from './components/screens/YearwiseExpense';
+import Menu from './components/screens/Menu';
+import GymExpenseTracker from './components/screens/GymExpenseTracker';
+import GymLocations from './components/screens/GymLocations';
+import Icon from 'react-native-vector-icons/Ionicons';
+import CreateAdmin from './components/screens/CreateAdmin';
 //import all the screens we are going to switch/
 
 // To see all the requests in the chrome Dev tools in the network tab.
@@ -101,12 +112,50 @@ const AdminPage = createStackNavigator({
     PersonalTrainingDetails: {screen: PersonalTrainingDetails},
     AdminProfile: {screen: AdminProfile},
     Contact: {screen: Contact},
-    AppBilling: {screen: AppBilling}
+    AppBilling: {screen: AppBilling},
+    AddExercise: {screen: AddExercise},
+    DetailedExercise: {screen: DetailedExercise},
+    Sessions: {screen: Sessions},
+    FinancialHistory: {screen: FinancialHistory},
+    YearwiseExpense: {screen: YearwiseExpense}
   },
   {
     initialRouteName: 'Admin'
   }
 )
+
+AdminPage.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+const MenuPage = createStackNavigator({
+    Menu: {screen: Menu},
+    TrainerSection: {screen: TrainerSection},
+    GymExpenseTracker: {screen: GymExpenseTracker},
+    GymLocations: {screen: GymLocations},
+    CreateAdmin: {screen: CreateAdmin}
+},
+{
+    initialRouteName: 'Menu'
+});
+
+MenuPage.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
 
 const Customer = createStackNavigator({
      SecondLevelCustomer: { screen: SecondLevelCustomer },
@@ -147,9 +196,46 @@ const PersonalTrainer = createStackNavigator({
   }
   );
 
+  const Tabs = createBottomTabNavigator({
+    Dashboard: {screen: AdminPage,
+    navigationOptions: {
+            tabBarLabel:null,
+            tabBarIcon: ({ tintColor }) => (
+              <Icon name="md-home" size={30} color="black" />
+            )
+          },
+    },
+    Explore: {screen: MenuPage,
+        navigationOptions: {
+                    tabBarLabel:null,
+                    tabBarIcon: ({ tintColor }) => (
+                      <Icon name="md-compass" size={30} color="black" />
+                    )
+                  },
+    }
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: '#e91e63',
+      activeBackgroundColor: '#e3b04b',
+      showLabel: false,
+      labelStyle: {
+        fontSize: 15
+      },
+      tabStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10
+      },
+      style: {
+        backgroundColor: '#f1d6ab',
+      },
+    }
+  });
+  
   const App = createSwitchNavigator({
-   Admin: {
-      screen: AdminPage
+   Home: {
+      screen: Tabs,
    },
    Auth: {
       screen: Auth,

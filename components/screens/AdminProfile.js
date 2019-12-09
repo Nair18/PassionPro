@@ -1,14 +1,21 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
-import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar} from 'react-native';
-import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
+import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar, AsyncStorage} from 'react-native';
+import { Button, Container, Content, View, Text,Item, Thumbnail, Spinner} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppBilling from './AppBilling';
-export default class AdminProfile extends Component {
+import { withNavigation } from 'react-navigation';
+import constants from '../constants';
+
+class AdminProfile extends Component {
   constructor(props){
     super(props)
     this.state={
-      datas: 'no data'
+      datas: 'no data',
+      auth_key: null,
+      id: this.props.navigation.state.params.ID,
+      navigation: this.props.navigation.state.params.navigation,
+      admin_profile: null
     }
   }
   static navigationOptions = {
@@ -19,10 +26,57 @@ export default class AdminProfile extends Component {
   }
   componentDidMount(){
                   StatusBar.setHidden(false);
+                        console.log("bros in didmount")
+
+//                          const { navigation } = this.props;
+                          console.log("pagal bana rhe hai")
+//                          this.focusListener = navigation.addListener('didFocus', () => {
+                                  var key  = this.retrieveItem('key').then(res =>
+                                  this.setState({auth_key: res}, () => console.log("brother pls", res))
+                                  ).then(() => this.fetchDetails())
+//                          });
               }
   componentWillMount() {
 
   }
+
+   async retrieveItem(key) {
+          try {
+            const retrievedItem =  await AsyncStorage.getItem(key);
+            console.log("key retrieved")
+            return retrievedItem;
+          } catch (error) {
+            console.log(error.message);
+          }
+          return
+  }
+
+  fetchDetails = () => {
+          fetch(constants.API + 'current/admin/me',{
+           method: 'GET',
+              headers: {
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': this.state.auth_key,
+               },
+          }).then(response => {
+              if (response.status === 200) {
+              return response.json();
+               } else {
+                  this.setState({loading: false})
+                  Alert.alert(
+                      constants.failed,
+                      'Something went wrong',
+                  [
+                      {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ],
+                  {cancelable: false},
+                  );
+               }
+               }).then(res => {
+               this.setState({admin_profile: res})
+               }).then(console.log("fetched the api data", this.state.admin_profile))
+      }
 
   settingState = (datas) => {
     console.log("Bhai jaan aa gy mein")
@@ -30,42 +84,29 @@ export default class AdminProfile extends Component {
   }
 
 
+
   render(){
-    let DATA = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
-    ];
-
-    let courses = [];
-    for(let i=0;i<DATA.length;i++){
-       courses.push(<View><Item><Text>{DATA[i]['title']}</Text></Item></View>)
+    data = null
+    if(this.state.admin_profile !== null){
+        if(this.state.admin_profile["roles"].length > 1){
+            data = "Admin + Trainer"
+        }
+        else{
+            data = "Admin"
+        }
     }
-
     return(
        <Fragment>
         <Container style={{backgroundColor: '#efe9cc'}}>
-                <View style={styles.addButton}>
-                                        <Button rounded style={{height: 50, width: 150, alignItems: 'center', backgroundColor: '#d1274b', justifyContent: 'center'}}><Text><Icon size={20} name="md-power"/> Logout </Text></Button>
-                                    </View>
+        {this.state.admin_profile !== null ?
+        <Content>
+
 
             <ScrollView showHorizontalScrollbar={false}>
                 <Content style={{padding: 15}}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={styles.imageView}>
                             <Thumbnail large source={require('./client-profile.png')}/>
-                        </View>
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Button block style={{backgroundColor: "black", justifyContent: 'center', alignItems: 'center'}}><Text> Help ? </Text></Button>
                         </View>
                     </View>
                 </Content>
@@ -75,7 +116,7 @@ export default class AdminProfile extends Component {
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>Baghadeesh</Text>
+                        <Text>{this.state.admin_profile["name"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -83,7 +124,7 @@ export default class AdminProfile extends Component {
                             <Text style={styles.text}>Age </Text>
                         </View>
                         <View style={styles.textFormat}>
-                            <Text>22</Text>
+                            <Text>{this.state.admin_profile["age"]}</Text>
                         </View>
                     </View>
                     <View style={styles.infoView}>
@@ -91,7 +132,7 @@ export default class AdminProfile extends Component {
                         <Text style={styles.text}>Username/Mobile </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>9979090670</Text>
+                         <Text>{this.state.admin_profile["mobile"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -99,23 +140,22 @@ export default class AdminProfile extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>4th block koramangala, 100ft road, bangalore-560034</Text>
+                         <Text>{this.state.admin_profile["address"]}</Text>
                       </View>
                     </View>
 
                     <View style={styles.infoView}>
                        <View style={styles.title}>
-                          <Text style={styles.text}>Contract start date </Text>
+                          <Text style={styles.text}>Permissions </Text>
                        </View>
                        <View style={styles.textFormat}>
-                          <Text>29-02-2019</Text>
+                          <Text>{data}</Text>
                        </View>
                     </View>
-                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
-                        <Button style={{backgroundColor: "black"}} onPress={() => this.props.navigation.navigate('AppBilling')}><Text>Billing Details</Text></Button>
-                    </View>
+
                 </Content>
             </ScrollView>
+            </Content> : <Spinner color="black" />}
         </Container>
        </Fragment>
     );
@@ -155,3 +195,5 @@ const styles = StyleSheet.create({
          bottom: 10
        }
 })
+
+export default withNavigation(AdminProfile)

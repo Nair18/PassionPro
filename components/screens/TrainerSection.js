@@ -59,9 +59,14 @@ export default class Admin extends Component {
     return(
         <Container style={{backgroundColor: '#efe9cc'}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#eadea6'}}>
-                                            <View style={{flex: 2, padding: 15}}>
+                                            <View style={{padding: 15}}>
                                                 <Text style={{fontWeight: 'bold', fontSize: 25}}>Fitness Center</Text>
                                                 <Text>koramangala</Text>
+                                            </View>
+                                            <View style={{justifyContent: 'center', alignItems: 'center', padding: 15}}>
+                                                <Badge success>
+                                                    <Text>Trainer</Text>
+                                                </Badge>
                                             </View>
                                           </View>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -69,12 +74,6 @@ export default class Admin extends Component {
             <Content style={{margin: 15}}>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Notification')}>
-                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./chat.png')}style={styles.thumbnail}/></View>
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <Text style={{fontSize: 15}}>Notification</Text>
-                            </View>
-                            </TouchableOpacity>
                         <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerClient')}>
                             <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./clients2.png')}style={styles.thumbnail}/></View>
                             <View style={{justifyContent: 'center', alignItems: 'center'}}>

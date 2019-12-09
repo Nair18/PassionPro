@@ -9,8 +9,8 @@ export default class Login extends PureComponent {
     constructor(props){
         super(props);
         this.state = {
-            username: '',
-            password: '',
+            username: null,
+            password: null,
             token: null,
             loading: false
         }
@@ -43,15 +43,21 @@ export default class Login extends PureComponent {
 
      _storeData = async (key,data) => {
         console.log("hitting it hard")
+        if(key == "role"){
+            data = JSON.stringify(data)
+        }
         try {
           await AsyncStorage.setItem(key, data);
         } catch (error) {
           console.log("got error while setting", error)
         }
-
      }
 
       onSubmit = () => {
+        if(this.state.username === null || this.state.password === null){
+            Alert.alert(constants.incomplete_info, 'Username/Password cannot be blank')
+            return
+        }
         console.log("came in submit")
         this.setState({loading: true})
         fetch(constants.API + "open/auth/signin",{
@@ -66,8 +72,8 @@ export default class Login extends PureComponent {
             this.setState({loading: false}, () => console.log("error",res))
             if(res.status === 403){
                 Alert.alert(
-                  'OOps!',
-                  'Your account is not approved ...',
+                  constants.not_approved,
+                  'Waiting for the Admin to approve your account.',
                   [
                      {text: 'OK', onPress: () => console.log('OK Pressed')},
                   ],
@@ -76,7 +82,7 @@ export default class Login extends PureComponent {
             }
             else if(res.status === 401){
                 Alert.alert(
-                              'OOps!',
+                              constants.no_entry,
                               'Wrong Username/Password',
                               [
                                 {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -86,8 +92,8 @@ export default class Login extends PureComponent {
             }
             else{
                 Alert.alert(
-                              'OOps!',
-                              'Something went wrong ...',
+                              constants.failed,
+                              'Something went wrong',
                               [
                                 {text: 'OK', onPress: () => console.log('OK Pressed')},
                               ],
@@ -100,18 +106,24 @@ export default class Login extends PureComponent {
             .catch(error => console.log("Error",error))
                     .then(res => {
                         console.log("yeah yaha aa gya bloop bloop", res["accessToken"])
-                        this._storeData('key',"Bearer " + res["accessToken"])
+                        this._storeData('key',"Bearer " + res["access_token"])
 
                         this.setState({loading: false}, () => {
-                            if(res["roles"] !== null && res["roles"].length === 2){
+                            if(res["roles"] !== null && res["roles"].length === 3 &&
+                            (res["roles"].includes("ADMIN") && res["roles"].includes("TRAINER") && res["roles"].includes("OWNER"))){
+                                 this._storeData('role', 'AdminOwner')
+                                 console.log("came here in SuperOwner")
+                                 this.props.navigation.navigate('Home')
+                            }
+                            else if(res["roles"] !== null && res["roles"].length === 2 && res["roles"].includes("ADMIN") && res["roles"].includes("TRAINER")){
                                 this._storeData('role', 'Admin2')
                                 console.log("came here in admin2")
-                                this.props.navigation.navigate('Admin')
+                                this.props.navigation.navigate('Home')
                             }
                             else if(res["roles"] !== null && res["roles"][0] === "ADMIN"){
                                 this._storeData('role', 'Admin')
                                 console.log("came here in admin")
-                                this.props.navigation.navigate('Admin')
+                                this.props.navigation.navigate('Home')
                             }
                             else if(res["roles"] !== null && res["roles"][0] === "TRAINER"){
                                 this._storeData('role', 'Trainer')

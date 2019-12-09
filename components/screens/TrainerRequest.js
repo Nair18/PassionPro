@@ -45,23 +45,28 @@ export default class TrainerRequest extends Component {
             return
         }
         componentWillUnmount(){
-//            this.focusListener.remove();
+            this.focusListener.remove();
 
         }
         componentDidMount(){
           StatusBar.setHidden(false);
-          console.log("bros in didmount")
+          const { navigation } = this.props;
+                console.log("pagal bana rhe hai")
+                var key  = this.retrieveItem('key').then(res =>
+                                                this.setState({auth_key: res}, () => console.log("brother pls", res))
+                ).then(() => this.fetchDetails())
+                this.focusListener = navigation.addListener('didFocus', () => {
+                  console.log("focusing admin screen")
+//                   hack
+                  this.fetchDetails();
+                });
 
-            const { navigation } = this.props;
-            console.log("pagal bana rhe hai", this.state.id)
-//            this.focusListener = navigation.addListener('didFocus', () => {
-                    var key  = this.retrieveItem('key').then(res =>
-                    this.setState({auth_key: res}, () => console.log("brother pls", res))
-                    ).then(() => this.fetchDetails())
-//            });
+
+
         }
 
         fetchDetails = () => {
+            console.log("fetch")
             fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/requests',{
              method: 'GET',
                 headers: {
@@ -82,9 +87,12 @@ export default class TrainerRequest extends Component {
                     ],
                     {cancelable: false},
                     );
+                    return null
                  }
                  }).then(res => {
-                 this.setState({request: res["trainers"]})
+                 if(res !== null){
+                    this.setState({request: res["trainers"] })
+                 }
                  }).then(console.log("fetched the api data", this.state.request))
         }
     render(){
@@ -93,14 +101,14 @@ export default class TrainerRequest extends Component {
                 <Content style={{padding: 15}}>
                     <List>
                         {this.state.request !== null ? this.state.request.map(req =>
-                        <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerRequestInfo')}>
+                        <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerRequestInfo', {details: req, ID: this.state.id})}>
                             <Left>
                                <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
                             </Left>
                             <Body>
                                 <View>
-                                <Text>{req["name"]}</Text>
-                                <Text note>{req["age"]}</Text>
+                                <Text style={{fontWeight: 'bold'}}>{req["name"]}</Text>
+                                <Text note>Mobile - {req["phone"]}</Text>
                                 </View>
                             </Body>
                         </ListItem>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}

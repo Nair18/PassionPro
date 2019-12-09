@@ -1,5 +1,5 @@
 import React, { Component, Fragment,PureComponent } from 'react';
-import {StyleSheet,View, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput, AppState,AsyncStorage} from 'react-native';
+import {StyleSheet,View, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput, AppState,AsyncStorage, Dimensions} from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import { Header } from 'react-navigation-stack';
 import CourseInfo from './CourseInfo';
@@ -7,32 +7,24 @@ import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import PageLoader from './PageLoader';
-import { Container, Content, List, ListItem, Form, Textarea, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
+import { Container, Content, List, ListItem, Form, Card, CardItem, Textarea, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
 
 
-export default class Courses extends PureComponent {
+export default class Sessions extends PureComponent {
   constructor(props){
     super(props)
     this.state = {
           modalVisible: false,
-          selectedItems: [],
           courseType: null,
-          duration: "days",
-          description: null,
-          days: null,
-          courseList: null,
           coursetype: null,
           auth_key: null,
           onProcess: false,
           loading: true,
-          courseTypeName: 'Select the Offering Type',
-          courseName: null,
           id: this.props.navigation.state.params.ID
         };
   }
   static navigationOptions = {
-    title: 'Courses',
-    tabBarVisible: false,
+    title: 'Fitness Offerings',
     headerTitleStyle: { color: 'black', fontWeight: 'bold'},
     headerStyle: {backgroundColor: '#eadea6'},
     headerTintColor: 'black'
@@ -104,6 +96,10 @@ export default class Courses extends PureComponent {
                                           if(res.status === 200){
                                               return res.json()
                                           }
+                                          else if(res.status === 401){
+                                            this.props.navigation.navigate('LandingPage')
+                                            return
+                                          }
                                           else{
                                               this.setState({loading: false})
                                                                              Alert.alert(
@@ -141,12 +137,9 @@ export default class Courses extends PureComponent {
     };
 
     onSubmit = () => {
-        if(this.state.courseType === null || this.state.duration == null || this.state.courseName == null || this.state.description == null){
-            Alert.alert('All fields are mandatory', 'Please fill out all the details')
-            return
-        }
+
         this.setState({onProcess: true})
-        fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
+        fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/coursetypes/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -155,11 +148,8 @@ export default class Courses extends PureComponent {
             },
             body: JSON.stringify(
               {
-                "course_type": this.state.courseType,
-                "duration": this.state.days,
-                "days": this.state.duration,
-                "name": this.state.courseName,
-                "description": this.state.description
+                "courseType": this.state.courseType,
+                "gymId": this.state.id
               }
             )
         })
@@ -168,20 +158,19 @@ export default class Courses extends PureComponent {
                 this.setState({modalVisible: false, onProcess: false})
                 this.fetchDetails()
                 Alert.alert(
-                   '✅ Success',
-                   'Course added successfully 😀',
+                   constants.success,
+                   'Successfully added the session',
                    [
                       {text: 'OK', onPress: () => console.log('OK Pressed')},
                    ],
                    {cancelable: false}
-
                 );
             }
             else{
                 this.setState({modalVisible: false, onProcess: false})
                 Alert.alert(
-                    '❌ Failed',
-                    'Something went wrong 😭',
+                    constants.failed,
+                    constants.fail_error,
                      [
                        {text: 'OK', onPress: () => console.log('OK Pressed')},
                      ],
@@ -195,20 +184,15 @@ export default class Courses extends PureComponent {
     return (
     <Fragment>
       <Container style={{backgroundColor: '#efe9cc'}}>
-        <Content>
-          <List>
-            {this.state.coursetype !== null && this.state.courseList !== null ? this.state.courseList.map(course =>
-            <ListItem key={course["id"]} avatar onPress={() => this.props.navigation.navigate('CourseInfo', {ID: course["id"], GYM_ID: this.state.id})}>
-              <Left style={{margin: 5}}>
-                <Thumbnail source={require('./bank-icon.jpg')} style={{backgroundColor: 'black'}} />
-              </Left>
-              <Body>
-                <Text style={{fontWeight: 'bold'}}>{course["name"]}</Text>
-                <Text note>{course["course_type"]}</Text>
-              </Body>
-
-            </ListItem>): <PageLoader/>}
-          </List>
+        <Content style={{margin: 15}}>
+            {this.state.coursetype !== null ? this.state.coursetype.map(coursetype =>
+                <View style={{marginTop: 5}}>
+                    <Card style={{backgroundColor: '#9dab86'}}>
+                        <CardItem style={{backgroundColor: '#9dab86'}}>
+                            <Text style={{fontWeight: 'bold'}}>{coursetype["name"]}</Text>
+                        </CardItem>
+                    </Card>
+                </View>):<PageLoader/>}
         </Content>
         <View style={styles.addButton}>
                     <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
@@ -220,79 +204,35 @@ export default class Courses extends PureComponent {
       <View>
         <Modal
           animationType="slide"
-          transparent={false}
+          transparent={true}
+
           visible={this.state.modalVisible}
           onRequestClose={() => {
             this.setModalVisible(false)
           }}>
-          <View style={{margin: 15}}>
+          <View style = {styles.modal}>
+          <View>
             <TouchableOpacity onPress={() => this.setModalVisible(false)}>
             <Icon name="md-close" size={30}/>
             </TouchableOpacity>
-      </View>
+          </View>
           <Content style={styles.content}>
             <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset = {Header.HEIGHT + 20}  behavior="padding" enabled>
             {this.state.coursetype !== null ?
             (<Form>
-               <View style={{margin: 15}}>
-                       <ModalSelector
-                           placeholder="Select the Offering Type"
-                           initValue={this.state.courseTypeName}
-                           data={this.state.coursetype}
-                           keyExtractor= {item => item.id}
-                           labelExtractor= {item => item.name}
-                           initValue={this.state.courseType}
-                           supportedOrientations={['landscape']}
-                           accessible={true}
-                           scrollViewAccessibilityLabel={'Scrollable options'}
-                           cancelButtonAccessibilityLabel={'Cancel Button'}
-                           onChange={(option)=>{
-                            this.setState({courseType: option.id, courseTypeName: option.name})
-                           }}>
-
-                           <TextInput
-                             style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
-                             editable={false}
-                             placeholder="Select the Offering Type"
-                             value={this.state.courseTypeName}
-                           />
-                         </ModalSelector>
-               </View>
-
-               <Item style={{margin: 15}}>
-                  <Input placeholder="Course Name" onChangeText={(text) => this.setState({courseName: text})}/>
+               <Item regular style={{marginTop: 20}}>
+                  <Input placeholder="Name" onChangeText={(text) => this.setState({courseType: text})}/>
                </Item>
-               <Item style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
-                  <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Description" onChangeText={text => this.setState({description: text})}/>
-               </Item>
-
-               <Item regular style={{marginLeft: 15,marginRight: 15,marginTop: 10,  flexDirection: 'row'}}>
-                                <Input placeholder="duration" keyboardType='numeric' onChangeText={text => this.setState({days: text})} style={{flex: 1,  backgroundColor: "#CCC"}}/>
-                                <Picker
-                                              note
-                                              mode="dropdown"
-                                              style={{ width: 5, flex: 1 }}
-                                              selectedValue={this.state.duration}
-                                              onValueChange={(itemValue, itemIndex) =>
-                                                  this.setState({duration: itemValue})
-                                                }
-                                            >
-                                              <Picker.Item label="days" value="days" />
-                                            </Picker>
-                              </Item>
-
-
-
-
-               <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
+               <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 25}}>
                {this.state.onProcess === false ?
-               <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
-                 <Text>Submit</Text>
+               <Button block onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
+                 <Text>Add</Text>
                </Button> : <Spinner color="black"/>}
                </View>
             </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
             </KeyboardAvoidingView>
           </Content>
+          </View>
         </Modal>
       </View>
 
@@ -308,5 +248,16 @@ const styles = StyleSheet.create({
   },
   content: {
 
+  },
+  modal: {
+      backgroundColor : "#fff",
+      height: 300 ,
+      width: '80%',
+      borderRadius:10,
+      borderWidth: 1,
+      borderColor: '#fff',
+      marginTop: 80,
+      marginLeft: 40,
+      padding: 15
   }
 });

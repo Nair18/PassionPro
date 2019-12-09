@@ -12,6 +12,7 @@
     "postinstall": "jetify"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "^5.0.0",
     "faker": "^4.1.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
@@ -33,13 +34,16 @@
     "react-native-modal-selector": "^1.1.1",
     "react-native-multiple-select": "^0.5.3",
     "react-native-picker-modal-view": "^1.2.6",
+    "react-native-reanimated": "^1.4.0",
     "react-native-searchable-dropdown": "^1.1.1",
     "react-native-skeleton-placeholder": "^1.0.3",
     "react-native-status-bar-height": "^2.4.0",
     "react-native-svg": "^9.9.9",
     "react-native-webview": "^7.2.5",
     "react-navigation": "^4.0.5",
-    "react-navigation-stack": "^1.7.3"
+    "react-navigation-stack": "^1.7.3",
+    "react-navigation-tabs": "^2.6.0",
+    "react-swipeable-views-native": "^0.13.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",

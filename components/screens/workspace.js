@@ -48,7 +48,8 @@ export default class Workspace extends Component {
       workoutName: null,
       workoutType: null,
       workoutSection: null,
-      data: [{"id": 1,"name": "Standard Workout"}, {"id": 2, "name": "Customize Workout"}, {"id": 3, "name": "Workout plan by Ajay"}]
+      onLoad: true,
+      data: [{"id": 1,"name": "Standard Workout"}, {"id": 2, "name": "Customize your Workout"}, {"id": 3, "name": "Workout plan by Ajay"}]
   }
   static navigationOptions = {
       //Setting the header of the screen
@@ -73,9 +74,13 @@ export default class Workspace extends Component {
     this.props.navigation.navigate(type)
     this.setState({isVisible: false})
   }
+  optionChange = () => {
+    this.setState({onLoad: false})
+
+  }
   render(){
     const { navigate } = this.props.navigation;
-    workouts = {1: "StandardWorkout", 2: "PersonalizedWorkout"}
+    workouts = {1: "StandardWorkout", 2: "PersonalizedWorkout", 3: "StandardWorkout"}
     return(
        <Container style={{backgroundColor: '#efe9cc'}}>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -95,6 +100,7 @@ export default class Workspace extends Component {
                                        cancelButtonAccessibilityLabel={'Cancel Button'}
                                        onChange={(option)=>{
                                         this.setState({workoutType: option.id, workoutName: option.name, workoutSection: workouts[option.id]})
+                                        this.optionChange
                                        }}>
 
                                        <TextInput
@@ -113,7 +119,7 @@ export default class Workspace extends Component {
             <View>
                {data.map(item =>
                 <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('StandardWorkout')}>
+                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate(this.state.workoutSection)}>
                      <Card style={randomStyle()}>
                         <Text style={styles.cardText}>{item.key}</Text>
                      </Card>
@@ -121,7 +127,7 @@ export default class Workspace extends Component {
                 </View>
                )}
             </View>
-            </Content> : <View><Text></Text></View>}
+            </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text note>Select the workout option you want</Text></View>}
           </Content>
           </ScrollView>
        </Container>

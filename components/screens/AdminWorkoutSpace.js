@@ -29,6 +29,7 @@ export default class AdminWorkoutSpace extends Component {
           day: this.props.navigation.state.params.plan_day,
           gym_id: this.props.navigation.state.params.gym_id,
           exerciseList: null,
+          onProcess: false,
           onProcess: true
         }
     }
@@ -43,7 +44,7 @@ export default class AdminWorkoutSpace extends Component {
     }
 
     selectExercise = (index) => {
-        console.log("index", index["ex"])
+        console.log("index", index)
         this.props.navigation.navigate('CreateWorkout', {exercise: this.state.exerciseList[index["ex"]], gym_id: this.state.gym_id, plan_id: this.state.plan_id, day: this.state.day});
         this.setState({isVisible: false})
     }
@@ -88,8 +89,8 @@ export default class AdminWorkoutSpace extends Component {
                         else{
                             this.setState({loading: false})
                                                            Alert.alert(
-                                                             'OOps!',
-                                                             'Something went wrong ...',
+                                                             constants.failed,
+                                                             constants.fail_error,
                                                               [
                                                                   {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                               ],
@@ -115,8 +116,8 @@ export default class AdminWorkoutSpace extends Component {
                                       else{
                                           this.setState({loading: false, onProcess: false})
                                                                          Alert.alert(
-                                                                           'OOps!',
-                                                                           'Something went wrong ...',
+                                                                           constants.failed,
+                                                                           constants.fail_error,
                                                                             [
                                                                                 {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                                             ],
@@ -143,11 +144,41 @@ export default class AdminWorkoutSpace extends Component {
 
     delete_exercise = (id) => {
         console.log("id boy", id)
+        this.setState({onProcess: true})
+        fetch(constants.API + 'current/admin/gym/'+this.state.gym_id + '/archive/exercises/'+ id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth_key,
+            }
+        }).then(res => {
+            if(res.status === 200){
+                this.setState({onProcess: false})
+                Alert.alert(constants.success, 'Successfully deleted the exercise')
+                this.fetchDetails()
+
+            }
+            else if(res.status === 401){
+                this.setState({onProcess: false})
+                this.props.navigation.navigate('LandingPage')
+            }
+            else{
+                this.setState({onProcess: false})
+                Alert.alert(constants.failed, constants.fail_error)
+                return
+            }
+        })
     }
 
 
     render(){
-        let exercise = ['Triceps', 'Chest', 'Shoulders', 'Biceps', 'Core', 'Back', 'Forearms', 'Upper Legs', 'Glutes', 'Cardio', 'Calves']
+        let bodyparts = []
+        if(this.state.exerciseList !== null){
+            for(var keys in this.state.exerciseList){
+                bodyparts.push(keys)
+            }
+        }
 
         return(
             <Container style={{backgroundColor: '#efe9cc'}}>
@@ -156,10 +187,14 @@ export default class AdminWorkoutSpace extends Component {
                 <Content style={{margin: 15, padding: 10}}>
                     {this.state.exercise !== null && this.state.exerciseList !== null && this.state.onProcess == false ? this.state.exercise.map(exercise =>
                     <View>
+                      <View>
                         <Card>
                            <CardItem header style={{backgroundColor: '#d7c79e', justifyContent: 'space-between'}}>
                               <Text style={{fontWeight: 'bold'}}>{exercise["exercise"]}</Text>
+                              {this.state.onProcess == false ?
+                              <View>
                                 <Button bordered danger small onPress={(id) => {this.delete_exercise(exercise["id"])}}><Text>Delete</Text></Button>
+                              </View> : <Spinner color="black"/>}
                            </CardItem>
                            <CardItem style={{flexDirection: 'row'}}>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Sets</Text>
@@ -182,11 +217,12 @@ export default class AdminWorkoutSpace extends Component {
                               <Text>{exercise["instructions"]}</Text>
                             </CardItem></View> : null}
                         </Card>
+                      </View>
                     </View>) : <Spinner color="black" /> }
-
+                    {this.state.exercise !== null && this.state.exerciseList !== null ?
                     <View style={{justifyContent: 'center', alignItems: 'center', margin: 25}}>
-                                                                    <Button disabled={this.state.exercise === null && this.state.exerciseList === null} onPress={this.showModal} style={{backgroundColor: 'black'}}><Text style={{color: 'white'}}>Add workout</Text></Button>
-                                                                </View>
+                         <Button onPress={this.showModal} style={{backgroundColor: 'black'}}><Text style={{color: 'white'}}>Add workout</Text></Button>
+                    </View>: null}
                 </Content>
                 </ScrollView>
                 <Modal
@@ -206,7 +242,7 @@ export default class AdminWorkoutSpace extends Component {
 
                                         <View style={{marginTop: 15}}>
                                             <ScrollView>
-                                              {exercise.map( (ex,index) =>
+                                              {bodyparts.map( (ex,index) =>
                                                 <List>
                                                     <ListItem button onPress={() => this.selectExercise({ex})}>
                                                         <Text>{ex}</Text>
