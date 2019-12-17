@@ -140,7 +140,7 @@ export default class CreateStandardPlan extends Component {
                  <Content style={{padding: 15}}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={styles.imageView}>
-                            <Thumbnail large source={require('./workout.jpg')} />
+                            <Thumbnail large style={{backgroundColor: "black"}} />
                         </View>
                         <View style={{flex: 1}}>
                             <Button danger style={{justifyContent: 'center', alignItems: 'center'}}><Text>Delete Plan</Text></Button>

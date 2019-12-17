@@ -60,7 +60,7 @@ export default class SplashScreen extends Component {
         <Container style={styles.container}>
             <StatusBar backgroundColor='black' barStyle='light-content' />
             <View style={{ height: '70%', width: '70%', borderRadius: 100,padding: '5%', justifyContent: 'center', alignItems: 'center'}}>
-               <Image style={styles.image} source={require('./hulk.png')} resizeMode='contain'/>
+               <Image style={styles.image}  resizeMode='contain'/>
             </View>
             <Content style={styles.content}>
                 <Fragment>

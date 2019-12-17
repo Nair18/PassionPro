@@ -157,7 +157,7 @@ export default class DetailedExercise extends PureComponent {
         })
       }
       archive_exercise_alert = (id) => {
-        Alert.alert('Delete Exercise', 'Are you sure you want to delete?',
+        Alert.alert(constants.warning, 'Are you sure you want to delete?',
             [
                 {
                     text: 'Cancel',

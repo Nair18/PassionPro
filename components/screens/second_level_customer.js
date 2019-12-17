@@ -231,33 +231,21 @@ class SecondLevelCustomer extends PureComponent {
     <Container style={{backgroundColor: '#efe9cc'}}>
 
 
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#eadea6'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#eadea6', elevation: 1}}>
                                 <View style={{flex: 2, padding: 15}}>
-                                    <Text style={{fontWeight: 'bold', fontSize: 25}}>Fitness Center</Text>
-                                    <Text>koramangala</Text>
+                                    <Text style={{fontWeight: 'bold', fontSize: 20}}>Fitness Center</Text>
+                                    <Text note>koramangala</Text>
                                 </View>
                               </View>
          <ScrollView showsVerticalScrollIndicator={false}>
 
             <Content padder style={styles.contentBlock}>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-              <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('CustomerNotification')}>
-                <IconBadge
-                    MainElement={<View style={styles.thumbnailBlock}><Thumbnail medium source={require('./chat.png')}style={styles.thumbnail}/></View>}
-                    BadgeElement={
-                          <Text style={{color:'#FFFFFF'}}>{this.state.BadgeCount}</Text>
-                        }
-                        IconBadgeStyle={
-                          {width:30,
-                          height:30,
-                          backgroundColor: 'black'}
-                        }
-                        Hidden={this.state.BadgeCount==0}
-                />
-                </TouchableOpacity>
+              <View style={{flexDirection: 'row',justifyContent: 'center', alignItems: 'center'}}>
               <TouchableOpacity  activeOpacity={1} onPress={() => this.props.navigation.navigate('SLCProfile')}>
-                <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./profile.jpg')}style={styles.thumbnail}/></View></TouchableOpacity>
+                <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./profile.jpg')}style={styles.thumbnail}/></View>
+                <View style={{paddingLeft: 5}}><Text>Profile</Text></View>
+                </TouchableOpacity>
 
               </View>
               </ScrollView>
@@ -272,7 +260,7 @@ class SecondLevelCustomer extends PureComponent {
                     <View style={{marginTop: 10, marginRight: 10}}>
                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('ClientCourseInfo')}>
                        <Card style={{width: 250, height: 150}}>
-                        <ImageBackground source={require('./dumbbell.jpg')} style={{width: '100%', height: '100%'}}>
+                        <ImageBackground style={{width: '100%', height: '100%', backgroundColor: "black"}}>
                         </ImageBackground>
                         <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                              <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold', marginLeft: 30}}>{item["name"]}</Text>
@@ -340,7 +328,7 @@ class SecondLevelCustomer extends PureComponent {
                    <View style={{marginTop: 10}}>
                                            <TouchableOpacity activeOpacity={1} onPress= {() => this.props.navigation.navigate('WorkoutProgress')}>
                                            <Card style={{height: 200, width: '100%'}}>
-                                               <ImageBackground source={require('./ii3.jpg')} style={{width: '100%', height: '100%', opacity: 0.5}}/>
+                                               <ImageBackground  style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: 'white'}}/>
                                                <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                                                   <Text style={{color: 'black', fontSize: 25, fontWeight: 'bold', fontStyle: 'comic'}}>Workout Logs</Text>
                                                </View>
@@ -379,9 +367,8 @@ const styles = StyleSheet.create({
   thumbnailBlock: {
      marginTop: 20,
      marginRight: 20,
-
-        justifyContent: 'center',
-        alignItems: 'center'
+     justifyContent: 'center',
+     alignItems: 'center'
   },
   notificationButton: {
     backgroundColor: 'white',

@@ -238,8 +238,8 @@ export default class Admin extends PureComponent {
          {(this.state.overview === null) ? <ProfileSkeleton/> :
          (<Container style={{backgroundColor: '#efe9cc'}}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between', elevation: 1, backgroundColor: '#eadea6'}}>
-                    <View style={{padding: 15, flex: 2, fontSize: 25}}>
-                        <Text style={{fontWeight: 'bold'}}>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["name"] : "Loading ..."}</Text>
+                    <View style={{padding: 15, flex: 2}}>
+                        <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["name"] : "Loading ..."}</Text>
                         <Text style={{fontSize: 15}} note>koramangala</Text>
                     </View>
                     <View style={{padding:15, justifyContent: 'center', alignItems: 'center'}}>
@@ -266,7 +266,7 @@ export default class Admin extends PureComponent {
                                 <TouchableOpacity activeOpacity={1} key={6} onPress={() => this.props.navigation.navigate('AddExercise', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./exercise.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Exercise</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={7} onPress={() => this.props.navigation.navigate('Sessions', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail source={require('./classes.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Offerings</Text></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium style={styles.thumbnail}/><Text style={{fontSize: 15, backgroundColor: "black"}}>Offerings</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={8} onPress={() => this.props.navigation.navigate('AdminProfile',{ID: this.state.gymId, navigation: this.props.navigation})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Profile</Text></View></TouchableOpacity>
                             </View>
@@ -288,7 +288,7 @@ export default class Admin extends PureComponent {
                                                             </View>
                                                         </CardItem>
                                                         <CardItem style={{justifyContent: 'center', alignItems: 'center'}}>
-                                                             <Text style={{fontWeight: 'bold', fontSize: 50}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}>3250000</Text></Text>
+                                                             <Text style={{fontWeight: 'bold', fontSize: 50}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}>32500</Text></Text>
                                                         </CardItem>
                                                         <CardItem footer style={{justifyContent: 'space-between'}}>
                                                             <View />

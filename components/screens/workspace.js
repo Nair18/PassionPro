@@ -25,16 +25,12 @@ const data = [ {key: "#MotivationalMonday", value: "#e37070"},
                  {key: "#SundaySweat", value: "#8d448b"}
                ]
 
-const randomColor = () => {
-  var RandomNumber = Math.floor(Math.random() * data.length) ;
-  return data[RandomNumber].value;
-}
 
 const randomStyle = () => {
  return { flex: 1,
       height: 100,
       width: '100%',
-      backgroundColor: randomColor(),
+
       justifyContent: 'center',
       alignItems: 'center'
      }
@@ -144,7 +140,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 100,
     width: '100%',
-    backgroundColor: randomColor(),
     justifyContent: 'center',
     alignItems: 'center'
   },

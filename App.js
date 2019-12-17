@@ -74,6 +74,10 @@ import GymExpenseTracker from './components/screens/GymExpenseTracker';
 import GymLocations from './components/screens/GymLocations';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CreateAdmin from './components/screens/CreateAdmin';
+import WorkoutSpace from './components/screens/WorkoutSpace';
+import MealSpace from './components/screens/MealSpace';
+import DaywiseMeals from './components/screens/DaywiseMeals';
+import DaywiseWorkouts from './components/screens/DaywiseWorkouts';
 //import all the screens we are going to switch/
 
 // To see all the requests in the chrome Dev tools in the network tab.
@@ -188,8 +192,12 @@ const PersonalTrainer = createStackNavigator({
     TrainerWorkout: {screen: TrainerWorkout},
     TrainerMeal: {screen: TrainerMeal},
     CreateMeal: {screen: CreateMeal},
+    MealSpace: {screen: MealSpace},
+    WorkoutSpace: {screen: WorkoutSpace},
     SearchModal: {screen: SearchModal},
-    TrainerCreateWorkout: {screen: TrainerCreateWorkout}
+    TrainerCreateWorkout: {screen: TrainerCreateWorkout},
+    DaywiseWorkouts: {screen: DaywiseWorkouts},
+    DaywiseMeals: {screen: DaywiseMeals}
   },
   {
     initialRouteName: 'TrainerSection'

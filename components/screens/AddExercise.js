@@ -180,12 +180,12 @@ export default class AddExercise extends PureComponent {
                         (<Form>
 
                            <Item regular style={{padding: 5}}>
-                              <Label>Body part<Text style={{color: 'red'}}>*</Text> - </Label>
+                              <Label>Body part<Text style={{color: 'red', fontWeight: 'bold'}}>*</Text> - </Label>
                               <Input placeholder="eg. Biceps" onChangeText={text => this.setState({body_part: text})}/>
                            </Item>
 
                            <Item regular style={{padding: 5}}>
-                              <Label>Exercise<Text style={{color: 'red'}}>*</Text> - </Label>
+                              <Label>Exercise<Text style={{color: 'red',fontWeight: 'bold'}}>*</Text> - </Label>
                               <Input placeholder="eg. Bench Press" onChangeText={text => this.setState({exerciseName: text})}/>
                            </Item>
                            <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>

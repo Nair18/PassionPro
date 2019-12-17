@@ -24,9 +24,73 @@ export default class Notification extends Component {
           headerStyle: {backgroundColor: '#eadea6'},
           headerTintColor: 'black'
       }
+
+
     componentDidMount(){
-                    StatusBar.setHidden(false);
+            console.log("id has been retrieved", this.state.id)
+
+            const { navigation } = this.props;
+            console.log("pagal bana rhe hai")
+            this.focusListener = navigation.addListener('didFocus', () => {
+                    console.log("The screen is focused")
+                    var key  = this.retrieveItem('key').then(res =>
+                               this.setState({auth_key: res}, () => console.log("brother pls", res))
+                               ).then(() => {
+                                    if(this.state.auth_key !== null){
+                                        this.fetchDetails()
+                                    }
+                               })
+            });
+        }
+
+    componentWillUnmount() {
+              // Remove the event listener
+              this.focusListener.remove();
+
+          }
+    fetchDetails = () => {
+            this.setState({loading: true})
+            let course_list = fetch(constants.API + 'current/trainer/trainees', {
+                method: 'GET',
+                headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': this.state.auth_key,
+                            }
+            })
+            .then(
+                res => {
+                    if(res.status === 200){
+                        return res.json()
+                    }
+                    else{
+                        this.setState({loading: false})
+                                                       Alert.alert(
+                                                          constants.failed,
+                                                          constants.fail_error,
+                                                          [
+                                                              {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                          ],
+                                                          {cancelable: false},
+                                                       );
+                    }
                 }
+            ).then(res => this.setState({traineeList: res["trainees"]}))
+
+
+        }
+    async retrieveItem(key) {
+                  try {
+                    const retrievedItem =  await AsyncStorage.getItem(key);
+                    console.log("key retrieved")
+                    return retrievedItem;
+                  } catch (error) {
+                    console.log(error.message);
+                  }
+                  return;
+          }
+
+
     render(){
         return(
             <Container style={{padding: 15, backgroundColor: '#efe9cc'}}>

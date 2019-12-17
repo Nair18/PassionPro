@@ -56,8 +56,13 @@ export default class SLCProfile extends Component {
 
             <ScrollView showHorizontalScrollbar={false}>
                 <Content style={{marginLeft: 15, marginRight: 15}}>
-                    <View style={styles.imageView}>
-                        <Thumbnail large source={require('./client-profile.png')}/>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <View style={styles.imageView}>
+                            <Thumbnail large source={require('./client-profile.png')}/>
+                        </View>
+                        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                            <Button style={{backgroundColor: '#d35656'}} onPress={() => {this.props.navigation.navigate('LandingPage')}}><Text>Logout</Text></Button>
+                        </View>
                     </View>
                 </Content>
                 <Content style={{margin: 15}}>

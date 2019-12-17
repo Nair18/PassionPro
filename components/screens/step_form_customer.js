@@ -27,11 +27,11 @@ export default class StepFormCustomer extends React.Component {
                 //Setting the header of the screen
                title: 'Sign up',
                headerTitleStyle: {
-                 color: 'black',
+                 color: 'white',
                  fontWeight: 'bold'
                },
-               headerTintColor: 'black',
-               headerStyle: {backgroundColor: 'white', paddingTop: 5, elevation: 0}
+               headerTintColor: 'white',
+               headerStyle: {backgroundColor: 'black', paddingTop: 5}
               };
 
 
@@ -85,7 +85,7 @@ export default class StepFormCustomer extends React.Component {
 
 
     return (
-     <Container>
+     <Container style={{backgroundColor: '#ffd369'}}>
      <StatusBar backgroundColor='black' barStyle='light-content' />
 
       <View style={styles.root}>

@@ -17,9 +17,9 @@ export default class Login extends PureComponent {
     }
      static navigationOptions = {
           title: 'Login',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: 'white', elevation: 0},
-          headerTintColor: 'black'
+          headerTitleStyle: { color: 'white', fontWeight: 'bold'},
+          headerStyle: {backgroundColor: '#393e46'},
+          headerTintColor: 'white'
       }
 
      async componentDidMount() {
@@ -144,6 +144,7 @@ export default class Login extends PureComponent {
       }
     render(){
         return(
+        <Container style={{backgroundColor: '#ffd369'}}>
         <Fragment>
             {this.state.loading ?
                                 <View style={{justifyContent: 'center', alignItems: 'center', marginTop: '50%'}}>
@@ -152,16 +153,16 @@ export default class Login extends PureComponent {
                                         <Text style={{fontWeight: 'bold'}}>Checking your credibility ...</Text>
                                     </View>
                                 </View> :
-            <Container>
-                <Content style={{marginTop: '10%', marginLeft: '10%', marginRight: '10%'}}>
+                <Content>
 
+                    <View style={{marginLeft: '10%', marginRight: '10%'}}>
                     <List>
                         <ListItem>
-                            <Input placeholder="Phone number" keyboardType='numeric' onChangeText={(text) => this.setState({username: text})}
+                            <Input style={{backgroundColor: 'white'}} placeholder="Phone number" keyboardType='numeric' onChangeText={(text) => this.setState({username: text})}
                                                                         value={this.state.username}/>
                         </ListItem>
                         <ListItem>
-                            <Input secureTextEntry={true} placeholder="Password" onChangeText={(value) => this.setState({password: value})}/>
+                            <Input style={{backgroundColor: 'white'}} secureTextEntry={true} placeholder="Password" onChangeText={(value) => this.setState({password: value})}/>
                         </ListItem>
                     </List>
                     <View style={{justifyContent: 'center', alignItems: 'center', width: '70%', margin: '15%'}}>
@@ -169,11 +170,19 @@ export default class Login extends PureComponent {
                             <Text style={{color: 'white'}}>Login</Text>
                         </Button>
                     </View>
-
+                    </View>
                 </Content>
-            </Container>}
+            }
          </Fragment>
+         </Container>
         );
     }
 }
 
+const styles = StyleSheet.create({
+
+  image: {
+      width: '20%',
+      height: '20%'
+    }
+});

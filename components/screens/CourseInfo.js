@@ -120,7 +120,7 @@ export default class CourseInfo extends Component {
          <ScrollView showHorizontalScrollbar={false}>
          { this.state.editable === false ? <Content>
                              <View style={styles.imageView}>
-                                 <Thumbnail large source={require('./course-image.jpg')} />
+                                 <Thumbnail large style={{backgroundColor: "black"}} />
                              </View>
                          </Content> : null}
          <Content style={{padding: 15}}>
