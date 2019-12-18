@@ -76,8 +76,8 @@ export default class BodyWeight extends PureComponent {
                      return response.json();
                       } else {
                          Alert.alert(
-                             'OOps!',
-                             'Something went wrong ...',
+                             constants.failed,
+                             constants.fail_error,
                          [
                              {text: 'OK', onPress: () => console.log('OK Pressed')},
                          ],
@@ -105,8 +105,8 @@ export default class BodyWeight extends PureComponent {
                         if (response.status === 200) {
                         this.fetchDetails()
                         Alert.alert(
-                            'Yayy!!',
-                            'Your body weight recorded ...',
+                            constants.success,
+                            'Successfully recorded body weight',
                             [
                                 {text: 'OK', onPress: () => console.log('OK Pressed')},
                             ],
@@ -117,8 +117,8 @@ export default class BodyWeight extends PureComponent {
                         else {
                                  this.setState({onProcess: false})
                                 Alert.alert(
-                                    'OOps!',
-                                    'Something went wrong ...',
+                                    constants.failed,
+                                    constants.fail_error,
                                      [
                                         {text: 'OK', onPress: () => console.log('OK Pressed')},
                                      ],
@@ -157,7 +157,7 @@ export default class BodyWeight extends PureComponent {
 
                     <View style={{marginTop: 25}}>
                       <Item regular>
-                        <Input style={{backgroundColor: 'white'}} keyboardType="numeric" placeholder="enter your current weight" onChangeText={text => this.setState({weight: text})}/>
+                        <Input style={{backgroundColor: 'white'}} keyboardType="numeric" placeholder="enter your current weight(kg)" onChangeText={text => this.setState({weight: text})}/>
                       </Item>
                     </View>
                     <View style={{marginTop: 25, justifyContent: 'center', alignItems: 'center'}}>

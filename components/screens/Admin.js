@@ -50,6 +50,12 @@ export default class Admin extends PureComponent {
       gymId: null,
       checked1: false,
       checked2: false,
+      start_month: "JANUARY",
+      start_year: (new Date().getFullYear()),
+      end_month: "DECEMBER",
+      end_year: parseInt(new Date().getFullYear()),
+      sub_type: "GYM",
+      stats: null,
       sendProcess: false,
     }
   }
@@ -76,7 +82,10 @@ export default class Admin extends PureComponent {
         console.log("focusing admin screen")
         var key  = this.retrieveItem('key').then(res =>
                       this.setState({auth_key: res}, () => console.log("brother pls", res))
-                    ).then(() => this.fetchDetails())
+                    ).then(() => {
+                        this.fetchDetails()
+                        this.fetchStats()
+                    })
       });
 
   }
@@ -89,6 +98,36 @@ export default class Admin extends PureComponent {
             console.log(error.message);
           }
           return;
+  }
+
+  fetchStats = () => {
+    fetch(constants.API + 'current/admin/gyms/'+ this.state.gymId + '/statistics', {
+        method: 'POST',
+        headers: {
+             'Accept': 'application/json',
+             'Content-Type': 'application/json',
+             'Authorization': this.state.auth_key,
+        },
+        body: JSON.stringify({
+            "end_month": this.state.end_month,
+            "end_year": this.state.end_year,
+            "start_month": this.state.start_month,
+            "start_year": this.state.start_year,
+            "subscription_type": this.state.sub_type
+        })
+    }).then(res => {
+        if(res.status === 200){
+            return res.json()
+        }
+        else if(res.status === 401){
+            this.props.navigation.navigate('LandingPage')
+        }
+        else{
+            Alert.alert(constants.failed, constants.fail_error)
+        }
+    }).then(res => {
+        this.setState({stats: res})
+    })
   }
   fetchDetails = () => {
     console.log("Api fetch going to be called")
@@ -235,12 +274,12 @@ export default class Admin extends PureComponent {
     return(
       <Fragment>
          <OfflineNotice/>
-         {(this.state.overview === null) ? <ProfileSkeleton/> :
+         {(this.state.overview === null && this.state.stats === null) ? <ProfileSkeleton/> :
          (<Container style={{backgroundColor: '#efe9cc'}}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between', elevation: 1, backgroundColor: '#eadea6'}}>
                     <View style={{padding: 15, flex: 2}}>
                         <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["name"] : "Loading ..."}</Text>
-                        <Text style={{fontSize: 15}} note>koramangala</Text>
+                        <Text note>{this.state.gymDetails !== null ? this.state.gymDetails["data"]["gyms"][0]["location"] : null}</Text>
                     </View>
                     <View style={{padding:15, justifyContent: 'center', alignItems: 'center'}}>
                         <Badge success>
@@ -288,7 +327,7 @@ export default class Admin extends PureComponent {
                                                             </View>
                                                         </CardItem>
                                                         <CardItem style={{justifyContent: 'center', alignItems: 'center'}}>
-                                                             <Text style={{fontWeight: 'bold', fontSize: 50}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}>32500</Text></Text>
+                                                             <Text style={{fontWeight: 'bold', fontSize: 50}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}></Text></Text>
                                                         </CardItem>
                                                         <CardItem footer style={{justifyContent: 'space-between'}}>
                                                             <View />

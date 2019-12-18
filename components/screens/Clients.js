@@ -59,7 +59,7 @@ export default class Clients extends PureComponent {
       }).then(res => {
         if(res.status !== 200){
             this.setState({onProcess: false})
-            Alert.alert('OOps!!', 'Something went wrong')
+            Alert.alert(constants.failed, constants.fail_error)
             return null
         }
         else{

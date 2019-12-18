@@ -148,8 +148,8 @@ export default class AddExercise extends PureComponent {
           {this.state.exerciseList !== null ? exercises.map(ex =>
           <View style={{margin: 5}}>
           <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DetailedExercise', {list: this.state.exerciseList[ex], ID: this.state.id, name: ex})}>
-          <Card style={{backgroundColor: '#e3c4a8'}}>
-            <CardItem style={{justifyContent: "space-between", backgroundColor: '#e3c4a8'}}>
+          <Card style={{backgroundColor: '#9dab86'}}>
+            <CardItem style={{justifyContent: "space-between", backgroundColor: '#9dab86'}}>
                 <Text style={{color: 'black', fontWeight: 'bold'}}>{ex}</Text>
                 <Icon style={{color: 'black'}} size={20} name="md-arrow-dropright"/>
             </CardItem>
@@ -180,12 +180,12 @@ export default class AddExercise extends PureComponent {
                         (<Form>
 
                            <Item regular style={{padding: 5}}>
-                              <Label>Body part<Text style={{color: 'red', fontWeight: 'bold'}}>*</Text> - </Label>
+                              <Label><Text style={{fontWeight: 'bold'}}>Body part</Text><Text style={{color: 'red', fontWeight: 'bold'}}>*</Text> - </Label>
                               <Input placeholder="eg. Biceps" onChangeText={text => this.setState({body_part: text})}/>
                            </Item>
 
                            <Item regular style={{padding: 5}}>
-                              <Label>Exercise<Text style={{color: 'red',fontWeight: 'bold'}}>*</Text> - </Label>
+                              <Label><Text style={{fontWeight: 'bold'}}>Exercise</Text><Text style={{color: 'red',fontWeight: 'bold'}}>*</Text> - </Label>
                               <Input placeholder="eg. Bench Press" onChangeText={text => this.setState({exerciseName: text})}/>
                            </Item>
                            <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>

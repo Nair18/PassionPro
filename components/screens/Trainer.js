@@ -91,8 +91,8 @@ export default class Trainer extends PureComponent {
                                } else {
                                  this.setState({loading: false})
                                  Alert.alert(
-                                   'OOps!',
-                                   'Something went wrong ...',
+                                   constants.failed,
+                                   constants.fail_error,
                                     [
                                         {text: 'OK', onPress: () => console.log('OK Pressed')},
                                     ],
@@ -159,7 +159,38 @@ export default class Trainer extends PureComponent {
                 return
             }
         })
-    }
+  }
+
+  onChangeSearchInput = (text)=> {
+        this.debouncedSearch(text);
+  };
+
+  debouncedSearch = debounce(function (query) {
+           this.setState({onProcess: true})
+          fetch(constants.API + 'current/admin/gyms/'+this.state.id + '/trainer-search?phone='+ query, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth_key,
+            }
+          }).then(res => {
+            if(res.status !== 200){
+                this.setState({onProcess: false})
+                Alert.alert(constants.failed, constants.fail_error)
+                return null
+            }
+            else{
+    //            this.setState({onProcess: false})
+                return res.json()
+            }
+          }).then(res => {
+            if(res !== null){
+                this.setState({trainerList: res["trainers"], onProcess: false}, () => console.log(res, "Hello frands"))
+            }
+          })
+  }, 100);
+
 
   render() {
     return (
@@ -174,7 +205,7 @@ export default class Trainer extends PureComponent {
                       </Item>
                     </View> : null }
           <List>
-            {this.state.trainerList !== null ? this.state.trainerList.map(trainer =>
+            {this.state.trainerList !== null && this.state.onProcess == false ? this.state.trainerList.map(trainer =>
             <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerPage', {id: this.state.id, trainer_id: trainer["id"]})}>
               <Left>
                 <Thumbnail source={require('./client-profile.png')} style={{backgroundColor: 'black'}} />

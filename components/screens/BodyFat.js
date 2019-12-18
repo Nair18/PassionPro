@@ -75,8 +75,8 @@ export default class BodyWeight extends PureComponent {
                  return response.json();
                   } else {
                      Alert.alert(
-                         'OOps!',
-                         'Something went wrong ...',
+                         constants.failed,
+                         constants.fail_error,
                      [
                          {text: 'OK', onPress: () => console.log('OK Pressed')},
                      ],
@@ -104,8 +104,8 @@ export default class BodyWeight extends PureComponent {
                     if (response.status === 200) {
                     this.fetchDetails()
                     Alert.alert(
-                        'Yayy!!',
-                        'Your body fat recorded ...',
+                        constants.success,
+                        'Successfully recorded the fat %',
                         [
                             {text: 'OK', onPress: () => console.log('OK Pressed')},
                         ],
@@ -116,7 +116,7 @@ export default class BodyWeight extends PureComponent {
                     else {
                              this.setState({onProcess: false})
                             Alert.alert(
-                                'OOps!',
+                                constants.failed,
                                 "Something went wrong. Do not use '%' symbol while entering the fat.",
                                  [
                                     {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -158,7 +158,7 @@ export default class BodyWeight extends PureComponent {
                 (<Content>
                     <View style={{marginTop: 25}}>
                       <Item regular>
-                        <Input style={{backgroundColor: 'white'}} keyboardType="numeric" placeholder="enter your fat %" onChangeText={text => this.setState({fat: text})}/>
+                        <Input style={{backgroundColor: 'white'}} keyboardType="numeric" placeholder="Enter % value eg. 33" onChangeText={text => this.setState({fat: text})}/>
                       </Item>
                     </View>
                     <View style={{marginTop: 25, justifyContent: 'center', alignItems: 'center'}}>

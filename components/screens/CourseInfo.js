@@ -1,6 +1,6 @@
 import React, {Fragment,Component} from 'react';
 import {TextInput, StyleSheet, Image, ScrollView, Alert, AsyncStorage} from 'react-native';
-import { Button, Container, Content, View, Text, Thumbnail, Spinner, Input} from 'native-base';
+import { Button, Container, Content, View, Text, Thumbnail, Spinner, Input, Label} from 'native-base';
 import constants from '../constants';
 import PageLoader from './PageLoader';
 export default class CourseInfo extends Component {
@@ -14,6 +14,7 @@ export default class CourseInfo extends Component {
       courseInfo: null,
       courseName: null,
       courseDescription: null,
+      onProcess: false,
       courseDuration: null,
       saveProcess: false
     }
@@ -111,6 +112,41 @@ export default class CourseInfo extends Component {
         }
     })
   }
+
+  _delete = (id) => {
+    this.setState({onProcess: true})
+    fetch(constants.API + 'current/admin/gyms/'+ this.state.gym_id + '/archive/coursetypes/'+this.state.course_id, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth_key,
+        }
+    }).then(res => {
+        this.setState({onProcess: false})
+        if(res.status === 200){
+            Alert.alert(constants.success, 'Successfully deleted the course')
+            this.props.navigation.goBack()
+
+        }
+        else if(res.status === 401){
+            this.props.navigation.navigate('LandingPage')
+        }
+        else{
+            Alert.alert(constants.failed, constants.fail_error)
+        }
+    })
+  }
+  _deletealert = (id) => {
+    Alert.alert(
+                constants.warning,
+                'Are you sure you want to delete?',
+                [
+                    {text: 'OK', onPress: () => this._delete(id)}
+                ],
+                {cancelable: false}
+            )
+  }
   render(){
 
     return(
@@ -118,24 +154,33 @@ export default class CourseInfo extends Component {
        {this.state.courseInfo !== null ?
        <Container style={{backgroundColor: '#efe9cc'}}>
          <ScrollView showHorizontalScrollbar={false}>
-         { this.state.editable === false ? <Content>
-                             <View style={styles.imageView}>
+         { this.state.editable === false ? (this.state.onProcess === false ? <Content>
+                           <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                             <View style={{flex: 1, margin: 15}}>
                                  <Thumbnail large style={{backgroundColor: "black"}} />
                              </View>
-                         </Content> : null}
+
+                             <View style={{flex: 1, margin: 15}}>
+                                <View style={{margin: 15}}>
+                                    <Button block style={{backgroundColor: 'black'}} onPress={this._editable}><Text>Edit</Text></Button>
+                                </View>
+                             </View>
+                           </View>
+                         </Content>: <Spinner color="black" />) : null}
          <Content style={{padding: 15}}>
            <View>
              {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>{this.state.courseInfo["name"]}</Text> :
-             <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20, backgroundColor: 'white'}} placeholder="Name" onChangeText = {text => this.setState({courseName: text})}>{this.state.courseInfo["name"]}</TextInput>}
+             <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20, backgroundColor: 'white'}} placeholder="Name" onChangeText = {text => this.setState({courseName: text})}><Label><Text note>Name -</Text> </Label>{this.state.courseInfo["name"]}</TextInput>}
            </View>
            <View>
-            {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Duration: {this.state.courseInfo["duration"]} days</Text> :
-            <TextInput  editable={this.state.editable} onChangeText = {text => this.setState({courseDuration: parseInt(text)})} style={{textAlign: 'justify', fontSize: 20, backgroundColor: 'white'}} placeholder="Duration">{this.state.courseInfo["duration"]}</TextInput>}
+            {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}><Label><Text>Duration - </Text></Label>{this.state.courseInfo["duration"]} days</Text> :
+            <TextInput  editable={this.state.editable} onChangeText = {text => this.setState({courseDuration: parseInt(text)})} style={{textAlign: 'justify', fontSize: 20, backgroundColor: 'white'}} placeholder="Duration"><Label><Text note>Duration -</Text> </Label>{this.state.courseInfo["duration"]}</TextInput>}
            </View>
            <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
              { this.state.editable === false ? <Text selectable multiline={true}>{this.state.courseInfo["description"]}</Text> :
 
              <TextInput multiline={true} style={{backgroundColor: 'white', width: '100%'}} placeholder="Description" onChangeText={text => this.setState({courseDescription: text})}>
+                 <Label><Text note>Description - </Text></Label>
                  {this.state.courseInfo["description"]}
              </TextInput>}
            </View>
@@ -147,12 +192,7 @@ export default class CourseInfo extends Component {
                     <View style={{marginTop: 10}}>
                         <Button onPress={this._cancel} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Cancel</Text></Button>
                     </View></Fragment> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
-                </Content> :
-                <Content style={{marginTop: 15}}>
-                    <View>
-                        <Button onPress={this._editable} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Edit</Text></Button>
-                    </View>
-                </Content>
+                </Content> : null
            }
          </Content>
          </ScrollView>
@@ -170,9 +210,7 @@ const styles = StyleSheet.create({
        },
   imageView: {
     height: 100,
-    width: 100,
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: 100
   }
 
 })

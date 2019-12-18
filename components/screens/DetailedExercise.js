@@ -178,11 +178,11 @@ export default class DetailedExercise extends PureComponent {
           <View style={{margin: 5}}><Text>Showing result for <Text style={{fontWeight: 'bold'}}>{this.state.name}</Text></Text></View>
           {this.state.exerciseList !== null  ? this.state.exerciseList.map(ex =>
           <View style={{margin: 5}}>
-          <Card style={{backgroundColor: '#e3c4a8'}}>
-            <CardItem style={{justifyContent: 'space-between', backgroundColor: '#e3c4a8'}}>
+          <Card style={{backgroundColor: '#9dab86'}}>
+            <CardItem style={{justifyContent: 'space-between', backgroundColor: '#9dab86'}}>
                 <Text style={{color: 'black', fontWeight:'bold'}}>{ex["exercise_name"]}</Text>
                 {this.state.onProcess == false ?
-                <Icon size={15} name="md-close" onPress={() => this.archive_exercise_alert(ex["id"])}/> : <Spinner color="black"/>}
+                <Icon size={25} name="md-close" style={{color: 'white'}} onPress={() => this.archive_exercise_alert(ex["id"])}/> : <Spinner color="black"/>}
             </CardItem>
           </Card></View>): <Spinner color="black"/>}
         </Content>

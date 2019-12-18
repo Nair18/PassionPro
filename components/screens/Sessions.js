@@ -148,8 +148,8 @@ export default class Sessions extends PureComponent {
             },
             body: JSON.stringify(
               {
-                "courseType": this.state.courseType,
-                "gymId": this.state.id
+                "course_type": this.state.courseType,
+                "gym_id": this.state.id
               }
             )
         })
@@ -179,7 +179,38 @@ export default class Sessions extends PureComponent {
             }
         })
 
-    }
+  }
+
+  _delete = (c_id) => {
+    fetch(constants.API + 'current/admin/gyms/'+this.state.id + '/archive/coursetypes/'+c_id, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth_key
+        }
+    }).then(res => {
+        if(res.status === 200){
+            Alert.alert(constants.success, 'Successfully deleted')
+            this.fetchDetails()
+        }
+        else if(res.status === 401){
+            this.props.navigation.navigate('LandingPage')
+        }
+        else{
+            Alert.alert(constants.failed, constants.fail_error)
+            return
+        }
+    })
+  }
+  _deletealert = (id) => {
+    Alert.alert(constants.warning, "Are you sure you want to delete?",
+                    [
+                        {text: 'OK', onPress: () => this._delete(id)}
+                    ],
+                    {cancelable: false}
+    )
+  }
   render() {
     return (
     <Fragment>
@@ -188,8 +219,9 @@ export default class Sessions extends PureComponent {
             {this.state.coursetype !== null ? this.state.coursetype.map(coursetype =>
                 <View style={{marginTop: 5}}>
                     <Card style={{backgroundColor: '#9dab86'}}>
-                        <CardItem style={{backgroundColor: '#9dab86'}}>
+                        <CardItem style={{backgroundColor: '#9dab86', justifyContent: 'space-between'}}>
                             <Text style={{fontWeight: 'bold'}}>{coursetype["name"]}</Text>
+                            <Icon name="md-close" size={25} style={{color: 'white'}} onPress={() => this._deletealert(coursetype["id"])}/>
                         </CardItem>
                     </Card>
                 </View>):<PageLoader/>}

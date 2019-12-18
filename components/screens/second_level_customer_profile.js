@@ -60,7 +60,7 @@ export default class SLCProfile extends Component {
                         <View style={styles.imageView}>
                             <Thumbnail large source={require('./client-profile.png')}/>
                         </View>
-                        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{justifyContent: 'center', alignItems: 'center', flex:1 }}>
                             <Button style={{backgroundColor: '#d35656'}} onPress={() => {this.props.navigation.navigate('LandingPage')}}><Text>Logout</Text></Button>
                         </View>
                     </View>
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
      imageView: {
        width: 100,
        height: 100,
+
        justifyContent: 'center',
        alignItems: 'center'
      },

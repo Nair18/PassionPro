@@ -33,7 +33,7 @@ export default class QuickClient extends Component {
                             </Left>
                             <Body>
                                 <Text>{client["name"]}</Text>
-                                <Text note>Membership ends on  + {client["end_time"] !== null ? client["end_time"].split("T")[0] : "no time"}</Text>
+                                <Text note>Membership ends on {client["end_time"] !== null ? client["end_time"].split("T")[0] : "-"}</Text>
                             </Body>
                         </ListItem>
                     ) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View>}
