@@ -75,6 +75,10 @@ class Wizard extends PureComponent {
       this.setState({loading: true})
       fetch(constants.API + "open/gyms/trainees/",{
          method: 'POST',
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+         },
          body: JSON.stringify({
          "name": this.state.name,
          "email": this.state.email,
@@ -83,12 +87,15 @@ class Wizard extends PureComponent {
          "dob": this.state.dob,
          "is_active": true,
          "address": this.state.address,
-         "emergency_phone": this.state.emergency_contact,
-         "emergency_person": this.state.emergency_contact_name,
-         "relation_with_person": this.state.relation,
+         "emergency_phone": this.state.emergency_phone,
+         "emergency_person": this.state.emergency_person,
+         "relation_with_person": this.state.relation_with_person,
          "gender": this.state.gender,
-         "passkey": this.state.passkey,
+         "passkey": parseInt(this.state.passkey),
          "device_token": res,
+         "start_date": this.state.start_date,
+         "end_date": this.state.start_date,
+         "amount": 0
          }),
          headers: new Headers({
             'Content-Type': 'application/json'

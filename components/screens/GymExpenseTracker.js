@@ -13,7 +13,7 @@ import {
 import StandardWorkout from './StandardWorkout';
 import ModalSelector from 'react-native-modal-selector';
 import PersonalizedWorkout from './PersonalizedWorkout';
-
+import constants from '../constants';
 import {Card, CardItem, Icon, Accordion, Form, Thumbnail, Container, Text,Item, Content,List,ListItem, Button, Spinner, Input} from 'native-base'
 
 
@@ -32,12 +32,12 @@ export default class GymExpenseTracker extends Component {
   static navigationOptions = {
       //Setting the header of the screen
       title: 'Expense Tracker',
-      headerStyle: {backgroundColor: '#eadea6'},
+      headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
-          color: 'black',
+          color: constants.header_text,
           fontWeight: 'bold'
         },
-      headerTintColor: 'black',
+      headerTintColor: constants.header_text,
     };
 
   componentDidMount(){
@@ -63,7 +63,7 @@ export default class GymExpenseTracker extends Component {
     const { navigate } = this.props.navigation;
 
     return(
-       <Container style={{backgroundColor: '#efe9cc'}}>
+       <Container style={{backgroundColor: constants.screen_color}}>
           <ScrollView showsVerticalScrollIndicator={false}>
           <Content style={styles.content}>
             <Content>

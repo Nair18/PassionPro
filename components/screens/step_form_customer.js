@@ -10,16 +10,18 @@ export default class StepFormCustomer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      name: '',
-      phone: '',
-      email: '',
-      password: '',
-      dob: '',
-      address: '',
+      name: null,
+      phone: null,
+      email: null,
+      password: null,
+      dob: null,
+      address: null,
       gender: 'MALE',
-      emergency_contact_name: '',
-      emergency_contact: '',
-      relation: '',
+      emergency_person: null,
+      emergency_phone: null,
+      relation_with_person: null,
+      start_date: null,
+      end_date: null,
       passkey: null,
     }
   }
@@ -62,21 +64,23 @@ export default class StepFormCustomer extends React.Component {
                  name2: "address"
                },
                {
-                 type: null,
+                 placeholder: "Membership start date",
+                 type: 'picker',
+                 name: 'start_date',
                  placeholder2: "Gender",
                  type2: "picker",
                  name2: "gender",
                },
                {
                  placeholder: "Emergency contact person's name",
-                 name: 'emergency_contact_name',
+                 name: 'emergency_person',
                  placeholder2: "Your relation with the person",
-                 name2: "relation",
+                 name2: "relation_with_person",
                },
                {
                  placeholder: "Phone number",
                  keyboard: 'numeric',
-                 name: "emergency_contact",
+                 name: "emergency_phone",
                  placeholder2: "Your passkey",
                  name2: "passkey"
                },
@@ -85,7 +89,7 @@ export default class StepFormCustomer extends React.Component {
 
 
     return (
-     <Container style={{backgroundColor: '#ffd369'}}>
+     <Container style={{backgroundColor: '#ffd369', padding: 15}}>
      <StatusBar backgroundColor='black' barStyle='light-content' />
 
       <View style={styles.root}>
@@ -100,13 +104,14 @@ export default class StepFormCustomer extends React.Component {
                 <View style={styles.container}>
                   <Item>
                   {el.type === null ? null : (el.type !== 'picker' ? (<Input
+                    style={{backgroundColor: 'white', width: '100%'}}
                     onChangeValue={onChangeValue}
                     placeholder={el.placeholder}
                     value={values[el.name]}
                     keyboardType={el.keyboard}
                     name={el.name}
                   /> ): (<DatePicker
-                                                                          style={{width: 200}}
+                                                                          style={{width: '100%', backgroundColor: 'white'}}
                                                                           date={this.state.dob}
                                                                           mode="date"
                                                                           placeholder="select your DOB"
@@ -138,6 +143,7 @@ export default class StepFormCustomer extends React.Component {
                   </Item>
                   <Item style={{marginTop: 10}}>
                   {el.type2 !== 'picker' ? <Input
+                    style={{backgroundColor: 'white', width: '100%'}}
                     onChangeValue={onChangeValue}
                     placeholder={el.placeholder2}
                     value={values[el.name2]}
@@ -149,7 +155,7 @@ export default class StepFormCustomer extends React.Component {
                          name = {el.name2}
                          selectedValue = {this.state.gender}
                          placeholder = {el.placeholder2}
-                         style={{height: 50, width: '90%', alignItems: 'center', backgroundColor: "white"}}
+                         style={{height: 50, width: '100%', alignItems: 'center', backgroundColor: "white"}}
                          onValueChange={(itemValue, itemIndex) =>{
                             onChangeValue('gender', itemValue)
                             this.setState({gender: itemValue})

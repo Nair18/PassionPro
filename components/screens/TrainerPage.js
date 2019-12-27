@@ -13,14 +13,15 @@ export default class TrainerPage extends Component {
     this.state={
       id: this.props.navigation.state.params.id,
       trainer_id: this.props.navigation.state.params.trainer_id,
-      trainerDetails: null
+      trainerDetails: null,
+      onProcess: false
     }
   }
   static navigationOptions = {
       title: 'Trainer Info',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: '#eadea6'},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: 'white', fontWeight: 'bold'},
+      headerStyle: {backgroundColor: 'black'},
+      headerTintColor: 'white'
   }
 
   componentDidMount(){
@@ -84,25 +85,62 @@ export default class TrainerPage extends Component {
           // Remove the event listener
           this.focusListener.remove();
 
-    }
+  }
+
+  archive_trainer = () => {
+    this.setState({onProcess: true})
+    fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/trainers/' + this.state.trainer_id + '/gym-subscription-end', {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth_key,
+        }
+    }).then(res => {
+        this.setState({onProcess: false})
+        if(res.status === 200){
+            Alert.alert(constants.success, 'Successfully expired the trainer')
+        }
+        else if(res.status === 401){
+            this.props.navigation.navigate('LandingPage')
+        }
+        else{
+            Alert.alert(constants.failed, constants.fail_error)
+        }
+    })
+  }
+  _endAlert = () => {
+    Alert.alert(constants.warning, 'Are sure you want to do this?',
+        [
+           {
+              text: 'Cancel',
+              style: 'cancel',
+           },
+           {text: 'OK', onPress: () => this.archive_trainer},
+
+        ],
+    )
+  }
 
   render(){
 
     const {trainerDetails} = this.state
     return(
        <Fragment>
-        <Container style={{backgroundColor: '#efe9cc'}}>
+        <Container style={{backgroundColor: '#F4EAE6'}}>
             {this.state.trainerDetails !== null ?
             <ScrollView showHorizontalScrollbar={false}>
                 <Content style={{padding: 15}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <View style={styles.imageView}>
                         <Thumbnail large source={require('./client-profile.png')} />
                     </View>
+                    {this.state.onProcess === false ?
+                    trainerDetails["is_active"] ?
                     <View style={{flex: 1}}>
-                        <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}}><Text>end contract</Text></Button>
-                    </View>
-                    </View>
+                        <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}} onPress={this._endAlert}><Text>end contract</Text></Button>
+                    </View> :null : <Spinner color="black" /> }
+                  </View>
                 </Content>
                 <Content style={{padding: 15}}>
                     <View style={styles.infoView}>
@@ -110,7 +148,7 @@ export default class TrainerPage extends Component {
                          <Text style={styles.text}>Active </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text style={{fontWeight: 'bold', color: "green"}}>YES</Text>
+                         <Text style={{fontWeight: 'bold', color: trainerDetails["is_active"] ? "green" : "red"}}>{trainerDetails["is_active"] ? "YES" : "NO"}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -179,53 +217,27 @@ export default class TrainerPage extends Component {
                                              <Text>{trainerDetails["certifications"]}</Text>
                                            </View>
                                         </View>
-
-                    <View style={styles.infoView}>
-                                           <View style={styles.title}>
-                                             <Text style={styles.text}>Active Clients</Text>
-                                           </View>
-                                           <View style={styles.textFormat}>
-                                             <Text>{trainerDetails["active_clients"]}</Text>
-                                           </View>
-                                        </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Salary Offered</Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                          <Text>{'₹'}{trainerDetails["amount"]}</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                           <View style={styles.title}>
-                              <Text style={styles.text}>Total Bonus offered </Text>
-                           </View>
-                           <View style={styles.textFormat}>
-                              <Text>{'₹'}{trainerDetails["bonus"]}</Text>
-                           </View>
-                    </View>
-
                     <View style={{margin: 15, width: '90%'}}>
                                                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('TrainerBilling')}>
                                                         <View>
-                                                              <Card style={{backgroundColor: '#e5d8bf'}}>
-                                                                  <CardItem style={{backgroundColor: '#d7c79e'}}>
-                                                                      <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                                          <View style={{flex: 3}}><Text style={{fontWeight: 'bold'}}>Trainer Salary details </Text></View>
-                                                                          <View style={{marginLeft: 10, flex: 1}}><Icon size={20} name="md-arrow-dropright"/></View>
-                                                                      </View>
+                                                              <Card style={{backgroundColor: constants.item_card}}>
+                                                                  <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+
+                                                                          <Text style={{fontWeight: 'bold'}}>Trainer Salary details </Text>
+                                                                          <Icon size={20} name="md-arrow-dropright"/>
+
                                                                   </CardItem>
                                                               </Card>
                                                         </View>
                                                         </TouchableOpacity>
                                                        <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('ClientDetails')}>
                                                         <View style={{marginTop: 10}}>
-                                                             <Card style={{backgroundColor: '#e5d8bf'}}>
-                                                              <CardItem style={{backgroundColor: '#d7c79e'}}>
-                                                                  <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                                      <View style={{flex: 3}}><Text style={{fontWeight: 'bold'}}>Active Client details </Text></View>
-                                                                      <View style={{marginLeft: 10, flex: 1}}><Icon size={20} name="md-arrow-dropright"/></View>
-                                                                  </View>
+                                                             <Card style={{backgroundColor: constants.item_card}}>
+                                                              <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+
+                                                                      <Text style={{fontWeight: 'bold'}}>Active Client details </Text>
+                                                                      <Icon size={20} name="md-arrow-dropright"/>
+
                                                               </CardItem>
                                                              </Card>
                                                         </View>

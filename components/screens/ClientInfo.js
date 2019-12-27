@@ -18,9 +18,9 @@ export default class ClientInfo extends Component {
   }
   static navigationOptions = {
       title: 'Client Info',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: '#eadea6'},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+      headerStyle: {backgroundColor: constants.header},
+      headerTintColor: constants.header_text
   }
 
 
@@ -94,21 +94,10 @@ export default class ClientInfo extends Component {
 
 
   render(){
-    let DATA = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      }
-    ];
-
-    let courses = [];
-    for(let i=0;i<DATA.length;i++){
-       courses.push(<View><Item><Text>{DATA[i]['title']}</Text></Item></View>)
-    }
     const {traineeDetails} = this.state
     return(
        <Fragment>
-        <Container style={{backgroundColor: '#efe9cc'}}>
+        <Container style={{backgroundColor: constants.screen_color}}>
 
             <ScrollView showHorizontalScrollbar={false}>
               {this.state.traineeDetails !== null ?
@@ -135,6 +124,14 @@ export default class ClientInfo extends Component {
                     </View>
                     <View style={styles.infoView}>
                         <View style={styles.title}>
+                           <Text style={styles.text}>Gender </Text>
+                        </View>
+                        <View style={styles.textFormat}>
+                           <Text>{traineeDetails["gender"]}</Text>
+                        </View>
+                     </View>
+                    <View style={styles.infoView}>
+                        <View style={styles.title}>
                             <Text style={styles.text}>Age </Text>
                         </View>
                         <View style={styles.textFormat}>
@@ -157,35 +154,25 @@ export default class ClientInfo extends Component {
                          <Text>{traineeDetails["address"]}</Text>
                       </View>
                     </View>
-                    <View style={styles.infoView}>
-                                           <View style={styles.title}>
-                                             <Text style={styles.text}>Total Amount Paid Till Date </Text>
-                                           </View>
-                                           <View style={styles.textFormat}>
-                                             <Text>{'₹'}{traineeDetails["total_amount"]}</Text>
-                                           </View>
-                                        </View>
+
                     <View style={{marginLeft: 15, marginTop: 25, width: '90%'}}>
-                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails')}>
+                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails', {details: traineeDetails["gym_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
                           <View>
-                                <Card style={{backgroundColor: '#e5d8bf'}}>
-                                    <CardItem style={{backgroundColor: '#d7c79e'}}>
-                                        <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-                                            <View style={{flex: 3}}><Text style={{fontWeight: 'bold'}}>Gym membership details </Text></View>
-                                            <View style={{marginLeft: 10, flex: 1}}><Icon size={20} name="md-arrow-dropright"/></View>
-                                        </View>
+                                <Card style={{backgroundColor: constants.item_card}}>
+                                    <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between'}}>
+                                            <Text style={{fontWeight: 'bold'}}>Membership details </Text>
+                                            <Icon size={20} name="md-arrow-dropright"/>
+
                                     </CardItem>
                                 </Card>
                           </View>
                           </TouchableOpacity>
-                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails')}>
+                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails', {details: traineeDetails["course_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
                           <View>
-                               <Card style={{backgroundColor: '#e5d8bf'}}>
-                                <CardItem style={{backgroundColor: '#d7c79e'}}>
-                                    <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-                                        <View style={{flex: 3}}><Text style={{fontWeight: 'bold'}}>Personal Training details </Text></View>
-                                        <View style={{marginLeft: 10, flex: 1}}><Icon size={20} name="md-arrow-dropright"/></View>
-                                    </View>
+                               <Card style={{backgroundColor: constants.item_card}}>
+                                <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between'}}>
+                                   <Text style={{fontWeight: 'bold'}}>Personal Training details </Text>
+                                   <Icon size={20} name="md-arrow-dropright"/>
                                 </CardItem>
                                </Card>
                           </View>

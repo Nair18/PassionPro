@@ -10,10 +10,10 @@ import { Container, Header, Content, List, Spinner, ListItem, Form, Textarea, Le
 
 export default class Plans extends PureComponent {
   static navigationOptions = {
-    title: 'Workout Plans',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    title: 'Standard Plans',
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
 
   state = {
@@ -130,18 +130,18 @@ export default class Plans extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
 
         <Content>
           {this.state.planList !== null && this.state.coursetype !== null ? this.state.planList.map(plan =>
           <List>
-            <ListItem avatar onPress={() => this.props.navigation.navigate('PlanInfo', {plan_data: plan, plan_id: this.state.plan["id"], gym_id: this.state.id})}>
+            <ListItem avatar onPress={() => this.props.navigation.navigate('PlanInfo', {plan_data: plan, plan_id: plan["id"], gym_id: this.state.id})}>
               <Left>
                 <Thumbnail source={require('./crisis-plan.jpg')}style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
                 <Text style={{fontWeight: 'bold'}}>{plan["name"]}</Text>
-                <Text note>Last updated: 29-02-2019</Text>
+
               </Body>
             </ListItem>
           </List>) : <Spinner color="black"/>}

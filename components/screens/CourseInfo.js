@@ -21,9 +21,9 @@ export default class CourseInfo extends Component {
   }
   static navigationOptions = {
     title: 'Course Info',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
   _editable = () => {
     this.setState({editable: true})
@@ -152,7 +152,7 @@ export default class CourseInfo extends Component {
     return(
     <Fragment>
        {this.state.courseInfo !== null ?
-       <Container style={{backgroundColor: '#efe9cc'}}>
+       <Container style={{backgroundColor: constants.screen_color}}>
          <ScrollView showHorizontalScrollbar={false}>
          { this.state.editable === false ? (this.state.onProcess === false ? <Content>
                            <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
@@ -168,21 +168,28 @@ export default class CourseInfo extends Component {
                            </View>
                          </Content>: <Spinner color="black" />) : null}
          <Content style={{padding: 15}}>
-           <View>
+           <View style={{marginTop: 10}}>
              {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>{this.state.courseInfo["name"]}</Text> :
-             <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20, backgroundColor: 'white'}} placeholder="Name" onChangeText = {text => this.setState({courseName: text})}><Label><Text note>Name -</Text> </Label>{this.state.courseInfo["name"]}</TextInput>}
+             <View>
+               <Label><Text>Name</Text> </Label>
+               <TextInput  editable={this.state.editable} style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20, backgroundColor: 'white'}} placeholder="Name" onChangeText = {text => this.setState({courseName: text})}>{this.state.courseInfo["name"]}</TextInput>
+             </View>}
            </View>
-           <View>
-            {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}><Label><Text>Duration - </Text></Label>{this.state.courseInfo["duration"]} days</Text> :
-            <TextInput  editable={this.state.editable} onChangeText = {text => this.setState({courseDuration: parseInt(text)})} style={{textAlign: 'justify', fontSize: 20, backgroundColor: 'white'}} placeholder="Duration"><Label><Text note>Duration -</Text> </Label>{this.state.courseInfo["duration"]}</TextInput>}
+           <View style={{marginTop: 5}}>
+              {this.state.editable === false ? <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}><Label><Text>Duration - </Text></Label>{this.state.courseInfo["duration"]} days</Text> :
+               <View>
+                <Label><Text>Duration</Text></Label>
+                <TextInput  editable={this.state.editable} onChangeText = {text => this.setState({courseDuration: parseInt(text)})} style={{textAlign: 'justify', fontSize: 20, backgroundColor: 'white'}} placeholder="Duration">{this.state.courseInfo["duration"]}</TextInput>
+               </View>}
            </View>
-           <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
+           <View style={{marginTop: 10}}>
              { this.state.editable === false ? <Text selectable multiline={true}>{this.state.courseInfo["description"]}</Text> :
-
-             <TextInput multiline={true} style={{backgroundColor: 'white', width: '100%'}} placeholder="Description" onChangeText={text => this.setState({courseDescription: text})}>
-                 <Label><Text note>Description - </Text></Label>
+               <View>
+                <Label><Text>Description</Text></Label>
+                <TextInput multiline={true} style={{backgroundColor: 'white', width: '100%'}} placeholder="Description" onChangeText={text => this.setState({courseDescription: text})}>
                  {this.state.courseInfo["description"]}
-             </TextInput>}
+                </TextInput>
+              </View>}
            </View>
            {  this.state.editable ?
                 <Content style={{marginTop: 15}}>

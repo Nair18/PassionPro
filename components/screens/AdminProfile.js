@@ -20,9 +20,9 @@ class AdminProfile extends Component {
   }
   static navigationOptions = {
       title: 'Profile',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: '#eadea6'},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+      headerStyle: {backgroundColor: constants.header},
+      headerTintColor: constants.header_text
   }
   componentDidMount(){
                   StatusBar.setHidden(false);
@@ -97,7 +97,7 @@ class AdminProfile extends Component {
     }
     return(
        <Fragment>
-        <Container style={{backgroundColor: '#efe9cc'}}>
+        <Container style={{backgroundColor: constants.screen_color}}>
         {this.state.admin_profile !== null ?
         <Content>
 

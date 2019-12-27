@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
 import Divider from 'react-native-divider';
-
+import constants from '../constants';
 export default class TrainingBilling extends Component{
   constructor(props){
       super(props)
@@ -46,9 +46,9 @@ export default class TrainingBilling extends Component{
 
   static navigationOptions = {
         title: 'Payslip',
-                        headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-                        headerStyle: {backgroundColor: '#eadea6'},
-                        headerTintColor: 'black'
+                        headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+                        headerStyle: {backgroundColor: constants.header},
+                        headerTintColor: constants.header_text
   }
 
   _changeNumber = (value) => {
@@ -60,7 +60,7 @@ export default class TrainingBilling extends Component{
   }
   render(){
     return(
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
         <ScrollView showsVerticalScrollIndicator={false}>
         <Content style={{margin: 15}}>
           <View>
@@ -68,26 +68,26 @@ export default class TrainingBilling extends Component{
           </View>
           <View style={{marginTop: 10}}>
              <Card style={{width: '100%', padding: 15}}>
-                <CardItem header style={{backgroundColor: '#d7c79e', justifyContent: 'center', alignItems: 'center'}}>
+                <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'center', alignItems: 'center'}}>
                    <Text style={{fontWeight: 'bold'}}>Payslip for</Text>
                    <Text style={{color: "green"}}> June</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                     <Text><Text style={{fontWeight: 'bold'}}>Center:</Text> Gold Gym, Hsr</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                     <Text><Text style={{fontWeight: 'bold'}}>Trainer:</Text> Haresh</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Mobile:</Text> 9979090670</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Paid on:</Text> 2019-12-10</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Salary Paid:</Text> Rs 10000</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Penalty Amount:</Text> NA</Text>
                 </CardItem>
              </Card>
@@ -95,26 +95,26 @@ export default class TrainingBilling extends Component{
 
           <View style={{marginTop: 10}}>
                 <Card style={{width: '100%', padding: 15}}>
-                   <CardItem header style={{backgroundColor: '#d7c79e', justifyContent: 'center', alignItems: 'center'}}>
+                   <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'center', alignItems: 'center'}}>
                        <Text style={{fontWeight: 'bold'}}>Payslip for</Text>
                        <Text style={{color: "green"}}> May</Text>
                    </CardItem>
-                   <CardItem>
+                   <CardItem style={{backgroundColor: constants.card_body}}>
                        <Text><Text style={{fontWeight: 'bold'}}>Center:</Text> Gold Gym, Hsr</Text>
                    </CardItem>
-                   <CardItem>
+                   <CardItem style={{backgroundColor: constants.card_body}}>
                        <Text><Text style={{fontWeight: 'bold'}}>Trainer:</Text> Haresh</Text>
                    </CardItem>
-                   <CardItem>
+                   <CardItem style={{backgroundColor: constants.card_body}}>
                        <Text><Text style={{fontWeight: 'bold'}}>Mobile:</Text> 9979090670</Text>
                    </CardItem>
-                   <CardItem>
+                   <CardItem style={{backgroundColor: constants.card_body}}>
                        <Text><Text style={{fontWeight: 'bold'}}>Paid on:</Text> 2019-09-10</Text>
                    </CardItem>
-                   <CardItem>
+                   <CardItem style={{backgroundColor: constants.card_body}}>
                        <Text><Text style={{fontWeight: 'bold'}}>Salary Paid:</Text> Rs 10000</Text>
                    </CardItem>
-                   <CardItem>
+                   <CardItem style={{backgroundColor: constants.card_body}}>
                        <Text><Text style={{fontWeight: 'bold'}}>Penalty Amount:</Text> NA</Text>
                    </CardItem>
                 </Card>

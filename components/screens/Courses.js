@@ -25,7 +25,7 @@ export default class Courses extends PureComponent {
           auth_key: null,
           onProcess: false,
           loading: true,
-          courseTypeName: 'Select the Offering Type',
+          courseTypeName: 'Select the fitness progam',
           courseName: null,
           id: this.props.navigation.state.params.ID
         };
@@ -33,9 +33,9 @@ export default class Courses extends PureComponent {
   static navigationOptions = {
     title: 'Courses',
     tabBarVisible: false,
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
 
 
@@ -80,8 +80,8 @@ export default class Courses extends PureComponent {
                 else{
                     this.setState({loading: false})
                                                    Alert.alert(
-                                                     'OOps!',
-                                                     'Something went wrong ...',
+                                                      constants.failed,
+                                                      constants.fail_error,
                                                       [
                                                           {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                       ],
@@ -107,8 +107,8 @@ export default class Courses extends PureComponent {
                                           else{
                                               this.setState({loading: false})
                                                                              Alert.alert(
-                                                                               'OOps!',
-                                                                               'Something went wrong ...',
+                                                                               constants.failed,
+                                                                               constants.fail_error,
                                                                                 [
                                                                                     {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                                                 ],
@@ -194,7 +194,7 @@ export default class Courses extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
         <Content>
           <List>
             {this.state.coursetype !== null && this.state.courseList !== null ? this.state.courseList.map(course =>
@@ -236,7 +236,7 @@ export default class Courses extends PureComponent {
             (<Form>
                <View style={{margin: 15}}>
                        <ModalSelector
-                           placeholder="Select the Offering Type"
+                           placeholder="Select the fitness program"
                            initValue={this.state.courseTypeName}
                            data={this.state.coursetype}
                            keyExtractor= {item => item.id}
@@ -253,7 +253,7 @@ export default class Courses extends PureComponent {
                            <TextInput
                              style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
                              editable={false}
-                             placeholder="Select the Offering Type"
+                             placeholder="Select the fitness program"
                              value={this.state.courseTypeName}
                            />
                          </ModalSelector>

@@ -31,13 +31,14 @@ export default class SearchModal extends Component {
 
   filterSearch = (text) => {
       const newData = this.state.data.filter((item)=>{
+        text = text.trim()
         const itemData = item.toUpperCase()
         const textData = text.toUpperCase()
         return itemData.indexOf(textData)>-1
       });
       this.setState({
         text:text,
-        data: newData.length > 0 ? newData : this.state.temp// after filter we are setting users to new array
+        data: newData.length > 0 ? newData : this.state.temp // after filter we are setting users to new array
       });
   }
 

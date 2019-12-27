@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import {StyleSheet,View, StatusBar, ScrollView,Picker, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, AsyncStorage, TextInput} from 'react-native';
-import {Container, Content,Input,Item,Button, Text,Card,CardItem,Spinner, Body,Form,Textarea } from 'native-base';
+import {Container, Content,Input,Item,Button, Text,Card,CardItem,Label,Spinner, Body,Form,Textarea } from 'native-base';
 import ModalSelector from 'react-native-modal-selector';
 import { Header } from 'react-navigation-stack';
 import constants from '../constants';
@@ -109,13 +109,15 @@ export default class CreateStandardPlan extends Component {
 
                 <Content>
                   <View style={styles.input}>
+                    <Label><Text style={{fontWeight: 'bold'}}>Plan name<Text style={{color: 'red'}}>*</Text></Text></Label>
                     <Item regular>
                       <Input placeholder="Name of the Plan" onChangeText = {text => this.setState({name: text})}/>
                     </Item>
                   </View>
                   <View style={{marginTop: 15}}>
+                    <Label><Text style={{fontWeight: 'bold'}}>Select Fitness Program<Text style={{color: 'red'}}>*</Text></Text></Label>
                     <ModalSelector
-                        placeholder="Select the Offering Type"
+                        placeholder="Select the fitness program"
                         initValue={this.state.courseTypeName}
                         data={this.state.coursetype}
                         keyExtractor= {item => item.id}
@@ -131,13 +133,14 @@ export default class CreateStandardPlan extends Component {
                         <TextInput
                             style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
                             editable={false}
-                            placeholder="Select the Offering Type"
+                            placeholder="Select the fitness program"
                             value={this.state.courseTypeName}
                         />
 
                     </ModalSelector>
                     </View>
                   <View style={styles.input}>
+                    <Label><Text style={{fontWeight: 'bold'}}>Description</Text></Label>
                     <Item regular>
                       <Textarea rowSpan={5} onChangeText = {text => this.setState({description: text})} placeholder="Description of the plan(Optional)" />
                     </Item>
@@ -178,6 +181,6 @@ export default class CreateStandardPlan extends Component {
       alignItems: 'center'
     },
     button: {
-      backgroundColor: '#1d4d4f'
+      backgroundColor: constants.header
     }
   });

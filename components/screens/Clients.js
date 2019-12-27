@@ -12,9 +12,9 @@ import { debounce } from "lodash";
 export default class Clients extends PureComponent {
   static navigationOptions = {
     title: 'Clients',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: 'white', fontWeight: 'bold'},
+    headerStyle: {backgroundColor: 'black'},
+    headerTintColor: 'white'
   }
 
   state = {
@@ -187,7 +187,7 @@ export default class Clients extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: '#F4EAE6'}}>
 
         <Content>
          {this.state.traineeList  !== null ?
@@ -204,7 +204,7 @@ export default class Clients extends PureComponent {
                     </Left>
                    <Body>
                         <View>
-                        <Text style={{fontWeight: 'bold'}}>{trainee["name"]}</Text>
+                        <Text style={{fontWeight: 'bold', color: trainee["is_active"] ? '#2c7873' : '#9d0b0b'}}>{trainee["name"]}</Text>
                         <Text note>Mobile - {trainee["phone"]}</Text>
                         </View>
                    </Body>

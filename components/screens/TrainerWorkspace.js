@@ -63,9 +63,9 @@ export default class TrainerWorkspace extends Component {
 
     static navigationOptions = {
             title: 'Client Space',
-            headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: '#eadea6'},
-            headerTintColor: 'black'
+            headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+            headerStyle: {backgroundColor: constants.header},
+            headerTintColor: constants.header_text
           }
 
     showModal = () => {
@@ -143,30 +143,36 @@ export default class TrainerWorkspace extends Component {
 
     render(){
         const {traineeDetails} = this.state
+        if(traineeDetails !== null && traineeDetails["gym_subscriptions"].length>0){
+            active = traineeDetails["gym_subscriptions"].filter((v) => {
+                return v["is_active"] === true
+            })
+        }
+
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                    {this.state.traineeDetails !== null ?
+                    {this.state.traineeDetails !== null && active.length > 0 ?
                       <Content style={styles.content}>
                         <View style={{margin: 15}}>
                                                 <Card>
-                                                    <CardItem header style={{backgroundColor: '#d7c79e'}}>
+                                                    <CardItem header style={{backgroundColor: constants.card_header}}>
                                                         <Text style={{fontWeight: 'bold', fontSize: 20}}>Client Summary</Text>
                                                     </CardItem>
-                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
                                                         <Text><Text style={{fontWeight: 'bold'}}>Name:</Text> {traineeDetails["name"]}</Text>
                                                     </CardItem>
-                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
                                                         <Text><Text style={{fontWeight: 'bold'}}>Phone:</Text> {traineeDetails["mobile"]}</Text>
                                                     </CardItem>
-                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
                                                         <Text><Text style={{fontWeight: 'bold'}}>Gender:</Text> {traineeDetails["gender"]}</Text>
                                                     </CardItem>
-                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
-                                                        <Text><Text style={{fontWeight: 'bold'}}>PT start date:</Text> {traineeDetails["start_date"]}</Text>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>PT start date:</Text> {active[0]["start_date"] !== null ? active[0]["start_date"].split("T")[0] : "NA"}</Text>
                                                     </CardItem>
-                                                    <CardItem style={{backgroundColor: "#e5d8bf"}}>
-                                                        <Text><Text style={{fontWeight: 'bold'}}>PT end date:</Text>{traineeDetails["end_date"]}</Text>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>PT end date:</Text> {active[0]["end_date"] !== null ? active[0]["end_date"].split("T")[0] : "NA"}</Text>
                                                     </CardItem>
                                                 </Card>
                                             </View>
@@ -181,8 +187,8 @@ export default class TrainerWorkspace extends Component {
 
                         <View style={{marginLeft: 15, marginRight: 15}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('MealSpace', {"id": this.state.id})}>
-                           <Card style={{backgroundColor: "#d7c79e"}}>
-                            <CardItem style={{justifyContent: 'space-between', backgroundColor: "#d7c79e"}}>
+                           <Card style={{backgroundColor: constants.item_card}}>
+                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                                 <Text style={{fontWeight: 'bold'}}>Meal Plan</Text>
                                 <Icon size={20} name="md-arrow-dropright"/>
                             </CardItem>
@@ -191,8 +197,8 @@ export default class TrainerWorkspace extends Component {
                         </View>
                         <View style={{marginLeft: 15, marginRight: 15}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('WorkoutSpace', {"id": this.state.id})}>
-                              <Card style={{backgroundColor: "#d7c79e"}}>
-                                <CardItem style={{justifyContent: 'space-between', backgroundColor: "#d7c79e"}}>
+                              <Card style={{backgroundColor: constants.item_card}}>
+                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                                   <Text style={{fontWeight: 'bold'}}>Workout Plan</Text>
                                   <Icon size={20} name="md-arrow-dropright"/>
                                 </CardItem>

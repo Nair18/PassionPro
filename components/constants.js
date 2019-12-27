@@ -6,5 +6,21 @@ export default {
   "no_entry": "🚫 Wrong Credentials",
   "not_approved": "⚠️ Approval Pending",
   "warning": "⚠️ Warning",
-  "incomplete_info": "⛔️ Incomplete Info"
+  "incomplete_info": "⛔️ Incomplete Info",
+  'header_text': 'white',
+  'header': 'black',
+  'logout': '#d1274b',
+  'card_body': '#ebe6e6',
+  'card_header': "#f4f4f4",
+  'screen_color': '#F4EAE6',
+  'admin_tab_background': '#C68D95',
+  'admin_tab_active': '#A5525F',
+  'item_card': '#A76270',
+  'admin_home_hscroll': "#D5ABB2",
+  'text_highlight': '#4d80e4',
+  'text_highlight_danger': '#801336',
+  'active_color': 'green',
+  "green_money": "#2c7873",
+  "red_money": '#801336',
+  'archive_color': 'red'
 }

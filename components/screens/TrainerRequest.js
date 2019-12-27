@@ -30,9 +30,9 @@ export default class TrainerRequest extends Component {
     }
     static navigationOptions = {
               title: 'Trainer Request',
-              headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: '#eadea6'},
-              headerTintColor: 'black'
+              headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+              headerStyle: {backgroundColor: constants.header},
+              headerTintColor: constants.header_text
           }
     async retrieveItem(key) {
             try {
@@ -97,7 +97,7 @@ export default class TrainerRequest extends Component {
         }
     render(){
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                 <Content style={{padding: 15}}>
                     <List>
                         {this.state.request !== null ? this.state.request.map(req =>

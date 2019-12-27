@@ -25,10 +25,10 @@ export default class LandingPage extends PureComponent {
    _validate = () => {
      if(this.state.role !== ''){
        if(this.state.role == 'Trainer'){
-            this.props.navigation.navigate('StepFormTrainer')
+            this.props.navigation.navigate('TrainerSignUp')
        }
        else{
-            this.props.navigation.navigate('StepFormCustomer')
+            this.props.navigation.navigate('TraineeSignUp')
        }
      }
      else{
@@ -41,7 +41,7 @@ export default class LandingPage extends PureComponent {
    }
 
    async _checkout(){
-    const retrievedItem = await AsyncStorage.multiRemove(['key', 'role']);
+    const retrievedItem = await AsyncStorage.multiRemove(['key', 'role', 'id']);
    }
    componentDidMount(){
        console.log("calling checkout")

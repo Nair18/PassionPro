@@ -38,9 +38,9 @@ export default class CreateMeal extends Component {
     }
     static navigationOptions = {
           title: 'Meals for the day',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: '#eadea6'},
-          headerTintColor: 'black'
+          headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+          headerStyle: {backgroundColor: constants.header},
+          headerTintColor: constants.header_text
       }
 
     showModal = (bool) => {
@@ -138,10 +138,32 @@ export default class CreateMeal extends Component {
                     }
                 ).then(res => this.setState({details: res}))
     }
-    _delete = () => {
-
+    _delete = (id) => {
+        console.log("id is coming", id)
+        this.setState({onProcess: true})
+        fetch(constants.API + 'current/trainer/trainees/archive/meal-plan-day-exercise/'+ id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth_key,
+            }
+        }).then(res => {
+            this.setState({onProcess: false})
+            if(res.status === 200){
+                Alert.alert(constants.success, 'Successfully deleted the meal')
+                this.fetchDetails()
+            }
+            else if(res.status === 401){
+                this.props.navigation.navigate('LandingPage')
+            }
+            else{
+                Alert.alert(constants.failed, constants.fail_error)
+            }
+        })
     }
     _deletealert = (id) => {
+        console.log("id is coming in alert", id)
         Alert.alert(constants.warning, 'Are you sure you want to delete?',
                     [
                         {
@@ -155,7 +177,7 @@ export default class CreateMeal extends Component {
     render(){
         console.log(this.state.details)
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                 <Content style={{margin: 15}}>
                     {this.state.details !== null ? this.state.details.map(meal =>
@@ -163,9 +185,10 @@ export default class CreateMeal extends Component {
                        <Card>
                         <CardItem style={{backgroundColor: '#393e46', justifyContent: 'space-between'}}>
                             <Text style={{fontWeight: 'bold', color: 'white'}}>{meal["name"]}</Text>
-                            <Icon name="md-close" style={{color: 'white'}} size={25} onPress={this._deletealert}/>
+                            {this.state.onProcess === false ?
+                            <Icon name="md-close" style={{color: 'white'}} size={25} onPress={() => this._deletealert(meal["id"])}/> : <Spinner color="black"/>}
                         </CardItem>
-                        <CardItem>
+                        <CardItem style={{backgroundColor: '#ebe6e6'}}>
                             <Text>{meal["description"]}</Text>
                         </CardItem>
                        </Card>

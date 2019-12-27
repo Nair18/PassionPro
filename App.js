@@ -40,7 +40,6 @@ import TrainerWorkspace from './components/screens/TrainerWorkspace';
 import TrainerWorkout from './components/screens/TrainerWorkout';
 import CreateWorkout from './components/screens/CreateWorkout';
 import CreateMeal from './components/screens/CreateMeal';
-import TrainerMeal from './components/screens/TrainerMeal';
 import SearchModal from './components/screens/SearchModal';
 import ClientCourseInfo from './components/screens/ClientCourseInfo';
 import AdminWorkoutSpace from './components/screens/AdminWorkoutSpace';
@@ -78,6 +77,16 @@ import WorkoutSpace from './components/screens/WorkoutSpace';
 import MealSpace from './components/screens/MealSpace';
 import DaywiseMeals from './components/screens/DaywiseMeals';
 import DaywiseWorkouts from './components/screens/DaywiseWorkouts';
+import StatsPage from './components/screens/StatsPage';
+import TraineeMealSpace from './components/screens/TraineeMealSpace';
+import DaywiseMealTrainee from './components/screens/DaywiseMealTrainee';
+import TraineeMeal from './components/screens/TraineeMeal';
+import TraineeWorkspace from './components/screens/TraineeWorkspace';
+import DaywiseWorkoutTrainee from './components/screens/DaywiseWorkoutTrainee';
+import TraineeWorkout from './components/screens/TraineeWorkout';
+import TraineeSignUp from './components/screens/TraineeSignUp';
+import TrainerSignUp from './components/screens/TrainerSignUp';
+import StatsPageTrainer from './components/screens/StatsPageTrainer';
 //import all the screens we are going to switch/
 
 // To see all the requests in the chrome Dev tools in the network tab.
@@ -86,6 +95,8 @@ const Auth = createStackNavigator({
     LandingPage: {screen: LandingPage},
     StepFormTrainer: {screen: StepFormTrainer},
     StepFormCustomer: {screen: StepFormCustomer},
+    TraineeSignUp: {screen: TraineeSignUp},
+    TrainerSignUp: {screen: TrainerSignUp},
     Login: {screen: Login},
 });
 
@@ -116,12 +127,10 @@ const AdminPage = createStackNavigator({
     PersonalTrainingDetails: {screen: PersonalTrainingDetails},
     AdminProfile: {screen: AdminProfile},
     Contact: {screen: Contact},
-    AppBilling: {screen: AppBilling},
-    AddExercise: {screen: AddExercise},
-    DetailedExercise: {screen: DetailedExercise},
-    Sessions: {screen: Sessions},
     FinancialHistory: {screen: FinancialHistory},
-    YearwiseExpense: {screen: YearwiseExpense}
+    YearwiseExpense: {screen: YearwiseExpense},
+    StatsPage: {screen: StatsPage},
+    StatsPageTrainer: {screen: StatsPageTrainer}
   },
   {
     initialRouteName: 'Admin'
@@ -144,6 +153,10 @@ const MenuPage = createStackNavigator({
     TrainerSection: {screen: TrainerSection},
     GymExpenseTracker: {screen: GymExpenseTracker},
     GymLocations: {screen: GymLocations},
+    AppBilling: {screen: AppBilling},
+    DetailedExercise: {screen: DetailedExercise},
+    Sessions: {screen: Sessions},
+    AddExercise: {screen: AddExercise},
     CreateAdmin: {screen: CreateAdmin}
 },
 {
@@ -169,9 +182,15 @@ const Customer = createStackNavigator({
      CustomerNotification: {screen: CustomerNotification},
      SLCProfile: {screen: SLCProfile},
      Workspace: { screen: Workspace },
+     TraineeMeal: {screen: TraineeMeal},
      ClientCourseInfo: {screen: ClientCourseInfo},
      PersonalizedWorkout: {screen: PersonalizedWorkout},
      StandardWorkout: {screen: StandardWorkout},
+     TraineeMealSpace: {screen: TraineeMealSpace},
+     DaywiseMealTrainee: {screen: DaywiseMealTrainee},
+     TraineeWorkspace: {screen: TraineeWorkspace},
+     DaywiseWorkoutTrainee: {screen: DaywiseWorkoutTrainee},
+     TraineeWorkout: {screen: TraineeWorkout},
      Logging: {screen: Logging},
      PdfViewer: {screen: PdfViewer}
 
@@ -190,7 +209,6 @@ const PersonalTrainer = createStackNavigator({
     TrainerProfile: {screen: TrainerProfile},
     Uploader: {screen: Uploader},
     TrainerWorkout: {screen: TrainerWorkout},
-    TrainerMeal: {screen: TrainerMeal},
     CreateMeal: {screen: CreateMeal},
     MealSpace: {screen: MealSpace},
     WorkoutSpace: {screen: WorkoutSpace},
@@ -225,7 +243,7 @@ const PersonalTrainer = createStackNavigator({
   {
     tabBarOptions: {
       activeTintColor: '#e91e63',
-      activeBackgroundColor: '#e3b04b',
+      activeBackgroundColor: '#A5525F',
       showLabel: false,
       labelStyle: {
         fontSize: 15
@@ -236,7 +254,7 @@ const PersonalTrainer = createStackNavigator({
         padding: 10
       },
       style: {
-        backgroundColor: '#f1d6ab',
+        backgroundColor: '#C68D95',
       },
     }
   });

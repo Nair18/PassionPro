@@ -12,9 +12,9 @@ import { debounce } from "lodash";
 export default class GymLocations extends PureComponent {
   static navigationOptions = {
     title: 'Gyms',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
 
   state = {
@@ -34,33 +34,21 @@ export default class GymLocations extends PureComponent {
       this.debouncedSearch(text);
   };
 
-  debouncedSearch = debounce(function (query) {
-       this.setState({onProcess: false})
-      fetch(constants.API + 'current/admin/gyms/'+this.state.id + '/trainee-search?phone='+ query, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': this.state.auth_key,
-        }
-      }).then(res => {
-        if(res.status !== 200){
-            this.setState({onProcess: true})
-            Alert.alert('OOps!!', 'Something went wrong')
-            return null
-        }
-        else{
-            return res.json()
-        }
-      }).then(res => {
-        if(res !== null){
-            this.setState({traineeList: res["trainees"], onProcess: true}, () => console.log(res, "Hello frands"))
-        }
-      })
-  }, 100);
+  _storeData = async (key,data) => {
+          console.log("hitting it hard")
+          if(key == "id"){
+              data = JSON.stringify(data)
+          }
+          try {
+            await AsyncStorage.setItem(key, data);
+          } catch (error) {
+            console.log("got error while setting", error)
+          }
+      return true
+  }
 
   componentWillUnmount() {
-        // Remove the event listener
+
 //        this.focusListener.remove();
 
   }
@@ -70,7 +58,7 @@ export default class GymLocations extends PureComponent {
 
           const { navigation } = this.props;
           console.log("pagal bana rhe hai")
-          this.focusListener = navigation.addListener('didFocus', () => {
+//          this.focusListener = navigation.addListener('didFocus', () => {
                 console.log("The screen is focused")
                 var key  = this.retrieveItem('key').then(res =>
                              this.setState({auth_key: res}, () => console.log("brother pls", res))
@@ -79,12 +67,11 @@ export default class GymLocations extends PureComponent {
                                       this.fetchDetails()
                                   }
                              })
-          });
+//          });
 
       }
 
       fetchDetails = () => {
-          console.log("what is the id ", this.state.id)
           let course_list = fetch(constants.API + 'current/admin/gyms', {
               method: 'GET',
               headers: {
@@ -110,7 +97,7 @@ export default class GymLocations extends PureComponent {
                                                      );
                   }
               }
-          ).then(res => this.setState({gymList: res["data"]["gyms"]}))
+          ).then(res => this.setState({gymList: res["data"]["gyms"]}, () => console.log("gym data revealing", res["data"]["gyms"])))
       }
       retrieveItem = async (key) => {
                 try {
@@ -123,22 +110,30 @@ export default class GymLocations extends PureComponent {
                 return;
       }
 
+  _gymSwitcher = (id) => {
+    this._storeData('id', id).then(res => {
+        if(res){
+            this.props.navigation.navigate('SplashScreen')
+        }
+    })
+  }
+
   render() {
     return (
     <Fragment>
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
 
         <Content>
           {this.state.gymList !== null ? this.state.gymList.map(gyms =>
           <List>
-              <ListItem avatar onPress={() => this.props.navigation.navigate('Admin', {id: gyms["id"]})}>
+              <ListItem avatar onPress={() => this._gymSwitcher(gyms["id"])}>
                   <Left>
                     <Thumbnail source={require('./exercise.jpg')}/>
                   </Left>
                   <Body>
                       <View>
                         <Text style={{fontWeight: 'bold'}}>{gyms["name"]}</Text>
-                        <Text note>{gyms["location"]}koramangala</Text>
+                        <Text note>{gyms["location"]}</Text>
                       </View>
                    </Body>
               </ListItem>

@@ -5,7 +5,7 @@ import {StyleSheet, View, TouchableOpacity, TextInput, ScrollView, BackHandler, 
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
-
+import constants from '../constants';
 export default class ClientDetails extends Component{
   constructor(props){
       super(props)
@@ -45,9 +45,9 @@ export default class ClientDetails extends Component{
 
   static navigationOptions = {
         title: 'Client Details',
-                        headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-                        headerStyle: {backgroundColor: '#eadea6'},
-                        headerTintColor: 'black'
+                        headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+                        headerStyle: {backgroundColor: constants.header},
+                        headerTintColor: constants.header_text
   }
 
   _changeNumber = (value) => {
@@ -59,7 +59,7 @@ export default class ClientDetails extends Component{
   }
   render(){
     return(
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
 
         <ScrollView showsVerticalScrollIndicator={false}>
         <Content>
@@ -69,26 +69,26 @@ export default class ClientDetails extends Component{
 
           <View style={{margin: 10}}>
              <Card style={{width: '100%', padding: 15}}>
-                <CardItem header style={{backgroundColor: '#d7c79e',justifyContent: 'center', alignItems: 'center'}}>
+                <CardItem header style={{backgroundColor: constants.card_header,justifyContent: 'center', alignItems: 'center'}}>
                    <Text style={{fontWeight: 'bold'}}>Bill No. 1 </Text>
                    <Text style={{color: "green"}}> Active</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                     <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> Hariram</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Course:</Text> Belly reduce</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> 9979090671</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> 2019-09-10</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> 2019-12-10</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> Rs 10000</Text>
                 </CardItem>
              </Card>
@@ -98,26 +98,26 @@ export default class ClientDetails extends Component{
           </View>
           <View style={{margin: 10}}>
                 <Card style={{width: '100%', padding: 15}}>
-                    <CardItem header style={{backgroundColor: '#d7c79e', justifyContent: 'center', alignItems: 'center'}}>
+                    <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{fontWeight: 'bold'}}>Bill No. 2 </Text>
                         <Text style={{color: "red"}}> Expired</Text>
                     </CardItem>
-                    <CardItem>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> Lodash</Text>
                     </CardItem>
-                    <CardItem>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Course:</Text> Belly reduce</Text>
                     </CardItem>
-                    <CardItem>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> 9979090671</Text>
                     </CardItem>
-                    <CardItem>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> 2019-01-10</Text>
                     </CardItem>
-                    <CardItem>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> 2019-09-10</Text>
                     </CardItem>
-                    <CardItem>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> Rs 10000</Text>
                     </CardItem>
                 </Card>

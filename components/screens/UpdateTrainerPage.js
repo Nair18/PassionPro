@@ -4,7 +4,7 @@ import {Container,Text, Content, Item, Card, CardItem, Button, Header, Left, Rig
 import {StyleSheet, View, TextInput, TouchableOpacity, ScrollView, BackHandler, Alert, StatusBar} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
-
+import constants from '../constants';
 export default class UpdateTrainerPage extends Component{
   constructor(props){
       super(props)
@@ -17,9 +17,9 @@ export default class UpdateTrainerPage extends Component{
 
   static navigationOptions = {
     title: 'Update Trainer Info',
-                    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-                    headerStyle: {backgroundColor: '#eadea6'},
-                    headerTintColor: 'black'
+                    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+                    headerStyle: {backgroundColor: constants.header},
+                    headerTintColor: constants.header_text
   }
   componentDidMount() {
         this.props.navigation.setParams({ increaseCount: this._increaseCount })
@@ -55,7 +55,7 @@ export default class UpdateTrainerPage extends Component{
   }
   render(){
     return(
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
 
         <ScrollView>
         <Content style={styles.content}>
@@ -76,8 +76,8 @@ export default class UpdateTrainerPage extends Component{
           <View style={{marginLeft: 15, marginTop: 25, width: '70%'}}>
                                     <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails')}>
                                     <View>
-                                          <Card style={{backgroundColor: '#e5d8bf'}}>
-                                              <CardItem style={{backgroundColor: '#d7c79e'}}>
+                                          <Card style={{backgroundColor: constants.item_card}}>
+                                              <CardItem style={{backgroundColor: constants.item_card}}>
                                                   <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
                                                       <View><Text style={{fontWeight: 'bold'}}>Billing details </Text></View>
                                                       <View style={{marginLeft: 10}}><Icon size={20} name="md-arrow-dropright"/></View>
@@ -88,8 +88,8 @@ export default class UpdateTrainerPage extends Component{
                                     </TouchableOpacity>
                                    <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails')}>
                                     <View>
-                                         <Card style={{backgroundColor: '#e5d8bf'}}>
-                                          <CardItem style={{backgroundColor: '#d7c79e'}}>
+                                         <Card style={{backgroundColor: constants.item_card}}>
+                                          <CardItem style={{backgroundColor: constants.item_card}}>
                                               <View style={{marginLeft: 15,marginRight: 15, marginTop: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
                                                   <View ><Text style={{fontWeight: 'bold'}}>Active Client details </Text></View>
                                                   <View style={{marginLeft: 10}}><Icon size={20} name="md-arrow-dropright"/></View>

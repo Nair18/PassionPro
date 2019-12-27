@@ -13,7 +13,7 @@ import {
 import StandardWorkout from './StandardWorkout';
 import ModalSelector from 'react-native-modal-selector';
 import PersonalizedWorkout from './PersonalizedWorkout';
-
+import constants from '../constants';
 import {Card, CardItem, Icon, Accordion, Container, Text, Content,List,ListItem, Button} from 'native-base'
 
 
@@ -31,12 +31,12 @@ export default class YearwiseExpense extends Component {
   static navigationOptions = {
       //Setting the header of the screen
       title: 'Year wise history',
-      headerStyle: {backgroundColor: '#eadea6'},
+      headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
-          color: 'black',
+          color: constants.header_text,
           fontWeight: 'bold'
         },
-      headerTintColor: 'black',
+      headerTintColor: constants.header_text,
     };
 
   componentDidMount(){
@@ -59,15 +59,15 @@ export default class YearwiseExpense extends Component {
     const { navigate } = this.props.navigation;
 
     return(
-       <Container style={{backgroundColor: '#efe9cc'}}>
+       <Container style={{backgroundColor: constants.screen_color}}>
           <ScrollView showsVerticalScrollIndicator={false}>
           <Content style={styles.content}>
             <Content>
             <View>
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('FinancialHistory')}>
-                     <Card styel={{height: 200, backgroundColor: '#9dab86'}}>
-                        <CardItem style={{backgroundColor: '#9dab86', justifyContent: 'space-between'}}>
+                     <Card styel={{height: 200, backgroundColor: constants.item_card}}>
+                        <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
                             <Text style={{fontWeight: 'bold'}}>Expense of 2019</Text>
                             <Icon size={20} name="md-arrow-round-forward" />
                         </CardItem>
@@ -76,8 +76,8 @@ export default class YearwiseExpense extends Component {
                 </View>
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('FinancialHistory')}>
-                      <Card styel={{height: 200, backgroundColor: '#9dab86'}}>
-                         <CardItem style={{backgroundColor: '#9dab86', justifyContent: 'space-between'}}>
+                      <Card styel={{height: 200, backgroundColor: constants.item_card}}>
+                         <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
                             <Text style={{fontWeight: 'bold'}}>Expense of 2018</Text>
                             <Icon size={20} name="md-arrow-round-forward" />
                          </CardItem>

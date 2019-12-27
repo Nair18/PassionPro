@@ -34,9 +34,9 @@ export default class TrainerClient extends Component {
     }
     static navigationOptions = {
             title: 'Active Clients',
-            headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: '#eadea6'},
-            headerTintColor: 'black'
+            headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+            headerStyle: {backgroundColor: constants.header},
+            headerTintColor: constants.header_text
           }
 
     componentDidMount(){
@@ -104,7 +104,7 @@ export default class TrainerClient extends Component {
           }
     render(){
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                 <Content>
                     {this.state.traineeList !== null ? this.state.traineeList.map(trainee =>
                     <List>

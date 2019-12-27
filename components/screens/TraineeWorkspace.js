@@ -10,9 +10,9 @@ import DetailedExercise from './DetailedExercise'
 import { Container, Accordion, Header, Content, Card, CardItem,Label, List, Spinner, ListItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
 
 
-export default class AddExercise extends PureComponent {
+export default class TraineeWorkspace extends PureComponent {
   static navigationOptions = {
-    title: 'Exercise',
+    title: 'Workout space',
     headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
     headerStyle: {backgroundColor: constants.header},
     headerTintColor: constants.header_text
@@ -22,12 +22,8 @@ export default class AddExercise extends PureComponent {
       modalVisible: false,
       selectedItems: [],
       auth_key: null,
-      exerciseName: null,
-      body_part: null,
+      workouts: null,
       onProcess: false,
-      plan: "Select your plan",
-      id: this.props.navigation.state.params.id,
-      exerciseList: null
     };
 
     setModalVisible(visible) {
@@ -63,7 +59,7 @@ export default class AddExercise extends PureComponent {
 
    }
   fetchDetails = () => {
-          fetch(constants.API + 'current/admin/gym/'+ this.state.id + '/exercises', {
+          fetch(constants.API + 'current/trainee/plans/workouts', {
               method: 'GET',
               headers: {
                   'Accept': 'application/json',
@@ -88,7 +84,7 @@ export default class AddExercise extends PureComponent {
                                                      );
                   }
               }
-          ).then(res => this.setState({exerciseList: res}, () => console.log(res)))
+          ).then(res => this.setState({workouts: res}, () => console.log(res)))
       }
       async retrieveItem(key) {
                     try {
@@ -134,71 +130,58 @@ export default class AddExercise extends PureComponent {
     })
   }
   render() {
-    exercises = []
-    if(this.state.exerciseList !== null){
-        for (var key in this.state.exerciseList) {
-            exercises.push(key)
-        }
+    let pt = []
+    let sp = []
+    if(this.state.workouts !== null){
+        pt = this.state.workouts.filter((val) => {
+            return val["standard"] === false
+        })
+
+        sp = this.state.workouts.filter((val) => {
+            return val["standard"] === true
+        })
     }
-    console.log(exercises)
     return (
     <Fragment>
       <Container style={{backgroundColor: constants.screen_color}}>
-        <Content style={{margin: 20}}>
-          {this.state.exerciseList !== null ? exercises.map(ex =>
-          <View style={{margin: 5}}>
-          <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DetailedExercise', {list: this.state.exerciseList[ex], ID: this.state.id, name: ex})}>
+       {this.state.workouts !== null ?
+        <Content style={{margin: 5}}>
+          <View style={{margin: 10}}>
+            <Text style={{fontWeight: 'bold'}}>Personal Training Section</Text>
+          </View>
+          {pt.length > 0 ? pt.map(wk =>
+          <View style={{margin: 10}}>
+          <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseWorkoutTrainee', {details: wk})}>
           <Card style={{backgroundColor: constants.item_card}}>
             <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card}}>
-                <Text style={{color: 'black', fontWeight: 'bold'}}>{ex}</Text>
-                <Icon style={{color: 'black'}} size={20} name="md-arrow-dropright"/>
+                <View>
+                    <Text style={{color: 'black', fontWeight: 'bold'}}>{wk["name"]}</Text>
+                    <Text>{wk["plans"].length} workout(s)</Text>
+                </View>
+                <Icon style={{color: 'black'}} size={20} name="md-arrow-round-forward"/>
             </CardItem>
           </Card>
-          </TouchableOpacity></View>): <Spinner color="black"/>}
-        </Content>
-        <View style={styles.addButton}>
-          <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
-              <Icon size={30} style={{color: 'white'}}name="md-add" />
-          </Button>
-        </View>
+          </TouchableOpacity></View>) : <Card style={{padding: 10, alignItems: 'center', justifyContent: 'center'}}><Text note>Nothing to show</Text></Card> }
+          <View style={{margin: 10}}>
+            <Text style={{fontWeight: 'bold'}}>Standard Plans</Text>
+          </View>
+          {sp.length > 0 ? sp.map( wk =>
+          <View style={{margin: 10}}>
+            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseWorkoutTrainee', {details: wk})}>
+               <Card style={{backgroundColor: constants.item_card}}>
+                  <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card}}>
+                     <View>
+                        <Text style={{color: 'black', fontWeight: 'bold'}}>{wk["name"]}</Text>
+                        <Text>{wk["plans"].length} workout(s)</Text>
+                     </View>
+                     <Icon style={{color: 'black'}} size={20} name="md-arrow-round-forward"/>
+                  </CardItem>
+               </Card>
+            </TouchableOpacity>
+          </View>) : <Card style={{padding: 10, alignItems: 'center', justifyContent: 'center'}}><Text note>Nothing to show</Text></Card> }
+
+        </Content> : <Spinner color="black"/>}
       </Container>
-      <Modal
-                      animationType="slide"
-                      transparent={true}
-                      visible={this.state.modalVisible}
-                      onRequestClose={() => {
-                        this.setModalVisible(false)
-                      }}>
-                      <View style={styles.modal}>
-                      <View>
-                        <TouchableOpacity onPress={() => this.setModalVisible(false)}>
-                        <Icon name="md-close" size={30}/>
-                        </TouchableOpacity>
-                  </View>
-                      <Content style={styles.content}>
-                        {this.state.exerciseList !== null && this.state.name !== null ?
-                        (<Form>
-
-                           <Item regular style={{padding: 5}}>
-                              <Label><Text style={{fontWeight: 'bold'}}>Body part</Text><Text style={{color: 'red', fontWeight: 'bold'}}>*</Text> - </Label>
-                              <Input placeholder="eg. Biceps" onChangeText={text => this.setState({body_part: text})}/>
-                           </Item>
-
-                           <Item regular style={{padding: 5}}>
-                              <Label><Text style={{fontWeight: 'bold'}}>Exercise</Text><Text style={{color: 'red',fontWeight: 'bold'}}>*</Text> - </Label>
-                              <Input placeholder="eg. Bench Press" onChangeText={text => this.setState({exerciseName: text})}/>
-                           </Item>
-                           <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
-                           {this.state.onProcess === false ?
-                           <Button block disabled={this.state.exerciseName === null || this.state.exerciseName === ""} onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
-                             <Text>Add Workout</Text>
-                           </Button> : <Spinner color="black"/>}
-                           </View>
-                        </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
-
-                      </Content>
-                      </View>
-                    </Modal>
      </Fragment>
     );
   }

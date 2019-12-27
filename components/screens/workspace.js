@@ -7,13 +7,14 @@ import {
   StatusBar,
   FlatList,
   View,Modal, Alert,
+  Image,
   Linking,
   TextInput,
 } from 'react-native';
 import StandardWorkout from './StandardWorkout';
 import ModalSelector from 'react-native-modal-selector';
 import PersonalizedWorkout from './PersonalizedWorkout';
-
+import constants from '../constants';
 import {Card, CardItem, Icon, Accordion, Container, Text, Content,List,ListItem, Button} from 'native-base'
 
 const data = [ {key: "#MotivationalMonday", value: "#e37070"},
@@ -50,12 +51,12 @@ export default class Workspace extends Component {
   static navigationOptions = {
       //Setting the header of the screen
       title: 'Workspace',
-      headerStyle: {backgroundColor: '#eadea6'},
+      headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
-          color: 'black',
+          color: constants.header_text,
           fontWeight: 'bold'
         },
-      headerTintColor: 'black',
+      headerTintColor: constants.header_text,
     };
 
   componentDidMount(){
@@ -76,55 +77,38 @@ export default class Workspace extends Component {
   }
   render(){
     const { navigate } = this.props.navigation;
-    workouts = {1: "StandardWorkout", 2: "PersonalizedWorkout", 3: "StandardWorkout"}
+    
     return(
-       <Container style={{backgroundColor: '#efe9cc'}}>
+       <Container style={{backgroundColor: constants.screen_color}}>
           <ScrollView showsVerticalScrollIndicator={false}>
-
-          <Content style={styles.content}>
-            <View style={{margin: 15}}>
-                                   <ModalSelector
-                                       placeholder="Select a course type"
-                                       initValue={this.state.workoutType}
-                                       data={this.state.data}
-                                       keyExtractor= {item => item.id}
-                                       labelExtractor= {item => item.name}
-                                       initValue={this.state.workoutType}
-                                       supportedOrientations={['landscape']}
-                                       accessible={true}
-                                       scrollViewAccessibilityLabel={'Scrollable options'}
-                                       cancelButtonAccessibilityLabel={'Cancel Button'}
-                                       onChange={(option)=>{
-                                        this.setState({workoutType: option.id, workoutName: option.name, workoutSection: workouts[option.id]})
-                                        this.optionChange
-                                       }}>
-
-                                       <TextInput
-                                         style={{borderWidth:1, borderColor:'black', color: 'black', backgroundColor: "white", padding:10, height:50}}
-                                         editable={false}
-                                         placeholder="Select your workout type"
-                                         value={this.state.workoutName}
-                                       />
-                                     </ModalSelector>
-                           </View>
-            {this.state.workoutName !== null ?
-            <Content>
-            <View style={styles.cardListView}>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Full Week Burnouts 🔥</Text>
-            </View>
-            <View>
-               {data.map(item =>
-                <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate(this.state.workoutSection)}>
-                     <Card style={randomStyle()}>
-                        <Text style={styles.cardText}>{item.key}</Text>
-                     </Card>
-                   </TouchableOpacity>
+            <Content style={{margin: 15}}>
+                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TraineeMealSpace')}>
+                <View>
+                    <Card>
+                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: "#d1d1d1"}}>
+                            <Image source={require('./meal.jpg')} style={{height: 200, width: null, flex: 1}}/>
+                        </CardItem>
+                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, elevation: 2}}>
+                            <Text style={{fontWeight: 'bold'}}>Meal Plans</Text>
+                            <Icon name="md-arrow-round-forward" size={20}/>
+                        </CardItem>
+                    </Card>
                 </View>
-               )}
-            </View>
-            </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text note>Select the workout option you want</Text></View>}
-          </Content>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TraineeWorkspace')}>
+                <View>
+                    <Card>
+                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
+                           <Image source={require('./workout.jpg')} style={{height: 200, width: null, flex: 1}}/>
+                        </CardItem>
+                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, elevation: 2}}>
+                            <Text style={{fontWeight: 'bold'}}>Workout Plans</Text>
+                            <Icon name="md-arrow-round-forward" size={20}/>
+                        </CardItem>
+                    </Card>
+                </View>
+                </TouchableOpacity>
+            </Content>
           </ScrollView>
        </Container>
     );

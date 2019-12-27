@@ -17,7 +17,7 @@ import TrainerRequest from './TrainerRequest';
 import ClientRequest from './ClientRequest';
 import SwipeableViews from 'react-swipeable-views-native';
 import {Container,List, Card,Header, Tab, Tabs, ListItem,TabHeading, Textarea, CheckBox, CardItem, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
-
+import constants from '../constants';
 export default class Request extends Component{
     constructor(props){
         super(props);
@@ -28,22 +28,22 @@ export default class Request extends Component{
     }
     static navigationOptions = {
               title: 'Requests',
-              headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: '#eadea6', elevation: 0},
-              headerTintColor: 'black'
+              headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+              headerStyle: {backgroundColor: constants.header, elevation: 1},
+              headerTintColor: constants.header_text
     }
 
     render(){
 
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
 
             <SwipeableViews style={styles.slideContainer}>
                         <Tabs>
-                          <Tab heading={<TabHeading style={{backgroundColor: '#eadea6'}}><Text style={{color: 'black'}}>Clients</Text></TabHeading>}>
+                          <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Clients</Text></TabHeading>}>
                               <ClientRequest ID = {this.state.id} navigation = {this.props.navigation} />
                           </Tab>
-                          <Tab heading={<TabHeading style={{backgroundColor: '#eadea6'}}><Text style={{color: 'black'}}>Trainer</Text></TabHeading>}>
+                          <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Trainer</Text></TabHeading>}>
                             <TrainerRequest ID = {this.state.id} navigation = {this.props.navigation} />
                           </Tab>
                         </Tabs>

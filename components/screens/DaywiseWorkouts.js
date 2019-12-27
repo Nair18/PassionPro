@@ -61,9 +61,9 @@ export default class DaywiseWorkouts extends Component {
 
     static navigationOptions = {
             title: 'Workouts of the week',
-            headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: '#eadea6'},
-            headerTintColor: 'black'
+            headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+            headerStyle: {backgroundColor: constants.header},
+            headerTintColor: constants.header_text
           }
 
     setModalVisible = (bool=true) => {
@@ -227,7 +227,7 @@ export default class DaywiseWorkouts extends Component {
         let days = []
         const {planDetails} = this.state
         console.log(planDetails)
-        if(planDetails !== null && planDetails["plans"] !== undefined){
+        if(planDetails !== null){
             for(let i=0; i<planDetails["plans"].length; i++){
                 let arr = []
                 if(plans.has(planDetails["plans"][i]["day"])){
@@ -251,26 +251,31 @@ export default class DaywiseWorkouts extends Component {
             }
         }
 
-        let body_parts = []
+        let body_parts = null
         console.log("plan aay ki nhi")
         console.log(this.state.planDetails)
         const {exerciseList} = this.state
         console.log("came here")
         console.log(this.state.exerciseList)
         if(this.state.exerciseList !== null){
-            for(var k in exerciseList){
+            body_parts = []
+            for(var k in this.state.exerciseList){
                 d = {
                     "id": k,
                     "name": k
                 }
                 body_parts.push(d)
+                console.log("Ho ho")
             }
+        }
+        if(body_parts !== null && body_parts.length === 0){
+            body_parts = null
         }
         console.log("body parts", body_parts)
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                    {this.state.planDetails !== null && body_parts.length > 0 ?
+                    {this.state.planDetails !== null ?
                      <Content style={styles.content}>
                         <View style={{marginTop: 10}}>
                             <Text>Showing result for <Text style={{fontWeight: 'bold'}}>{this.state.planDetails["name"]}</Text></Text>
@@ -278,8 +283,8 @@ export default class DaywiseWorkouts extends Component {
                         {days.length > 0 ? days.map(day =>
                         <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerWorkout', {"day": day, plan_id: this.state.plan_id, "trainee_id": this.state.trainee_id, workouts: plans.get(day), exerciseList: this.state.exerciseList, body_parts: body_parts})}>
-                           <Card style={{backgroundColor: "#d7c79e"}}>
-                            <CardItem style={{justifyContent: 'space-between', backgroundColor: "#d7c79e"}}>
+                           <Card style={{backgroundColor: constants.item_card}}>
+                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                                 <Text style={{fontWeight: 'bold'}}>{day}</Text>
                                 <Icon size={20} name="md-arrow-dropright"/>
                             </CardItem>
@@ -310,7 +315,7 @@ export default class DaywiseWorkouts extends Component {
                                                                                           </View>
                                                                                               <Content style={styles.content}>
 
-                                                                                                {this.state.planDetails !== null && body_parts.length > 0 ?
+                                                                                                {body_parts !== null ?
                                                                                                 (<Form>
                                                                                                    <View style={{margin: 15}}>
                                                                                                    <View>
@@ -424,7 +429,7 @@ export default class DaywiseWorkouts extends Component {
                                                                                                         </Button> : <Spinner color="black"/>}
                                                                                                    </View>
                                                                                                    </View>
-                                                                                                </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
+                                                                                                </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No body parts added. Please add them from admin dashboard</Text></View>}
 
                                                                                               </Content>
                                                                                             </Modal>

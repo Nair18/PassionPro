@@ -70,9 +70,9 @@ export default class WorkoutSpace extends Component {
 
     static navigationOptions = {
             title: 'Workout Plans',
-            headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: '#eadea6'},
-            headerTintColor: 'black'
+            headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+            headerStyle: {backgroundColor: constants.header},
+            headerTintColor: constants.header_text
           }
 
     showModal = (bool) => {
@@ -187,22 +187,22 @@ export default class WorkoutSpace extends Component {
     render(){
         const {planDetails} = this.state
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
+                    <Content style={styles.content}>
                     {this.state.planDetails !== null ? this.state.planDetails.map(planDetails =>
-                      <Content style={styles.content}>
-
-                        <View style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
+                        <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseWorkouts',{'plan_id': planDetails["id"], 'trainee_id': this.state.id})}>
-                           <Card style={{backgroundColor: "#d7c79e"}}>
-                                <CardItem style={{justifyContent: 'space-between', backgroundColor: "#d7c79e"}}>
+                           <Card style={{backgroundColor: constants.item_card}}>
+                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                                     <Text style={{fontWeight: 'bold'}}>{planDetails["name"]}</Text>
                                     <Icon name="md-arrow-round-forward" size={20}/>
                                 </CardItem>
                            </Card>
                            </TouchableOpacity>
                         </View>
-                     </Content>)  : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
+                     )  : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
+                     </Content>
                      </ScrollView>
                     <View style={styles.addButton}>
                                             <Button  rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.showModal(true)}>

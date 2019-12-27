@@ -34,9 +34,9 @@ export default class BodyWeight extends PureComponent {
     }
     static navigationOptions = {
           title: 'Fat % Tracker',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: '#eadea6'},
-          headerTintColor: 'black'
+          headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+          headerStyle: {backgroundColor: constants.header},
+          headerTintColor: constants.header_text
       }
      async retrieveItem(key) {
              try {
@@ -153,9 +153,10 @@ export default class BodyWeight extends PureComponent {
         let height = getStatusBarHeight()
         return(
             <Fragment>
-            <Container style={{paddingLeft: 15, paddingRight: 15, backgroundColor: '#efe9cc'}}>
+            <Container style={{ backgroundColor: constants.screen_color}}>
+                <ScrollView showsVerticalScrollbar={false}>
                 {this.state.fatList !== null ?
-                (<Content>
+                (<Content style={{margin: 15}}>
                     <View style={{marginTop: 25}}>
                       <Item regular>
                         <Input style={{backgroundColor: 'white'}} keyboardType="numeric" placeholder="Enter % value eg. 33" onChangeText={text => this.setState({fat: text})}/>
@@ -191,6 +192,7 @@ export default class BodyWeight extends PureComponent {
                         </List>
                     </View>
                 </Content>) : (<Content><View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ...</Text></View></Content>)}
+            </ScrollView>
             </Container>
             </Fragment>
         );

@@ -9,6 +9,7 @@ import {
   StatusBar,
   Modal,
   AsyncStorage,
+  TextInput,
   Alert,
   TouchableHighlight,
   Linking,
@@ -26,7 +27,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import constants from '../constants';
 import {Calendar} from 'react-native-calendars';
 
-import {Container, Accordion,Thumbnail, Card,List, ListItem, Item, Spinner,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, Card,List,Form, ListItem,Label,Textarea, Item, Spinner,CheckBox, Input, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 export default class MealSpace extends Component {
     constructor(props){
@@ -41,9 +42,9 @@ export default class MealSpace extends Component {
 
     static navigationOptions = {
             title: 'Meal Plans',
-            headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: '#eadea6'},
-            headerTintColor: 'black'
+            headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+            headerStyle: {backgroundColor: constants.header},
+            headerTintColor: constants.header_text
           }
 
     showModal = (bool) => {
@@ -122,14 +123,14 @@ export default class MealSpace extends Component {
     render(){
         const {planDetails} = this.state
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                     {this.state.planDetails !== null ? this.state.planDetails.map(planDetails =>
                       <Content style={styles.content}>
-                        <View style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
+                        <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseMeals',{'plan_id': planDetails["id"], 'trainee_id': this.state.id})}>
-                           <Card style={{backgroundColor: "#d7c79e"}}>
-                                <CardItem style={{justifyContent: 'space-between', backgroundColor: "#d7c79e"}}>
+                           <Card style={{backgroundColor: constants.item_card}}>
+                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                                     <Text style={{fontWeight: 'bold'}}>{planDetails["name"]}</Text>
                                     <Icon name="md-arrow-round-forward" size={20}/>
                                 </CardItem>

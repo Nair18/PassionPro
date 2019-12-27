@@ -19,15 +19,15 @@ export default class Sessions extends PureComponent {
           coursetype: null,
           auth_key: null,
           onProcess: false,
-          loading: true,
-          id: this.props.navigation.state.params.ID
+          id: this.props.navigation.state.params.id,
+          loading: true
         };
   }
   static navigationOptions = {
-    title: 'Fitness Offerings',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    title: 'Fitness Programs',
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
 
 
@@ -205,6 +205,10 @@ export default class Sessions extends PureComponent {
   }
   _deletealert = (id) => {
     Alert.alert(constants.warning, "Are you sure you want to delete?",
+                    {
+                       text: 'Cancel',
+                       style: 'cancel',
+                    },
                     [
                         {text: 'OK', onPress: () => this._delete(id)}
                     ],
@@ -214,12 +218,12 @@ export default class Sessions extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
         <Content style={{margin: 15}}>
             {this.state.coursetype !== null ? this.state.coursetype.map(coursetype =>
                 <View style={{marginTop: 5}}>
-                    <Card style={{backgroundColor: '#9dab86'}}>
-                        <CardItem style={{backgroundColor: '#9dab86', justifyContent: 'space-between'}}>
+                    <Card style={{backgroundColor: constants.item_card}}>
+                        <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
                             <Text style={{fontWeight: 'bold'}}>{coursetype["name"]}</Text>
                             <Icon name="md-close" size={25} style={{color: 'white'}} onPress={() => this._deletealert(coursetype["id"])}/>
                         </CardItem>

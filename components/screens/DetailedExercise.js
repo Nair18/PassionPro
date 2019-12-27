@@ -11,9 +11,9 @@ import { Container, Accordion, Header, Content, Card, CardItem, List, Spinner, L
 export default class DetailedExercise extends PureComponent {
   static navigationOptions = {
     title: "Workouts",
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
   constructor(props){
     super(props);
@@ -172,14 +172,14 @@ export default class DetailedExercise extends PureComponent {
 
     return (
     <Fragment>
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
 
         <Content style={{margin: 15}}>
           <View style={{margin: 5}}><Text>Showing result for <Text style={{fontWeight: 'bold'}}>{this.state.name}</Text></Text></View>
           {this.state.exerciseList !== null  ? this.state.exerciseList.map(ex =>
           <View style={{margin: 5}}>
-          <Card style={{backgroundColor: '#9dab86'}}>
-            <CardItem style={{justifyContent: 'space-between', backgroundColor: '#9dab86'}}>
+          <Card style={{backgroundColor: constants.item_card}}>
+            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                 <Text style={{color: 'black', fontWeight:'bold'}}>{ex["exercise_name"]}</Text>
                 {this.state.onProcess == false ?
                 <Icon size={25} name="md-close" style={{color: 'white'}} onPress={() => this.archive_exercise_alert(ex["id"])}/> : <Spinner color="black"/>}

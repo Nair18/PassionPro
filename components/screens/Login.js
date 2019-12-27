@@ -12,6 +12,7 @@ export default class Login extends PureComponent {
             username: null,
             password: null,
             token: null,
+            auth_key: null,
             loading: false
         }
     }
@@ -42,7 +43,7 @@ export default class Login extends PureComponent {
      }
 
      _storeData = async (key,data) => {
-        console.log("hitting it hard")
+        console.log("hitting it hard", data)
         if(key == "role"){
             data = JSON.stringify(data)
         }
@@ -53,6 +54,47 @@ export default class Login extends PureComponent {
         }
      }
 
+     _storeId = async (key,data) => {
+             console.log("hitting it hard")
+             if(data.length > 0){
+                 data = JSON.stringify(data[0]["id"])
+             }
+             try {
+               await AsyncStorage.setItem(key, data);
+
+             } catch (error) {
+               console.log("got error while setting", error)
+             }
+         return true
+     }
+
+     fetchDetails = () => {
+        console.log("came in fetching fish")
+        fetch(constants.API + 'current/admin/gyms', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth_key,
+            }
+        }).then(res => {
+            this.setState({loading: false})
+            if(res.status === 200){
+                return res.json()
+            }
+            else if(res.status === 401){
+                this.props.navigation.navigate('LandingPage')
+            }
+            else{
+                Alert.alert(constants.failed, constants.fail_error)
+            }
+        }).then(res => {
+            this._storeId('id', res["data"]["gyms"]).then(() => {
+                this.props.navigation.navigate('Home')
+            })
+        })
+        return false
+      }
       onSubmit = () => {
         if(this.state.username === null || this.state.password === null){
             Alert.alert(constants.incomplete_info, 'Username/Password cannot be blank')
@@ -102,44 +144,59 @@ export default class Login extends PureComponent {
             }
           }
           else{
-            res.json()
-            .catch(error => console.log("Error",error))
-                    .then(res => {
-                        console.log("yeah yaha aa gya bloop bloop", res["accessToken"])
+            return res.json()
+          }
+          }).then(res => {
+                        console.log("yeah yaha aa gya bloop bloop", res["access_token"])
                         this._storeData('key',"Bearer " + res["access_token"])
-
-                        this.setState({loading: false}, () => {
+                        this.setState({auth_key: "Bearer " + res["access_token"]}, () => {
                             if(res["roles"] !== null && res["roles"].length === 3 &&
                             (res["roles"].includes("ADMIN") && res["roles"].includes("TRAINER") && res["roles"].includes("OWNER"))){
-                                 this._storeData('role', 'AdminOwner')
-                                 console.log("came here in SuperOwner")
-                                 this.props.navigation.navigate('Home')
+                                 this._storeData('role', 'OWNERADMINTRAINER')
+                                 console.log("came here in OWNERADMINTRAINER")
+                                 this.fetchDetails()
+                            }
+                            else if(res["roles"] !== null && res["roles"].length === 2 && res["roles"].includes("OWNER") && res["roles"].includes("ADMIN")){
+                                 this._storeData('role', 'OWNERADMIN')
+                                 console.log("came here in OWNERADMIN")
+                                 this.fetchDetails()
                             }
                             else if(res["roles"] !== null && res["roles"].length === 2 && res["roles"].includes("ADMIN") && res["roles"].includes("TRAINER")){
-                                this._storeData('role', 'Admin2')
-                                console.log("came here in admin2")
-                                this.props.navigation.navigate('Home')
+                                this._storeData('role', 'ADMINTRAINER')
+                                console.log("came here in ADMINTRAINER", this.state.auth_key)
+                                this.fetchDetails()
+                            }
+                            else if(res["roles"] !== null && res["roles"][0] === "OWNER"){
+                                this._storeData('role', 'OWNER')
+                                console.log("came here in OWNER")
+                                this.fetchDetails()
                             }
                             else if(res["roles"] !== null && res["roles"][0] === "ADMIN"){
-                                this._storeData('role', 'Admin')
-                                console.log("came here in admin")
-                                this.props.navigation.navigate('Home')
+                                this._storeData('role', 'ADMIN')
+                                console.log("came here in ADMIN")
+                                this.fetchDetails()
                             }
                             else if(res["roles"] !== null && res["roles"][0] === "TRAINER"){
-                                this._storeData('role', 'Trainer')
-                                console.log("came here in trainer")
+                                this._storeData('role', 'TRAINER')
+                                console.log("came here in TRAINER")
                                 this.props.navigation.navigate('TrainerSection')
+                                return null
                             }
                             else if(res["roles"] !== null && res["roles"][0] === "TRAINEE"){
-                                this._storeData('role', 'Customer')
-                                console.log("came here in trainee")
+                                this._storeData('role', 'CUSTOMER')
+                                console.log("came here in CUSTOMER")
                                 this.props.navigation.navigate('SecondLevelCustomer')
+                                return null
                             }
 
                         })
+                    }).then(role => {
+                        if((role === 'OWNERADMINTRAINER') || (role === 'OWNERADMIN') || (role === 'ADMINTRAINER') || (role === 'OWNER') || (role === 'ADMIN')){
+                            console.log("going to call fetchdetails")
+                            this.fetchDetails()
+                        }
+                        console.log("call finished")
                     })
-          }
-          })
 
       }
     render(){
@@ -150,7 +207,7 @@ export default class Login extends PureComponent {
                                 <View style={{justifyContent: 'center', alignItems: 'center', marginTop: '50%'}}>
                                     <Spinner color='black'/>
                                     <View style={{justifyContent:'center', alignItems: 'center'}}>
-                                        <Text style={{fontWeight: 'bold'}}>Checking your credibility ...</Text>
+                                        <Text style={{fontWeight: 'bold'}}>Logging you in ...</Text>
                                     </View>
                                 </View> :
                 <Content>

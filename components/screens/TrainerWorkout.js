@@ -52,9 +52,9 @@ export default class TrainerWorkout extends Component {
     }
     static navigationOptions = {
                 title: 'Workouts',
-                headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-                headerStyle: {backgroundColor: '#eadea6'},
-                headerTintColor: 'black'
+                headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+                headerStyle: {backgroundColor: constants.header},
+                headerTintColor: constants.header_text
               }
     showModal = (bool) => {
         this.setState({isVisible: bool})
@@ -169,19 +169,42 @@ export default class TrainerWorkout extends Component {
         this.props.navigation.navigate('TrainerCreateWorkout');
         this.setState({isVisible: false})
     }
-    _deleteCard = () => {
+    _delete = (id) => {
+        this.setState({onProcess: true})
+        fetch(constants.API + 'current/trainer/trainees/archive/plan-day-exercise/'+id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth_key,
+            }
+        }).then(res => {
+            this.setState({onProcess: false})
+            if(res.status === 200){
+                Alert.alert(constants.success, 'Successfully deleted the workout')
+                this.fetchDetails()
+            }
+            else if(res.status === 401){
+                this.props.navigation.navigate('LandingPage')
+            }
+            else{
+                Alert.alert(constants.failed, constants.fail_error)
+            }
+        })
+    }
+    _deleteCard = (id) => {
         Alert.alert(
-            'Deleted',
-            'Post deleted',
+            constants.warning,
+            'Are you sure you want to delete?',
             [
-                {text: 'OK', onPress: () => console.log("OK Pressed")}
+                {text: 'OK', onPress: () => this._delete(id)}
             ],
             {cancelable: false}
         )
     }
     render(){
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                 <ScrollView>
                 <Content style={{margin: 15}}>
                     {this.state.workouts !== null ? this.state.workouts.map(workout =>
@@ -192,24 +215,26 @@ export default class TrainerWorkout extends Component {
                                 <Text style={{fontWeight: 'bold', color: 'white'}}>{workout["exercise"]}</Text>
                               </Left>
                               <Right>
-                                <Icon onPress={() => this._deleteCard(workout["id"])} style={{color: 'white'}} size={20} name="md-close" />
+                                {this.state.onProcess === false ?
+                                <Icon onPress={() => this._deleteCard(workout["id"])} style={{color: 'white'}} size={20} name="md-close" /> : <Spinner color='black' />}
                               </Right>
                            </CardItem>
-                           <CardItem style={{flexDirection: 'row'}}>
+                           <CardItem style={{flexDirection: 'row', backgroundColor: '#ebe6e6'}}>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Sets</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Weights</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Reps</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Duration</Text>
                            </CardItem>
-                           <CardItem style={{flexDirection: 'row'}}>
+                           <CardItem style={{flexDirection: 'row', backgroundColor: '#ebe6e6'}}>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["sets"]}</Text>
-                              <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["weights"]}</Text>
+                              <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["weights"]}kg</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["reps"]}</Text>
-                              <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["duration"]}</Text>
+                              <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["duration"]}m</Text>
                            </CardItem>
-                           <CardItem>
-                              <Text style={{fontWeight: 'bold', fontSize: 15}}>{workout["instruction"]}</Text>
-                           </CardItem>
+                           {workout["instructions"] !== null ?
+                           <CardItem style={{backgroundColor: '#ebe6e6'}}>
+                              <Text><Text style={{fontWeight: 'bold'}}>Instructions: </Text>{workout["instructions"]}</Text>
+                           </CardItem> : null }
 
                         </Card>
                     </View>): <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
@@ -237,7 +262,7 @@ export default class TrainerWorkout extends Component {
                                                                                                           </View>
                                                                                                               <Content style={styles.content}>
 
-                                                                                                                {this.state.planDetails !== null && this.state.body_parts.length !== null?
+                                                                                                                {this.state.body_parts !== null ?
                                                                                                                 (<Form>
                                                                                                                    <View style={{margin: 15}}>
 
@@ -327,7 +352,7 @@ export default class TrainerWorkout extends Component {
                                                                                                                         </Button> : <Spinner color="black"/>}
                                                                                                                    </View>
                                                                                                                    </View>
-                                                                                                                </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
+                                                                                                                </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No body parts added. Please add it from the admin dashboard</Text></View>}
 
                                                                                                               </Content>
                                                                                                             </Modal>

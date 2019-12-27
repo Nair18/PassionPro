@@ -2,7 +2,7 @@ import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar} from 'react-native';
 import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
-
+import constants from '../constants';
 export default class Contact extends Component {
   constructor(props){
     super(props)
@@ -12,9 +12,9 @@ export default class Contact extends Component {
   }
   static navigationOptions = {
       title: 'Help',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: '#eadea6'},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+      headerStyle: {backgroundColor: constants.header},
+      headerTintColor: constants.header_text
   }
   componentDidMount(){
                   StatusBar.setHidden(false);
@@ -38,7 +38,7 @@ export default class Contact extends Component {
 
     return(
        <Fragment>
-        <Container style={{backgroundColor: '#efe9cc'}}>
+        <Container style={{backgroundColor: constants.screen_color}}>
 
             <ScrollView showHorizontalScrollbar={false}>
 

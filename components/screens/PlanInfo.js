@@ -14,6 +14,11 @@ export default class CreateStandardPlan extends Component {
       plan_data: this.props.navigation.state.params.plan_data,
       plan_id: this.props.navigation.state.params.plan_id,
       gym_id: this.props.navigation.state.params.gym_id,
+      modalVisible: false,
+      onProcess: false,
+      name: null,
+      exerciseList: null,
+      description: null,
       data: [
              {
                "Day": 'Monday',
@@ -45,7 +50,7 @@ export default class CreateStandardPlan extends Component {
 
   componentDidMount(){
             console.log("id has been retrieved", this.state.gym_id)
-
+            this.setState({name: this.state.plan_data["name"], description: this.state.plan_data["description"]})
             const { navigation } = this.props;
             console.log("pagal bana rhe hai")
             this.focusListener = navigation.addListener('didFocus', () => {
@@ -54,7 +59,7 @@ export default class CreateStandardPlan extends Component {
                              this.setState({auth_key: res}, () => console.log("brother pls", res))
                              ).then(() => {
                                   if(this.state.auth_key !== null){
-//                                      this.fetchDetails()
+                                     this.fetchDetails()
                                   }
                              })
             });
@@ -75,52 +80,106 @@ export default class CreateStandardPlan extends Component {
 
   static navigationOptions = {
     title: 'Plan Info',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
 
   onSelectedItemsChange = selectedItem => {
       this.setState({ selectedItem });
     };
   setModalVisible = (bool) => {
-    this.setState({visible: bool})
+    this.setState({modalVisible: bool})
   }
-    _back = () => {
+
+  _back = () => {
       this.props.navigation.goBack(this.props.navigation.state.params.go_back_key)
 
-    }
-    render(){
-      let list = [
-        	{Id: 1, Name: 'Test1 Name', Value: 'Test1 Value'},
-        	{Id: 2, Name: 'Test2 Name', Value: 'Test2 Value'},
-        	{Id: 3, Name: 'Test3 Name', Value: 'Test3 Value'},
-        	{Id: 4, Name: 'Test4 Name', Value: 'Test4 Value'}
-        ]
+  }
+
+  fetchDetails = () => {
+    fetch(constants.API + 'current/admin/gym/'+this.state.gym_id+'/plans/'+this.state.plan_id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth_key
+        }
+    }).then(res => {
+        if(res.status === 200){
+            return res.json()
+        }
+        else if(res.status === 401){
+            this.props.navigation.navigate('LandingPage')
+        }
+        else{
+            Alert.alert(constants.failed, constants.fail_error)
+        }
+    }).then(res => this.setState({plan_data: res}, () => {
+        fetch(constants.API + 'current/admin/gym/' + this.state.gym_id + '/exercises', {
+            method: 'GET',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth_key
+            }
+        }).then(response => {
+            if(res.status === 200){
+                return res.json()
+            }
+            else if(res.status === 401){
+                this.props.navigation.navigate('LandingPage')
+            }
+            else{
+                Alert.alert(constants.failed, constants.fail_error)
+            }
+        }).then(res => this.setState({exerciseList: res}))
+    }))
+  }
+
+  onSubmit = () => {
+    this.setState({onProcess: true})
+    fetch(constants.API + 'current/admin/gym/'+ this.state.gym_id + '/plans/'+ this.state.plan_id, {
+        method: 'PUT',
+        headers: {
+           'Accept': 'application/json',
+           'Content-Type': 'application/json',
+           'Authorization': this.state.auth_key
+        },
+        body: JSON.stringify({
+            "name": this.state.name,
+            "description": this.state.description
+        })
+    }).then(res => {
+        this.setState({onProcess: false})
+        if(res.status === 200){
+            Alert.alert(constants.success, "Successfully updated")
+            return fetchDetails()
+        }
+        else if(res.status === 401){
+            this.props.navigation.navigate('LandingPage')
+        }
+        else{
+            Alert.alert(constants.failed, constants.fail_error)
+        }
+    })
+  }
+
+  render(){
       let card = []
-      let options = [
-            {
-              key: 'kenya',
-              label: 'Kenya',
-            },
-            {
-              key: 'uganda',
-              label: 'Uganda',
-            },
-            {
-              key: 'libya',
-              label: 'Libya',
-            },
-            {
-              key: 'morocco',
-              label: 'Morocco',
-            },
-            {
-              key: 'estonia',
-              label: 'Estonia',
-            },
-          ];
-      for(let i=0;i<(this.state.data.length && (this.state.plan_data !== null));i++){
+      let bodyparts = []
+      if(this.state.exerciseList !== null){
+          console.log("exercise list", this.state.exerciseList)
+          for(var key in this.state.exerciseList){
+             data = {
+                "id": key,
+                "name": key
+             }
+             bodyparts.push(data)
+          }
+      }
+      console.log("plan info", bodyparts)
+      for(let i=0;i<this.state.data.length && this.state.plan_data !== null ;i++){
         card.push(
           <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AdminWorkoutSpace', {plan_day: this.state.data[i]["Day"],
           plan_data: this.state.plan_data["plans"], plan_id: this.state.plan_data["id"], gym_id: this.state.gym_id})}>
@@ -135,21 +194,20 @@ export default class CreateStandardPlan extends Component {
       return(
         <Fragment>
            <StatusBar backgroundColor='black' barStyle='light-content' />
-           <Container style={{backgroundColor: '#efe9cc'}}>
+           <Container style={{backgroundColor: constants.screen_color}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                  <Content style={{padding: 15}}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={styles.imageView}>
                             <Thumbnail large style={{backgroundColor: "black"}} />
                         </View>
-                        <View style={{flex: 1}}>
-                            <Button danger style={{justifyContent: 'center', alignItems: 'center'}}><Text>Delete Plan</Text></Button>
-                            <Button style={{backgroundColor: "black", marginTop: 10, justifyContent: 'center', alignItems: 'center'}}><Text>Edit</Text></Button>
+                        <View>
+                            <Button block style={{backgroundColor: 'black'}} onPress={() => this.setModalVisible(true)}><Text>Edit</Text></Button>
                         </View>
                     </View>
-                 </Content>
-                {this.state.plan_data != null && this.state.gym_id !== null ?
-                <Content style={{padding: 15}}>
+
+                {this.state.plan_data != null && this.state.gym_id !== null && this.state.exerciseList !== null ?
+                <View style={{paddingLeft: 15, paddingRight: 15}}>
                   <View style={styles.input}>
                       <View>
                         <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.plan_data["name"]}</Text>
@@ -168,10 +226,12 @@ export default class CreateStandardPlan extends Component {
                   <View>
                     {card}
                   </View>
-                </Content>
+                </View>
                 : <Spinner color="black" />}
+                </Content>
                 </ScrollView>
            </Container>
+
         </Fragment>
       );
     }
@@ -187,6 +247,11 @@ export default class CreateStandardPlan extends Component {
         width: 100,
         flex: 1
     },
+    addButton: {
+        position: 'absolute',
+        right: 30,
+        bottom: 30,
+      },
     headings: {
       fontWeight: 'bold',
       fontSize: 20
@@ -205,5 +270,16 @@ export default class CreateStandardPlan extends Component {
     },
     button: {
       backgroundColor: 'black'
-    }
+    },
+    modal: {
+            backgroundColor : "#fff",
+            height: 350 ,
+            width: '80%',
+            borderRadius:10,
+            borderWidth: 1,
+            borderColor: '#fff',
+            marginTop: 80,
+            marginLeft: 40,
+            padding: 15
+        }
   });

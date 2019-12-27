@@ -1,67 +1,56 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar} from 'react-native';
-import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
-
+import { Button, Container, Content, View, Text,Item, Thumbnail, Spinner} from 'native-base';
+import constants from '../constants';
 export default class SLCProfile extends Component {
   constructor(props){
     super(props)
     this.state={
-      datas: 'no data'
+      profile: this.props.navigation.state.params.profile
     }
   }
   static navigationOptions = {
       title: 'Profile',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: '#eadea6'},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+      headerStyle: {backgroundColor: constants.header},
+      headerTintColor: constants.header_text
   }
   componentDidMount(){
-                  StatusBar.setHidden(false);
-              }
-  componentWillUnMount() {
-
+    StatusBar.setHidden(false);
   }
-
-  settingState = (datas) => {
-    console.log("Bhai jaan aa gy mein")
-    this.setState({datas})
-  }
-
 
   render(){
-    let DATA = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
-    ];
+    let subs = []
+    let Totalamount = 0
+    let csubs = []
+    if(this.state.profile !== null){
+        let gym_subs = this.state.profile["gym_subscriptions"]
+        subs = gym_subs.filter((val) => {
+            return val["is_active"] === true
+        })
+        for(let i=0;i<gym_subs; i++){
+            Totalamount = Totalamount + parseInt(gym_subs[i]["amount"])
+        }
 
-    let courses = [];
-    for(let i=0;i<DATA.length;i++){
-       courses.push(<View><Item><Text>{DATA[i]['title']}</Text></Item></View>)
+        let pt_subs = this.state.profile["course_subscriptions"]
+        csubs = pt_subs.filter((val) => {
+            return val["is_active"] === true
+        })
     }
 
     return(
        <Fragment>
-        <Container style={{backgroundColor: '#efe9cc'}}>
-
-            <ScrollView showHorizontalScrollbar={false}>
+        <Container style={{backgroundColor: constants.screen_color}}>
+            {this.state.profile !== null ?
+            <ScrollView showsVerticalScrollbar={false}>
                 <Content style={{marginLeft: 15, marginRight: 15}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={styles.imageView}>
                             <Thumbnail large source={require('./client-profile.png')}/>
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', flex:1 }}>
-                            <Button style={{backgroundColor: '#d35656'}} onPress={() => {this.props.navigation.navigate('LandingPage')}}><Text>Logout</Text></Button>
+                            <Button block style={{backgroundColor: constants.logout}} onPress={() => {this.props.navigation.navigate('LandingPage')}}><Text>Logout</Text></Button>
                         </View>
                     </View>
                 </Content>
@@ -71,7 +60,7 @@ export default class SLCProfile extends Component {
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>{this.state.datas}</Text>
+                        <Text>{this.state.profile["name"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -79,7 +68,7 @@ export default class SLCProfile extends Component {
                             <Text style={styles.text}>Age </Text>
                         </View>
                         <View style={styles.textFormat}>
-                            <Text>22</Text>
+                            <Text>{this.state.profile["age"]}</Text>
                         </View>
                     </View>
                     <View style={styles.infoView}>
@@ -87,7 +76,7 @@ export default class SLCProfile extends Component {
                         <Text style={styles.text}>Mobile </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>9979090670</Text>
+                         <Text>{this.state.profile["mobile"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -95,7 +84,7 @@ export default class SLCProfile extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>4th block koramangala, 100ft road, bangalore-560034</Text>
+                         <Text>{this.state.profile["address"] === null ? "NA" : this.state.profile["address"]}</Text>
                       </View>
                     </View>
 
@@ -104,7 +93,7 @@ export default class SLCProfile extends Component {
                           <Text style={styles.text}>Membership start date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                          <Text>29-02-2019</Text>
+                          <Text>{subs.length > 0 ? subs[0]["start_date"].split("T")[0] : "NA"}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -112,43 +101,45 @@ export default class SLCProfile extends Component {
                          <Text style={styles.text}>Membership end date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                         <Text>29-02-2020</Text>
+                         <Text>{subs.length > 0 ? subs[0]["end_date"].split("T")[0] : "NA"}</Text>
                        </View>
                     </View>
+                    {csubs.length > 0 ?
                     <View style={styles.infoView}>
                        <View style={styles.title}>
-                          <Text style={styles.text}>Total Amount Paid</Text>
+                         <Text style={styles.text}>Personal Training start date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                          <Text>{12000 + ' INR'}</Text>
+                         <Text>{csubs.length > 0 ? csubs[0]["start_date"].split("T")[0] : "NA"}</Text>
                        </View>
-                    </View>
+                    </View> : null }
+                    {csubs.length > 0 ?
                     <View style={styles.infoView}>
                        <View style={styles.title}>
-                          <Text style={styles.text}>Course </Text>
+                         <Text style={styles.text}>Personal Training end date </Text>
                        </View>
-                       <View style={{flex: 1, marginLeft: 25}}>
-                          {courses}
+                       <View style={styles.textFormat}>
+                         <Text>{csubs.length > 0 ? csubs[0]["end_date"].split("T")[0] : "NA"}</Text>
                        </View>
-                    </View>
-                    <View style={styles.infoView}>
-                                                               <View style={styles.title}>
-                                                                  <Text style={styles.text}>Plans</Text>
-                                                               </View>
-                                                               <View style={{flex: 1, marginLeft: 25}}>
-                                                                  {courses}
-                                                               </View>
-                                                            </View>
+                    </View> : null }
                     <View style={styles.infoView}>
                        <View style={styles.title}>
                           <Text style={styles.text}>Trainer </Text>
                        </View>
-                          <View style={styles.textFormat}>
-                            <Text>Baghadeesh</Text>
-                          </View>
+                       <View style={styles.textFormat}>
+                            <Text>{csubs.length > 0 ? csubs[0]["trainer_name"] : null}</Text>
+                       </View>
+                    </View>
+                    <View style={styles.infoView}>
+                       <View style={styles.title}>
+                           <Text style={styles.text}>Trainer phone</Text>
+                       </View>
+                       <View style={styles.textFormat}>
+                           <Text>{csubs.length > 0 ? csubs[0]["phone"] : null}</Text>
+                       </View>
                     </View>
                 </Content>
-            </ScrollView>
+            </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
         </Container>
        </Fragment>
     );
@@ -164,9 +155,9 @@ const styles = StyleSheet.create({
      imageView: {
        width: 100,
        height: 100,
-
+       flex: 1,
        justifyContent: 'center',
-       alignItems: 'center'
+       alignItems: 'flex-start'
      },
      text: {
        fontWeight: 'bold',

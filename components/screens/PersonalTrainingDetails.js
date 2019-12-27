@@ -5,14 +5,13 @@ import {StyleSheet, View, TouchableOpacity, TextInput, ScrollView, BackHandler, 
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
-
+import constants from '../constants';
 export default class PersonalTrainingDetails extends Component{
   constructor(props){
       super(props)
       this.state={
-         date: '2019-12-09',
-         number: '9979090670',
-         amount: '12000',
+         details: this.props.navigation.state.params.details,
+         info: this.props.navigation.state.params.info,
          isVisible: false
       }
   }
@@ -44,10 +43,10 @@ export default class PersonalTrainingDetails extends Component{
 
 
   static navigationOptions = {
-        title: 'Personal Training Subcriptions',
-                        headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-                        headerStyle: {backgroundColor: '#eadea6'},
-                        headerTintColor: 'black'
+        title: 'Personal Training Details',
+                        headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+                        headerStyle: {backgroundColor: constants.header},
+                        headerTintColor: constants.header_text
   }
 
   _changeNumber = (value) => {
@@ -58,96 +57,90 @@ export default class PersonalTrainingDetails extends Component{
     alert("this is bomb")
   }
   render(){
+    let active = []
+    let expired = []
+    if(this.state.details !== null){
+        active = this.state.details.filter((value) => {
+            return value["is_active"] === true
+        })
+        expired = this.state.details.filter((value) => {
+            return value["is_active"] === false
+        })
+    }
     return(
-      <Container style={{backgroundColor: '#efe9cc'}}>
-
+      <Container style={{backgroundColor: constants.screen_color}}>
+        {this.state.info !== null && this.state.details !== null ?
         <ScrollView showsVerticalScrollIndicator={false}>
         <Content style={{padding: 15}}>
-          <View style={{margin: 15}}>
-            <Text style={{fontWeight: 'bold'}}>---------- Active Subscription ----------</Text>
+          <View>
+            <Text style={{fontWeight: 'bold'}}>Active Subscription</Text>
           </View>
-
-          <View style={{margin: 10}}>
+          {active.length > 0 ? active.map(ac =>
+          <View style={{marginTop: 10}}>
              <Card style={{width: '100%', padding: 15}}>
-                <CardItem header style={{backgroundColor: '#d7c79e', justifyContent: 'center', alignItems: 'center'}}>
-                   <Text style={{fontWeight: 'bold'}}>Bill No. 1 </Text>
-                   <Text style={{color: "green"}}> Active</Text>
+                <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
+                   <Text style={{fontWeight: 'bold'}}>Bill</Text>
+                   <Text style={{color: "green", fontWeight: 'bold'}}>{ac["is_active"] !== null ? "ACTIVE" : "EXPIRED"}</Text>
                 </CardItem>
-                <CardItem>
-                   <Text><Text style={{fontWeight: 'bold'}}>Center:</Text> Gold Gym, Hsr</Text>
+                <CardItem style={{backgroundColor: constants.card_body}}>
+                    <Text><Text style={{fontWeight: 'bold'}}>Trainer:</Text> {ac["trainer_name"]}</Text>
                 </CardItem>
-                <CardItem>
-                    <Text><Text style={{fontWeight: 'bold'}}>Trainer:</Text> Hariram</Text>
+                <CardItem style={{backgroundColor: constants.card_body}}>
+                    <Text><Text style={{fontWeight: 'bold'}}>Trainer phone:</Text> {ac["phone"]}</Text>
                 </CardItem>
-                <CardItem>
-                    <Text><Text style={{fontWeight: 'bold'}}>Trainer phone:</Text> 9979090650</Text>
+                <CardItem style={{backgroundColor: constants.card_body}}>
+                    <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> {this.state.info["name"]}</Text>
                 </CardItem>
-                <CardItem>
-                    <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> Haresh</Text>
+                <CardItem style={{backgroundColor: constants.card_body}}>
+                    <Text><Text style={{fontWeight: 'bold'}}>Trainer Phone:</Text> {this.state.info["mobile"]}</Text>
                 </CardItem>
-                <CardItem>
-                    <Text><Text style={{fontWeight: 'bold'}}>Trainer Phone:</Text> 9978989567</Text>
+                <CardItem style={{backgroundColor: constants.card_body}}>
+                   <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> {ac["start_date"]}</Text>
                 </CardItem>
-                <CardItem>
-                   <Text><Text style={{fontWeight: 'bold'}}>Course:</Text> Belly reduce</Text>
+                <CardItem style={{backgroundColor: constants.card_body}}>
+                   <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> {ac["end_date"]}</Text>
                 </CardItem>
-                <CardItem>
-                   <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> 2019-09-10</Text>
+                <CardItem style={{backgroundColor: constants.card_body}}>
+                   <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ac["amount"]}</Text>
                 </CardItem>
-                <CardItem>
-                   <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> 2019-12-10</Text>
-                </CardItem>
-                <CardItem>
-                   <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> Rs 10000</Text>
-                </CardItem>
-                <TouchableOpacity>
-                    <CardItem footer style={{backgroundColor: "#d96459"}}>
-                        <Text style={{color: 'white'}}>End subscription</Text>
-                    </CardItem>
-                </TouchableOpacity>
              </Card>
+          </View>) : <View><Card style={{backgroundColor: 'black', padding: 10, alignItems: 'center'}}><Text note>Nothing to show</Text></Card></View> }
+          <View style={{marginTop: 20}}>
+            <Text style={{fontWeight: 'bold'}}>Expired Subcriptions</Text>
           </View>
-          <View style={{margin: 20}}>
-            <Text style={{fontWeight: 'bold'}}>---------- Expired Subcriptions ----------</Text>
-          </View>
-          <View style={{margin: 10}}>
+          { expired.length > 0 ? expired.map(ex =>
+          <View style={{marginTop: 10}}>
                 <Card style={{width: '100%', padding: 15}}>
-                    <CardItem header style={{backgroundColor: '#d7c79e', justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={{fontWeight: 'bold'}}>Bill No. 2 </Text>
-                        <Text style={{color: "red"}}> Expired</Text>
+                    <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
+                        <Text style={{fontWeight: 'bold'}}>Bill</Text>
+                        <Text style={{color: "red", fontWeight: 'bold'}}> {ex["is_active"] !== null ? "EXPIRED" : "ACTIVE"}</Text>
                     </CardItem>
-                    <CardItem>
-                         <Text><Text style={{fontWeight: 'bold'}}>Center:</Text> Gold Gym, Hsr</Text>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
+                         <Text><Text style={{fontWeight: 'bold'}}>Trainer:</Text> {ex["trainer_name"]}</Text>
                     </CardItem>
-                    <CardItem>
-                         <Text><Text style={{fontWeight: 'bold'}}>Trainer:</Text> Hariram</Text>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
+                         <Text><Text style={{fontWeight: 'bold'}}>Trainer phone:</Text> {ex["phone"]}</Text>
                     </CardItem>
-                    <CardItem>
-                         <Text><Text style={{fontWeight: 'bold'}}>Trainer phone:</Text> 9979090650</Text>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
+                         <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> {this.state.info["name"]}</Text>
                     </CardItem>
-                    <CardItem>
-                         <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> Haresh</Text>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
+                         <Text><Text style={{fontWeight: 'bold'}}>Trainer Phone:</Text> {this.state.info["mobile"]}</Text>
                     </CardItem>
-                    <CardItem>
-                         <Text><Text style={{fontWeight: 'bold'}}>Trainer Phone:</Text> 9978989567</Text>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
+                        <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> {ex["start_date"]}</Text>
                     </CardItem>
-                    <CardItem>
-                        <Text><Text style={{fontWeight: 'bold'}}>Course:</Text> Belly reduce</Text>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
+                        <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> {ex["end_date"]}</Text>
                     </CardItem>
-                    <CardItem>
-                        <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> 2019-01-10</Text>
-                    </CardItem>
-                    <CardItem>
-                        <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> 2019-09-10</Text>
-                    </CardItem>
-                    <CardItem>
-                        <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> Rs 10000</Text>
+                    <CardItem style={{backgroundColor: constants.card_body}}>
+                        <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ex["amount"]}</Text>
                     </CardItem>
                 </Card>
-          </View>
+          </View>) : <View style={{marginTop: 10}}><Card style={{backgroundColor: 'black', padding: 10, alignItems: 'center'}}><Text note>Nothing to show</Text></Card></View>}
         </Content>
 
-        </ScrollView>
+        </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
 
       </Container>
     );

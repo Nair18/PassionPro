@@ -35,17 +35,16 @@ export default class AdminWorkoutSpace extends Component {
     }
     static navigationOptions = {
                 title: 'Workouts',
-                headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-                headerStyle: {backgroundColor: '#eadea6'},
-                headerTintColor: 'black'
+                headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+                headerStyle: {backgroundColor: constants.header},
+                headerTintColor: constants.header_text
               }
     showModal = () => {
         this.setState({isVisible: true})
     }
 
-    selectExercise = (index) => {
-        console.log("index", index)
-        this.props.navigation.navigate('CreateWorkout', {exercise: this.state.exerciseList[index["ex"]], gym_id: this.state.gym_id, plan_id: this.state.plan_id, day: this.state.day});
+    selectExercise = (bodyparts) => {
+        this.props.navigation.navigate('CreateWorkout', {type: 'workout',bodyparts: bodyparts,exercise: this.state.exerciseList, gym_id: this.state.gym_id, plan_id: this.state.plan_id, day: this.state.day});
         this.setState({isVisible: false})
     }
 
@@ -145,7 +144,7 @@ export default class AdminWorkoutSpace extends Component {
     delete_exercise = (id) => {
         console.log("id boy", id)
         this.setState({onProcess: true})
-        fetch(constants.API + 'current/admin/gym/'+this.state.gym_id + '/archive/exercises/'+ id, {
+        fetch(constants.API + 'current/admin/gym/'+this.state.gym_id + '/archive/plan-day-exercise/'+ id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -171,17 +170,31 @@ export default class AdminWorkoutSpace extends Component {
         })
     }
 
+    delete_exercisealert = (id) => {
+        Alert.alert(constants.warning, 'Are you sure you want delete?',
+            [
+               {text: 'OK', onPress: () => this.delete_exercise(id)},
+            ],
+            {cancelable: false}
+        )
+    }
 
     render(){
         let bodyparts = []
         if(this.state.exerciseList !== null){
-            for(var keys in this.state.exerciseList){
-                bodyparts.push(keys)
+            for(var key in this.state.exerciseList){
+                data = {
+                        "id": key,
+                        "name": key
+                       }
+                bodyparts.push(data)
             }
         }
-
+        if(bodyparts.length === 0){
+            bodyparts = null
+        }
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                 <ScrollView>
 
                 <Content style={{margin: 15, padding: 10}}>
@@ -189,20 +202,20 @@ export default class AdminWorkoutSpace extends Component {
                     <View>
                       <View>
                         <Card>
-                           <CardItem header style={{backgroundColor: '#d7c79e', justifyContent: 'space-between'}}>
+                           <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
                               <Text style={{fontWeight: 'bold'}}>{exercise["exercise"]}</Text>
                               {this.state.onProcess == false ?
                               <View>
-                                <Button bordered danger small onPress={(id) => {this.delete_exercise(exercise["id"])}}><Text>Delete</Text></Button>
+                                <Button bordered danger small onPress={(id) => {this.delete_exercisealert(exercise["id"])}}><Text>Delete</Text></Button>
                               </View> : <Spinner color="black"/>}
                            </CardItem>
-                           <CardItem style={{flexDirection: 'row'}}>
+                           <CardItem style={{flexDirection: 'row', backgroundColor: constants.card_body}}>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Sets</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Weights</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Reps</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Duration</Text>
                            </CardItem>
-                           <CardItem style={{flexDirection: 'row'}}>
+                           <CardItem style={{flexDirection: 'row', backgroundColor: constants.card_body}}>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{exercise["sets"]}</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{exercise["weights"]}kg</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{exercise["reps"]}</Text>
@@ -210,10 +223,10 @@ export default class AdminWorkoutSpace extends Component {
                            </CardItem>
                            {exercise["instructions"] !== null && exercise["instructions"].trim() !== "" ?
                            <View>
-                            <CardItem>
+                            <CardItem style={{backgroundColor: constants.card_body}}>
                               <Text style={{fontWeight: 'bold', fontSize: 15}}>Instructions </Text>
                             </CardItem>
-                            <CardItem>
+                            <CardItem style={{backgroundColor: constants.card_body}}>
                               <Text>{exercise["instructions"]}</Text>
                             </CardItem></View> : null}
                         </Card>
@@ -221,7 +234,7 @@ export default class AdminWorkoutSpace extends Component {
                     </View>) : <Spinner color="black" /> }
                     {this.state.exercise !== null && this.state.exerciseList !== null ?
                     <View style={{justifyContent: 'center', alignItems: 'center', margin: 25}}>
-                         <Button onPress={this.showModal} style={{backgroundColor: 'black'}}><Text style={{color: 'white'}}>Add workout</Text></Button>
+                         <Button onPress={() => this.selectExercise(bodyparts)} style={{backgroundColor: 'black'}}><Text style={{color: 'white'}}>Add workout</Text></Button>
                     </View>: null}
                 </Content>
                 </ScrollView>
@@ -232,6 +245,7 @@ export default class AdminWorkoutSpace extends Component {
                                     visible = {this.state.isVisible}
                                     onRequestClose = {() =>{ this.setState({isVisible: false}) } }>
                                     {/*All views of Modal*/}
+
                                     <Content>
                                      <View  style={{minHeight: 500, width: '100%'}}  >
                                         <View style={{margin: 15}}>
@@ -239,7 +253,7 @@ export default class AdminWorkoutSpace extends Component {
                                                 <Icon size={25} name="md-arrow-back"/>
                                             </TouchableOpacity>
                                         </View>
-
+                                        {bodyparts !== null ?
                                         <View style={{marginTop: 15}}>
                                             <ScrollView>
                                               {bodyparts.map( (ex,index) =>
@@ -251,6 +265,7 @@ export default class AdminWorkoutSpace extends Component {
                                               )}
                                             </ScrollView>
                                         </View>
+                                        : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No bady parts. Please add it from the admin dashboard</Text></View>}
                                         <View style={{marginTop: 25}}>
                                         </View>
                                     </View>

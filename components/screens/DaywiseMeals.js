@@ -28,7 +28,6 @@ import {Agenda} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons';
 import constants from '../constants';
 import {Calendar} from 'react-native-calendars';
-
 import {Container, Accordion,Thumbnail, Card,List, ListItem, Form, Item, Label, Textarea, Spinner,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right, Input} from 'native-base';
 
 
@@ -53,9 +52,9 @@ export default class DaywiseMeals extends Component {
 
     static navigationOptions = {
             title: 'Meal Space',
-            headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: '#eadea6'},
-            headerTintColor: 'black'
+            headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+            headerStyle: {backgroundColor: constants.header},
+            headerTintColor: constants.header_text
           }
 
     showModal = (bool=true) => {
@@ -178,7 +177,8 @@ export default class DaywiseMeals extends Component {
                 }
                 data = {
                          "name": planDetails["meal_plans"][i]["name"],
-                         "description": planDetails["meal_plans"][i]["description"]
+                         "description": planDetails["meal_plans"][i]["description"],
+                         "id": planDetails["meal_plans"][i]["id"]
                        }
                 arr.push(data)
                 plans.set(planDetails["meal_plans"][i]["day"], arr)
@@ -203,7 +203,7 @@ export default class DaywiseMeals extends Component {
         days.sort(daysOfWeekSorter);
         console.log("days are generated", days)
         return(
-            <Container style={{backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                     {this.state.planDetails !== null && plans.size > 0?
                       <Content style={styles.content}>
@@ -214,8 +214,8 @@ export default class DaywiseMeals extends Component {
                         {days.length > 0 ? days.map(day =>
                         <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('CreateMeal', {details: plans.get(day), plan_id: this.state.plan_id, trainee_id: this.state.trainee_id,day: day})}>
-                           <Card style={{backgroundColor: "#d7c79e"}}>
-                            <CardItem style={{justifyContent: 'space-between', backgroundColor: "#d7c79e"}}>
+                           <Card style={{backgroundColor: constants.item_card}}>
+                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                                 <Text style={{fontWeight: 'bold'}}>{day}</Text>
                                 <Icon size={20} name="md-arrow-dropright"/>
                             </CardItem>

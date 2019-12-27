@@ -19,13 +19,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, Accordion,Thumbnail, Card,ListItem,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 import type {Notification} from 'react-native-firebase';
 import firebase from 'react-native-firebase';
-
+import constants from '../constants';
 export default class CustomerNotification extends Component {
     static navigationOptions = {
           title: 'Notifications',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: '#eadea6'},
-          headerTintColor: 'black'
+          headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+          headerStyle: {backgroundColor: constants.header},
+          headerTintColor: constants.header_text
       }
 
 
@@ -125,7 +125,7 @@ export default class CustomerNotification extends Component {
 
     render(){
         return(
-            <Container style={{padding: 15, backgroundColor: '#efe9cc'}}>
+            <Container style={{padding: 15, backgroundColor: constants.screen_color}}>
                 <ScrollView>
                 <Content>
                     <View>

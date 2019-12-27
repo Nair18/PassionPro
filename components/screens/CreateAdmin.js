@@ -12,9 +12,9 @@ import { debounce } from "lodash";
 export default class CreateAdmin extends PureComponent {
   static navigationOptions = {
     title: 'Admins',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
 
   state = {
@@ -126,7 +126,7 @@ export default class CreateAdmin extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: constants.screen_color}}>
 
         <Content>
 

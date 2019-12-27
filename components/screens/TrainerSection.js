@@ -52,21 +52,36 @@ export default class Admin extends Component {
         console.log("pagal bana rhe hai")
         this.focusListener = navigation.addListener('didFocus', () => {
           console.log("focusing admin screen")
-          var key  = this.retrieveItem('key').then(res =>
-                        this.setState({auth_key: res}, () => console.log("brother pls", res))
-                      ).then(() => this.fetchDetails())
+          var key  = this.retrieveItem(['key', 'id']).then(res =>{
+              this.setState({auth_key: res[0]}, () => console.log("brother pls", res))
+              return res[1]
+          }).then((res) => {
+              this.fetchDetails(res)
+          })
         });
 
   }
-  async retrieveItem(key) {
+  async retrieveItem(keys) {
+        let auth_key = null
+        let id = null
+        const retrievedItem =  await AsyncStorage.multiGet(keys);
+        retrievedItem.map(m => {
             try {
-              const retrievedItem =  await AsyncStorage.getItem(key);
+              if(m[0] === 'key'){
+                auth_key = m[1]
+              }
+              else if(m[0] === 'id'){
+                if(m[1] !== null){
+                    id = m[1]
+                    this._storeData({"id": parseInt(m[1])})
+                }
+              }
               console.log("key retrieved")
-              return retrievedItem;
             } catch (error) {
               console.log(error.message);
             }
-            return;
+        })
+        return [auth_key, id];
   }
 
   _storeData = async (data) => {
@@ -79,8 +94,9 @@ export default class Admin extends Component {
           }
   }
 
-  fetchDetails = () => {
-      console.log("Api fetch going to be called")
+  fetchDetails = (gym_id) => {
+      let gym_id_arg = gym_id
+      console.log("Api fetch going to be called", gym_id)
       this.setState({loading: true})
       console.log("auth key fetched", this.state.auth_key)
       fetch(constants.API + 'current/trainer/me',{
@@ -106,7 +122,11 @@ export default class Admin extends Component {
                                  );
                                }
                              }).then(res => {
-                               this.setState({trainerDetails: res, loading: false}, () => this._storeData(res["gyms"][0]))
+                               this.setState({trainerDetails: res, loading: false}, () => {
+                                   if(gym_id_arg === null && res !== null){
+                                     this._storeData(res["gyms"][0])
+                                   }
+                               })
 
                              })
 
@@ -157,17 +177,17 @@ export default class Admin extends Component {
         var today = new Date();
         const {trainerDetails} = this.state
     return(
-        <Container style={{backgroundColor: '#efe9cc'}}>
+        <Container style={{backgroundColor: constants.screen_color}}>
             {this.state.trainerDetails !== null ?
             <Content>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#eadea6', elevation: 1}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: constants.header, elevation: 1}}>
                                             <View style={{padding: 15}}>
-                                                <Text style={{fontWeight: 'bold', fontSize: 20}}>{trainerDetails["gyms"][0]["name"]}</Text>
+                                                <Text style={{fontWeight: 'bold', fontSize: 20, color: constants.header_text}}>{trainerDetails["gyms"][0]["name"]}</Text>
                                                 <Text note>{trainerDetails["gyms"][0]["location"]}</Text>
                                             </View>
                                             <View style={{justifyContent: 'center', alignItems: 'center', padding: 15}}>
-                                                <Badge success>
-                                                    <Text>Trainer</Text>
+                                                <Badge style={{backgroundColor: constants.card_header}}>
+                                                    <Text style={{color: constants.header}}>Trainer</Text>
                                                 </Badge>
                                             </View>
                                           </View>

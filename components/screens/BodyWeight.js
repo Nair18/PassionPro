@@ -34,9 +34,9 @@ export default class BodyWeight extends PureComponent {
 
     static navigationOptions = {
           title: 'Weight Tracker',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: '#eadea6', elevation: 0},
-          headerTintColor: 'black'
+          headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+          headerStyle: {backgroundColor: constants.header},
+          headerTintColor: constants.header_text
       }
 
          async retrieveItem(key) {
@@ -151,9 +151,10 @@ export default class BodyWeight extends PureComponent {
         }
         let screenWidth = Dimensions.get('window').width
         return(
-            <Container style={{padding: 15, backgroundColor: '#efe9cc'}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
+                <ScrollView showsVerticalScrollbar={false}>
                 {this.state.weightList !== null ?
-                <Content>
+                <Content style={{margin: 15}}>
 
                     <View style={{marginTop: 25}}>
                       <Item regular>
@@ -186,6 +187,7 @@ export default class BodyWeight extends PureComponent {
                     </View>
 
                 </Content> : <Content><View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ...</Text></View></Content>}
+                </ScrollView>
             </Container>
         );
     }

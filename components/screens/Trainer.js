@@ -33,9 +33,9 @@ export default class Trainer extends PureComponent {
   }
   static navigationOptions = {
     title: 'Trainers',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: '#eadea6'},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: 'white', fontWeight: 'bold'},
+    headerStyle: {backgroundColor: 'black'},
+    headerTintColor: 'white'
   }
 
     setModalVisible(visible) {
@@ -126,21 +126,23 @@ export default class Trainer extends PureComponent {
                'Authorization': this.state.auth_key,
             },
             body: JSON.stringify({
-              "address": this.state.address,
-              "certifications": this.state.certifications,
+              "address": this.state.address === null ? "NA" : this.state.address,
+              "certifications": this.state.certifications === null ? "NA" : this.state.certifications,
               "dob": this.state.dob,
+              "device_token": "string",
               "email": this.state.email,
-              "emergency_person": this.state.emergency_person,
-              "emergency_phone": this.state.emergency_phone,
+              "emergency_person": this.state.emergency_person === null ? "NA" : this.state.emergency_person,
+              "emergency_phone": this.state.emergency_phone === null ? "NA": this.state.emergency_phone,
               "gender": this.state.gender,
               "amount": 0,
               "is_active": true,
               "name": this.state.name,
-              "passkey": this.state.id,
+              "passkey": parseInt(this.state.id),
               "password": "admin",
               "phone": this.state.phone,
-              "relation_with_person": this.state.relation_with_person,
-              "start_date": this.state.start_date
+              "relation_with_person": this.state.relation_with_person === null ? "NA" : this.state.relation_with_person,
+              "start_date": this.state.start_date,
+              "end_date": "2099-01-01"
             })
         }).then(res => {
             if(res.status === 200){
@@ -195,23 +197,23 @@ export default class Trainer extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container style={{backgroundColor: '#efe9cc'}}>
+      <Container style={{backgroundColor: '#F4EAE6'}}>
 
         <Content>
           {this.state.trainerList !== null ?
                     <View style={{margin:15}}>
-                      <Item rounded>
-                           <Input keyboardType='numeric' onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
+                      <Item regular>
+                           <Input keyboardType='numeric' style={{borderColor: 'black', borderWidth: 1}} onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
                       </Item>
                     </View> : null }
           <List>
             {this.state.trainerList !== null && this.state.onProcess == false ? this.state.trainerList.map(trainer =>
-            <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerPage', {id: this.state.id, trainer_id: trainer["id"]})}>
+            <ListItem avatar style={{padding: 5}} onPress={() => this.props.navigation.navigate('TrainerPage', {id: this.state.id, trainer_id: trainer["id"]})}>
               <Left>
                 <Thumbnail source={require('./client-profile.png')} style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
-                <Text style={{fontWeight: 'bold'}}>{trainer["name"]}</Text>
+                <Text style={{fontWeight: 'bold', color: trainer["is_active"] ? '#2c7873' : '#9d0b0b'}}>{trainer["name"]}</Text>
                 <Text note>Mobile - {trainer["phone"]}</Text>
               </Body>
             </ListItem>): <PageLoader/>}
