@@ -7,7 +7,7 @@ import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import PageLoader from './PageLoader';
-import { Container, Content, List, ListItem, Form, Card, CardItem, Textarea, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
+import { Container, Content, List, ListItem, Form, Card, Label,CardItem, Textarea, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
 
 
 export default class Sessions extends PureComponent {
@@ -205,12 +205,11 @@ export default class Sessions extends PureComponent {
   }
   _deletealert = (id) => {
     Alert.alert(constants.warning, "Are you sure you want to delete?",
-                    {
-                       text: 'Cancel',
-                       style: 'cancel',
-                    },
+
                     [
-                        {text: 'OK', onPress: () => this._delete(id)}
+                        {text: 'Cancel', onPress: () => console.log("pressed cancel")},
+                        {text: 'OK', onPress: () => this._delete(id)},
+
                     ],
                     {cancelable: false}
     )
@@ -256,9 +255,12 @@ export default class Sessions extends PureComponent {
             <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset = {Header.HEIGHT + 20}  behavior="padding" enabled>
             {this.state.coursetype !== null ?
             (<Form>
-               <Item regular style={{marginTop: 20}}>
-                  <Input placeholder="Name" onChangeText={(text) => this.setState({courseType: text})}/>
-               </Item>
+               <View style={{marginTop: 20}}>
+               <Label><Text style={{fontWeight: 'bold'}}>Name</Text></Label>
+                <Item regular>
+                   <Input placeholder="eg. Zumba" onChangeText={(text) => this.setState({courseType: text})}/>
+                </Item>
+               </View>
                <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 25}}>
                {this.state.onProcess === false ?
                <Button block onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
@@ -286,7 +288,7 @@ const styles = StyleSheet.create({
 
   },
   modal: {
-      backgroundColor : "#fff",
+      backgroundColor : constants.card_header,
       height: 300 ,
       width: '80%',
       borderRadius:10,

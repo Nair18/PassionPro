@@ -127,7 +127,7 @@ export default class SLCProfile extends Component {
                           <Text style={styles.text}>Trainer </Text>
                        </View>
                        <View style={styles.textFormat}>
-                            <Text>{csubs.length > 0 ? csubs[0]["trainer_name"] : null}</Text>
+                            <Text>{csubs.length > 0 ? csubs[0]["trainer_name"] : "NA"}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -135,7 +135,7 @@ export default class SLCProfile extends Component {
                            <Text style={styles.text}>Trainer phone</Text>
                        </View>
                        <View style={styles.textFormat}>
-                           <Text>{csubs.length > 0 ? csubs[0]["phone"] : null}</Text>
+                           <Text>{csubs.length > 0 ? csubs[0]["phone"] : "NA"}</Text>
                        </View>
                     </View>
                 </Content>

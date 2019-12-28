@@ -17,38 +17,17 @@ export default class CreateStandardPlan extends Component {
       modalVisible: false,
       onProcess: false,
       name: null,
+      plan_name: null,
+      plan_description: null,
       exerciseList: null,
       description: null,
-      data: [
-             {
-               "Day": 'Monday',
-             },
-             {
-               "Day": 'Tuesday',
-             },
-             {
-               "Day": 'Wednesday',
-             },
-             {
-               "Day": 'Thursday',
-             },
-             {
-               "Day": 'Friday',
-             },
-             {
-               "Day": 'Saturday',
-             },
-             {
-               "Day": 'Sunday',
-             }
-      ],
-
       selectedItem: [],
-      visible: false
+      modalVisible: false
     }
   }
 
   componentDidMount(){
+            this.setState({plan_name: this.state.plan_data["name"], plan_description: this.state.plan_data["description"]}, () => {
             console.log("id has been retrieved", this.state.gym_id)
             this.setState({name: this.state.plan_data["name"], description: this.state.plan_data["description"]})
             const { navigation } = this.props;
@@ -62,7 +41,7 @@ export default class CreateStandardPlan extends Component {
                                      this.fetchDetails()
                                   }
                              })
-            });
+            })});
 
         }
 
@@ -115,26 +94,7 @@ export default class CreateStandardPlan extends Component {
         else{
             Alert.alert(constants.failed, constants.fail_error)
         }
-    }).then(res => this.setState({plan_data: res}, () => {
-        fetch(constants.API + 'current/admin/gym/' + this.state.gym_id + '/exercises', {
-            method: 'GET',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': this.state.auth_key
-            }
-        }).then(response => {
-            if(res.status === 200){
-                return res.json()
-            }
-            else if(res.status === 401){
-                this.props.navigation.navigate('LandingPage')
-            }
-            else{
-                Alert.alert(constants.failed, constants.fail_error)
-            }
-        }).then(res => this.setState({exerciseList: res}))
-    }))
+    }).then(res => this.setState({plan_data: res}))
   }
 
   onSubmit = () => {
@@ -147,14 +107,14 @@ export default class CreateStandardPlan extends Component {
            'Authorization': this.state.auth_key
         },
         body: JSON.stringify({
-            "name": this.state.name,
-            "description": this.state.description
+            "name": this.state.plan_name,
+            "description": this.state.plan_description
         })
     }).then(res => {
         this.setState({onProcess: false})
         if(res.status === 200){
             Alert.alert(constants.success, "Successfully updated")
-            return fetchDetails()
+            return this.fetchDetails()
         }
         else if(res.status === 401){
             this.props.navigation.navigate('LandingPage')
@@ -166,6 +126,15 @@ export default class CreateStandardPlan extends Component {
   }
 
   render(){
+      let data = [
+                   'MONDAY',
+                   'TUESDAY',
+                   'WEDNESDAY',
+                   'THURSDAY',
+                   'FRIDAY',
+                   'SATURDAY',
+                   'SUNDAY'
+                 ]
       let card = []
       let bodyparts = []
       if(this.state.exerciseList !== null){
@@ -178,14 +147,21 @@ export default class CreateStandardPlan extends Component {
              bodyparts.push(data)
           }
       }
+
+      function daysOfWeekSorter(x,y) {
+         return daysOfWeek.indexOf(x)-daysOfWeek.indexOf(y);
+      }
+
+
       console.log("plan info", bodyparts)
-      for(let i=0;i<this.state.data.length && this.state.plan_data !== null ;i++){
+      for(let i=0;i<data.length && this.state.plan_data !== null ;i++){
         card.push(
-          <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AdminWorkoutSpace', {plan_day: this.state.data[i]["Day"],
+          <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AdminWorkoutSpace', {plan_day: data[i],
           plan_data: this.state.plan_data["plans"], plan_id: this.state.plan_data["id"], gym_id: this.state.gym_id})}>
-          <Card style={{marginTop: 10}}>
+          <Card style={{marginTop: 10, backgroundColor: constants.item_card}}>
             <CardItem header style={styles.card_header}>
-              <Text style={styles.headings}>{this.state.data[i]["Day"]}</Text>
+              <Text style={styles.headings}>{data[i]}</Text>
+              <Icon name="md-arrow-dropright" size={20}/>
             </CardItem>
           </Card>
           </TouchableOpacity>
@@ -206,7 +182,7 @@ export default class CreateStandardPlan extends Component {
                         </View>
                     </View>
 
-                {this.state.plan_data != null && this.state.gym_id !== null && this.state.exerciseList !== null ?
+                {this.state.plan_data != null && this.state.gym_id !== null ?
                 <View style={{paddingLeft: 15, paddingRight: 15}}>
                   <View style={styles.input}>
                       <View>
@@ -231,7 +207,45 @@ export default class CreateStandardPlan extends Component {
                 </Content>
                 </ScrollView>
            </Container>
+           <Modal
+                           animationType="slide"
+                           transparent={true}
+                           visible={this.state.modalVisible}
+                           onRequestClose={() => {
+                             this.setModalVisible(false)
+                           }}>
+                           <View style={styles.modal}>
+                           <View>
+                             <TouchableOpacity onPress={() => this.setModalVisible(false)}>
+                             <Icon name="md-close" size={30}/>
+                             </TouchableOpacity>
+                       </View>
+                           <Content style={styles.content}>
+                             {this.state.plan_data !== null  ?
+                             (<Form>
+                                <View style={{marginTop: 15}}>
+                                   <Text style={{fontWeight: 'bold'}}>Plan name</Text>
+                                </View>
+                                <Item regular>
+                                   <Input placeholder="eg. Bench Press" value={this.state.plan_name} onChangeText={text => this.setState({plan_name: text})}/>
+                                </Item>
+                                <View style={{marginTop: 15}}>
+                                  <Text style={{fontWeight: 'bold'}}>Description</Text>
+                                </View>
+                                  <Item regular>
+                                     <Input placeholder="eg. Bench Press" value={this.state.plan_description} onChangeText={text => this.setState({plan_description: text})}/>
+                                  </Item>
+                                <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
+                                {this.state.onProcess === false ?
+                                <Button block disabled={this.state.exerciseName === null || this.state.exerciseName === ""} onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
+                                  <Text>Update</Text>
+                                </Button> : <Spinner color="black"/>}
+                                </View>
+                             </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
 
+                           </Content>
+                           </View>
+                         </Modal>
         </Fragment>
       );
     }
@@ -257,8 +271,9 @@ export default class CreateStandardPlan extends Component {
       fontSize: 20
     },
     card_header: {
-      justifyContent: 'center',
-      alignItems: 'center'
+      justifyContent: 'space-between',
+
+      backgroundColor: constants.item_card
     },
     background: {
       backgroundColor: 'grey'

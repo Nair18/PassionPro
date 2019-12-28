@@ -87,6 +87,8 @@ import TraineeWorkout from './components/screens/TraineeWorkout';
 import TraineeSignUp from './components/screens/TraineeSignUp';
 import TrainerSignUp from './components/screens/TrainerSignUp';
 import StatsPageTrainer from './components/screens/StatsPageTrainer';
+import AllClientSubscriptions from './components/screens/AllClientSubscriptions';
+import AllTrainerSubscriptions from './components/screens/AllTrainerSubscriptions'
 //import all the screens we are going to switch/
 
 // To see all the requests in the chrome Dev tools in the network tab.
@@ -130,7 +132,9 @@ const AdminPage = createStackNavigator({
     FinancialHistory: {screen: FinancialHistory},
     YearwiseExpense: {screen: YearwiseExpense},
     StatsPage: {screen: StatsPage},
-    StatsPageTrainer: {screen: StatsPageTrainer}
+    StatsPageTrainer: {screen: StatsPageTrainer},
+    AllClientSubscriptions: {screen: AllClientSubscriptions},
+    AllTrainerSubscriptions: {screen: AllTrainerSubscriptions}
   },
   {
     initialRouteName: 'Admin'

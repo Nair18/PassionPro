@@ -216,7 +216,7 @@ export default class Admin extends Component {
                       </CardItem>
                       <CardItem footer style={{justifyContent: 'center', alignItems: 'center', backgroundColor:'#e5dfdf'}}>
                          {this.state.onProcess === false ?
-                            <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Post</Text></Button>
+                            <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.sendMessage}><Text>Post</Text></Button>
                             : <Spinner color="black" />}
                       </CardItem>
                    </Card>

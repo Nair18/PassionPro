@@ -66,8 +66,8 @@ export default class CreateStandardPlan extends Component {
     this.setState({visible: bool})
   }
     _back = () => {
-      if(this.state.name == null || this.state.courseType == null){
-        Alert.alert('Incomplete Info', 'Plan Name and Session Type are mandatory fields')
+      if(this.state.name == null || this.state.course_type == null){
+        Alert.alert(constants.incomplete_info, 'All * fields are mandatory')
         return
       }
       this.setState({onProcess: true})
@@ -81,17 +81,20 @@ export default class CreateStandardPlan extends Component {
                               body: JSON.stringify({
                                 "name": this.state.name,
                                 "description": this.state.description,
-                                "couse_type": this.state.course_type
+                                "course_type": this.state.course_type
                               })
                           }).then(res => {
                             if(res.status == 200){
                                 this.setState({onProcess: false})
                                 Alert.alert('✅ Success', 'Successfully added the plan')
-                                this.props.navigation.goBack(this.props.navigation.state.params.go_back_key)
+                                this.props.navigation.goBack(this.props.navigation.goBack())
+                            }
+                            else if(res.status == 401){
+                               this.props.navigation.navigate('LandingPage')
                             }
                             else{
                                 this.setState({onProcess: false})
-                                Alert.alert('❌ Failed', 'Something went wrong ...')
+                                Alert.alert(constants.failed, constants.fail_error)
                             }
                           })
 
@@ -128,7 +131,7 @@ export default class CreateStandardPlan extends Component {
                         scrollViewAccessibilityLabel={'Scrollable options'}
                         cancelButtonAccessibilityLabel={'Cancel Button'}
                         onChange={(option)=>{
-                        this.setState({courseType: option.id, courseTypeName: option.name})
+                        this.setState({course_type: option.id, courseTypeName: option.name})
                         }}>
                         <TextInput
                             style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}

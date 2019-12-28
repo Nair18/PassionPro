@@ -18,8 +18,9 @@ import ModalSelector from 'react-native-modal-selector';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
 import constants from '../constants';
+import moment from 'moment';
 import {Container, Accordion,Thumbnail, Card,ListItem, Textarea, Spinner, CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right, Form, Item, Label, Input} from 'native-base';
-
+const calendarDate = moment()
 export default class TrainerSignUp extends Component {
     constructor(props){
         super(props);
@@ -29,7 +30,7 @@ export default class TrainerSignUp extends Component {
             amount: 0,
             certifications: null,
             token: null,
-            dob: new Date().toLocaleDateString().split("/").reverse().join("-"),
+            dob: "1995-01-01",
             email: null,
             emergency_person: null,
             emergency_phone: null,
@@ -41,7 +42,7 @@ export default class TrainerSignUp extends Component {
             password: null,
             phone: null,
             relation_with_person: null,
-            start_date: new Date().toLocaleDateString().split("/").reverse().join("-")
+            start_date: calendarDate.format("YYYY-MM-DD")
         }
     }
     async retrieveItem(key) {

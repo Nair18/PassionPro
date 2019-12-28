@@ -75,15 +75,18 @@ export default class CourseInfo extends Component {
         })
     })
     .then(res => {
-        if(res.status !== 200){
-            Alert.alert('OOps!!', "Something went wrong. Couldn't update ...")
-            this.setState({saveProcess: false})
+        if(res.status === 401){
+           this.props.navigation.navigate('LandingPage')
+        }
+        else if(res.status === 200){
+            this._cancel()
+                        this.setState({saveProcess: false})
+                        Alert.alert(constants.success, 'Course was successfully updated.')
+                        this.fetchDetails()
         }
         else{
-            this._cancel()
-            this.setState({saveProcess: false})
-            Alert.alert('Success', 'Course was successfully updated.')
-            this.fetchDetails()
+            Alert.alert(constants.failed, constants.fail_error)
+                                    this.setState({saveProcess: false})
         }
 
     })

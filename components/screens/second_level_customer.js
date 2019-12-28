@@ -276,7 +276,7 @@ class SecondLevelCustomer extends PureComponent {
               </TouchableOpacity>
               <Content style={{marginTop: 20}}>
                 <View>
-                  <Text style={{fontWeight: 'bold', color: 'black'}}>Fitness Programs</Text>
+                  <Text style={{fontWeight: 'bold', color: 'black'}}>Popular Courses</Text>
                 </View>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 

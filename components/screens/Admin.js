@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   View,
   Alert,
+  Dimensions,
   AsyncStorage,
   AppState,
 } from 'react-native';
@@ -29,7 +30,7 @@ import AdminProfile from './AdminProfile';
 import AddExercise from './AddExercise';
 import FinancialHistory from './FinancialHistory';
 import {Container, Badge, Accordion,Thumbnail, Card,ListItem, Spinner,Textarea,Radio, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right,CheckBox} from 'native-base';
-
+const { width } = Dimensions.get('window');
 
 export default class Admin extends PureComponent {
   constructor(props){
@@ -327,7 +328,7 @@ export default class Admin extends PureComponent {
                   <ScrollView showsVerticalScrollIndicator={false}>
                   <Content padder style={styles.contentBlock}>
                      {this.state.gymId !== null ?
-                     <View>
+                     <View style={{ width: width, height: width/5 }}>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             <View style={styles.thumbnailAlign}>
                                 <TouchableOpacity activeOpacity={1} key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
@@ -356,14 +357,14 @@ export default class Admin extends PureComponent {
                                              <View style={{flex: 1}}>
                                                 <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('FinancialHistory', {id: this.state.gymId, gym_stats: this.state.stats})}>
                                                     <Card>
-                                                        <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 80}}>
+                                                        <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 50}}>
                                                             <View>
-                                                                <Text>Total money <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>received</Text> from clients <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>till now</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
+                                                                <Text>Net <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>Profit</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
                                                             </View>
                                                         </CardItem>
                                                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#ebe6e6'}}>
                                                              {this.state.stats === null  ? <Spinner color="black"/> :
-                                                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}>{this.state.stats !== null ? this.state.stats["net"] : null}</Text></Text>}
+                                                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}>{this.state.stats !== null ? this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"]): null}</Text></Text>}
                                                         </CardItem>
                                                         <CardItem footer style={{justifyContent: 'space-between', backgroundColor: "#ebe6e6", elevation: 2}}>
                                                             <View>
@@ -461,10 +462,11 @@ export default class Admin extends PureComponent {
                    <View style={{marginTop: 10}}>
                       <Card>
                         <CardItem header>
-                            <Textarea selectable onChangeText={text => this.setState({message: text})} placeholder="Send notifications to trainers and clients..."/>
+                            <Textarea selectable onChangeText={text => this.setState({message: text})} placeholder="Send message to trainers and clients..."/>
                         </CardItem>
-                        <CardItem footer style={{justifyContent: 'center', alignItems: 'center', backgroundColor:'#e5dfdf'}}>
-                            <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Post</Text></Button>
+                        <CardItem footer style={{justifyContent: 'space-between',alignItems: 'center', elevation: 2, borderColor: constants.card_header}}>
+                            <Text/>
+                            <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Send</Text></Button>
                         </CardItem>
                       </Card>
                     </View>

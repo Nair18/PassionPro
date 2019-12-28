@@ -44,7 +44,7 @@ export default class AdminWorkoutSpace extends Component {
     }
 
     selectExercise = (bodyparts) => {
-        this.props.navigation.navigate('CreateWorkout', {type: 'workout',bodyparts: bodyparts,exercise: this.state.exerciseList, gym_id: this.state.gym_id, plan_id: this.state.plan_id, day: this.state.day});
+        this.props.navigation.navigate('CreateWorkout', {bodyparts: bodyparts, exercise: this.state.exerciseList, gym_id: this.state.gym_id, plan_id: this.state.plan_id, day: (this.state.day).toString()});
         this.setState({isVisible: false})
     }
 
@@ -65,13 +65,13 @@ export default class AdminWorkoutSpace extends Component {
 
             }
 
-      componentWillUnmount() {
+    componentWillUnmount() {
               // Remove the event listener
               this.focusListener.remove();
 
       }
 
-      fetchDetails = () => {
+    fetchDetails = () => {
                 let course_list = fetch(constants.API + 'current/admin/gym/'+ this.state.gym_id + '/exercises', {
                     method: 'GET',
                     headers: {
@@ -130,7 +130,7 @@ export default class AdminWorkoutSpace extends Component {
 
             }
 
-      async retrieveItem(key) {
+    async retrieveItem(key) {
                           try {
                             const retrievedItem =  await AsyncStorage.getItem(key);
                             console.log("key retrieved")
@@ -180,6 +180,7 @@ export default class AdminWorkoutSpace extends Component {
     }
 
     render(){
+        console.log("admin workout day", this.state.day)
         let bodyparts = []
         if(this.state.exerciseList !== null){
             for(var key in this.state.exerciseList){
@@ -232,46 +233,29 @@ export default class AdminWorkoutSpace extends Component {
                         </Card>
                       </View>
                     </View>) : <Spinner color="black" /> }
-                    {this.state.exercise !== null && this.state.exerciseList !== null ?
-                    <View style={{justifyContent: 'center', alignItems: 'center', margin: 25}}>
-                         <Button onPress={() => this.selectExercise(bodyparts)} style={{backgroundColor: 'black'}}><Text style={{color: 'white'}}>Add workout</Text></Button>
-                    </View>: null}
-                </Content>
+                    </Content>
+
+
                 </ScrollView>
-                <Modal
-                                    animationType = {"fade"}
-                                    transparent = {false}
+                {this.state.exercise !== null && this.state.exerciseList !== null ?
 
-                                    visible = {this.state.isVisible}
-                                    onRequestClose = {() =>{ this.setState({isVisible: false}) } }>
-                                    {/*All views of Modal*/}
-
-                                    <Content>
-                                     <View  style={{minHeight: 500, width: '100%'}}  >
-                                        <View style={{margin: 15}}>
-                                            <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
-                                                <Icon size={25} name="md-arrow-back"/>
-                                            </TouchableOpacity>
-                                        </View>
-                                        {bodyparts !== null ?
-                                        <View style={{marginTop: 15}}>
-                                            <ScrollView>
-                                              {bodyparts.map( (ex,index) =>
-                                                <List>
-                                                    <ListItem button onPress={() => this.selectExercise({ex})}>
-                                                        <Text>{ex}</Text>
-                                                    </ListItem>
-                                                </List>
-                                              )}
-                                            </ScrollView>
-                                        </View>
-                                        : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No bady parts. Please add it from the admin dashboard</Text></View>}
-                                        <View style={{marginTop: 25}}>
-                                        </View>
-                                    </View>
-                                    </Content>
-                </Modal>
+                                    <View style={styles.addButton}>
+                                                        <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.selectExercise(bodyparts)}>
+                                                          <Icon size={30} style={{color: 'white'}}name="md-add" />
+                                                        </Button>
+                                                      </View>: null}
             </Container>
         );
     }
 }
+
+const styles = StyleSheet.create({
+  addButton: {
+    position: 'absolute',
+    right: 30,
+    bottom: 30,
+  },
+  content: {
+
+  }
+});

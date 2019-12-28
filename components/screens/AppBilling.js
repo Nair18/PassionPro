@@ -130,7 +130,7 @@ export default class AppBilling extends Component{
                    <Text><Text style={{fontWeight: 'bold'}}>Location count:</Text> {this.state.gymList["gyms"].length}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>Mobile:</Text>{ this.state.gymList["mobile"]}</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}>Mobile:</Text> {this.state.gymList["owner_phone"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text style={{fontWeight: 'bold'}}>Plan Type: <Text style={{color: constants.active_color}}> FREE </Text></Text>

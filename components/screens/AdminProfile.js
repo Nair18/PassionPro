@@ -86,13 +86,13 @@ class AdminProfile extends Component {
 
 
   render(){
-    data = null
+    data = ""
     if(this.state.admin_profile !== null){
-        if(this.state.admin_profile["roles"].length > 1){
-            data = "Admin + Trainer"
-        }
-        else{
-            data = "Admin"
+        for(let i=0;i<this.state.admin_profile["roles"].length; i++){
+            data = data + this.state.admin_profile["roles"][i]["name"]
+            if(i<this.state.admin_profile["roles"].length-1){
+                data = data + " + "
+            }
         }
     }
     return(
@@ -140,7 +140,7 @@ class AdminProfile extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>{this.state.admin_profile["address"]}</Text>
+                         <Text>{this.state.admin_profile["address"] === null ? "NA" : this.state.admin_profile["address"]}</Text>
                       </View>
                     </View>
 

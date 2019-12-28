@@ -120,7 +120,7 @@ export default class TrainerProfile extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>{data["address"]}</Text>
+                         <Text>{data["address"] === null ? "NA" : data["address"]}</Text>
                       </View>
                     </View>
                     <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
