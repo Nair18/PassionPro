@@ -231,13 +231,13 @@ export default class CreateWorkout extends Component {
                             </Item>
                             </View>
                             <View style={{marginTop: 10}}>
-                            <Label><Text style={{fontWeight: 'bold'}}>Weight</Text></Label>
+                            <Label><Text style={{fontWeight: 'bold'}}>Weight(kg)</Text></Label>
                             <Item regular>
                                 <Input onChangeText = {text => this.setState({weight: text})} keyboardType='numeric'/>
                             </Item>
                             </View>
                             <View style={{marginTop: 10}}>
-                            <Label><Text style={{fontWeight: 'bold'}}>Duration</Text></Label>
+                            <Label><Text style={{fontWeight: 'bold'}}>Duration(m)</Text></Label>
                             <Item regular>
                                 <Input onChangeText = {text => this.setState({duration: parseInt(text)})} keyboardType='numeric'/>
                             </Item>
@@ -254,7 +254,7 @@ export default class CreateWorkout extends Component {
                               <Button style={{backgroundColor: 'black'}} onPress={this.onSubmit}><Text style={{color: 'white'}}>Add workout</Text></Button>
                         </View>: <Spinner color="black" />}
                     </View>
-                    : <Spinner color="black"/>}
+                    : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No exercise added. Please add to proceed.</Text></View>}
                 </Content>
                 </ScrollView>
             </Container>
