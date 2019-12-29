@@ -10,9 +10,11 @@ export default class PersonalTrainingDetails extends Component{
   constructor(props){
       super(props)
       this.state={
+         client_id: this.props.navigation.state.params.client_id,
          details: this.props.navigation.state.params.details,
          info: this.props.navigation.state.params.info,
-         isVisible: false
+         isVisible: false,
+         id: this.props.navigation.state.params.id
       }
   }
 
@@ -141,7 +143,11 @@ export default class PersonalTrainingDetails extends Component{
         </Content>
 
         </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
-
+        <View style={styles.addButton}>
+                            <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.props.navigation.navigate()}>
+                              <Icon size={30} style={{color: 'white'}}name="md-add" />
+                            </Button>
+                          </View>
       </Container>
     );
   }

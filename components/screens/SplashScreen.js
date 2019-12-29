@@ -125,6 +125,8 @@ export default class SplashScreen extends Component {
                     </View>
                 </Fragment>
             </Content>
+
+
         </Container>
 
      );
