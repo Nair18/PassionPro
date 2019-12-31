@@ -22,16 +22,17 @@ export default class TrainerRequest extends Component {
     constructor(props){
         super(props)
         this.state={
-            id: this.props.navigation.state.params.ID,
+            id: this.props.ID,
             auth_key: null,
             request: null
+
         }
     }
     static navigationOptions = {
               title: 'Trainer Request',
-              headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white', elevation: 0},
-              headerTintColor: 'black'
+              headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+              headerStyle: {backgroundColor: constants.header},
+              headerTintColor: constants.header_text
           }
     async retrieveItem(key) {
             try {
@@ -49,18 +50,23 @@ export default class TrainerRequest extends Component {
         }
         componentDidMount(){
           StatusBar.setHidden(false);
-          console.log("bros in didmount")
+          const { navigation } = this.props;
+                console.log("pagal bana rhe hai")
+                var key  = this.retrieveItem('key').then(res =>
+                                                this.setState({auth_key: res}, () => console.log("brother pls", res))
+                ).then(() => this.fetchDetails())
+                this.focusListener = navigation.addListener('didFocus', () => {
+                  console.log("focusing admin screen")
+//                   hack
+                  this.fetchDetails();
+                });
 
-            const { navigation } = this.props;
-            console.log("pagal bana rhe hai", this.state.id)
-            this.focusListener = navigation.addListener('didFocus', () => {
-                    var key  = this.retrieveItem('key').then(res =>
-                    this.setState({auth_key: res}, () => console.log("brother pls", res))
-                    ).then(() => this.fetchDetails())
-            });
+
+
         }
 
         fetchDetails = () => {
+            console.log("fetch")
             fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/requests',{
              method: 'GET',
                 headers: {
@@ -81,20 +87,30 @@ export default class TrainerRequest extends Component {
                     ],
                     {cancelable: false},
                     );
+                    return null
                  }
                  }).then(res => {
-                 this.setState({request: res["subscriptions"]})
+                 if(res !== null){
+                    this.setState({request: res["trainers"] })
+                 }
                  }).then(console.log("fetched the api data", this.state.request))
         }
     render(){
         return(
-            <Container>
-                <Content>
+            <Container style={{backgroundColor: constants.screen_color}}>
+                <Content style={{padding: 15}}>
                     <List>
                         {this.state.request !== null ? this.state.request.map(req =>
-                        <ListItem style={{justifyContent: 'space-between'}} onPress={() => this.props.navigation.navigate('TrainerRequestInfo')}>
-                            <Text>{req["trainee_name"]}</Text>
-                            <Text note>{req["start"].split("T")[0]}</Text>
+                        <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerRequestInfo', {details: req, ID: this.state.id})}>
+                            <Left>
+                               <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
+                            </Left>
+                            <Body>
+                                <View>
+                                <Text style={{fontWeight: 'bold'}}>{req["name"]}</Text>
+                                <Text note>Mobile - {req["phone"]}</Text>
+                                </View>
+                            </Body>
                         </ListItem>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}
                     </List>
 

@@ -1,9 +1,10 @@
 import React,{Fragment, Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
-import {Container,Text, Content, Item, Card, CardItem, Button,Input, Header, Left, Right, Body, Title} from 'native-base';
-import {StyleSheet, View, TouchableOpacity, ScrollView, BackHandler, Modal, Alert} from 'react-native';
+import {Container,Text, Content, Item, Card, CardItem, Button,Input, Header, Left,Label, Right, Body, Title, Spinner} from 'native-base';
+import {StyleSheet, View, TouchableOpacity, TextInput, ScrollView, BackHandler, Form,Modal, Alert, KeyboardAvoidingView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DatePicker from 'react-native-date-picker';
+import DatePicker from 'react-native-datepicker';
+import ModalSelector from 'react-native-modal-selector';
 
 export default class UpdateClient extends Component{
   constructor(props){
@@ -36,14 +37,17 @@ export default class UpdateClient extends Component{
   }
   closeModal = () => {
     this.setState({isVisible: false})
-    EventRegister.emit('UpdateClient', 'it works!!!')
+
     this.props.navigation.goBack()
   }
 
 
 
   static navigationOptions = {
-        header: null
+        title: 'Update Client Info',
+                        headerTitleStyle: { color: 'black', fontWeight: 'bold'},
+                        headerStyle: {backgroundColor: 'white', elevation: 0},
+                        headerTintColor: 'black'
   }
 
   _changeNumber = (value) => {
@@ -56,35 +60,17 @@ export default class UpdateClient extends Component{
   render(){
     return(
       <Container>
-        <Header style={{backgroundColor: 'white', elevation: 0}} androidStatusBarColor='#000' iosBarStyle={"light-content"}>
-           <Left>
-             <Button transparent onPress={this.showModal}>
-               <Icon style={{color: 'black'}} size={25} name='md-arrow-back' />
-             </Button>
-           </Left>
-           <Body>
-             <Title style={{color: 'black'}}>Update Client Info</Title>
-           </Body>
-           <Right>
-                <Button transparent><Text style={{color: 'white'}}>save</Text></Button>
-           </Right>
-        </Header>
+
         <ScrollView>
         <Content style={styles.content}>
           <View style={styles.view}>
-            <Text style={styles.text}>Mobile</Text>
-            <Item regular>
-                <Input keyboardType='numeric' value={this.state.number} onChangeText = {(value) => this._changeNumber(value)}/>
-            </Item>
-          </View>
-          <View style={styles.view}>
-             <Text style={styles.text}>Total Amount Paid</Text>
+             <Text style={styles.text}>Update membership amount paid</Text>
              <Item regular>
                <Input  keyboardType='numeric' value={this.state.amount} onChangeText = {(value) => this._changeNumber(value)}/>
              </Item>
           </View>
           <View style={styles.view}>
-            <Text style={styles.text}>Update Membership End Date</Text>
+            <Text style={styles.text}>Update membership end date</Text>
             <DatePicker
                   date={this.state.date}
                   onDateChange={date => this.setState({ date })}
@@ -113,7 +99,7 @@ export default class UpdateClient extends Component{
                     </CardItem>
                 <TouchableOpacity>
                 <CardItem footer style={{backgroundColor: 'grey'}}>
-                    <Text>Add Course</Text>
+                    <Text>Assign Course</Text>
                 </CardItem>
                 </TouchableOpacity>
             </Card>
@@ -138,43 +124,19 @@ export default class UpdateClient extends Component{
                 </CardItem>
                    <TouchableOpacity>
                       <CardItem footer style={{backgroundColor: 'grey'}}>
-                         <Text>Add Trainer</Text>
+                         <Text>Assign Trainer</Text>
                       </CardItem>
                    </TouchableOpacity>
               </Card>
             </View>
-            <View style={styles.view}>
-                          <Card>
-                            <CardItem header>
-                               <Text style={styles.text}>Plans</Text>
-                            </CardItem>
 
-                            <CardItem>
-                               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                  <View style={{flex: 1}}>
-                                     <Text>Workout Plan</Text>
-                                  </View>
-                                  <TouchableOpacity>
-                                     <View style={{flex: 1}}>
-                                        <Icon size={20} name="md-close"/>
-                                     </View>
-                                  </TouchableOpacity>
-                               </View>
-                            </CardItem>
-                               <TouchableOpacity>
-                                  <CardItem footer style={{backgroundColor: 'grey'}}>
-                                     <Text>Add Plan</Text>
-                                  </CardItem>
-                               </TouchableOpacity>
-                          </Card>
-                        </View>
             <View style={{margin: 25}}>
               <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}}><Text>End Membership</Text></Button>
             </View>
 
         </Content>
-        </ScrollView>
 
+        </ScrollView>
       </Container>
     );
   }

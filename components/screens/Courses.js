@@ -25,16 +25,17 @@ export default class Courses extends PureComponent {
           auth_key: null,
           onProcess: false,
           loading: true,
-          courseTypeName: 'Select the course type',
+          courseTypeName: 'Select the fitness progam',
           courseName: null,
           id: this.props.navigation.state.params.ID
         };
   }
   static navigationOptions = {
     title: 'Courses',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
-    headerTintColor: 'black'
+    tabBarVisible: false,
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
 
 
@@ -66,10 +67,10 @@ export default class Courses extends PureComponent {
         let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
             method: 'GET',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': this.state.auth_key,
-            }
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': this.state.auth_key,
+                        }
         })
         .then(
             res => {
@@ -79,8 +80,8 @@ export default class Courses extends PureComponent {
                 else{
                     this.setState({loading: false})
                                                    Alert.alert(
-                                                     'OOps!',
-                                                     'Something went wrong ...',
+                                                      constants.failed,
+                                                      constants.fail_error,
                                                       [
                                                           {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                       ],
@@ -106,8 +107,8 @@ export default class Courses extends PureComponent {
                                           else{
                                               this.setState({loading: false})
                                                                              Alert.alert(
-                                                                               'OOps!',
-                                                                               'Something went wrong ...',
+                                                                               constants.failed,
+                                                                               constants.fail_error,
                                                                                 [
                                                                                     {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                                                 ],
@@ -140,6 +141,10 @@ export default class Courses extends PureComponent {
     };
 
     onSubmit = () => {
+        if(this.state.courseType === null || this.state.duration == null || this.state.courseName == null || this.state.description == null){
+            Alert.alert('All fields are mandatory', 'Please fill out all the details')
+            return
+        }
         this.setState({onProcess: true})
         fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
             method: 'POST',
@@ -163,18 +168,20 @@ export default class Courses extends PureComponent {
                 this.setState({modalVisible: false, onProcess: false})
                 this.fetchDetails()
                 Alert.alert(
-                   'Yayyy!!',
-                   'Course added successfully. Adding to your course list ...',
+                   '✅ Success',
+                   'Course added successfully 😀',
                    [
                       {text: 'OK', onPress: () => console.log('OK Pressed')},
                    ],
                    {cancelable: false}
+
                 );
             }
             else{
+                this.setState({modalVisible: false, onProcess: false})
                 Alert.alert(
-                    'Oh Snap!',
-                    'Something went wrong',
+                    '❌ Failed',
+                    'Something went wrong 😭',
                      [
                        {text: 'OK', onPress: () => console.log('OK Pressed')},
                      ],
@@ -187,16 +194,16 @@ export default class Courses extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container >
+      <Container style={{backgroundColor: constants.screen_color}}>
         <Content>
           <List>
             {this.state.coursetype !== null && this.state.courseList !== null ? this.state.courseList.map(course =>
-            <ListItem avatar onPress={() => this.props.navigation.navigate('CourseInfo')}>
+            <ListItem key={course["id"]} avatar onPress={() => this.props.navigation.navigate('CourseInfo', {ID: course["id"], GYM_ID: this.state.id})}>
               <Left style={{margin: 5}}>
                 <Thumbnail source={require('./bank-icon.jpg')} style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
-                <Text>{course["name"]}</Text>
+                <Text style={{fontWeight: 'bold'}}>{course["name"]}</Text>
                 <Text note>{course["course_type"]}</Text>
               </Body>
 
@@ -229,7 +236,7 @@ export default class Courses extends PureComponent {
             (<Form>
                <View style={{margin: 15}}>
                        <ModalSelector
-                           placeholder="Select a course type"
+                           placeholder="Select the fitness program"
                            initValue={this.state.courseTypeName}
                            data={this.state.coursetype}
                            keyExtractor= {item => item.id}
@@ -246,7 +253,7 @@ export default class Courses extends PureComponent {
                            <TextInput
                              style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
                              editable={false}
-                             placeholder="Select the course type"
+                             placeholder="Select the fitness program"
                              value={this.state.courseTypeName}
                            />
                          </ModalSelector>
@@ -271,10 +278,6 @@ export default class Courses extends PureComponent {
                                                 }
                                             >
                                               <Picker.Item label="days" value="days" />
-                                              <Picker.Item label="weeks" value="weeks" />
-                                              <Picker.Item label="months" value="months" />
-                                              <Picker.Item label="years" value="years" />
-
                                             </Picker>
                               </Item>
 

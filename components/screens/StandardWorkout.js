@@ -12,7 +12,7 @@ import {
 import Logging from './Logging';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Container, Accordion,Thumbnail, List, Card,ListItem,CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
-
+import constants from '../constants';
 
 export default class StandardWorkout extends Component {
     constructor(props){
@@ -20,16 +20,16 @@ export default class StandardWorkout extends Component {
     }
     static navigationOptions = {
           title: 'Workout',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: 'white', elevation: 0},
-          headerTintColor: 'black'
+          headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+          headerStyle: {backgroundColor: constants.header},
+          headerTintColor: constants.header_text
       }
     componentDidMount(){
                     StatusBar.setHidden(false);
                 }
     render(){
         return(
-            <Container style={{margin: 15}}>
+            <Container style={{padding: 15, backgroundColor: constants.screen_color}}>
                 <Content>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{fontWeight: 'bold'}}>Believe in Yourself, its possible 💪</Text>

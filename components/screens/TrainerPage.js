@@ -1,69 +1,162 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
-import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-import { Button, Container, Content, View, Text,Item, Card, CardItem, Thumbnail} from 'native-base';
+import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage, Alert} from 'react-native';
+import { Button, Container, Content, View, Spinner, Text,Item, Card, CardItem, Thumbnail} from 'native-base';
 import UpdateTrainerPage from './UpdateTrainerPage';
 import Icon from 'react-native-vector-icons/Ionicons'
+import TrainerBilling from './TrainerBilling';
+import ClientDetails from './ClientDetails';
+import constants from '../constants';
 export default class TrainerPage extends Component {
   constructor(props){
     super(props)
     this.state={
-      datas: 'no data'
+      id: this.props.navigation.state.params.id,
+      trainer_id: this.props.navigation.state.params.trainer_id,
+      trainerDetails: null,
+      onProcess: false
     }
   }
   static navigationOptions = {
       title: 'Trainer Info',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: 'white', elevation: 0},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: 'white', fontWeight: 'bold'},
+      headerStyle: {backgroundColor: 'black'},
+      headerTintColor: 'white'
   }
 
+  componentDidMount(){
+              console.log("id has been retrieved", this.state.id)
+
+              const { navigation } = this.props;
+              console.log("pagal bana rhe hai")
+              this.focusListener = navigation.addListener('didFocus', () => {
+                      console.log("The screen is focused")
+                    });
+              var key  = this.retrieveItem('key').then(res =>
+                 this.setState({auth_key: res}, () => console.log("brother pls", res))
+                 ).then(() => {
+                      if(this.state.auth_key !== null){
+                          this.fetchDetails()
+                      }
+                 })
+          }
+
+  fetchDetails = () => {
+              console.log("what is the id ", this.state.id)
+              let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/trainers/'+this.state.trainer_id, {
+                  method: 'GET',
+                  headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                      'Authorization': this.state.auth_key,
+                  }
+              })
+              .then(
+                  res => {
+                      if(res.status === 200){
+                          return res.json()
+                      }
+                      else{
+                          this.setState({loading: false})
+                                                         Alert.alert(
+                                                           constants.failed,
+                                                           constants.fail_error,
+                                                            [
+                                                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                            ],
+                                                            {cancelable: false},
+                                                         );
+                      }
+                  }
+              ).then(res => this.setState({trainerDetails: res}))
+          }
+
+  async retrieveItem(key) {
+                    try {
+                      const retrievedItem =  await AsyncStorage.getItem(key);
+                      console.log("key retrieved")
+                      return retrievedItem;
+                    } catch (error) {
+                      console.log(error.message);
+                    }
+                    return;
+          }
   componentWillUnmount() {
+          // Remove the event listener
+          this.focusListener.remove();
 
-    }
+  }
 
-    settingState = (datas) => {
-      console.log("Bhai jaan aa gy mein")
-      this.setState({datas})
-    }
+  archive_trainer = () => {
+    this.setState({onProcess: true})
+    fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/trainers/' + this.state.trainer_id + '/gym-subscription-end', {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth_key,
+        }
+    }).then(res => {
+        this.setState({onProcess: false})
+        if(res.status === 200){
+            Alert.alert(constants.success, 'Successfully expired the trainer')
+        }
+        else if(res.status === 401){
+            this.props.navigation.navigate('LandingPage')
+        }
+        else{
+            Alert.alert(constants.failed, constants.fail_error)
+        }
+    })
+  }
+  _endAlert = () => {
+    Alert.alert(constants.warning, 'Are sure you want to do this?',
+        [
+           {
+              text: 'Cancel',
+              style: 'cancel',
+           },
+           {text: 'OK', onPress: () => this.archive_trainer},
+
+        ],
+    )
+  }
 
   render(){
-    let DATA = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
-    ];
 
-    let courses = [];
-    for(let i=0;i<DATA.length;i++){
-       courses.push(<View><Item><Text>{DATA[i]['title']}</Text></Item></View>)
-    }
-
+    const {trainerDetails} = this.state
     return(
        <Fragment>
-        <Container>
+        <Container style={{backgroundColor: '#F4EAE6'}}>
+            {this.state.trainerDetails !== null ?
             <ScrollView showHorizontalScrollbar={false}>
-                <Content>
+                <Content style={{padding: 15}}>
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <View style={styles.imageView}>
                         <Thumbnail large source={require('./client-profile.png')} />
                     </View>
+                    {this.state.onProcess === false ?
+                    trainerDetails["is_active"] ?
+                    <View style={{flex: 1}}>
+                        <Button style={{backgroundColor: '#c83349', justifyContent: 'center', alignItems: 'center'}} onPress={this._endAlert}><Text>end contract</Text></Button>
+                    </View> :null : <Spinner color="black" /> }
+                  </View>
                 </Content>
-                <Content>
+                <Content style={{padding: 15}}>
+                    <View style={styles.infoView}>
+                      <View style={styles.title}>
+                         <Text style={styles.text}>Active </Text>
+                      </View>
+                      <View style={styles.textFormat}>
+                         <Text style={{fontWeight: 'bold', color: trainerDetails["is_active"] ? "green" : "red"}}>{trainerDetails["is_active"] ? "YES" : "NO"}</Text>
+                      </View>
+                    </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>{this.state.datas}</Text>
+                        <Text>{trainerDetails["name"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -71,7 +164,7 @@ export default class TrainerPage extends Component {
                             <Text style={styles.text}>Age </Text>
                         </View>
                         <View style={styles.textFormat}>
-                            <Text>22</Text>
+                            <Text>{trainerDetails["age"]}</Text>
                         </View>
                     </View>
                     <View style={styles.infoView}>
@@ -79,7 +172,7 @@ export default class TrainerPage extends Component {
                         <Text style={styles.text}>Mobile </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>9979090670</Text>
+                         <Text>{trainerDetails["phone"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -87,7 +180,7 @@ export default class TrainerPage extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>4th block koramangala, 100ft road, bangalore-560034</Text>
+                         <Text>{trainerDetails["address"]}</Text>
                       </View>
                     </View>
 
@@ -96,7 +189,7 @@ export default class TrainerPage extends Component {
                           <Text style={styles.text}>Contract Start Date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                          <Text>29-02-2019</Text>
+                          <Text>{trainerDetails["start_date"]}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -104,7 +197,7 @@ export default class TrainerPage extends Component {
                          <Text style={styles.text}>Contract End Date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                         <Text>29-02-2020</Text>
+                         <Text>{trainerDetails["end_date"]}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -112,118 +205,50 @@ export default class TrainerPage extends Component {
                                              <Text style={styles.text}>Shift </Text>
                                            </View>
                                            <View style={styles.textFormat}>
-                                             <Text>2</Text>
+                                             <Text>{trainerDetails["shift"]}</Text>
                                            </View>
                                         </View>
-                    <View style={styles.infoView}>
-                                           <View style={styles.title}>
-                                             <Text style={styles.text}>Experience </Text>
-                                           </View>
-                                           <View style={styles.textFormat}>
-                                             <Text>2 years</Text>
-                                           </View>
-                                        </View>
+
                     <View style={styles.infoView}>
                                            <View style={styles.title}>
                                              <Text style={styles.text}>Certifications </Text>
                                            </View>
                                            <View style={styles.textFormat}>
-                                             <Text>{"NASM"}</Text>
+                                             <Text>{trainerDetails["certifications"]}</Text>
                                            </View>
                                         </View>
+                    <View style={{margin: 15, width: '90%'}}>
+                                                        <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('TrainerBilling')}>
+                                                        <View>
+                                                              <Card style={{backgroundColor: constants.item_card}}>
+                                                                  <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
 
-                    <View style={styles.infoView}>
-                                           <View style={styles.title}>
-                                             <Text style={styles.text}>Active Clients</Text>
-                                           </View>
-                                           <View style={styles.textFormat}>
-                                             <Text>2</Text>
-                                           </View>
-                                        </View>
-                    <View style={styles.infoView}>
-                                           <View style={styles.title}>
-                                             <Text style={styles.text}>Total Clients till date</Text>
-                                           </View>
-                                           <View style={styles.textFormat}>
-                                             <Text>20</Text>
-                                           </View>
-                                        </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Salary Offered</Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                          <Text>{12000 + ' INR'}</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                                                               <View style={styles.title}>
-                                                                 <Text style={styles.text}>Total Bonus offered </Text>
-                                                               </View>
-                                                               <View style={styles.textFormat}>
-                                                                 <Text>{22000 + " INR"}</Text>
-                                                               </View>
-                                                            </View>
-                    <View style={styles.view}>
-                                              <Card>
-                                                <CardItem header>
-                                                   <Text style={styles.text}>Courses</Text>
-                                                </CardItem>
+                                                                          <Text style={{fontWeight: 'bold'}}>Trainer Salary details </Text>
+                                                                          <Icon size={20} name="md-arrow-dropright"/>
 
-                                                <CardItem>
-                                                   <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                      <View style={{flex: 1}}>
-                                                         <Text>Zumba class</Text>
-                                                      </View>
-                                                      <TouchableOpacity activeOpacity={1}>
-                                                         <View style={{flex: 1}}>
-                                                            <Icon size={20} name="md-close"/>
-                                                         </View>
-                                                      </TouchableOpacity>
-                                                   </View>
-                                                </CardItem>
-                                                   <TouchableOpacity activeOpacity={1}>
-                                                      <CardItem footer style={{backgroundColor: 'grey'}}>
-                                                         <Text>Add Course</Text>
-                                                      </CardItem>
-                                                   </TouchableOpacity>
-                                              </Card>
-                                            </View>
-                    <View style={styles.view}>
-                                                                  <Card>
-                                                                    <CardItem header>
-                                                                       <Text style={styles.text}>Clients</Text>
-                                                                    </CardItem>
+                                                                  </CardItem>
+                                                              </Card>
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                       <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('ClientDetails')}>
+                                                        <View style={{marginTop: 10}}>
+                                                             <Card style={{backgroundColor: constants.item_card}}>
+                                                              <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
 
-                                                                    <CardItem>
-                                                                       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                                          <View style={{flex: 1}}>
-                                                                             <Text>Chaganlal</Text>
-                                                                          </View>
-                                                                          <TouchableOpacity activeOpacity={1}>
-                                                                             <View style={{flex: 1}}>
-                                                                                <Icon size={20} name="md-close"/>
-                                                                             </View>
-                                                                          </TouchableOpacity>
-                                                                       </View>
-                                                                    </CardItem>
-                                                                       <TouchableOpacity activeOpacity={1}>
-                                                                          <CardItem footer style={{backgroundColor: 'grey'}}>
-                                                                             <Text>Add Clients</Text>
-                                                                          </CardItem>
-                                                                       </TouchableOpacity>
-                                                                  </Card>
-                                                                </View>
+                                                                      <Text style={{fontWeight: 'bold'}}>Active Client details </Text>
+                                                                      <Icon size={20} name="md-arrow-dropright"/>
 
-                    <View style={{margin: 50}}>
-                        <TouchableOpacity activeOpacity={1}>
-                            <Button onPress={() => this.props.navigation.navigate('UpdateTrainerPage')} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Update the profile</Text></Button>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                    </View>
+                                                              </CardItem>
+                                                             </Card>
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                  </View>
+
+
+
+
                 </Content>
-            </ScrollView>
+            </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
         </Container>
        </Fragment>
     );
@@ -240,7 +265,8 @@ const styles = StyleSheet.create({
        height: 100,
        width: 100,
        justifyContent: 'center',
-       alignItems: 'center'
+       alignItems: 'flex-start',
+       flex: 1
      },
      infoView: {
        marginLeft: 15,

@@ -1,23 +1,26 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, AppState, AsyncStorage} from 'react-native';
-import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
+import { Button, Container, Content, View, Text,Item, Spinner, Thumbnail, Card, CardItem, List, ListItem} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MembershipDetails from './MembershipDetails';
+import constants from '../constants';
+import PersonalTrainingDetails from './PersonalTrainingDetails';
 export default class ClientInfo extends Component {
   constructor(props){
     super(props)
     this.state={
-      data: this.props.navigation.state.params.DATA,
+      id: this.props.navigation.state.params.id,
+      client_id: this.props.navigation.state.params.client_id,
       courseInfo: null,
-      traineeSub: null,
-      traineeList: null
+      traineeDetails: null
     }
   }
   static navigationOptions = {
       title: 'Client Info',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: 'white', elevation: 0},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+      headerStyle: {backgroundColor: constants.header},
+      headerTintColor: constants.header_text
   }
 
 
@@ -33,14 +36,14 @@ export default class ClientInfo extends Component {
                this.setState({auth_key: res}, () => console.log("brother pls", res))
                ).then(() => {
                     if(this.state.auth_key !== null){
-//                        this.fetchDetails()
+                        this.fetchDetails()
                     }
                })
         }
 
         fetchDetails = () => {
             console.log("what is the id ", this.state.id)
-            let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/trainees/', {
+            let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/trainees/'+this.state.client_id, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -56,8 +59,8 @@ export default class ClientInfo extends Component {
                     else{
                         this.setState({loading: false})
                                                        Alert.alert(
-                                                         'OOps!',
-                                                         'Something went wrong ...',
+                                                         constants.failed,
+                                                         constants.fail_error,
                                                           [
                                                               {text: 'OK', onPress: () => console.log('OK Pressed')},
                                                           ],
@@ -65,35 +68,7 @@ export default class ClientInfo extends Component {
                                                        );
                     }
                 }
-            ).then(res => this.setState({traineeList: res["trainees"]})).then(
-
-                fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/subscriptions/', {
-                                          method: 'GET',
-                                          headers: {
-                                              'Accept': 'application/json',
-                                              'Content-Type': 'application/json',
-                                              'Authorization': this.state.auth_key,
-                                          }
-                                      })
-                                      .then(
-                                          res => {
-                                              if(res.status === 200){
-                                                  return res.json()
-                                              }
-                                              else{
-                                                  this.setState({loading: false})
-                                                                                 Alert.alert(
-                                                                                   'OOps!',
-                                                                                   'Something went wrong ...',
-                                                                                    [
-                                                                                        {text: 'OK', onPress: () => console.log('OK Pressed')},
-                                                                                    ],
-                                                                                    {cancelable: false},
-                                                                                 );
-                                              }
-                                          }
-                                      ).then(res => this.setState({traineeSub: res["subscriptions"]}, () => console.log("bhai wtf is this", this.state.coursetype)))
-            )
+            ).then(res => this.setState({traineeDetails: res}))
         }
 
   async retrieveItem(key) {
@@ -119,45 +94,24 @@ export default class ClientInfo extends Component {
 
 
   render(){
-    let DATA = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
-    ];
-
-    let courses = [];
-    for(let i=0;i<DATA.length;i++){
-       courses.push(<View><Item><Text>{DATA[i]['title']}</Text></Item></View>)
-    }
-
+    const {traineeDetails} = this.state
     return(
        <Fragment>
-        <Container>
+        <Container style={{backgroundColor: constants.screen_color}}>
 
             <ScrollView showHorizontalScrollbar={false}>
-              {this.state.data !== null ?
+              {this.state.traineeDetails !== null ?
               <Content>
-                <Content>
-                    <View style={styles.imageView}>
-                        <Thumbnail large source={require('./client-profile.png')}/>
-                    </View>
+                <Content style={{marginTop: 10, marginLeft: 30}}>
+                    <Thumbnail source={require('./profile.jpg')} />
                 </Content>
-                <Content>
+                <Content style={{padding: 15}}>
                     <View style={styles.infoView}>
                                           <View style={styles.title}>
                                             <Text style={styles.text}>Active </Text>
                                           </View>
                                           <View style={styles.textFormat}>
-                                            <Text>{this.state.data["active"]}</Text>
+                                            <Text style={{color: 'green', fontWeight: 'bold'}}>YES</Text>
                                           </View>
                     </View>
                     <View style={styles.infoView}>
@@ -165,15 +119,23 @@ export default class ClientInfo extends Component {
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>{this.state.data["trainee_name"]}</Text>
+                        <Text>{traineeDetails["name"]}</Text>
                       </View>
                     </View>
+                    <View style={styles.infoView}>
+                        <View style={styles.title}>
+                           <Text style={styles.text}>Gender </Text>
+                        </View>
+                        <View style={styles.textFormat}>
+                           <Text>{traineeDetails["gender"]}</Text>
+                        </View>
+                     </View>
                     <View style={styles.infoView}>
                         <View style={styles.title}>
                             <Text style={styles.text}>Age </Text>
                         </View>
                         <View style={styles.textFormat}>
-                            <Text>22</Text>
+                            <Text>{traineeDetails["age"]}</Text>
                         </View>
                     </View>
                     <View style={styles.infoView}>
@@ -181,7 +143,7 @@ export default class ClientInfo extends Component {
                         <Text style={styles.text}>Mobile </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>9979090670</Text>
+                         <Text>{traineeDetails["mobile"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -189,67 +151,35 @@ export default class ClientInfo extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>4th block koramangala, 100ft road, bangalore-560034</Text>
+                         <Text>{traineeDetails["address"]}</Text>
                       </View>
                     </View>
 
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Membership start date </Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                          <Text>{this.state.data["start"]}</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                         <Text style={styles.text}>Membership end date </Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                         <Text>{this.start.data["end"]}</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Total Amount Paid</Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                          <Text>{12000 + ' INR'}</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Course </Text>
-                       </View>
-                       <View style={{flex: 1, marginLeft: 25}}>
-                          {courses}
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                                           <View style={styles.title}>
-                                              <Text style={styles.text}>Plans</Text>
-                                           </View>
-                                           <View style={{flex: 1, marginLeft: 25}}>
-                                              {courses}
-                                           </View>
-                                        </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Trainer </Text>
-                       </View>
-                          <View style={styles.textFormat}>
-                            <Text>Baghadeesh</Text>
+                    <View style={{marginLeft: 15, marginTop: 25, width: '90%'}}>
+                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails', {details: traineeDetails["gym_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
+                          <View>
+                                <Card style={{backgroundColor: constants.item_card}}>
+                                    <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between'}}>
+                                            <Text style={{fontWeight: 'bold'}}>Membership details </Text>
+                                            <Icon size={20} name="md-arrow-dropright"/>
+
+                                    </CardItem>
+                                </Card>
                           </View>
+                          </TouchableOpacity>
+                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails', {details: traineeDetails["course_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"], "id": this.state.id, "client_id": this.state.client_id}})}>
+                          <View>
+                               <Card style={{backgroundColor: constants.item_card}}>
+                                <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between'}}>
+                                   <Text style={{fontWeight: 'bold'}}>Personal Training details </Text>
+                                   <Icon size={20} name="md-arrow-dropright"/>
+                                </CardItem>
+                               </Card>
+                          </View>
+                          </TouchableOpacity>
                     </View>
-
-                    <View style={{margin: 50}}>
-                        <TouchableOpacity>
-                            <Button onPress={() => this.props.navigation.navigate('UpdateClient')} style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}><Text>Update the profile</Text></Button>
-                        </TouchableOpacity>
-                    </View>
-
                 </Content>
-              </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
+              </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View>}
             </ScrollView>
         </Container>
        </Fragment>

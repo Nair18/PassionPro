@@ -5,6 +5,7 @@ import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, Modal,
 import { Button, Container, Content, View, Text,Item, Input, Card, CardItem,  Textarea} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SearchModal from './SearchModal';
+import constants from '../constants';
 export default class PersonalizedWorkout extends Component {
   constructor(props){
     super(props)
@@ -15,9 +16,9 @@ export default class PersonalizedWorkout extends Component {
   }
   static navigationOptions = {
       title: 'Workouts',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: 'white', elevation: 0},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+      headerStyle: {backgroundColor: constants.header},
+      headerTintColor: constants.header_text
   }
   showModal = () => {
     this.setState({isVisible: true})
@@ -29,7 +30,7 @@ export default class PersonalizedWorkout extends Component {
   render(){
     return(
 
-        <Container style={{margin: 15}}>
+        <Container style={{padding: 15, backgroundColor: constants.screen_color}}>
             <Content>
                 <View>
                     <Card>

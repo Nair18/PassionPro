@@ -7,11 +7,14 @@ import {
   StatusBar,
   FlatList,
   View,Modal, Alert,
-  Linking
+  Image,
+  Linking,
+  TextInput,
 } from 'react-native';
 import StandardWorkout from './StandardWorkout';
+import ModalSelector from 'react-native-modal-selector';
 import PersonalizedWorkout from './PersonalizedWorkout';
-
+import constants from '../constants';
 import {Card, CardItem, Icon, Accordion, Container, Text, Content,List,ListItem, Button} from 'native-base'
 
 const data = [ {key: "#MotivationalMonday", value: "#e37070"},
@@ -23,16 +26,12 @@ const data = [ {key: "#MotivationalMonday", value: "#e37070"},
                  {key: "#SundaySweat", value: "#8d448b"}
                ]
 
-const randomColor = () => {
-  var RandomNumber = Math.floor(Math.random() * data.length) ;
-  return data[RandomNumber].value;
-}
 
 const randomStyle = () => {
  return { flex: 1,
       height: 100,
       width: '100%',
-      backgroundColor: randomColor(),
+
       justifyContent: 'center',
       alignItems: 'center'
      }
@@ -43,16 +42,21 @@ export default class Workspace extends Component {
   }
   state = {
       isVisible: false, //state of modal default false
+      workoutName: null,
+      workoutType: null,
+      workoutSection: null,
+      onLoad: true,
+      data: [{"id": 1,"name": "Standard Workout"}, {"id": 2, "name": "Customize your Workout"}, {"id": 3, "name": "Workout plan by Ajay"}]
   }
   static navigationOptions = {
       //Setting the header of the screen
       title: 'Workspace',
-      headerStyle: {backgroundColor: 'white', elevation: 0},
+      headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
-          color: 'black',
+          color: constants.header_text,
           fontWeight: 'bold'
         },
-      headerTintColor: 'black',
+      headerTintColor: constants.header_text,
     };
 
   componentDidMount(){
@@ -67,88 +71,45 @@ export default class Workspace extends Component {
     this.props.navigation.navigate(type)
     this.setState({isVisible: false})
   }
+  optionChange = () => {
+    this.setState({onLoad: false})
+
+  }
   render(){
     const { navigate } = this.props.navigation;
+    
     return(
-       <Container >
+       <Container style={{backgroundColor: constants.screen_color}}>
           <ScrollView showsVerticalScrollIndicator={false}>
-           <View style={{margin: 15}}>
-                                  <Card>
-                                  <CardItem header>
-                                      <Text style={{fontWeight: 'bold'}}>Attachments</Text>
-                                  </CardItem>
-                                  <CardItem>
-                                      <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('PdfViewer', {URL: 'https://www.tutorialspoint.com/amazon_web_services/amazon_web_services_tutorial.pdf'})}><Text>View PDF for workout plan</Text></Button>
-                                  </CardItem>
-                                  <CardItem>
-                                      <Button style={{backgroundColor: 'black'}}><Text>View PDF for meal plan</Text></Button>
-                                  </CardItem>
-                                  </Card>
-                                </View>
-          <Content style={styles.content}>
-            <View>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Todays Burnout 🔥</Text>
-            </View>
-            <TouchableOpacity activeOpacity={1} onPress={this.showModal}>
-            <View style={styles.cardListView}>
-
-                <Card style={styles.cardView} >
-                    <Text style={styles.cardText}>#MovitationalMonday</Text>
-                </Card>
-
-            </View>
-            </TouchableOpacity>
-            <View style={styles.cardListView}>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>Full Week Burnouts 🔥</Text>
-            </View>
-            <View>
-               {data.map(item =>
-                <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1}>
-                     <Card style={randomStyle()}>
-                        <Text style={styles.cardText}>{item.key}</Text>
-                     </Card>
-                   </TouchableOpacity>
+            <Content style={{margin: 15}}>
+                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TraineeMealSpace')}>
+                <View>
+                    <Card>
+                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: "#d1d1d1"}}>
+                            <Image source={require('./meal.jpg')} style={{height: 200, width: null, flex: 1}}/>
+                        </CardItem>
+                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, elevation: 2}}>
+                            <Text style={{fontWeight: 'bold'}}>Meal Plans</Text>
+                            <Icon name="md-arrow-round-forward" size={20}/>
+                        </CardItem>
+                    </Card>
                 </View>
-               )}
-            </View>
-          </Content>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TraineeWorkspace')}>
+                <View>
+                    <Card>
+                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
+                           <Image source={require('./workout.jpg')} style={{height: 200, width: null, flex: 1}}/>
+                        </CardItem>
+                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, elevation: 2}}>
+                            <Text style={{fontWeight: 'bold'}}>Workout Plans</Text>
+                            <Icon name="md-arrow-round-forward" size={20}/>
+                        </CardItem>
+                    </Card>
+                </View>
+                </TouchableOpacity>
+            </Content>
           </ScrollView>
-          <Modal
-                    animationType = {"fade"}
-                    transparent = {false}
-
-                    visible = {this.state.isVisible}
-                    onRequestClose = {() =>{ this.setState({isVisible: false}) } }>
-                    {/*All views of Modal*/}
-                     <View>
-                        <View style={{margin: 25}}>
-                            <TouchableOpacity activeOpacity={1} onPress={() => {this.setState({isVisible: false})}}>
-                                <Icon size={10} name="md-arrow-back"/>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{marginTop: 50}}>
-                            <ScrollView>
-                                <List>
-
-                                    <ListItem button onPress={() => this.buttonPress('StandardWorkout')}>
-                                        <Text style = {styles.text}>Standard Workout Plan</Text>
-                                    </ListItem>
-
-                                    <ListItem >
-                                        <Text style = {styles.text}>Meal Plan by PT1</Text>
-                                    </ListItem>
-                                    <ListItem >
-                                        <Text style = {styles.text}>Workout Plan by PT1</Text>
-                                    </ListItem>
-                                    <ListItem button onPress={() => this.buttonPress('PersonalizedWorkout')}>
-                                        <Text style = {styles.text}>Customize your todays workout</Text>
-                                    </ListItem>
-                                </List>
-                            </ScrollView>
-                        </View>
-                    </View>
-                  </Modal>
        </Container>
     );
   }
@@ -163,7 +124,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 100,
     width: '100%',
-    backgroundColor: randomColor(),
     justifyContent: 'center',
     alignItems: 'center'
   },

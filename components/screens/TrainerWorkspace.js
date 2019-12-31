@@ -8,6 +8,8 @@ import {
   TouchableNativeFeedback,
   StatusBar,
   Modal,
+  AsyncStorage,
+  Alert,
   TouchableHighlight,
   Linking,
   View,
@@ -21,25 +23,22 @@ import Trainer from './Trainer';
 import TrainerWorkout from './TrainerWorkout';
 import {Agenda} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons';
+import constants from '../constants';
 import {Calendar} from 'react-native-calendars';
 
-import {Container, Accordion,Thumbnail, Card,List, ListItem, Item, CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, Card,List, ListItem, Item, Spinner,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
-
-const randomColor = () => {
-  var RandomNumber = Math.floor(Math.random() * data.length) ;
-  return data[RandomNumber].value;
-}
 
 const randomStyle = () => {
  return { flex: 1,
       height: 100,
       width: '100%',
-      backgroundColor: randomColor(),
+
       justifyContent: 'center',
       alignItems: 'center'
      }
 }
+
 
 const data = [ {key: "#MotivationalMonday", value: "#e37070"},
                              {key: "#TransformationTuesday", value: '#c7004c'},
@@ -52,15 +51,23 @@ const data = [ {key: "#MotivationalMonday", value: "#e37070"},
 
 
 export default class TrainerWorkspace extends Component {
-    static navigationOptions = {
-            title: 'Workspace',
-            headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: 'white', elevation: 0},
-            headerTintColor: 'black'
-          }
-    state = {
-          isVisible: false, //state of modal default false
+    constructor(props){
+        super(props);
+        this.state = {
+           id: this.props.navigation.state.params.id,
+           isVisible: false,
+           auth_key: null,
+           traineeDetails: null
+        }
     }
+
+    static navigationOptions = {
+            title: 'Client Space',
+            headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+            headerStyle: {backgroundColor: constants.header},
+            headerTintColor: constants.header_text
+          }
+
     showModal = () => {
         this.setState({isVisible: true})
       }
@@ -71,71 +78,137 @@ export default class TrainerWorkspace extends Component {
         this.setState({isVisible: false})
     }
 
+    componentDidMount(){
+            console.log("id has been retrieved", this.state.id)
+
+            const { navigation } = this.props;
+            console.log("pagal bana rhe hai")
+            this.focusListener = navigation.addListener('didFocus', () => {
+                    console.log("The screen is focused")
+                    var key  = this.retrieveItem('key').then(res =>
+                               this.setState({auth_key: res}, () => console.log("brother pls", res))
+                               ).then(() => {
+                                    if(this.state.auth_key !== null){
+                                        this.fetchDetails()
+                                    }
+                               })
+            });
+        }
+
+    componentWillUnmount() {
+              // Remove the event listener
+              this.focusListener.remove();
+
+          }
+    fetchDetails = () => {
+            this.setState({loading: true})
+            let course_list = fetch(constants.API + 'current/trainer/trainees/'+this.state.id, {
+                method: 'GET',
+                headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': this.state.auth_key,
+                            }
+            })
+            .then(
+                res => {
+                    if(res.status === 200){
+                        return res.json()
+                    }
+                    else{
+                        this.setState({loading: false})
+                                                       Alert.alert(
+                                                          constants.failed,
+                                                          constants.fail_error,
+                                                          [
+                                                              {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                          ],
+                                                          {cancelable: false},
+                                                       );
+                    }
+                }
+            ).then(res => this.setState({traineeDetails: res}))
+        }
+    async retrieveItem(key) {
+                  try {
+                    const retrievedItem =  await AsyncStorage.getItem(key);
+                    console.log("key retrieved")
+                    return retrievedItem;
+                  } catch (error) {
+                    console.log(error.message);
+                  }
+                  return;
+          }
+
+
     render(){
+        const {traineeDetails} = this.state
+        if(traineeDetails !== null && traineeDetails["gym_subscriptions"].length>0){
+            active = traineeDetails["gym_subscriptions"].filter((v) => {
+                return v["is_active"] === true
+            })
+        }
 
         return(
-            <Container>
+            <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-
-                      <View style={{margin: 15}}>
-                        <Card>
-                        <CardItem header>
-                            <Text style={{fontWeight: 'bold'}}>Save your efforts by uploading pdf</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader', {URL: "https://happy-independence.herokuapp.com/"})}><Text>Upload PDF for workout plan</Text></Button>
-                        </CardItem>
-                        <CardItem>
-                            <Button style={{backgroundColor: 'black'}} onPress={() => this.props.navigation.navigate('Uploader', {URL: "https://happy-independence.herokuapp.com/"})}><Text>Upload PDF for meal plan</Text></Button>
-                        </CardItem>
-                        </Card>
-                      </View>
+                    {this.state.traineeDetails !== null && active.length > 0 ?
                       <Content style={styles.content}>
-                        <View>
-                           {data.map(item =>
-                               <View style={styles.cardListView}>
-                                 <TouchableOpacity activeOpacity={0.8} onPress={this.showModal}>
-                                   <Card style={randomStyle()}>
-                                      <Text style={styles.cardText}>{item.key}</Text>
-                                   </Card>
-                                 </TouchableOpacity>
-                               </View>
-                           )}
-                        </View>
-                     </Content>
-                     </ScrollView>
-                     <Modal
-                                         animationType = {"fade"}
-                                         transparent = {false}
+                        <View style={{margin: 15}}>
+                                                <Card>
+                                                    <CardItem header style={{backgroundColor: constants.card_header}}>
+                                                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Client Summary</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>Name:</Text> {traineeDetails["name"]}</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>Phone:</Text> {traineeDetails["mobile"]}</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>Gender:</Text> {traineeDetails["gender"]}</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>PT start date:</Text> {active[0]["start_date"] !== null ? active[0]["start_date"].split("T")[0] : "NA"}</Text>
+                                                    </CardItem>
+                                                    <CardItem style={{backgroundColor: constants.card_body}}>
+                                                        <Text><Text style={{fontWeight: 'bold'}}>PT end date:</Text> {active[0]["end_date"] !== null ? active[0]["end_date"].split("T")[0] : "NA"}</Text>
+                                                    </CardItem>
+                                                </Card>
+                                            </View>
 
-                                         visible = {this.state.isVisible}
-                                         onRequestClose = {() =>{ this.setState({isVisible: false}) } }>
-                                         {/*All views of Modal*/}
-                                          <View>
-                                             <View style={{margin: 25}}>
-                                                 <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
-                                                     <Icon size={25} name="md-arrow-back"/>
-                                                 </TouchableOpacity>
-                                             </View>
-                                             <View style={{marginTop: 50}}>
-                                                 <View style={{ marginLeft: 15}}>
-                                                    <Text style={{fontWeight: 'bold', fontSize: 20}}>Choose one...</Text>
-                                                 </View>
-                                                 <View>
-                                                    <ScrollView>
-                                                      <List>
-                                                         <ListItem button onPress={() => this.buttonPress('TrainerWorkout')}>
-                                                             <Text style = {styles.text}>Workout Plan by PT1</Text>
-                                                         </ListItem>
-                                                         <ListItem button onPress={() => this.buttonPress('TrainerMeal')}>
-                                                             <Text style = {styles.text}>Meal Plan by PT1</Text>
-                                                         </ListItem>
-                                                      </List>
-                                                    </ScrollView>
-                                                 </View>
-                                             </View>
-                                         </View>
-                                       </Modal>
+                        <View style={{margin:15}}>
+                            <View style={{flexDirection: 'row'}}>
+                                <View style={{flex: 2}}>
+                                    <Text style={{fontWeight: 'bold', fontSize: 20}}>Workspace</Text>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={{marginLeft: 15, marginRight: 15}}>
+                           <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('MealSpace', {"id": this.state.id})}>
+                           <Card style={{backgroundColor: constants.item_card}}>
+                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
+                                <Text style={{fontWeight: 'bold'}}>Meal Plan</Text>
+                                <Icon size={20} name="md-arrow-dropright"/>
+                            </CardItem>
+                           </Card>
+                           </TouchableOpacity>
+                        </View>
+                        <View style={{marginLeft: 15, marginRight: 15}}>
+                           <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('WorkoutSpace', {"id": this.state.id})}>
+                              <Card style={{backgroundColor: constants.item_card}}>
+                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
+                                  <Text style={{fontWeight: 'bold'}}>Workout Plan</Text>
+                                  <Icon size={20} name="md-arrow-dropright"/>
+                                </CardItem>
+                              </Card>
+                           </TouchableOpacity>
+                        </View>
+
+                     </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
+                     </ScrollView>
+
             </Container>
         );
     }
@@ -149,7 +222,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 100,
     width: '100%',
-    backgroundColor: randomColor(),
+
     justifyContent: 'center',
     alignItems: 'center'
   },

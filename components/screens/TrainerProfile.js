@@ -1,59 +1,89 @@
 import React, {Fragment,Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
-import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar} from 'react-native';
-import { Button, Container, Content, View, Text,Item, Thumbnail} from 'native-base';
-
+import {TextInput,Image, StyleSheet, ScrollView, TouchableOpacity, Alert, StatusBar, AsyncStorage} from 'react-native';
+import { Button, Container, Content, View, Icon, Text,Item,Spinner, Thumbnail, Label, Input} from 'native-base';
+import constants from '../constants';
 export default class TrainerProfile extends Component {
   constructor(props){
     super(props)
     this.state={
-      datas: 'no data'
+      data: null,
+      auth_key: null
     }
   }
   static navigationOptions = {
       title: 'Profile',
-      headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-      headerStyle: {backgroundColor: 'white', elevation: 0},
-      headerTintColor: 'black'
+      headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+      headerStyle: {backgroundColor: constants.header},
+      headerTintColor: constants.header_text
   }
   componentDidMount(){
-                  StatusBar.setHidden(false);
-              }
+     StatusBar.setHidden(false);
+     console.log("id has been retrieved", this.state.id)
+     const { navigation } = this.props;
+     console.log("pagal bana rhe hai")
+//     this.focusListener = navigation.addListener('didFocus', () => {
+     console.log("The screen is focused")
+     var key  = this.retrieveItem('key').then(res =>
+         this.setState({auth_key: res}, () => console.log("brother pls", res))
+     ).then(() => {
+           if(this.state.auth_key !== null){
+                this.fetchDetails()
+           }
+       })
+//     });
+  }
   componentWillMount() {
-
+//    this.focusListener.remove();
   }
 
-  settingState = (datas) => {
-    console.log("Bhai jaan aa gy mein")
-    this.setState({datas})
+  async retrieveItem(key) {
+                try {
+                  const retrievedItem =  await AsyncStorage.getItem(key);
+                  console.log("key retrieved")
+                  return retrievedItem;
+                } catch (error) {
+                  console.log(error.message);
+                }
+                return;
   }
 
+  fetchDetails = () => {
+          this.setState({loading: true})
+          let course_list = fetch(constants.API + 'current/trainer/me', {
+              method: 'GET',
+              headers: {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json',
+                              'Authorization': this.state.auth_key,
+                          }
+          })
+          .then(
+              res => {
+                  if(res.status === 200){
+                      return res.json()
+                  }
+                  else{
+                      this.setState({loading: false})
+                                                     Alert.alert(
+                                                       constants.failed,
+                                                       constants.fail_error,
+                                                        [
+                                                            {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                        ],
+                                                        {cancelable: false},
+                                                     );
+                  }
+              }
+          ).then(res => this.setState({data: res}))
+  }
 
   render(){
-    let DATA = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
-    ];
-
-    let courses = [];
-    for(let i=0;i<DATA.length;i++){
-       courses.push(<View><Item><Text>{DATA[i]['title']}</Text></Item></View>)
-    }
-
+    const {data} = this.state
     return(
        <Fragment>
-        <Container>
-
+        <Container style={{backgroundColor: constants.screen_color}}>
+            {this.state.data !== null ?
             <ScrollView showHorizontalScrollbar={false}>
                 <Content style={{marginLeft: 15, marginRight: 15}}>
                     <View style={styles.imageView}>
@@ -66,7 +96,7 @@ export default class TrainerProfile extends Component {
                         <Text style={styles.text}>Name </Text>
                       </View>
                       <View style={styles.textFormat}>
-                        <Text>Baghadeesh</Text>
+                        <Text>{data["name"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -74,15 +104,15 @@ export default class TrainerProfile extends Component {
                             <Text style={styles.text}>Age </Text>
                         </View>
                         <View style={styles.textFormat}>
-                            <Text>22</Text>
+                            <Text>{data["age"]}</Text>
                         </View>
                     </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                        <Text style={styles.text}>Mobile </Text>
+                        <Text style={styles.text}>Username/Mobile </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>9979090670</Text>
+                         <Text>{data["mobile"]}</Text>
                       </View>
                     </View>
                     <View style={styles.infoView}>
@@ -90,46 +120,14 @@ export default class TrainerProfile extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>4th block koramangala, 100ft road, bangalore-560034</Text>
+                         <Text>{data["address"] === null ? "NA" : data["address"]}</Text>
                       </View>
                     </View>
-
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Contract start date </Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                          <Text>29-02-2019</Text>
-                       </View>
-                    </View>
-
-                    <View style={styles.infoView}>
-                      <View style={styles.title}>
-                         <Text style={styles.text}>Contract end date </Text>
-                      </View>
-                      <View style={styles.textFormat}>
-                         <Text> - </Text>
-                      </View>
-                    </View>
-
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Salary Amount Paid(per session)</Text>
-                       </View>
-                       <View style={styles.textFormat}>
-                          <Text>{12000 + ' INR'}</Text>
-                       </View>
-                    </View>
-                    <View style={styles.infoView}>
-                       <View style={styles.title}>
-                          <Text style={styles.text}>Course </Text>
-                       </View>
-                       <View style={{flex: 1, marginLeft: 25}}>
-                          {courses}
-                       </View>
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+                        <Button rounded onPress={() => {this.props.navigation.navigate('LandingPage')}}style={{height: 50, width: 150, alignItems: 'center', backgroundColor: '#d1274b', justifyContent: 'center'}}><Icon size={20} name="md-power"/><Text>Logout</Text></Button>
                     </View>
                 </Content>
-            </ScrollView>
+            </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View> }
         </Container>
        </Fragment>
     );

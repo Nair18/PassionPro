@@ -3,114 +3,223 @@ import {Picker,View,TouchableOpacity,Dimensions,Alert,ActivityIndicator,StyleShe
 import {Header,Content,Container, Text,Button, List, ListItem, Input, Spinner}from 'native-base';
 import Admin from './Admin';
 import constants from '../constants';
-
-
+import firebase from 'react-native-firebase';
 
 export default class Login extends PureComponent {
     constructor(props){
         super(props);
         this.state = {
-            username: '',
-            password: '',
+            username: null,
+            password: null,
+            token: null,
+            auth_key: null,
             loading: false
         }
     }
      static navigationOptions = {
           title: 'Login',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: 'white', elevation: 0},
-          headerTintColor: 'black'
+          headerTitleStyle: { color: 'white', fontWeight: 'bold'},
+          headerStyle: {backgroundColor: '#393e46'},
+          headerTintColor: 'white'
       }
-      componentDidMount(){
-       //
-      }
-      _storeData = async (key,data) => {
-        console.log("hitting it hard")
+
+     async componentDidMount() {
+        StatusBar.setHidden(false);
+        this.getToken()
+     }
+
+     async getToken() {
+         let fcmToken = false
+         if (!fcmToken) {
+              fcmToken = await firebase.messaging().getToken()
+                .then(fcmToken => {
+                      // user has a device token
+                     this.setState({token: fcmToken})
+                    console.log('fcmToken:', fcmToken);
+                    AsyncStorage.setItem('fcmToken', fcmToken);
+                })
+         }
+            console.log('fcmToken:', this.state.token);
+     }
+
+     _storeData = async (key,data) => {
+        console.log("hitting it hard", data)
+        if(key == "role"){
+            data = JSON.stringify(data)
+        }
         try {
           await AsyncStorage.setItem(key, data);
         } catch (error) {
           console.log("got error while setting", error)
         }
+     }
 
+     _storeId = async (key,data) => {
+             console.log("hitting it hard")
+             if(data.length > 0){
+                 data = JSON.stringify(data[0]["id"])
+             }
+             try {
+               await AsyncStorage.setItem(key, data);
+
+             } catch (error) {
+               console.log("got error while setting", error)
+             }
+         return true
+     }
+
+     fetchDetails = () => {
+        console.log("came in fetching fish")
+        fetch(constants.API + 'current/admin/gyms', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth_key,
+            }
+        }).then(res => {
+            this.setState({loading: false})
+            if(res.status === 200){
+                return res.json()
+            }
+            else if(res.status === 401){
+                this.props.navigation.navigate('LandingPage')
+            }
+            else{
+                Alert.alert(constants.failed, constants.fail_error)
+            }
+        }).then(res => {
+            this._storeId('id', res["data"]["gyms"]).then(() => {
+                this.props.navigation.navigate('Home')
+            })
+        })
+        return false
       }
-
       onSubmit = () => {
+        if(this.state.username === null || this.state.password === null){
+            Alert.alert(constants.incomplete_info, 'Username/Password cannot be blank')
+            return
+        }
         console.log("came in submit")
         this.setState({loading: true})
         fetch(constants.API + "open/auth/signin",{
                                       method: 'POST',
-                                      body: JSON.stringify({"username": this.state.username, "password": this.state.password}),
+                                      body: JSON.stringify({"username": this.state.username, "password": this.state.password, "device_token": this.state.token}),
                                       headers: new Headers({
                                            'Content-Type': 'application/json'
                                       })
                                    })
         .then((res) =>{
           if(res.status !== 200){
-            this.setState({loading: false})
-            Alert.alert(
-              'OOps!',
-              'Wrong Username/Password',
-              [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              {cancelable: false},
-            );
+            this.setState({loading: false}, () => console.log("error",res))
+            if(res.status === 403){
+                Alert.alert(
+                  constants.not_approved,
+                  'Waiting for the Admin to approve your account.',
+                  [
+                     {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ],
+                  {cancelable: false},
+                );
+            }
+            else if(res.status === 401){
+                Alert.alert(
+                              constants.no_entry,
+                              'Wrong Username/Password',
+                              [
+                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                              ],
+                              {cancelable: false},
+                            );
+            }
+            else{
+                Alert.alert(
+                              constants.failed,
+                              'Something went wrong',
+                              [
+                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                              ],
+                              {cancelable: false},
+                            );
+            }
           }
           else{
-            res.json()
-            .catch(error => console.log("Error",error))
-                    .then(res => {
-                        console.log("yeah yaha aa gya bloop bloop", res["accessToken"])
-                        this._storeData('key',"Bearer " + res["accessToken"])
-
-                        this.setState({loading: false}, () => {
-                            if(res["roles"] !== null && res["roles"].length === 2){
-                                this._storeData('role', 'Admin2')
-                                console.log("came here in admin2")
-                                this.props.navigation.navigate('Admin')
+            return res.json()
+          }
+          }).then(res => {
+                        console.log("yeah yaha aa gya bloop bloop", res["access_token"])
+                        this._storeData('key',"Bearer " + res["access_token"])
+                        this.setState({auth_key: "Bearer " + res["access_token"]}, () => {
+                            if(res["roles"] !== null && res["roles"].length === 3 &&
+                            (res["roles"].includes("ADMIN") && res["roles"].includes("TRAINER") && res["roles"].includes("OWNER"))){
+                                 this._storeData('role', 'OWNERADMINTRAINER')
+                                 console.log("came here in OWNERADMINTRAINER")
+                                 this.fetchDetails()
+                            }
+                            else if(res["roles"] !== null && res["roles"].length === 2 && res["roles"].includes("OWNER") && res["roles"].includes("ADMIN")){
+                                 this._storeData('role', 'OWNERADMIN')
+                                 console.log("came here in OWNERADMIN")
+                                 this.fetchDetails()
+                            }
+                            else if(res["roles"] !== null && res["roles"].length === 2 && res["roles"].includes("ADMIN") && res["roles"].includes("TRAINER")){
+                                this._storeData('role', 'ADMINTRAINER')
+                                console.log("came here in ADMINTRAINER", this.state.auth_key)
+                                this.fetchDetails()
+                            }
+                            else if(res["roles"] !== null && res["roles"][0] === "OWNER"){
+                                this._storeData('role', 'OWNER')
+                                console.log("came here in OWNER")
+                                this.fetchDetails()
                             }
                             else if(res["roles"] !== null && res["roles"][0] === "ADMIN"){
-                                this._storeData('role', 'Admin')
-                                console.log("came here in admin")
-                                this.props.navigation.navigate('Admin')
+                                this._storeData('role', 'ADMIN')
+                                console.log("came here in ADMIN")
+                                this.fetchDetails()
                             }
                             else if(res["roles"] !== null && res["roles"][0] === "TRAINER"){
-                                this._storeData('role', 'Trainer')
-                                console.log("came here in trainer")
+                                this._storeData('role', 'TRAINER')
+                                console.log("came here in TRAINER")
                                 this.props.navigation.navigate('TrainerSection')
+                                return null
                             }
                             else if(res["roles"] !== null && res["roles"][0] === "TRAINEE"){
-                                this._storeData('role', 'Customer')
-                                console.log("came here in trainee")
+                                this._storeData('role', 'CUSTOMER')
+                                console.log("came here in CUSTOMER")
                                 this.props.navigation.navigate('SecondLevelCustomer')
+                                return null
                             }
 
                         })
+                    }).then(role => {
+                        if((role === 'OWNERADMINTRAINER') || (role === 'OWNERADMIN') || (role === 'ADMINTRAINER') || (role === 'OWNER') || (role === 'ADMIN')){
+                            console.log("going to call fetchdetails")
+                            this.fetchDetails()
+                        }
+                        console.log("call finished")
                     })
-          }
-          })
 
       }
     render(){
         return(
+        <Container style={{backgroundColor: '#ffd369'}}>
         <Fragment>
             {this.state.loading ?
                                 <View style={{justifyContent: 'center', alignItems: 'center', marginTop: '50%'}}>
                                     <Spinner color='black'/>
                                     <View style={{justifyContent:'center', alignItems: 'center'}}>
-                                        <Text style={{fontWeight: 'bold'}}>Checking your credibility ...</Text>
+                                        <Text style={{fontWeight: 'bold'}}>Logging you in ...</Text>
                                     </View>
                                 </View> :
-            <Container>
-                <Content style={{marginTop: '10%', marginLeft: '10%', marginRight: '10%'}}>
+                <Content>
 
+                    <View style={{marginLeft: '10%', marginRight: '10%'}}>
                     <List>
                         <ListItem>
-                            <Input placeholder="Phone number" keyboardType='numeric' onChangeText={(text) => this.setState({username: text})}
+                            <Input style={{backgroundColor: 'white'}} placeholder="Phone number" keyboardType='numeric' onChangeText={(text) => this.setState({username: text})}
                                                                         value={this.state.username}/>
                         </ListItem>
                         <ListItem>
-                            <Input secureTextEntry={true} placeholder="Password" onChangeText={(value) => this.setState({password: value})}/>
+                            <Input style={{backgroundColor: 'white'}} secureTextEntry={true} placeholder="Password" onChangeText={(value) => this.setState({password: value})}/>
                         </ListItem>
                     </List>
                     <View style={{justifyContent: 'center', alignItems: 'center', width: '70%', margin: '15%'}}>
@@ -118,11 +227,19 @@ export default class Login extends PureComponent {
                             <Text style={{color: 'white'}}>Login</Text>
                         </Button>
                     </View>
-
+                    </View>
                 </Content>
-            </Container>}
+            }
          </Fragment>
+         </Container>
         );
     }
 }
 
+const styles = StyleSheet.create({
+
+  image: {
+      width: '20%',
+      height: '20%'
+    }
+});

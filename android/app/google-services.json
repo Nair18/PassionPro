@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "232021554738",
-    "firebase_url": "https://third-current-256014.firebaseio.com",
-    "project_id": "third-current-256014",
-    "storage_bucket": "third-current-256014.appspot.com"
+    "project_number": "834215797474",
+    "firebase_url": "https://gymapp-d7f29.firebaseio.com",
+    "project_id": "gymapp-d7f29",
+    "storage_bucket": "gymapp-d7f29.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:232021554738:android:1093546d3f3fad7ce4ee2b",
+        "mobilesdk_app_id": "1:834215797474:android:6106a129fae5712b8ab4bb",
         "android_client_info": {
           "package_name": "com.passionpro"
         }
       },
       "oauth_client": [
         {
-          "client_id": "232021554738-dtqm06rigab53cmgcivr7f3eu1g8v8qv.apps.googleusercontent.com",
+          "client_id": "834215797474-k6af290jvgbfs27pk4mtlhcq9jrcu67t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAC7aJ-BlZI6Le8rW9seq5x2mPHJukiAK8"
+          "current_key": "AIzaSyC96ilIYTOoFZ4i6K0I94Zd87T-ofpeEaQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "232021554738-dtqm06rigab53cmgcivr7f3eu1g8v8qv.apps.googleusercontent.com",
+              "client_id": "834215797474-k6af290jvgbfs27pk4mtlhcq9jrcu67t.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

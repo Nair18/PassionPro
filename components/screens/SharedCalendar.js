@@ -5,7 +5,7 @@ import moment from 'moment';
 import {Container,Content, Card, CardItem, List, Item, Text, ListItem} from 'native-base';
 import CalendarDayComponent from '../CalendarDayComponent';
 import CalendarHeaderComponent from '../CalendarHeaderComponent';
-
+import constants from '../constants';
 let calendarDate = moment();
 
 class SharedCalendar extends Component {
@@ -15,7 +15,10 @@ class SharedCalendar extends Component {
 
     this.state = {
       calendarDate: calendarDate.format('YYYY-MM-DD'),
-      horizontal: true
+      horizontal: true,
+      auth_key: null,
+      gymId: null,
+      logs: null
     };
 
     this.onPressArrowLeft = this.onPressArrowLeft.bind(this);
@@ -24,11 +27,64 @@ class SharedCalendar extends Component {
 
     this.onDayPress = this.onDayPress.bind(this);
   }
+
+  componentDidMount() {
+        const { navigation } = this.props;
+        console.log("pagal bana rhe hai")
+        this.focusListener = navigation.addListener('didFocus', () => {
+          console.log("focusing admin screen")
+          var key  = this.retrieveItem(['key', 'id']).then(res =>
+                        this.setState({auth_key: res}, () => console.log("brother pls", res))
+                      ).then(() => {
+                          this.fetchDetails()
+                      })
+        });
+  }
+
+  fetchDetails = () => {
+    fetch(constants.API + 'current/trainee/sets', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth_key,
+        }
+    }).then(res => {
+        if(res.status === 200){
+            return res.json()
+        }
+        else if(res.status === 401){
+            this.props.navigation.navigate('LandingPage')
+        }
+        else{
+            Alert.alert(constants.failed, constants.fail_error)
+        }
+    }).then(res => this.setState({logs: res}))
+  }
+
+  async retrieveItem(keys) {
+         let auth_key = null
+         const retrievedItem =  await AsyncStorage.multiGet(keys);
+         retrievedItem.map(m => {
+            try {
+              if(m[0] === 'key'){
+                 auth_key = m[1]
+              }
+              else if(m[0] === 'id' && m[1] !== null && m[1] !== "{}" && m[1] !== "null"){
+                 this.setState({gymId: parseInt(m[1])}, () => console.log("key set hai boss", m[1]))
+              }
+              console.log("key retrieved")
+            } catch (error) {
+              console.log(error.message);
+            }
+         })
+         return auth_key;
+  }
   static navigationOptions = {
             title: 'Activity Calendar',
-            headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-            headerStyle: {backgroundColor: 'white', elevation: 0},
-            headerTintColor: 'black'
+            headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+            headerStyle: {backgroundColor: constants.header},
+            headerTintColor: constants.header_text
         }
   onPressArrowLeft() {
     calendarDate = calendarDate.add(-1, 'month');
@@ -52,9 +108,16 @@ class SharedCalendar extends Component {
   }
 
   render() {
+    let dates = new Map()
+    if(this.state.logs !== null){
+        for(let i=0; i<this.state.logs.length; i++){
+            dates.set(str(this.state.logs[i]["date"].split("T")[0]), {selected: false, marked: true, selectedColor: 'green'})
+        }
+        dates.set(str([this.state.calendarDate]), {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'})
+    }
 
     return (
-      <Container>
+      <Container style={{backgroundColor: constants.screen_color}}>
       <Content>
       <View>
         <Calendar
@@ -67,13 +130,7 @@ class SharedCalendar extends Component {
           }}
           onPressArrowLeft={this.onPressArrowLeft}
           onPressArrowRight={this.onPressArrowRight}
-          markedDates={{
-            '2019-10-23': {selected: false, marked: true, selectedColor: 'green'},
-            '2019-10-24': {selected: false, marked: true, selectedColor: 'green'},
-            '2019-10-25': {selected: false, marked: true, selectedColor: 'green'},
-            '2019-10-26': {selected: false, marked: true, selectedColor: 'green'},
-            [this.state.calendarDate]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
-          }}
+          markedDates={dates}
           onDayPress={this.onDayPress}
           onMonthChange={console.log("month changed")}
           theme={{

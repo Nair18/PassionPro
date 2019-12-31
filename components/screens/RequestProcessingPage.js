@@ -10,18 +10,12 @@ const deviceWidth = Dimensions.get('window').width;
 export default class RequestProcessingPage extends Component {
    constructor(props){
         super(props);
-        this.state = {
-           role: props.navigation.state.params.ROLE
-        }
    }
    static navigationOptions = {
                    //Setting the header of the screen
       headerStyle: {backgroundColor: 'white', elevation: 0}
    };
 
-   _decidePath = () => {
-        this.props.navigation.navigate(this.state.role)
-   }
    render(){
 
      return(

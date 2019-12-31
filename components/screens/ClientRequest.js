@@ -22,16 +22,16 @@ export default class ClientRequest extends Component {
     constructor(props){
         super(props)
         this.state={
-            id: this.props.navigation.state.params.ID,
+            id: this.props.ID,
             auth_key: null,
             request: null
         }
     }
     static navigationOptions = {
               title: 'Client Request',
-              headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white', elevation: 0},
-              headerTintColor: 'black'
+              headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+              headerStyle: {backgroundColor: constants.header},
+              headerTintColor: constants.header_text
           }
     async retrieveItem(key) {
             try {
@@ -46,31 +46,21 @@ export default class ClientRequest extends Component {
 
         componentDidMount(){
           StatusBar.setHidden(false);
-          console.log("bros in didmount")
-           AppState.addEventListener('change', this._handleAppStateChange);
-            const { navigation } = this.props;
-            console.log("pagal bana rhe hai")
-            this.focusListener = navigation.addListener('didFocus', () => {
-                    var key  = this.retrieveItem('key').then(res =>
-                    this.setState({auth_key: res}, () => console.log("brother pls", res))
-                    ).then(() => this.fetchDetails())
-            });
+          const { navigation } = this.props;
+                console.log("pagal bana rhe hai")
+                this.focusListener = navigation.addListener('didFocus', () => {
+                  console.log("focusing admin screen")
+                  var key  = this.retrieveItem('key').then(res =>
+                                this.setState({auth_key: res}, () => console.log("brother pls", res))
+                              ).then(() => this.fetchDetails())
+                });
         }
         componentWillUnmount() {
             this.focusListener.remove();
-            AppState.removeEventListener('change', this._handleAppStateChange);
-          }
-        _handleAppStateChange = (nextAppState) => {
-              if (
-                this.state.appState.match(/inactive|background/) &&
-                nextAppState === 'active'
-              ) {
-                this.fetchDetails()
-                console.log('App has come to the foreground!');
-              }
-              this.setState({appState: nextAppState});
-            };
+        }
+
         fetchDetails = () => {
+            console.log("fetch")
             fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/requests',{
              method: 'GET',
                 headers: {
@@ -80,31 +70,40 @@ export default class ClientRequest extends Component {
                  },
             }).then(response => {
                 if (response.status === 200) {
-                return response.json();
+                    return response.json();
                  } else {
                     this.setState({loading: false})
                     Alert.alert(
-                        'OOps!',
-                        'Something went wrong ...',
+                        constants.failed,
+                        'Something went wrong',
                     [
                         {text: 'OK', onPress: () => console.log('OK Pressed')},
                     ],
                     {cancelable: false},
                     );
+                    return null
                  }
                  }).then(res => {
-                 this.setState({request: res["subscriptions"]})
+                    this.setState({loading: false})
+                    if(res !== null) {
+                        this.setState({request: res["trainees"]}, () => console.log(res["trainees"]))
+                    }
                  }).then(console.log("fetched the api data", this.state.request))
         }
     render(){
         return(
-            <Container>
-                <Content>
+            <Container style={{backgroundColor: constants.screen_color}}>
+                <Content style={{padding: 15}}>
                     <List>
                         {this.state.request !== null ? this.state.request.map(req =>
-                        <ListItem style={{justifyContent: 'space-between'}} onPress={() => this.props.navigation.navigate('ClientRequestInfo')}>
-                            <Text>{req["trainee_name"]}</Text>
-                            <Text note>{req["start"].split("T")[0]}</Text>
+                        <ListItem avatar onPress={() => this.props.navigation.navigate('ClientRequestInfo',{ details: req, ID: this.state.id})}>
+                            <Left>
+                                <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
+                            </Left>
+                            <Body>
+                                <Text style={{fontWeight: 'bold'}}>{req["name"]}</Text>
+                                <Text note>Mobile - {req["phone"]}</Text>
+                            </Body>
                         </ListItem>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}
                     </List>
                 </Content>

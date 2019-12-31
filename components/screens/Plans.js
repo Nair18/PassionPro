@@ -4,15 +4,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import CreateStandardPlan from './CreateStandardPlan';
 import PlanInfo from './PlanInfo';
-import { Container, Header, Content, List, ListItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
+import constants from '../constants'
+import { Container, Header, Content, List, Spinner, ListItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
 
 
 export default class Plans extends PureComponent {
   static navigationOptions = {
-    title: 'Plans',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
-    headerTintColor: 'black'
+    title: 'Standard Plans',
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
 
   state = {
@@ -21,6 +22,8 @@ export default class Plans extends PureComponent {
       auth_key: null,
       plan: "Select your plan",
       id: this.props.navigation.state.params.ID,
+      planList: null,
+      coursetype: null
     };
 
     setModalVisible(visible) {
@@ -37,7 +40,7 @@ export default class Plans extends PureComponent {
 
           const { navigation } = this.props;
           console.log("pagal bana rhe hai")
-          this.focusListener = navigation.addListener('didFocus', () => {
+//          this.focusListener = navigation.addListener('didFocus', () => {
               console.log("The screen is focused")
                var key  = this.retrieveItem('key').then(res =>
                            this.setState({auth_key: res}, () => console.log("brother pls", res))
@@ -46,17 +49,17 @@ export default class Plans extends PureComponent {
                                     this.fetchDetails()
                                 }
                            })
-          });
+//          });
 
       }
 
   componentWillUnmount() {
         // Remove the event listener
-        this.focusListener.remove();
+//        this.focusListener.remove();
 
    }
   fetchDetails = () => {
-          let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
+          let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/plans/', {
               method: 'GET',
               headers: {
                   'Accept': 'application/json',
@@ -81,7 +84,7 @@ export default class Plans extends PureComponent {
                                                      );
                   }
               }
-          ).then(res => this.setState({courseList: res["courses"]})).then(
+          ).then(res => this.setState({planList: res})).then(
 
               fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/coursetypes/', {
                                         method: 'GET',
@@ -127,24 +130,25 @@ export default class Plans extends PureComponent {
   render() {
     return (
     <Fragment>
-      <Container>
+      <Container style={{backgroundColor: constants.screen_color}}>
 
         <Content>
+          {this.state.planList !== null && this.state.coursetype !== null ? this.state.planList.map(plan =>
           <List>
-            <ListItem avatar onPress={() => this.props.navigation.navigate('PlanInfo')}>
+            <ListItem avatar onPress={() => this.props.navigation.navigate('PlanInfo', {plan_data: plan, plan_id: plan["id"], gym_id: this.state.id})}>
               <Left>
                 <Thumbnail source={require('./crisis-plan.jpg')}style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
-                <Text>Standard Workout Plan</Text>
-                <Text note>Doing what you like will always keep you happy . .</Text>
+                <Text style={{fontWeight: 'bold'}}>{plan["name"]}</Text>
+
               </Body>
             </ListItem>
-          </List>
+          </List>) : <Spinner color="black"/>}
         </Content>
         <View style={styles.addButton}>
 
-                    <Button  onPress={() => this.props.navigation.navigate('CreateStandardPlan', {go_back_key: this.props.navigation.state.key})} rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}}>
+                    <Button  onPress={() => this.props.navigation.navigate('CreateStandardPlan', {go_back_key: this.props.navigation.state.key, ID: this.state.id, coursetype: this.state.coursetype})} rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}}>
                       <Icon size={30} style={{color: 'white'}}name="md-add" />
                     </Button>
 

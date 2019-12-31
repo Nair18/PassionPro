@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 //For react-navigation 3.0+
 //import { createAppContainer, createStackNavigator } from 'react-navigation';
 //For react-navigation 4.0+
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, createDrawerNavigator } from 'react-navigation';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 import { createStackNavigator} from 'react-navigation-stack';
 import Clients from './components/screens/Clients';
 import SLCProfile from './components/screens/second_level_customer_profile';
@@ -39,7 +40,6 @@ import TrainerWorkspace from './components/screens/TrainerWorkspace';
 import TrainerWorkout from './components/screens/TrainerWorkout';
 import CreateWorkout from './components/screens/CreateWorkout';
 import CreateMeal from './components/screens/CreateMeal';
-import TrainerMeal from './components/screens/TrainerMeal';
 import SearchModal from './components/screens/SearchModal';
 import ClientCourseInfo from './components/screens/ClientCourseInfo';
 import AdminWorkoutSpace from './components/screens/AdminWorkoutSpace';
@@ -56,8 +56,41 @@ import TrainerRequestInfo from './components/screens/TrainerRequestInfo';
 import ClientRequestInfo from './components/screens/ClientRequestInfo';
 import QuickClient from './components/screens/QuickClient';
 import RequestProcessingPage from './components/screens/RequestProcessingPage';
-
-//import all the screens we are going to switch
+import MembershipDetails from './components/screens/MembershipDetails';
+import PersonalTrainingDetails from './components/screens/PersonalTrainingDetails';
+import TrainerBilling from './components/screens/TrainerBilling';
+import ClientDetails from './components/screens/ClientDetails';
+import AdminProfile from './components/screens/AdminProfile';
+import Contact from './components/screens/contact';
+import AppBilling from './components/screens/AppBilling';
+import AddExercise from './components/screens/AddExercise';
+import DetailedExercise from './components/screens/DetailedExercise';
+import Sessions from './components/screens/Sessions';
+import FinancialHistory from './components/screens/FinancialHistory';
+import YearwiseExpense from './components/screens/YearwiseExpense';
+import Menu from './components/screens/Menu';
+import GymExpenseTracker from './components/screens/GymExpenseTracker';
+import GymLocations from './components/screens/GymLocations';
+import Icon from 'react-native-vector-icons/Ionicons';
+import CreateAdmin from './components/screens/CreateAdmin';
+import WorkoutSpace from './components/screens/WorkoutSpace';
+import MealSpace from './components/screens/MealSpace';
+import DaywiseMeals from './components/screens/DaywiseMeals';
+import DaywiseWorkouts from './components/screens/DaywiseWorkouts';
+import StatsPage from './components/screens/StatsPage';
+import TraineeMealSpace from './components/screens/TraineeMealSpace';
+import DaywiseMealTrainee from './components/screens/DaywiseMealTrainee';
+import TraineeMeal from './components/screens/TraineeMeal';
+import TraineeWorkspace from './components/screens/TraineeWorkspace';
+import DaywiseWorkoutTrainee from './components/screens/DaywiseWorkoutTrainee';
+import TraineeWorkout from './components/screens/TraineeWorkout';
+import TraineeSignUp from './components/screens/TraineeSignUp';
+import TrainerSignUp from './components/screens/TrainerSignUp';
+import StatsPageTrainer from './components/screens/StatsPageTrainer';
+import AllClientSubscriptions from './components/screens/AllClientSubscriptions';
+import AllTrainerSubscriptions from './components/screens/AllTrainerSubscriptions'
+import addSubscription from './components/screens/addSubscription';
+//import all the screens we are going to switch/
 
 // To see all the requests in the chrome Dev tools in the network tab.
 
@@ -65,6 +98,8 @@ const Auth = createStackNavigator({
     LandingPage: {screen: LandingPage},
     StepFormTrainer: {screen: StepFormTrainer},
     StepFormCustomer: {screen: StepFormCustomer},
+    TraineeSignUp: {screen: TraineeSignUp},
+    TrainerSignUp: {screen: TrainerSignUp},
     Login: {screen: Login},
 });
 
@@ -88,12 +123,62 @@ const AdminPage = createStackNavigator({
     TrainerRequest: {screen: TrainerRequest},
     TrainerRequestInfo: {screen: TrainerRequestInfo},
     ClientRequestInfo: {screen: ClientRequestInfo},
-    QuickClient: {screen: QuickClient}
+    QuickClient: {screen: QuickClient},
+    TrainerBilling: {screen: TrainerBilling},
+    ClientDetails: {screen: ClientDetails},
+    MembershipDetails: {screen: MembershipDetails},
+    PersonalTrainingDetails: {screen: PersonalTrainingDetails},
+    AdminProfile: {screen: AdminProfile},
+    Contact: {screen: Contact},
+    FinancialHistory: {screen: FinancialHistory},
+    YearwiseExpense: {screen: YearwiseExpense},
+    StatsPage: {screen: StatsPage},
+    StatsPageTrainer: {screen: StatsPageTrainer},
+    AllClientSubscriptions: {screen: AllClientSubscriptions},
+    AllTrainerSubscriptions: {screen: AllTrainerSubscriptions},
+    addSubscription: {screen: addSubscription}
   },
   {
     initialRouteName: 'Admin'
   }
 )
+
+AdminPage.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+const MenuPage = createStackNavigator({
+    Menu: {screen: Menu},
+    TrainerSection: {screen: TrainerSection},
+    GymExpenseTracker: {screen: GymExpenseTracker},
+    GymLocations: {screen: GymLocations},
+    AppBilling: {screen: AppBilling},
+    DetailedExercise: {screen: DetailedExercise},
+    Sessions: {screen: Sessions},
+    AddExercise: {screen: AddExercise},
+    CreateAdmin: {screen: CreateAdmin}
+},
+{
+    initialRouteName: 'Menu'
+});
+
+MenuPage.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
 
 const Customer = createStackNavigator({
      SecondLevelCustomer: { screen: SecondLevelCustomer },
@@ -103,9 +188,15 @@ const Customer = createStackNavigator({
      CustomerNotification: {screen: CustomerNotification},
      SLCProfile: {screen: SLCProfile},
      Workspace: { screen: Workspace },
+     TraineeMeal: {screen: TraineeMeal},
      ClientCourseInfo: {screen: ClientCourseInfo},
      PersonalizedWorkout: {screen: PersonalizedWorkout},
      StandardWorkout: {screen: StandardWorkout},
+     TraineeMealSpace: {screen: TraineeMealSpace},
+     DaywiseMealTrainee: {screen: DaywiseMealTrainee},
+     TraineeWorkspace: {screen: TraineeWorkspace},
+     DaywiseWorkoutTrainee: {screen: DaywiseWorkoutTrainee},
+     TraineeWorkout: {screen: TraineeWorkout},
      Logging: {screen: Logging},
      PdfViewer: {screen: PdfViewer}
 
@@ -124,19 +215,59 @@ const PersonalTrainer = createStackNavigator({
     TrainerProfile: {screen: TrainerProfile},
     Uploader: {screen: Uploader},
     TrainerWorkout: {screen: TrainerWorkout},
-    TrainerMeal: {screen: TrainerMeal},
     CreateMeal: {screen: CreateMeal},
+    MealSpace: {screen: MealSpace},
+    WorkoutSpace: {screen: WorkoutSpace},
     SearchModal: {screen: SearchModal},
-    TrainerCreateWorkout: {screen: TrainerCreateWorkout}
+    TrainerCreateWorkout: {screen: TrainerCreateWorkout},
+    DaywiseWorkouts: {screen: DaywiseWorkouts},
+    DaywiseMeals: {screen: DaywiseMeals}
   },
   {
     initialRouteName: 'TrainerSection'
   }
   );
 
+  const Tabs = createBottomTabNavigator({
+    Dashboard: {screen: AdminPage,
+    navigationOptions: {
+            tabBarLabel:null,
+            tabBarIcon: ({ tintColor }) => (
+              <Icon name="md-home" size={30} color="black" />
+            )
+          },
+    },
+    Explore: {screen: MenuPage,
+        navigationOptions: {
+                    tabBarLabel:null,
+                    tabBarIcon: ({ tintColor }) => (
+                      <Icon name="md-compass" size={30} color="black" />
+                    )
+                  },
+    }
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: '#e91e63',
+      activeBackgroundColor: '#A5525F',
+      showLabel: false,
+      labelStyle: {
+        fontSize: 15
+      },
+      tabStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10
+      },
+      style: {
+        backgroundColor: '#C68D95',
+      },
+    }
+  });
+  
   const App = createSwitchNavigator({
-   Admin: {
-      screen: AdminPage
+   Home: {
+      screen: Tabs,
    },
    Auth: {
       screen: Auth,

@@ -34,9 +34,9 @@ export default class BodyWeight extends PureComponent {
 
     static navigationOptions = {
           title: 'Weight Tracker',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-          headerStyle: {backgroundColor: 'white', elevation: 0},
-          headerTintColor: 'black'
+          headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+          headerStyle: {backgroundColor: constants.header},
+          headerTintColor: constants.header_text
       }
 
          async retrieveItem(key) {
@@ -76,8 +76,8 @@ export default class BodyWeight extends PureComponent {
                      return response.json();
                       } else {
                          Alert.alert(
-                             'OOps!',
-                             'Something went wrong ...',
+                             constants.failed,
+                             constants.fail_error,
                          [
                              {text: 'OK', onPress: () => console.log('OK Pressed')},
                          ],
@@ -105,8 +105,8 @@ export default class BodyWeight extends PureComponent {
                         if (response.status === 200) {
                         this.fetchDetails()
                         Alert.alert(
-                            'Yayy!!',
-                            'Your body fat recorded ...',
+                            constants.success,
+                            'Successfully recorded body weight',
                             [
                                 {text: 'OK', onPress: () => console.log('OK Pressed')},
                             ],
@@ -117,8 +117,8 @@ export default class BodyWeight extends PureComponent {
                         else {
                                  this.setState({onProcess: false})
                                 Alert.alert(
-                                    'OOps!',
-                                    'Something went wrong ...',
+                                    constants.failed,
+                                    constants.fail_error,
                                      [
                                         {text: 'OK', onPress: () => console.log('OK Pressed')},
                                      ],
@@ -151,12 +151,14 @@ export default class BodyWeight extends PureComponent {
         }
         let screenWidth = Dimensions.get('window').width
         return(
-            <Container style={{margin: 15}}>
+            <Container style={{backgroundColor: constants.screen_color}}>
+                <ScrollView showsVerticalScrollbar={false}>
                 {this.state.weightList !== null ?
-                <Content>
+                <Content style={{margin: 15}}>
+
                     <View style={{marginTop: 25}}>
                       <Item regular>
-                        <Input keyboardType="numeric" placeholder="enter your current weight" onChangeText={text => this.setState({weight: text})}/>
+                        <Input style={{backgroundColor: 'white'}} keyboardType="numeric" placeholder="enter your current weight(kg)" onChangeText={text => this.setState({weight: text})}/>
                       </Item>
                     </View>
                     <View style={{marginTop: 25, justifyContent: 'center', alignItems: 'center'}}>
@@ -183,7 +185,9 @@ export default class BodyWeight extends PureComponent {
                             </ListItem>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
                         </List>
                     </View>
+
                 </Content> : <Content><View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ...</Text></View></Content>}
+                </ScrollView>
             </Container>
         );
     }

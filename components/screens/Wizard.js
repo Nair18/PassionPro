@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, Button, Alert, AsyncStorage } from 'react-native';
 import constants from '../constants';
 import Admin from './Admin';
 import SecondLevelCustomer from './second_level_customer';
@@ -46,17 +46,57 @@ class Wizard extends PureComponent {
     }));
   };
 
+  async retrieveItem(key) {
+                  try {
+                    const retrievedItem =  await AsyncStorage.getItem(key);
+                    console.log("key retrieved", retrievedItem)
+                    return retrievedItem;
+                  } catch (error) {
+                    console.log(error.message);
+                  }
+                  return;
+          }
+
+
   _onSubmit = () => {
-    console.log("data captured", this.state)
+    this.retrieveItem('fcmToken').then(res => {
+           console.log("got key", res)
+           this.setState({fcmToken: res}, () => console.log("brother pls", res))
+           return res
+         }
+    ).then( res => {
+
+    console.log("data captured", this.state, res)
     if(this.state.passkey === null){
        alert("passkey cannot be empty")
     }
     else if(this.props.role === 'Customer'){
-      console.log("came in submit")
+      console.log("came in submit", this.state)
       this.setState({loading: true})
       fetch(constants.API + "open/gyms/trainees/",{
          method: 'POST',
-         body: JSON.stringify(this.state),
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({
+         "name": this.state.name,
+         "email": this.state.email,
+         "password": this.state.password,
+         "phone": this.state.phone,
+         "dob": this.state.dob,
+         "is_active": true,
+         "address": this.state.address,
+         "emergency_phone": this.state.emergency_phone,
+         "emergency_person": this.state.emergency_person,
+         "relation_with_person": this.state.relation_with_person,
+         "gender": this.state.gender,
+         "passkey": parseInt(this.state.passkey),
+         "device_token": res,
+         "start_date": this.state.start_date,
+         "end_date": this.state.start_date,
+         "amount": 0
+         }),
          headers: new Headers({
             'Content-Type': 'application/json'
            })
@@ -86,11 +126,28 @@ class Wizard extends PureComponent {
 
     }
     else if(this.props.role === 'Trainer'){
+      console.log("data cap", this.state)
       fetch(constants.API + "open/gyms/trainers/",{
                method: 'POST',
                body: JSON.stringify(this.state),
                headers: new Headers({
                   'Content-Type': 'application/json'
+                 }),
+                 body: JSON.stringify({
+                    "name": this.state.name,
+                    "email": this.state.email,
+                    "password": this.state.password,
+                    "phone": this.state.phone,
+                    "dob": this.state.dob,
+                    "is_active": true,
+                    "address": this.state.address,
+                    "emergency_phone": this.state.emergency_contact,
+                    "emergency_person": this.state.emergency_contact_name,
+                    "relation_with_person": this.state.relation,
+                    "gender": this.state.gender,
+                    "passkey": this.state.passkey,
+                    "certifications": this.state.certification,
+                    "device_token": res,
                  })
                }).then((res) =>{
                    console.log(res)
@@ -116,7 +173,7 @@ class Wizard extends PureComponent {
                    }
                })
 
-    }
+    }})
 
   };
 

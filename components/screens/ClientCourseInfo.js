@@ -1,19 +1,20 @@
 import React, {Fragment,Component} from 'react';
 import {TextInput, StyleSheet, Image, ScrollView} from 'react-native';
-import { Button, Container, Content, View, Text, Thumbnail} from 'native-base';
-
+import { Button, Container, Content, View,Card, Spinner,Text,Label, Thumbnail} from 'native-base';
+import constants from '../constants';
 export default class ClientCourseInfo extends Component {
   constructor(props){
     super(props)
     this.state={
-      editable: false
+      editable: false,
+      courseInfo: this.props.navigation.state.params.courseInfo
     }
   }
   static navigationOptions = {
     title: 'Course Info',
-    headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-    headerStyle: {backgroundColor: 'white', elevation: 0},
-    headerTintColor: 'black'
+    headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+    headerStyle: {backgroundColor: constants.header},
+    headerTintColor: constants.header_text
   }
   _editable = () => {
     this.setState({editable: true})
@@ -26,31 +27,29 @@ export default class ClientCourseInfo extends Component {
   }
   render(){
     return(
-       <Container>
+       <Container style={{backgroundColor: constants.screen_color}}>
+         {this.state.courseInfo !== null ?
          <ScrollView showHorizontalScrollbar={false}>
            <Content>
                              <View style={styles.imageView}>
-                                 <Thumbnail large source={require('./course-image.jpg')} />
+                                 <Thumbnail large style={{backgroundColor: "black"}} />
                              </View>
                          </Content>
          <Content style={{margin: 15}}>
+          <Card style={{padding: 10,backgroundColor: constants.screen_color}}>
            <View>
-             <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>Course Name</Text>
+             <Text style={{textAlign: 'justify', fontWeight: 'bold', fontSize: 20}}>{this.state.courseInfo["name"]}</Text>
            </View>
-           <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
-              <Text selectable multiline={true}>Yoga is an East Indian method of mind/body exercise designed to
-                                                                                stretch, strengthen, and enhance muscle tone through the practice of asanas
-                                                                                (poses) and pranayama (breathing exercises). Yoga practice plus meditation helps decrease stress
-                                                                                and increase energy levels while improving focus, concentration, and self-realization. The variety of
-                                                                                health benefits a yoga practice offers are: for inner harmony, balance, and overall well-being, for spiritual
-                                                                                connection and growth or for stretching and strengthening a variety of muscle groups involved in a yoga practice.
-                                                                                This course is designed to assist any and all of those goals through support and guidance in a safe and nurturing learning
-                                                                                environment. Students will be required to purchase a yoga mat.
-                                              </Text>
+           <View><Text>Duration: <Text style={{fontWeight: 'bold'}}>{this.state.courseInfo["duration"]}</Text> days</Text></View>
+           <View><Text>Offered under: <Text style={{fontWeight: 'bold'}}>{this.state.courseInfo["course_type"]}</Text></Text></View>
+          </Card>
+           <View style={{marginTop: 10}}>
+              <Label><Text style={{fontWeight: 'bold'}}>Summary</Text></Label>
+              <Text selectable multiline={true}>{this.state.courseInfo["description"]}</Text>
            </View>
 
          </Content>
-         </ScrollView>
+         </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
        </Container>
     );
   }

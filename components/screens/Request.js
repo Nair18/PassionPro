@@ -7,35 +7,54 @@ import {
   TouchableNativeFeedback,
   StatusBar,
   Modal,
+  AsyncStorage,
+  Alert,
   TouchableHighlight,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TrainerRequest from './TrainerRequest';
-
-import {Container,List, Card,ListItem, Textarea, CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
-
+import ClientRequest from './ClientRequest';
+import SwipeableViews from 'react-swipeable-views-native';
+import {Container,List, Card,Header, Tab, Tabs, ListItem,TabHeading, Textarea, CheckBox, CardItem, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import constants from '../constants';
 export default class Request extends Component{
+    constructor(props){
+        super(props);
+        this.state={
+            id: this.props.navigation.state.params.ID,
+            auth_key: null,
+        }
+    }
     static navigationOptions = {
               title: 'Requests',
-              headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white', elevation: 0},
-              headerTintColor: 'black'
+              headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
+              headerStyle: {backgroundColor: constants.header, elevation: 1},
+              headerTintColor: constants.header_text
     }
+
     render(){
+
         return(
-            <Container>
-                <Content style={{marginTop: 20, marginLeft: 15, marginRight: 15}}>
-                    <List>
-                        <ListItem onPress={() => this.props.navigation.navigate('TrainerRequest', {ID: this.props.navigation.state.params.ID})}>
-                            <Text>Trainer</Text>
-                        </ListItem>
-                        <ListItem onPress={() => this.props.navigation.navigate('ClientRequest', {ID: this.props.navigation.state.params.ID})}>
-                            <Text>Client</Text>
-                        </ListItem>
-                    </List>
-                </Content>
+            <Container style={{backgroundColor: constants.screen_color}}>
+
+            <SwipeableViews style={styles.slideContainer}>
+                        <Tabs>
+                          <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Clients</Text></TabHeading>}>
+                              <ClientRequest ID = {this.state.id} navigation = {this.props.navigation} />
+                          </Tab>
+                          <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Trainer</Text></TabHeading>}>
+                            <TrainerRequest ID = {this.state.id} navigation = {this.props.navigation} />
+                          </Tab>
+                        </Tabs>
+            </SwipeableViews>
             </Container>
         );
     }
 }
+
+const styles = StyleSheet.create({
+  slideContainer: {
+    height: 100
+  }
+});
