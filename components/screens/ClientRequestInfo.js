@@ -126,7 +126,7 @@ export default class ClientRequestInfo extends Component {
         }).then(res => {
            this.setState({onProcess: false})
            if(res.status == 200){
-             Alert.alert(constants.success, 'Successfully added the client')
+             Alert.alert(constants.success, 'Action was successful')
              this.props.navigation.goBack()
              return
            }

@@ -118,7 +118,7 @@ export default class TrainerRequestInfo extends Component {
                 })
             }).then(res => {
                if(res.status == 200){
-                 Alert.alert(constants.success, 'Successfully added the client')
+                 Alert.alert(constants.success, 'Action was successful')
                  this.setState({onProcess: false})
                  this.props.navigation.goBack()
                  return

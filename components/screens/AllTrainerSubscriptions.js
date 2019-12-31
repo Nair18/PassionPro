@@ -31,7 +31,7 @@ export default class AllTrainerSubscriptions extends Component {
           stats: null,
           auth_key: null,
           workoutSection: null,
-          start_date: new Date(new Date().getFullYear(), 0, 1).toLocaleDateString().split("/").reverse().join("-"),
+          start_date: moment().startOf('year').format('YYYY-MM-DD'),
           start_month: "JANUARY",
           end_month: "DECEMBER",
           monthLong: ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"],
@@ -42,6 +42,7 @@ export default class AllTrainerSubscriptions extends Component {
           end_year: new Date().getFullYear(),
           onLoad: true,
           trainer_id: null,
+          trainee_id: null,
           onProcess: true,
           subscriptions: null,
           trainers: null,
@@ -121,6 +122,7 @@ export default class AllTrainerSubscriptions extends Component {
                   "end_date": this.state.end_date,
                   "start_date": this.state.start_date,
                   "trainer_id": this.state.trainer_id,
+                  "trainee_id": this.state.trainee_id,
                   "type": "PERSONAL_TRAINING"
               })
            }).then(res => {
@@ -134,7 +136,7 @@ export default class AllTrainerSubscriptions extends Component {
               else{
                   Alert.alert(constants.failed, constants.fail_error)
               }
-           }).then(res => this.setState({subscriptions: res["subscriptions"]}))
+           }).then(res => this.setState({subscriptions: res}, () => console.log("subscriptions fetched", res)))
   }
 
   showModal = (bool) => {
@@ -165,8 +167,8 @@ export default class AllTrainerSubscriptions extends Component {
         let newData=null
         newData = this.state.trainers["trainers"].filter((item)=>{
           text = text.trim()
-          const itemData = item["name"]
-          const textData = text
+          const itemData = item["name"].toUpperCase()
+          const textData = text.toUpperCase()
           return itemData.indexOf(textData)>-1
         });
         this.setState({
@@ -190,11 +192,11 @@ export default class AllTrainerSubscriptions extends Component {
     let trainer_subs = []
     searchText = "Search Trainer"
 
-    if(this.state.subscriptions !== null){
+    if(this.state.subscriptions !== null && this.state.subscriptions !== undefined && ("subscriptions" in this.state.subscriptions)){
 
-        for(let i=0;i<this.state.subscriptions.length; i++){
+        for(let i=0;i<this.state.subscriptions["subscriptions"].length; i++){
 
-            trainer_subs = this.state.subscriptions.filter(val => {
+            trainer_subs = this.state.subscriptions["subscriptions"].filter(val => {
                 return val["trainer_phone"] !== null && val["trainee_phone"]!== null
             })
 
@@ -213,13 +215,12 @@ export default class AllTrainerSubscriptions extends Component {
     year = ["2019", "2020", "2021", "2022", "2023", "2024", "2025"]
     workouts = {1: "StandardWorkout", 2: "PersonalizedWorkout", 3: "StandardWorkout"}
     console.log("hello moto",this.state.start_date, this.state.end_date)
-    let start_date = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString().split("/").reverse().join("-")
-    let end_date = new Date(new Date().getFullYear(), 11, 31).toLocaleDateString().split("/").reverse().join("-")
+
     return(
        <Container style={{backgroundColor: constants.screen_color}}>
 
           <ScrollView showsVerticalScrollIndicator={false}>
-          {this.state.start_date !== null && this.state.end_date !== null && this.state.subscriptions !== null ? (
+          {this.state.start_date !== null && this.state.end_date !== null && this.state.subscriptions !== null && ("subscriptions" in this.state.subscriptions) ? (
           <Content style={styles.content}>
             <Content>
             <View>
@@ -306,7 +307,7 @@ export default class AllTrainerSubscriptions extends Component {
                             </View>
                             <View style={{marginTop: 50}}>
                                <View>
-                                 <Item regular><Input placeholder="Search here" onChangeText={(text) => this.filterSearch(text)}
+                                 <Item regular><Input placeholder="type trainers name here ..." onChangeText={(text) => this.filterSearch(text)}
                                                                                             value={this.state.text}/></Item>
                                </View>
                                <View style={{marginTop: 15}}>
@@ -314,12 +315,16 @@ export default class AllTrainerSubscriptions extends Component {
                                     <ScrollView>
                                       {this.state.trainers["trainers"].length > 0 ? this.state.trainers["trainers"].map(tr =>
                                       <ListItem onPress={() => this.selectTrainer(tr["id"])} style={{justifyContent: 'space-between'}}>
-                                        <View>
-                                          <Text style={{color: tr["is_active"] ? constants.active_color : constants.archive_color}}>{tr["name"]}</Text>
-                                          <Text note>Mobile {tr["phone"]}</Text>
+                                        <View style={{alignItems: 'flex-start'}}>
+                                          <View>
+                                            <Text style={{color: tr["is_active"] ? constants.active_color : constants.archive_color}}>{tr["name"]}</Text>
+                                          </View>
+                                          <View>
+                                            <Text note>Mobile {tr["phone"]}</Text>
+                                          </View>
                                         </View>
                                         <View>
-                                            <Icon size={20} name="md-arrow-round-forward" />
+                                            <Icon size={20} name="md-arrow-dropright" />
                                         </View>
                                       </ListItem>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No Trainers</Text></View>}
                                     </ScrollView>
