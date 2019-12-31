@@ -141,7 +141,7 @@ export default class CustomerNotification extends Component {
                                   </Hyperlink>
                             </CardItem>
                             <CardItem >
-                              <Button onPress={() => { Linking.openURL('https://neilpatel.com/ubersuggest/')}}><Text>Open</Text></Button>
+
                             </CardItem>
                         </Card>
                     </View>
