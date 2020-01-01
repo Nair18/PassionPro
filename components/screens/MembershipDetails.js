@@ -95,10 +95,10 @@ export default class MembershipDetails extends Component{
                    <Text><Text style={{fontWeight: 'bold'}}>Mobile:</Text> {this.state.info["mobile"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> {ac["start_date"]}</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}>Membership start date:</Text> {ac["start_date"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> {ac["end_date"]}</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}>Membership end date:</Text> {ac["end_date"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ac["amount"]}</Text>
@@ -122,10 +122,10 @@ export default class MembershipDetails extends Component{
                        <Text><Text style={{fontWeight: 'bold'}}>Mobile:</Text> {this.state.info["mobile"]}</Text>
                    </CardItem>
                    <CardItem style={{backgroundColor: constants.card_body}}>
-                       <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> {expired["start_date"]}</Text>
+                       <Text><Text style={{fontWeight: 'bold'}}>Membership start date:</Text> {expired["start_date"]}</Text>
                    </CardItem>
                    <CardItem style={{backgroundColor: constants.card_body}}>
-                       <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> {expired["end_date"]}</Text>
+                       <Text><Text style={{fontWeight: 'bold'}}>Membership end date:</Text> {expired["end_date"]}</Text>
                    </CardItem>
                    <CardItem style={{backgroundColor: constants.card_body}}>
                        <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{expired["amount"]}</Text>

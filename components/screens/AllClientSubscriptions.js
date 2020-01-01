@@ -52,7 +52,7 @@ export default class AllClientSubscriptions extends Component {
 
   static navigationOptions = {
       //Setting the header of the screen
-      title: 'Client details',
+      title: 'Client search',
       headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
           color: constants.header_text,
@@ -228,7 +228,7 @@ export default class AllClientSubscriptions extends Component {
                 <View>
                     <Card>
                         <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black'}}>
-                            <Text style={{fontWeight: 'bold', color: 'white'}}>Filters</Text>
+                            <Text style={{fontWeight: 'bold', color: 'white'}}>Filter on joining date</Text>
                             <TouchableOpacity onPress={() => this._hideFilter(false)}>
                                 <Icon name="md-close" size={10} style={{color: 'white'}}/>
                             </TouchableOpacity>

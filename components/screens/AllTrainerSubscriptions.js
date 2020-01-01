@@ -271,10 +271,16 @@ export default class AllTrainerSubscriptions extends Component {
                             <Text style={{fontWeight: 'bold', color: subs["is_active"] ? constants.active_color : constants.archive_color}}>{subs["is_active"] ? "ACTIVE" : "EXPIRED"}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
-                            <Text><Text style={{fontWeight: 'bold'}}>Name: </Text>{subs["trainer_name"]}</Text>
+                            <Text><Text style={{fontWeight: 'bold'}}>Client Name: </Text>{subs["trainee_name"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
-                            <Text><Text style={{fontWeight: 'bold'}}>Phone: </Text>{subs["trainer_phone"]}</Text>
+                            <Text><Text style={{fontWeight: 'bold'}}>Client Phone: </Text>{subs["trainee_phone"]}</Text>
+                        </CardItem>
+                        <CardItem style={{backgroundColor: constants.card_body}}>
+                            <Text><Text style={{fontWeight: 'bold'}}>Trainer Name: </Text>{subs["trainer_name"]}</Text>
+                        </CardItem>
+                        <CardItem style={{backgroundColor: constants.card_body}}>
+                            <Text><Text style={{fontWeight: 'bold'}}>Trainer Phone: </Text>{subs["trainer_phone"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
                             <Text><Text  style={{fontWeight: 'bold'}}>Amount Paid: </Text>{'₹'}{subs["amount"]}</Text>

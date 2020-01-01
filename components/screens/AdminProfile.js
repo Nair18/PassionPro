@@ -106,7 +106,7 @@ class AdminProfile extends Component {
                 <Content style={{padding: 15}}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={styles.imageView}>
-                            <Thumbnail large source={require('./client-profile.png')}/>
+                            <Thumbnail large source={require('./profile.jpg')}/>
                         </View>
                     </View>
                 </Content>

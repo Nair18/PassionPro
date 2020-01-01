@@ -324,7 +324,7 @@ class SecondLevelCustomer extends PureComponent {
                         <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('BodyWeight')}>
                         <Card style={{height: 100, width: '100%'}}>
 
-                                <ImageBackground style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#5C4E4E'}}/>
+                                <ImageBackground style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#4D0011'}}/>
                                     <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
                                                                                                                               <Text style={{color: 'white', fontWeight: 'bold'}}>Body Weight </Text>
                                                                                                                               <Icon name="md-arrow-round-forward" style={{color: 'white'}} size={15}/>
@@ -353,7 +353,7 @@ class SecondLevelCustomer extends PureComponent {
                    <View style={{marginTop: 10}}>
                                            <TouchableOpacity activeOpacity={1} onPress= {() => this.props.navigation.navigate('WorkoutProgress')}>
                                            <Card style={{height: 100, width: '100%'}}>
-                                               <ImageBackground  style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#232425'}}/>
+                                               <ImageBackground  style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#4D0011'}}/>
                                                <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
                                                   <Text style={{color: 'white', fontWeight: 'bold', fontStyle: 'comic'}}>Workout Logs </Text>
                                                   <Icon name="md-arrow-round-forward" style={{color: 'white'}} size={15}/>

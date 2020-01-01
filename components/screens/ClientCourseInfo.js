@@ -32,7 +32,7 @@ export default class ClientCourseInfo extends Component {
          <ScrollView showHorizontalScrollbar={false}>
            <Content>
                              <View style={styles.imageView}>
-                                 <Thumbnail large style={{backgroundColor: "black"}} />
+                                 <Thumbnail large source={require('./exercise.jpg')} style={{backgroundColor: "black"}} />
                              </View>
                          </Content>
          <Content style={{margin: 15}}>

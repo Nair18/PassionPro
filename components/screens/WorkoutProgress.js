@@ -74,13 +74,17 @@ export default class WorkoutProgress extends Component{
          console.log("bros in didmount")
          const { navigation } = this.props;
          console.log("pagal bana rhe hai")
-//       this.focusListener = navigation.addListener('didFocus', () => {
+       this.focusListener = navigation.addListener('didFocus', () => {
          var key  = this.retrieveItem('key').then(res =>
              this.setState({auth_key: res}, () => console.log("brother pls", res))
              ).then(() => this.fetchDetails())
-//       });
+       });
       }
 
+      componentWillUnmount(){
+        this.focusListener.remove()
+      }
+      
       fetchDetails = () => {
          fetch(constants.API + 'current/trainee/sets?end=' + this.state.end_date + '&start=' + this.state.start_date,{
              method: 'GET',
@@ -158,7 +162,7 @@ export default class WorkoutProgress extends Component{
             }).then(res => {
             this.setState({onProcess: false, modalVisible: false}, () => this.fetchDetails())
             if(res.status === 200){
-                Alert.alert(constants.success, 'Successfully added Body part and Exercise')
+                Alert.alert(constants.success, 'Successfully logged your workout')
                 this.fetchDetails()
             }
             else if(res.status === 401){

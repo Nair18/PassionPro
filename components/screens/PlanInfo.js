@@ -175,7 +175,7 @@ export default class CreateStandardPlan extends Component {
                  <Content style={{padding: 15}}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={styles.imageView}>
-                            <Thumbnail large style={{backgroundColor: "black"}} />
+                            <Thumbnail large source={require('./crisis-plan.jpg')} style={{backgroundColor: "black"}} />
                         </View>
                         <View>
                             <Button block style={{backgroundColor: 'black'}} onPress={() => this.setModalVisible(true)}><Text>Edit</Text></Button>

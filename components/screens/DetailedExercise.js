@@ -157,15 +157,29 @@ export default class DetailedExercise extends PureComponent {
         })
       }
       archive_exercise_alert = (id) => {
-        Alert.alert(constants.warning, 'Are you sure you want to delete?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel',
-                },
-                {text: 'OK', onPress: () => this.archive_exercise(id)},
-            ],
-        )
+//        Alert.alert(constants.warning, 'Are you sure you want to delete?',
+//            [
+//                {
+//                    text: 'Cancel',
+//                    style: 'cancel',
+//                },
+//                {text: 'OK', onPress: () => this.archive_exercise(id)},
+//            ],
+//        )
+
+          if(this.state.exerciseList !== null){
+            let ex = []
+            ex = this.state.exerciseList.filter(val => {
+                return val["id"] === id
+            })
+
+            if(ex.length > 0){
+                this.setState({exerciseName: ex[0]["exercise_name"]}, () => {
+                    console.log("everything set")
+
+                })
+            }
+          }
       }
 
   render() {
@@ -182,7 +196,7 @@ export default class DetailedExercise extends PureComponent {
             <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                 <Text style={{color: 'black', fontWeight:'bold'}}>{ex["exercise_name"]}</Text>
                 {this.state.onProcess == false ?
-                <Icon size={25} name="md-close" style={{color: 'white'}} onPress={() => this.archive_exercise_alert(ex["id"])}/> : <Spinner color="black"/>}
+                <Icon size={25} name="md-create" style={{color: 'white'}} onPress={() => this.archive_exercise_alert(ex["id"])}/> : <Spinner color="black"/>}
             </CardItem>
           </Card></View>): <Spinner color="black"/>}
         </Content>

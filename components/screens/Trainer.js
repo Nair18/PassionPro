@@ -218,7 +218,7 @@ export default class Trainer extends PureComponent {
             {this.state.trainerList !== null && this.state.onProcess == false ? this.state.trainerList.map(trainer =>
             <ListItem avatar style={{padding: 5}} onPress={() => this.props.navigation.navigate('TrainerPage', {id: this.state.id, trainer_id: trainer["id"]})}>
               <Left>
-                <Thumbnail source={require('./client-profile.png')} style={{backgroundColor: 'black'}} />
+                <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
                 <Text style={{fontWeight: 'bold', color: trainer["is_active"] ? '#2c7873' : '#9d0b0b'}}>{trainer["name"]}</Text>

@@ -160,7 +160,7 @@ export default class CourseInfo extends Component {
          { this.state.editable === false ? (this.state.onProcess === false ? <Content>
                            <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
                              <View style={{flex: 1, margin: 15}}>
-                                 <Thumbnail large style={{backgroundColor: "black"}} />
+                                 <Thumbnail large source={require('./exercise.jpg')} style={{backgroundColor: "black"}} />
                              </View>
 
                              <View style={{flex: 1, margin: 15}}>

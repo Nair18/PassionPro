@@ -91,16 +91,16 @@ export default class PersonalTrainingDetails extends Component{
                     <Text><Text style={{fontWeight: 'bold'}}>Trainer phone:</Text> {ac["phone"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                    <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> {this.state.info["name"]}</Text>
+                    <Text><Text style={{fontWeight: 'bold'}}>Client Name:</Text> {this.state.info["name"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                    <Text><Text style={{fontWeight: 'bold'}}>Trainer Phone:</Text> {this.state.info["mobile"]}</Text>
+                    <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> {this.state.info["mobile"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> {ac["start_date"]}</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}>Training start date:</Text> {ac["start_date"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> {ac["end_date"]}</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}> Training end date:</Text> {ac["end_date"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ac["amount"]}</Text>
@@ -124,16 +124,16 @@ export default class PersonalTrainingDetails extends Component{
                          <Text><Text style={{fontWeight: 'bold'}}>Trainer phone:</Text> {ex["phone"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                         <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> {this.state.info["name"]}</Text>
+                         <Text><Text style={{fontWeight: 'bold'}}>Client Name:</Text> {this.state.info["name"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                         <Text><Text style={{fontWeight: 'bold'}}>Trainer Phone:</Text> {this.state.info["mobile"]}</Text>
+                         <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> {this.state.info["mobile"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                        <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> {ex["start_date"]}</Text>
+                        <Text><Text style={{fontWeight: 'bold'}}>Training start date:</Text> {ex["start_date"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                        <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> {ex["end_date"]}</Text>
+                        <Text><Text style={{fontWeight: 'bold'}}>Training end date:</Text> {ex["end_date"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ex["amount"]}</Text>

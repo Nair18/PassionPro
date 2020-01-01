@@ -98,7 +98,7 @@ export default class AdminWorkoutSpace extends Component {
                         }
                     }
                 ).then(res => this.setState({exerciseList: res}, () => console.log(res))).then(
-                    fetch(constants.API + 'current/admin/gym/'+ this.state.gym_id + '/plans/'+this.state.plan_id, {
+                    fetch(constants.API + 'current/admin/gym/'+ this.state.gym_id + '/plans/'+this.state.plan_id +'/days/' + this.state.day, {
                                   method: 'GET',
                                   headers: {
                                       'Accept': 'application/json',
@@ -124,7 +124,7 @@ export default class AdminWorkoutSpace extends Component {
                                                                          );
                                       }
                                   }
-                              ).then(res => this.setState({exercise: res["plans"]}))
+                              ).then(res => this.setState({exercise: res}))
                 )
 
 

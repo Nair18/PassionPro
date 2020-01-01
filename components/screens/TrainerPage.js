@@ -134,7 +134,7 @@ export default class TrainerPage extends Component {
                 <Content style={{padding: 15}}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <View style={styles.imageView}>
-                        <Thumbnail large source={require('./client-profile.png')} />
+                        <Thumbnail large source={require('./profile.jpg')} />
                     </View>
                     {this.state.onProcess === false ?
                     trainerDetails["is_active"] ?

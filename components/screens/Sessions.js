@@ -204,15 +204,28 @@ export default class Sessions extends PureComponent {
     })
   }
   _deletealert = (id) => {
-    Alert.alert(constants.warning, "Are you sure you want to delete?",
+//    Alert.alert(constants.warning, "Are you sure you want to delete?",
+//
+//                    [
+//                        {text: 'Cancel', onPress: () => console.log("pressed cancel")},
+//                        {text: 'OK', onPress: () => this._delete(id)},
+//
+//                    ],
+//                    {cancelable: false}
+//    )
 
-                    [
-                        {text: 'Cancel', onPress: () => console.log("pressed cancel")},
-                        {text: 'OK', onPress: () => this._delete(id)},
+      if(this.state.coursetype !== null){
+        let ct = []
+        ct = this.state.coursetype.filter(val => {
+            return val["id"] === id
+        })
+        if(ct.length > 0){
+            this.setState({courseType: ct[0]["name"]}, () => {
+                console.log("text set")
 
-                    ],
-                    {cancelable: false}
-    )
+            })
+        }
+      }
   }
   render() {
     return (
@@ -224,7 +237,7 @@ export default class Sessions extends PureComponent {
                     <Card style={{backgroundColor: constants.item_card}}>
                         <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
                             <Text style={{fontWeight: 'bold'}}>{coursetype["name"]}</Text>
-                            <Icon name="md-close" size={25} style={{color: 'white'}} onPress={() => this._deletealert(coursetype["id"])}/>
+                            <Icon name="md-create" size={25} style={{color: 'white'}} onPress={() => this._deletealert(coursetype["id"])}/>
                         </CardItem>
                     </Card>
                 </View>):<PageLoader/>}
