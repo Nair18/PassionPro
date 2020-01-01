@@ -1,5 +1,5 @@
 import React, { Component, Fragment, PureComponent } from 'react';
-import {StyleSheet,View, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
+import {StyleSheet,ScrollView, View, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TrainerPage from './TrainerPage';
 import DatePicker from 'react-native-datepicker';
@@ -26,6 +26,7 @@ export default class Trainer extends PureComponent {
          phone: null,
          email: null,
          gender: "MALE",
+         error: null,
          date: new Date(),
          trainerList: null,
 
@@ -100,7 +101,7 @@ export default class Trainer extends PureComponent {
                                  );
                                }
                              }).then(res => {
-                               this.setState({trainerList: res["trainers"]})
+                               this.setState({trainerList: res["trainers"].reverse()})
 
                              })
 
@@ -150,6 +151,9 @@ export default class Trainer extends PureComponent {
                 Alert.alert(constants.success, 'Successfully added trainer')
                 return
             }
+            else if(res.status === 400){
+                console.log("message", res.json().then(res => this.setState({error: res.message}, () => Alert.alert(constants.failed, res.message))))
+            }
             else if(res.status === 401){
                 this.setState({onProcess: false})
                 this.props.navigation.navigate('LandingPage')
@@ -195,15 +199,19 @@ export default class Trainer extends PureComponent {
 
 
   render() {
+    let actiive_list = []
+    let expired_list = []
+    let trainerslist = []
     return (
     <Fragment>
       <Container style={{backgroundColor: '#F4EAE6'}}>
-
-        <Content>
+        <ScrollView showsVerticalScrollBar={false}>
+        <Content style={{margin: 15}}>
           {this.state.trainerList !== null ?
-                    <View style={{margin:15}}>
-                      <Item regular>
+                    <View style={{margin:15, backgroundColor: 'white'}}>
+                      <Item regular style={{padding: 5}}>
                            <Input keyboardType='numeric' style={{borderColor: 'black', borderWidth: 1}} onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
+                           <Icon name="md-search" size={30} />
                       </Item>
                     </View> : null }
           <List>
@@ -219,6 +227,7 @@ export default class Trainer extends PureComponent {
             </ListItem>): <PageLoader/>}
           </List>
         </Content>
+        </ScrollView>
         <View style={styles.addButton}>
                     <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
                       <Icon size={30} style={{color: 'white'}}name="md-add" />

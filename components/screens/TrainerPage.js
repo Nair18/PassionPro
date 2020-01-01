@@ -100,6 +100,7 @@ export default class TrainerPage extends Component {
         this.setState({onProcess: false})
         if(res.status === 200){
             Alert.alert(constants.success, 'Successfully expired the trainer')
+            this.props.navigation.goBack()
         }
         else if(res.status === 401){
             this.props.navigation.navigate('LandingPage')
@@ -116,7 +117,7 @@ export default class TrainerPage extends Component {
               text: 'Cancel',
               style: 'cancel',
            },
-           {text: 'OK', onPress: () => this.archive_trainer},
+           {text: 'OK', onPress: () => this.archive_trainer()},
 
         ],
     )
@@ -189,7 +190,7 @@ export default class TrainerPage extends Component {
                           <Text style={styles.text}>Contract Start Date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                          <Text>{trainerDetails["start_date"]}</Text>
+                          <Text>{trainerDetails["start_date"] === null ? "NA" : trainerDetails["start_date"]}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -197,7 +198,7 @@ export default class TrainerPage extends Component {
                          <Text style={styles.text}>Contract End Date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                         <Text>{trainerDetails["end_date"]}</Text>
+                         <Text>{trainerDetails["end_date"] === null ? "NA" : trainerDetails["end_date"]}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>
@@ -205,7 +206,7 @@ export default class TrainerPage extends Component {
                                              <Text style={styles.text}>Shift </Text>
                                            </View>
                                            <View style={styles.textFormat}>
-                                             <Text>{trainerDetails["shift"]}</Text>
+                                             <Text>{trainerDetails["shift"] === null ? "NA" : trainerDetails["shift"]}</Text>
                                            </View>
                                         </View>
 
@@ -214,11 +215,11 @@ export default class TrainerPage extends Component {
                                              <Text style={styles.text}>Certifications </Text>
                                            </View>
                                            <View style={styles.textFormat}>
-                                             <Text>{trainerDetails["certifications"]}</Text>
+                                             <Text>{trainerDetails["certifications"] === null ? "NA" : trainerDetails["certifications"]}</Text>
                                            </View>
                                         </View>
                     <View style={{margin: 15, width: '90%'}}>
-                                                        <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('TrainerBilling')}>
+                                                        <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('TrainerBilling', {trainer_id: this.state.trainer_id, id: this.state.id})}>
                                                         <View>
                                                               <Card style={{backgroundColor: constants.item_card}}>
                                                                   <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
@@ -230,12 +231,12 @@ export default class TrainerPage extends Component {
                                                               </Card>
                                                         </View>
                                                         </TouchableOpacity>
-                                                       <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('ClientDetails')}>
+                                                       <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('ClientDetails', {trainer_id: this.state.trainer_id, id: this.state.id})}>
                                                         <View style={{marginTop: 10}}>
                                                              <Card style={{backgroundColor: constants.item_card}}>
                                                               <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
 
-                                                                      <Text style={{fontWeight: 'bold'}}>Active Client details </Text>
+                                                                      <Text style={{fontWeight: 'bold'}}>Personal Training Client</Text>
                                                                       <Icon size={20} name="md-arrow-dropright"/>
 
                                                               </CardItem>

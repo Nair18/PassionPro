@@ -31,14 +31,15 @@ export default class ClientInfo extends Component {
             console.log("pagal bana rhe hai")
             this.focusListener = navigation.addListener('didFocus', () => {
                     console.log("The screen is focused")
-                  });
-            var key  = this.retrieveItem('key').then(res =>
-               this.setState({auth_key: res}, () => console.log("brother pls", res))
-               ).then(() => {
-                    if(this.state.auth_key !== null){
-                        this.fetchDetails()
-                    }
-               })
+                    var key  = this.retrieveItem('key').then(res =>
+                                   this.setState({auth_key: res}, () => console.log("brother pls", res))
+                                   ).then(() => {
+                                        if(this.state.auth_key !== null){
+                                            this.fetchDetails()
+                                        }
+                                   })
+            });
+
         }
 
         fetchDetails = () => {
@@ -167,7 +168,7 @@ export default class ClientInfo extends Component {
                                 </Card>
                           </View>
                           </TouchableOpacity>
-                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails', {details: traineeDetails["course_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"], "id": this.state.id, "client_id": this.state.client_id}})}>
+                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails', {auth_key: this.state.auth_key, details: traineeDetails["course_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"], "id": this.state.id, "client_id": this.state.client_id}})}>
                           <View>
                                <Card style={{backgroundColor: constants.item_card}}>
                                 <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between'}}>

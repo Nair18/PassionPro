@@ -29,13 +29,15 @@ export default class TrainerRequestInfo extends Component {
             personal_contact: this.props.navigation.state.params.details['phone'],
             email: this.props.navigation.state.params.details['email'],
             age: this.props.navigation.state.params.details['age'],
-            amount: null,
+            amount: 0,
             courseData: null,
             onProcess: false,
             courseName: null,
             courseId: null,
             auth_key: null,
-            contractStart: new Date(),
+            cancel: false,
+            shift: null,
+            contract_start: new Date(),
             address: this.props.navigation.state.params.details['address'],
             gender: this.props.navigation.state.params.details['gender'],
             emergency_contact_name: this.props.navigation.state.params.details['emergency_person'],
@@ -97,9 +99,12 @@ export default class TrainerRequestInfo extends Component {
     componentWillUnmount() {
     //       this.focusListener.remove();
         }
+    _cancel = () => {
+       this.setState({cancel: true}, () => this.onApprove())
+    }
 
     onApprove = () => {
-            if(this.state.amount == null || this.state.contractStart == null){
+            if(this.state.contract_start == null){
                 Alert.alert('Incomplete Info', "All '*' fields are mandatory")
                 return
             }
@@ -113,8 +118,10 @@ export default class TrainerRequestInfo extends Component {
                 },
                 body: JSON.stringify({
                       "amount": this.state.amount,
-                      "start_date": this.state.contractStart,
-                      "end_date": "2099-12-01"
+                      "start_date": this.state.contract_start,
+                      "end_date": "2099-12-01",
+                      "shift": this.state.shift,
+                      "to_reject": this.state.cancel
                 })
             }).then(res => {
                if(res.status == 200){
@@ -151,7 +158,7 @@ export default class TrainerRequestInfo extends Component {
             <Container style={{backgroundColor: 'white'}}>
                 {this.state.courseData !== null ?
                 <ScrollView showsVerticalScrollIndicator={false}>
-                <Content style={{marginLeft: 15, marginRight: 15}}>
+                <Content style={{margin: 15}}>
                 <Form>
                     <Item regular style={{padding: 5, marginTop: 15}}>
                         <Label>Name - </Label>
@@ -179,17 +186,17 @@ export default class TrainerRequestInfo extends Component {
                                                <Input value={this.state.gender} editable={false} style={{fontWeight: 'bold', fontSize: 15}}/>
                                          </Item>
                     <Item regular style={{padding: 5, marginTop: 15}}>
-                                             <Label>Amount Paid <Text style={{color: 'red'}}>*</Text> - </Label>
-                                               <Input keyboardType="numeric" value={this.state.amount} onChangeText={text => this.setState({amount: text})}/>
+                                             <Label>Shift - </Label>
+                                               <Input keyboardType="numeric" value={this.state.shift} onChangeText={text => this.setState({shift: text})}/>
                                          </Item>
 
                                          <View style={{marginTop: 15}}>
                                                      <Text>Contract Start Date</Text>
                                                      <DatePicker
-                                                           date={this.state.contractStart}
+                                                           date={this.state.contract_start}
                                                            onDateChange={date => {
                                                                     console.log(date)
-                                                                    this.setState({contractStart: date})
+                                                                    this.setState({contract_start: date})
                                                                     }}
                                                            mode = 'date'
                                                            textColor = '#3e4444'
@@ -215,7 +222,7 @@ export default class TrainerRequestInfo extends Component {
                      </Form>
                     <View style={{ flexDirection: 'row'}}>
                         <View style={{flex: 1, margin: 25, justifyContent: 'center', alignItems: 'center'}}>
-                            <Button style={{backgroundColor: '#c83349'}}><Text style={{color: 'white'}}>Cancel</Text></Button>
+                            <Button style={{backgroundColor: '#c83349'}} onPress={this._cancel}><Text style={{color: 'white'}}>Reject</Text></Button>
                         </View>
                         {this.state.onProcess == false ?
                         <View style={{flex: 1, margin: 25, justifyContent: 'center', alignItems: 'center'}}>

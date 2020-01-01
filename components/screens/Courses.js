@@ -1,5 +1,5 @@
 import React, { Component, Fragment,PureComponent } from 'react';
-import {StyleSheet,View, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput, AppState,AsyncStorage} from 'react-native';
+import {StyleSheet,View,ScrollView, TouchableOpacity, Modal, Alert,KeyboardAvoidingView, TextInput, AppState,AsyncStorage} from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import { Header } from 'react-navigation-stack';
 import CourseInfo from './CourseInfo';
@@ -7,7 +7,7 @@ import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import PageLoader from './PageLoader';
-import { Container, Content, List, ListItem, Form, Textarea, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
+import { Container, Content, List, ListItem, Form, Textarea,Label, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
 
 
 export default class Courses extends PureComponent {
@@ -195,7 +195,8 @@ export default class Courses extends PureComponent {
     return (
     <Fragment>
       <Container style={{backgroundColor: constants.screen_color}}>
-        <Content>
+        <ScrollView showsVerticalScrollBar={false}>
+        <Content style={{margin: 15}}>
           <List>
             {this.state.coursetype !== null && this.state.courseList !== null ? this.state.courseList.map(course =>
             <ListItem key={course["id"]} avatar onPress={() => this.props.navigation.navigate('CourseInfo', {ID: course["id"], GYM_ID: this.state.id})}>
@@ -210,6 +211,7 @@ export default class Courses extends PureComponent {
             </ListItem>): <PageLoader/>}
           </List>
         </Content>
+        </ScrollView>
         <View style={styles.addButton}>
                     <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
                       <Icon size={30} style={{color: 'white'}}name="md-add" />
@@ -235,6 +237,7 @@ export default class Courses extends PureComponent {
             {this.state.coursetype !== null ?
             (<Form>
                <View style={{margin: 15}}>
+                       <Label><Text style={{fontWeight: 'bold'}}>Select fitness program<Text style={{color: 'red'}}>*</Text></Text></Label>
                        <ModalSelector
                            placeholder="Select the fitness program"
                            initValue={this.state.courseTypeName}
@@ -259,35 +262,40 @@ export default class Courses extends PureComponent {
                          </ModalSelector>
                </View>
 
-               <Item style={{margin: 15}}>
-                  <Input placeholder="Course Name" onChangeText={(text) => this.setState({courseName: text})}/>
-               </Item>
-               <Item style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
-                  <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Description" onChangeText={text => this.setState({description: text})}/>
-               </Item>
-
-               <Item regular style={{marginLeft: 15,marginRight: 15,marginTop: 10,  flexDirection: 'row'}}>
-                                <Input placeholder="duration" keyboardType='numeric' onChangeText={text => this.setState({days: text})} style={{flex: 1,  backgroundColor: "#CCC"}}/>
-                                <Picker
-                                              note
-                                              mode="dropdown"
-                                              style={{ width: 5, flex: 1 }}
-                                              selectedValue={this.state.duration}
-                                              onValueChange={(itemValue, itemIndex) =>
-                                                  this.setState({duration: itemValue})
-                                                }
-                                            >
-                                              <Picker.Item label="days" value="days" />
-                                            </Picker>
-                              </Item>
-
-
-
+               <View style={{margin: 15}}>
+                    <Label><Text style={{fontWeight: 'bold'}}>Course Name<Text style={{color: 'red'}}>*</Text></Text></Label>
+                    <Item regular>
+                        <Input placeholder="Course Name" onChangeText={(text) => this.setState({courseName: text})}/>
+                    </Item>
+               </View>
+               <View style={{margin: 15}}>
+                    <Label><Text style={{fontWeight: 'bold'}}>Description<Text style={{color: 'red'}}>*</Text></Text></Label>
+                    <Item regular>
+                        <TextInput rowSpan={5} style={{width: '100%'}} bordered placeholder="Description" onChangeText={text => this.setState({description: text})}/>
+                    </Item>
+               </View>
+               <View style={{margin: 15}}>
+                    <Label><Text style={{fontWeight: 'bold'}}>Duration<Text style={{color: 'red'}}>*</Text></Text></Label>
+                    <Item regular style={{flexDirection: 'row'}}>
+                        <Input placeholder="duration" keyboardType='numeric' onChangeText={text => this.setState({days: text})} style={{flex: 1}}/>
+                        <Picker
+                           note
+                           mode="dropdown"
+                           style={{ width: 5, flex: 1 ,backgroundColor: "#CCC"}}
+                           selectedValue={this.state.duration}
+                           onValueChange={(itemValue, itemIndex) =>
+                              this.setState({duration: itemValue})
+                           }
+                        >
+                           <Picker.Item label="days" value="days" />
+                        </Picker>
+                    </Item>
+                </View>
 
                <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
                {this.state.onProcess === false ?
                <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
-                 <Text>Submit</Text>
+                 <Text>Create course</Text>
                </Button> : <Spinner color="black"/>}
                </View>
             </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}

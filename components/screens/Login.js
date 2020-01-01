@@ -210,23 +210,20 @@ export default class Login extends PureComponent {
                                         <Text style={{fontWeight: 'bold'}}>Logging you in ...</Text>
                                     </View>
                                 </View> :
-                <Content>
-
-                    <View style={{marginLeft: '10%', marginRight: '10%'}}>
-                    <List>
-                        <ListItem>
+                <Content style={{marginTop: 50, margin: 25}}>
+                    <View>
+                        <View style={{marginTop: 15}}>
                             <Input style={{backgroundColor: 'white'}} placeholder="Phone number" keyboardType='numeric' onChangeText={(text) => this.setState({username: text})}
                                                                         value={this.state.username}/>
-                        </ListItem>
-                        <ListItem>
+                        </View>
+                        <View style={{marginTop: 15}}>
                             <Input style={{backgroundColor: 'white'}} secureTextEntry={true} placeholder="Password" onChangeText={(value) => this.setState({password: value})}/>
-                        </ListItem>
-                    </List>
-                    <View style={{justifyContent: 'center', alignItems: 'center', width: '70%', margin: '15%'}}>
-                        <Button disabled={this.state.loading} block style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}} onPress={this.onSubmit}>
-                            <Text style={{color: 'white'}}>Login</Text>
-                        </Button>
+                        </View>
                     </View>
+                    <View style={{marginTop: 15}}>
+                       <Button disabled={this.state.loading} block style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}} onPress={this.onSubmit}>
+                           <Text style={{color: 'white'}}>Login</Text>
+                       </Button>
                     </View>
                 </Content>
             }

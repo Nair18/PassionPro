@@ -89,13 +89,14 @@ export default class StatsPage extends Component {
       const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ]
-      this.setState({onProcess: false})
+
       console.log("came in the stats fetch")
       let start_year = this.state.start_year
       let end_year = this.state.end_year
       let start_month = this.state.start_month
       let end_month = this.state.end_month
       if(st === "submit"){
+        this.setState({onProcess: false})
         let sdate = this.state.start_date.split("-")
         let edate =  this.state.end_date.split("-")
         start_year = sdate[0]
@@ -184,7 +185,7 @@ export default class StatsPage extends Component {
                             </TouchableOpacity>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>Start Date</Text></Label>
+                           <Label><Text style={{fontWeight: 'bold'}}>From Date</Text></Label>
                            <DatePicker
                                 date={this.state.start_date}
                                 onDateChange={date => this.setState({ start_date: date })}
@@ -193,7 +194,7 @@ export default class StatsPage extends Component {
                            />
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>End Date</Text></Label>
+                           <Label><Text style={{fontWeight: 'bold'}}>To Date</Text></Label>
                            <DatePicker
                              date={this.state.end_date}
                              onDateChange={date => this.setState({ end_date: date })}
@@ -208,7 +209,7 @@ export default class StatsPage extends Component {
                     </Card>
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
                 <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllClientSubscriptions', {"id": this.state.id})}>
+                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllClientSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date})}>
                      <Card>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 80}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Gym Membership</Text></Text>
@@ -217,14 +218,14 @@ export default class StatsPage extends Component {
                             <Text style={{fontWeight: 'bold', fontSize: 30}}>{'₹'}<Text style={{fontSize: 50,color: constants.green_money}}>{this.state.stats["gym_subs"]}</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2}}>
-                            <Text style={{fontWeight: 'bold'}}>Details</Text>
+                            <Text style={{fontWeight: 'bold'}}>Client details</Text>
                             <Icon size={20} name="md-arrow-round-forward" />
                         </CardItem>
                      </Card>
                    </TouchableOpacity>
                 </View>
                 <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllTrainerSubscriptions', {"id": this.state.id})}>
+                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllTrainerSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date})}>
                      <Card>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 80}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Personal Training</Text></Text>
@@ -233,7 +234,7 @@ export default class StatsPage extends Component {
                             <Text style={{fontWeight: 'bold', fontSize: 30}}>{'₹'}<Text style={{fontSize: 50,color: constants.green_money}}>{this.state.stats["pt_subs"]}</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2}}>
-                            <Text style={{fontWeight: 'bold'}}>Details</Text>
+                            <Text style={{fontWeight: 'bold'}}>Trainer details</Text>
                             <Icon name="md-arrow-round-forward" size={20}/>
                         </CardItem>
                      </Card>

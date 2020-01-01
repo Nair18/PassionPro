@@ -24,36 +24,26 @@ export default class addSubscription extends Component {
   constructor(props){
     super(props)
     this.state = {
-          isVisible: false, //state of modal default false
-          workoutName: null,
+          isVisible: false,
           id: this.props.navigation.state.params.id,
-          client_id: this.props.navigation.state.client_id,
-          workoutType: null,
-          stats: null,
-          auth_key: null,
-          workoutSection: null,
-          start_date: calendarDate.format("YYYY-MM-DD"),
-          start_month: "JANUARY",
-          end_month: "DECEMBER",
-          monthLong: ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"],
-          monthShort: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
-          end_date: calendarDate.format("YYYY-MM-DD"),
-          start_year: new Date().getFullYear(),
-          show: true,
-          end_year: new Date().getFullYear(),
-          onLoad: true,
+          course: null,
           trainer_id: null,
-          onProcess: true,
-          subscriptions: null,
-          courses: null,
+          amount: null,
+          days: null,
           trainers: null,
-          data: [{"id": 1,"name": "Standard Workout"}, {"id": 2, "name": "Customize your Workout"}, {"id": 3, "name": "Workout plan by Ajay"}]
+          auth_key: null,
+          temp: null,
+          course_id: 0,
+          course_name: null,
+          start_date: moment().format("YYYY-MM-DD"),
+          trainee_id: this.props.navigation.state.params.trainee_id,
+          onProcess: false
       }
   }
 
   static navigationOptions = {
       //Setting the header of the screen
-      title: 'Statistics',
+      title: 'Add subscription',
       headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
           color: constants.header_text,
@@ -70,15 +60,14 @@ export default class addSubscription extends Component {
         this.focusListener = navigation.addListener('didFocus', () => {
           console.log("focusing admin screen")
           var key  = this.retrieveItem('key').then(res =>
-                        this.setState({auth_key: res}, () => console.log("brother pls", res))
-                      ).then(() => {
-                        if(this.state.id !== null){
-                          this.fetchCourses()
-                          this.fetchTrainer()
-                        }
-                      })
-        });
+              this.setState({auth_key: res}, () => console.log("brother pls", res))
+          ).then(() => {
+             if(this.state.auth_key !== null){
+                this.fetchTrainer()
 
+             }
+          })
+        });
   }
   async retrieveItem(key) {
             try {
@@ -108,10 +97,15 @@ export default class addSubscription extends Component {
         else{
             Alert.alert(constants.failed, constants.fail_error)
         }
-    }).then(res => this.setState({trainers: res, temp: res}, () => console.log("trainers fetched")))
-  }
-
-  fetchCourses = () => {
+    }).then(res =>
+        {
+            this.setState({trainers: res, temp: res})
+            console.log("trainers fetched", res)
+            return res
+        }
+      )
+    .then(res => {
+      if(res !== null){
       fetch(constants.API + 'current/admin/gyms/'+ this.state.id + '/courses/', {
               method: 'GET',
               headers: {
@@ -129,7 +123,10 @@ export default class addSubscription extends Component {
               else{
                   Alert.alert(constants.failed, constants.fail_error)
               }
-           }).then(res => this.setState({courses: res}, () => console.log("courses fetched", res)))
+           }).then(res => this.setState({course: res}, () => console.log("courses fetched", res)))
+      }
+      }
+      )
   }
 
   showModal = (bool) => {
@@ -160,8 +157,8 @@ export default class addSubscription extends Component {
         let newData=null
         newData = this.state.trainers["trainers"].filter((item)=>{
           text = text.trim()
-          const itemData = item["name"]
-          const textData = text
+          const itemData = item["name"].toUpperCase()
+          const textData = text.toUpperCase()
           return itemData.indexOf(textData)>-1
         });
         this.setState({
@@ -171,7 +168,13 @@ export default class addSubscription extends Component {
     }
   }
 
-  addSubscriptions = () => {
+  onSubmit = () => {
+    if(this.state.amount === null || this.state.start_date === null || this.state.duration === null || this.state.trainer_id === null || this.state.course_id === 0 ){
+        Alert.alert(constants.warning, "All * fields are mandatory")
+        return
+    }
+    console.log("state value", this.state)
+    this.setState({onProcess: true})
     fetch(constants.API + 'current/admin/course-subscriptions/', {
         method: 'POST',
         headers: {
@@ -180,17 +183,18 @@ export default class addSubscription extends Component {
             'Authorization': this.state.auth_key,
         },
         body: JSON.stringify({
-            "trainer_id": this.state.trainer_id,
-            "trainee_id": this.state.client_id,
-            "days": this.state.days,
-            "amount": this.state.amount,
-            "course": this.state.course_id,
-            "start_date": this.state.start_date
+            "amount": parseInt(this.state.amount),
+            "course": parseInt(this.state.course_id),
+            "days": parseInt(this.state.days),
+            "start_date": this.state.start_date,
+            "trainee_id": parseInt(this.state.trainee_id),
+            "trainer_id": parseInt(this.state.trainer_id)
         })
     }).then(res => {
+        this.setState({onProcess: false})
         if(res.status === 200){
-            Alert.alert(constants.success, "Successfully added the course subscription")
-            this.props.navigation.goBack()
+            Alert.alert(constants.success, 'Successfully created personal training subscription for the client')
+
         }
         else if(res.status === 401){
             this.props.navigation.navigate('LandingPage')
@@ -200,125 +204,137 @@ export default class addSubscription extends Component {
         }
     })
   }
-  selectTrainer = (id) => {
-     this.setState({isVisible: false})
 
-     this.setState({trainer_id: id})
+  selectTrainer = (id) => {
+     this.setState({isVisible: false, trainer_id: id})
   }
   render(){
-    const { navigate } = this.props.navigation;
-    let trainer_subs = []
-    searchText = "Search Trainer"
-
-    if(this.state.trainers !== null){
-        if(this.state.trainer_id !== null){
-            let trainer = this.state.trainers["trainers"].filter(temp => {
-                return temp["id"] === this.state.trainer_id
-            })
-            if(trainer.length > 0 ){
-                searchText = trainer[0]["name"]
-            }
-        }
-
+    let trainer = []
+    searchText = "Search here ..."
+    if(this.state.trainer_id !== null){
+       trainer = this.state.trainers["trainers"].filter(temp => {
+          return temp["id"] === this.state.trainer_id
+       })
+       if(trainer.length > 0 ){
+          searchText = trainer[0]["name"]
+       }
     }
-    console.log("trainers loading ",this.state.trainers)
-    console.log("courses hai bhai", this.state.courses)
-    year = ["2019", "2020", "2021", "2022", "2023", "2024", "2025"]
-    workouts = {1: "StandardWorkout", 2: "PersonalizedWorkout", 3: "StandardWorkout"}
-    console.log("hello moto",this.state.start_date, this.state.end_date)
-    let start_date = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString().split("/").reverse().join("-")
-    let end_date = new Date(new Date().getFullYear(), 11, 31).toLocaleDateString().split("/").reverse().join("-")
     return(
-       <Container style={{backgroundColor: constants.screen_color}}>
+       <Container >
 
           <ScrollView showsVerticalScrollIndicator={false}>
-          {this.state.trainers !== null && this.state.courses !== null ? (
+          { this.state.trainee_id !== null && this.state.trainers !== null && this.state.course !== null ? (
           <Content style={styles.content}>
-            <Content>
             <View>
-                {this.state.show ?
-                   <View>
-                        <View style={{backgroundColor: constants.card_body, justifyContent: 'center'}}>
-                           <View style={{backgroundColor: constants.card_header, padding: 10}}><Icon name="md-search" size={30} onPress={() => this.showModal(true)}/></View>
-                           <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
-                            <Button transparent block style={{backgroundColor: 'white', padding: 10}} onPress={() => this.showModal(true)}><Text note>{searchText}</Text></Button>
-                           </View>
-                        </View>
-                        <View style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>Select Course <Text style={{color: 'red'}}>*</Text></Text></Label>
-                           <DatePicker
-                               date={this.state.start_date}
-                               onDateChange={date => this.setState({ start_date: date })}
-                               mode = 'date'
-                               textColor = '#3e4444'
-                           />
-                        </View>
-                        <View style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>Select Course<Text style={{color: 'red'}}>*</Text></Text></Label>
-                           <Item regular>
+                    <View ><Label><Text style={{fontWeight: 'bold'}}>Search Trainer<Text style={{color: 'red'}}>*</Text></Text></Label>
+                     <View style={{padding: 10, backgroundColor: '#f4f4f4', marginTop: 15}}>
+                        <TouchableOpacity onPress={() => this.showModal(true)}>
+                            <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                                <Text>{searchText}</Text>
+                                <Icon name="md-search" size={20}/>
+                            </View>
+                        </TouchableOpacity>
+                     </View>
+                    </View>
+                    <View style={{marginTop: 15}}>
+                        <Label><Text style={{fontWeight: 'bold'}}>Select course<Text style={{color: 'red'}}>*</Text></Text></Label>
+                        <Item regular>
+                        <Picker
+                          selectedValue={this.state.course_name}
+                          style={{height: 50, width: '100%'}}
+                          onValueChange={(itemValue, itemIndex) =>{
+                              console.log("value of picker itemValue", itemValue)
+                              this.setState({course_id: itemValue, course_name:itemValue})
+                             }
+                          }>
+                          <Picker.Item label="Select course" value="null" />
+                          {this.state.course["courses"].map(course =>
+                          <Picker.Item label={course["name"]} value={course["id"]} />)}
+                        </Picker>
+                        </Item>
+                    </View>
+                    <View style={{marginTop: 15}}>
+                        <Label><Text style={{fontWeight: 'bold'}}>Training start date</Text></Label>
+                        <DatePicker
+                          date={this.state.start_date}
+                          onDateChange={date => this.setState({ start_date: date })}
+                          mode = 'date'
+                          textColor = '#3e4444'
+                        />
+                    </View>
+                    <View style={{marginTop: 15}}>
+                            <Label><Text style={{fontWeight: 'bold'}}>Amount<Text style={{color: 'red'}}>*</Text></Text></Label>
+                            <Item regular>
+                                <Input keyboardType='numeric' style={{backgroundColor: 'white'}}  onChangeText = {text => this.setState({amount: text})}/>
+                            </Item>
+                    </View>
+                    <View style={{marginTop: 15}}>
+                          <Label><Text style={{fontWeight: 'bold'}}>Duration<Text style={{color: 'red'}}>*</Text></Text></Label>
+                          <Item regular style={{flexDirection: 'row'}}>
+                            <Input placeholder="duration" keyboardType='numeric' onChangeText={text => this.setState({days: text})} style={{flex: 1}}/>
                             <Picker
-                             selectedValue={this.state.language}
-                             style={{height: 50, width: 100}}
-                             onValueChange={(itemValue, itemIndex) =>
-                               this.setState({course_id: itemValue})
-                             }>
-                             {this.state.courses["courses"].map(course =>
-                                <Picker.Item label={course["name"]} value={course["id"]} /> )}
+                               note
+                               mode="dropdown"
+                               style={{ width: 5, flex: 1 ,backgroundColor: "#CCC"}}
+                               selectedValue={this.state.duration}
+                               onValueChange={(itemValue, itemIndex) =>
+                                   this.setState({duration: itemValue})
+                               }
+                            >
+                               <Picker.Item label="days" value="days" />
                             </Picker>
-                           </Item>
-                        </View>
-                        <View style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>Training Duration</Text></Label>
-                           <Input placeholder="eg. 180" onChangeText={text => this.setState({days: text})}/>
-                        </View>
-                        <View style={{justifyContent: 'flex-end', backgroundColor: constants.card_body}}>
-                            {this.state.onProcess ?
-                            <Button style={{backgroundColor: 'black'}} onPress={this.addSubscriptions}><Text>Apply</Text></Button> : <Spinner color="black" />}
-                        </View>
-                   </View> : null}
-
+                          </Item>
+                    </View>
+                    <View style={{margin: 25}}>
+                        {this.state.onProcess === false ?
+                            <Button style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}} onPress={this.onSubmit}><Text style={{color: 'white'}}>Add Subscription</Text></Button>
+                        : <Spinner color="black" />}
+                    </View>
             </View>
-            </Content>
           </Content>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View> }
           </ScrollView>
           <Modal
-                     animationType="slide"
-                     transparent={false}
-                     visible={this.state.isVisible}
-                     onRequestClose={() => {
-                     this.showModal(false)
-                  }}>
-                      {this.state.trainers !== null && this.state.courses !== null ?
-                         <View style={{margin: 15}} >
-                            <View style={{marginTop: 15}}>
-                               <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
-                                   <Icon size={25} name="md-arrow-back"/>
-                               </TouchableOpacity>
-                            </View>
-                            <View style={{marginTop: 50}}>
-                               <View>
-                                 <Item regular><Input placeholder="Search here" onChangeText={(text) => this.filterSearch(text)}
-                                                                                            value={this.state.text}/></Item>
-                               </View>
-                               <View style={{marginTop: 15}}>
-                                 <List>
-                                    <ScrollView>
-                                      {this.state.trainers !== null && this.state.trainers["trainers"].length > 0 ? this.state.trainers["trainers"].map(tr =>
-                                      <ListItem onPress={() => this.selectTrainer(tr["id"])} style={{justifyContent: 'space-between'}}>
-                                        <View>
-                                          <Text style={{color: tr["is_active"] ? constants.active_color : constants.archive_color}}>{tr["name"]}</Text>
-                                          <Text note>Mobile {tr["phone"]}</Text>
-                                        </View>
-                                        <View>
-                                            <Icon size={20} name="md-arrow-round-forward" />
-                                        </View>
-                                      </ListItem>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No Trainers</Text></View>}
-                                    </ScrollView>
-                                 </List>
-                               </View>
-                            </View>
-                         </View> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
-                  </Modal>
+                               animationType="slide"
+                               transparent={false}
+                               visible={this.state.isVisible}
+                               onRequestClose={() => {
+                               this.showModal(false)
+                            }}>
+                                {this.state.trainers !== null ?
+                                   <View style={{margin: 15}} >
+                                      <View style={{marginTop: 15}}>
+                                         <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
+                                             <Icon size={25} name="md-arrow-back"/>
+                                         </TouchableOpacity>
+                                      </View>
+                                      <View style={{marginTop: 50}}>
+                                         <View>
+                                           <Item regular><Input placeholder="type trainers name here ..." onChangeText={(text) => this.filterSearch(text)}
+                                                                                                      value={this.state.text}/></Item>
+                                         </View>
+                                         <View style={{marginTop: 15}}>
+                                           <List>
+                                              <ScrollView>
+                                                {this.state.trainers["trainers"].length > 0 ? this.state.trainers["trainers"].map(tr =>
+                                                <ListItem onPress={() => this.selectTrainer(tr["id"])} style={{justifyContent: 'space-between'}}>
+                                                  <View style={{alignItems: 'flex-start'}}>
+                                                    <View>
+                                                      <Text style={{color: tr["is_active"] ? constants.active_color : constants.archive_color}}>{tr["name"]}</Text>
+                                                    </View>
+                                                    <View>
+                                                      <Text note>Mobile {tr["phone"]}</Text>
+                                                    </View>
+                                                  </View>
+                                                  <View>
+                                                      <Icon size={20} name="md-arrow-dropright" />
+                                                  </View>
+                                                </ListItem>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No Trainers</Text></View>}
+                                              </ScrollView>
+                                           </List>
+                                         </View>
+                                      </View>
+                                   </View> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
+                            </Modal>
        </Container>
     );
   }

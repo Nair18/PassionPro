@@ -13,8 +13,7 @@ export default class PersonalTrainingDetails extends Component{
          client_id: this.props.navigation.state.params.client_id,
          details: this.props.navigation.state.params.details,
          info: this.props.navigation.state.params.info,
-         isVisible: false,
-         id: this.props.navigation.state.params.id
+         isVisible: false
       }
   }
 
@@ -69,6 +68,7 @@ export default class PersonalTrainingDetails extends Component{
             return value["is_active"] === false
         })
     }
+    console.log("id in the personal training detail", this.state.id)
     return(
       <Container style={{backgroundColor: constants.screen_color}}>
         {this.state.info !== null && this.state.details !== null ?
@@ -144,7 +144,7 @@ export default class PersonalTrainingDetails extends Component{
 
         </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
         <View style={styles.addButton}>
-                            <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.props.navigation.navigate()}>
+                            <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.props.navigation.navigate('addSubscription', { id: this.state.info["id"], trainee_id: this.state.info["client_id"]})}>
                               <Icon size={30} style={{color: 'white'}}name="md-add" />
                             </Button>
                           </View>

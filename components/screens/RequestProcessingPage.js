@@ -30,11 +30,8 @@ export default class RequestProcessingPage extends Component {
                     <View style={{marginLeft: '15%', width: '70%', justifyContent: 'center', alignItems: 'center'}}>
                         <Text>Your request is successfully sent to Admin for approval ...</Text>
                     </View>
-                    <View style={{justifyContent: 'center', alignItems: 'center', margin: 25}}>
-                        <Button rounded onPress={this._decidePath} style={{backgroundColor: 'black'}}><Text style={{color: 'white'}}>Retry</Text></Button>
-                    </View>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        <Text note>Powered by PassionPro</Text>
+                        <Text>Powered by PepUp</Text>
                     </View>
                 </Fragment>
             </Content>

@@ -159,7 +159,7 @@ export default class Sessions extends PureComponent {
                 this.fetchDetails()
                 Alert.alert(
                    constants.success,
-                   'Successfully added the session',
+                   'Successfully added the fitness program',
                    [
                       {text: 'OK', onPress: () => console.log('OK Pressed')},
                    ],

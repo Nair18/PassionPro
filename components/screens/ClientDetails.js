@@ -1,19 +1,22 @@
 import React,{Fragment, Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import {Container,Text, Content, Item, Card, CardItem, Button,Input, Header, Left,Label, Right, Body, Title, Spinner} from 'native-base';
-import {StyleSheet, View, TouchableOpacity, TextInput, ScrollView, BackHandler, Form,Modal, Alert, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, TextInput, ScrollView, BackHandler, AsyncStorage,Modal, Alert, KeyboardAvoidingView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
 import constants from '../constants';
+import moment from 'moment';
+
 export default class ClientDetails extends Component{
   constructor(props){
       super(props)
       this.state={
-         date: '2019-12-09',
-         number: '9979090670',
-         amount: '12000',
-         isVisible: false
+         trainerDetails: null,
+         trainer_id: this.props.navigation.state.params.trainer_id,
+         id: this.props.navigation.state.params.id,
+         trainee_id: null,
+         auth_key: null
       }
   }
 
@@ -57,72 +60,163 @@ export default class ClientDetails extends Component{
   buttonPress = () => {
     alert("this is bomb")
   }
+
+  componentDidMount(){
+                console.log("id has been retrieved", this.state.id)
+
+                const { navigation } = this.props;
+                console.log("pagal bana rhe hai")
+                this.focusListener = navigation.addListener('didFocus', () => {
+                        console.log("The screen is focused")
+                      });
+                var key  = this.retrieveItem('key').then(res =>
+                   this.setState({auth_key: res}, () => console.log("brother pls", res))
+                   ).then(() => {
+                        if(this.state.auth_key !== null){
+                            this.fetchDetails()
+                        }
+                })
+  }
+
+  fetchDetails = () => {
+                console.log("what is the id ", this.state.id)
+                let course_list = fetch(constants.API + 'current/admin/gym/'+ this.state.id + '/subscriptions', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': this.state.auth_key,
+                    },
+                    body: JSON.stringify({
+                        "end_date": "2099-01-01",
+                        "start_date": "1900-01-01",
+                        "trainee_id": this.state.trainee_id,
+                        "trainer_id": this.state.trainer_id,
+                        "type": "PERSONAL_TRAINING"
+                    })
+                })
+                .then(
+                    res => {
+                        if(res.status === 200){
+                            return res.json()
+                        }
+
+                        else{
+                            this.setState({loading: false})
+                                                           Alert.alert(
+                                                             constants.failed,
+                                                             constants.fail_error,
+                                                              [
+                                                                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                              ],
+                                                              {cancelable: false},
+                                                           );
+                        }
+                    }
+                ).then(res => this.setState({trainerDetails: res}))
+            }
+
+  async retrieveItem(key) {
+                      try {
+                        const retrievedItem =  await AsyncStorage.getItem(key);
+                        console.log("key retrieved")
+                        return retrievedItem;
+                      } catch (error) {
+                        console.log(error.message);
+                      }
+                      return;
+  }
+
+  componentWillUnmount() {
+            // Remove the event listener
+            this.focusListener.remove();
+
+  }
+
+
   render(){
+    let active_subs = []
+    let expired_subs = []
+    console.log("trainerDetails", this.state.trainerDetails)
+    if(this.state.trainerDetails !== null){
+        active_subs = this.state.trainerDetails["subscriptions"].filter((val) => {
+            return val["is_active"] === true
+        })
+        expired_subs = this.state.trainerDetails["subscriptions"].filter((val) => {
+            return val["is_active"] === false
+        })
+         console.log("trainerDetails", active_subs)
+    }
     return(
       <Container style={{backgroundColor: constants.screen_color}}>
 
         <ScrollView showsVerticalScrollIndicator={false}>
+        {this.state.trainerDetails !== null ?
         <Content>
           <View style={{margin: 15}}>
-            <Text style={{fontWeight: 'bold'}}>---------- Active Subscription ----------</Text>
+            <Text style={{fontWeight: 'bold'}}>Active Subscription</Text>
           </View>
-
+          {active_subs.length > 0 ? active_subs.map(subs =>
           <View style={{margin: 10}}>
              <Card style={{width: '100%', padding: 15}}>
-                <CardItem header style={{backgroundColor: constants.card_header,justifyContent: 'center', alignItems: 'center'}}>
-                   <Text style={{fontWeight: 'bold'}}>Bill No. 1 </Text>
-                   <Text style={{color: "green"}}> Active</Text>
+                <CardItem header style={{backgroundColor: constants.card_header,justifyContent: 'space-between'}}>
+                   <View>
+                    <Text style={{fontWeight: 'bold'}}>Bill </Text>
+                   </View>
+                   <View>
+                    <Text style={{color: "green", fontWeight: 'bold'}}> Active</Text>
+                   </View>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                    <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> Hariram</Text>
+                    <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> {subs["trainee_name"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>Course:</Text> Belly reduce</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> {subs["trainee_phone"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> 9979090671</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}>From date:</Text> {subs["start_date"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> 2019-09-10</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}>To date:</Text> {subs["end_date"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> 2019-12-10</Text>
-                </CardItem>
-                <CardItem style={{backgroundColor: constants.card_body}}>
-                   <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> Rs 10000</Text>
+                   <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{subs["amount"]}</Text>
                 </CardItem>
              </Card>
-          </View>
+          </View>) : <View style={{margin: 15}}><Card style={{justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: constants.header}}><Text note>Nothing to show</Text></Card></View>}
           <View style={{margin: 20}}>
-            <Text style={{fontWeight: 'bold'}}>---------- Expired Subcriptions ----------</Text>
+            <Text style={{fontWeight: 'bold'}}>Expired Subcriptions</Text>
           </View>
+          {expired_subs.length > 0 ? expired_subs.map(subs =>
           <View style={{margin: 10}}>
                 <Card style={{width: '100%', padding: 15}}>
-                    <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'center', alignItems: 'center'}}>
-                        <Text style={{fontWeight: 'bold'}}>Bill No. 2 </Text>
-                        <Text style={{color: "red"}}> Expired</Text>
+                    <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
+                        <View>
+                            <Text style={{fontWeight: 'bold'}}>Bill </Text>
+                        </View>
+                        <View>
+                            <Text style={{color: "red", fontWeight: 'bold'}}> Expired</Text>
+                        </View>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                        <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> Lodash</Text>
+                        <Text><Text style={{fontWeight: 'bold'}}>Client:</Text> {subs["trainee_name"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                        <Text><Text style={{fontWeight: 'bold'}}>Course:</Text> Belly reduce</Text>
+                        <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> {subs["trainee_phone"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                        <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> 9979090671</Text>
+                        <Text><Text style={{fontWeight: 'bold'}}>From date:</Text> {subs["start_date"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                        <Text><Text style={{fontWeight: 'bold'}}>Start date:</Text> 2019-01-10</Text>
+                        <Text><Text style={{fontWeight: 'bold'}}>To date:</Text> {subs["end_date"]}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>
-                        <Text><Text style={{fontWeight: 'bold'}}>End date:</Text> 2019-09-10</Text>
-                    </CardItem>
-                    <CardItem style={{backgroundColor: constants.card_body}}>
-                        <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> Rs 10000</Text>
+                        <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{subs["amount"]}</Text>
                     </CardItem>
                 </Card>
-          </View>
-        </Content>
+          </View>) : <View style={{marginLeft: 15, marginRight: 15}}><Card style={{justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: constants.header}}><Text note>Nothing to show</Text></Card></View>}
+
+        </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
 
         </ScrollView>
 

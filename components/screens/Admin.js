@@ -328,7 +328,7 @@ export default class Admin extends PureComponent {
                   <ScrollView showsVerticalScrollIndicator={false}>
                   <Content padder style={styles.contentBlock}>
                      {this.state.gymId !== null ?
-                     <View style={{ width: width, height: width/5 }}>
+                     <View style={{ width: width, height: 85 }}>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             <View style={styles.thumbnailAlign}>
                                 <TouchableOpacity activeOpacity={1} key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
@@ -355,16 +355,16 @@ export default class Admin extends PureComponent {
                         </View>
                          <View style={{marginTop: 10}}>
                                              <View style={{flex: 1}}>
-                                                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('FinancialHistory', {id: this.state.gymId, gym_stats: this.state.stats})}>
+                                                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('StatsPage', {id: this.state.gymId, gym_stats: this.state.stats})}>
                                                     <Card>
                                                         <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 50}}>
                                                             <View>
-                                                                <Text>Net <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>Profit</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
+                                                                <Text>Total <Text style={{fontWeight: 'bold', color: '#4d80e4'}}>money collected</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
                                                             </View>
                                                         </CardItem>
                                                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#ebe6e6'}}>
                                                              {this.state.stats === null  ? <Spinner color="black"/> :
-                                                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}>{this.state.stats !== null ? this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"]): null}</Text></Text>}
+                                                             <Text style={{fontWeight: 'bold', fontSize: 30}}>{'₹'}<Text style={{fontSize: 50,color: '#2c7873'}}>{this.state.stats !== null ? this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"]): null}</Text></Text>}
                                                         </CardItem>
                                                         <CardItem footer style={{justifyContent: 'space-between', backgroundColor: "#ebe6e6", elevation: 2}}>
                                                             <View>

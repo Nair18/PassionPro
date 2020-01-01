@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
 import constants from '../constants';
 import moment from 'moment';
+import firebase from 'react-native-firebase';
 import {Container, Accordion,Thumbnail, Card,ListItem, Textarea, Spinner, CheckBox, CardItem, Header, Title, Content, Button, Left, Body, Text,Right, Form, Item, Label, Input} from 'native-base';
 const calendarDate = moment()
 export default class TrainerSignUp extends Component {
@@ -30,6 +31,7 @@ export default class TrainerSignUp extends Component {
             amount: 0,
             certifications: null,
             token: null,
+            error: null,
             dob: "1995-01-01",
             email: null,
             emergency_person: null,
@@ -77,9 +79,9 @@ export default class TrainerSignUp extends Component {
 
     static navigationOptions = {
               title: 'Sign up',
-              headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white'},
-              headerTintColor: 'black'
+              headerTitleStyle: { color: 'white', fontWeight: 'bold'},
+              headerStyle: {backgroundColor: '#393e46'},
+              headerTintColor: 'white'
           }
     onSubmit = () => {
         console.log(this.state)
@@ -112,7 +114,7 @@ export default class TrainerSignUp extends Component {
                   "certifications": this.state.certifications,
                   "phone": this.state.phone,
                   "relation_with_person": this.state.relation_with_person,
-                  "start_date": this.state.start_date
+                  "start_date": moment().format("YYYY-MM-DD")
             })
         }).then(res => {
            this.setState({onProcess: false})
@@ -120,6 +122,9 @@ export default class TrainerSignUp extends Component {
              Alert.alert(constants.success, 'Successfully sent the request to admin for approval')
              this.props.navigation.navigate('RequestProcessingPage')
              return
+           }
+           else if(res.status === 400){
+             console.log("message", res.json().then(res => this.setState({error: res.message}, () => Alert.alert(constants.failed, res.message))))
            }
            else{
             this.setState({onProcess: false})
@@ -184,15 +189,6 @@ export default class TrainerSignUp extends Component {
                         <Item regular >
                             <Input style={{fontWeight: 'bold', fontSize: 15}} onChangeText={text => this.setState({address: text})}/>
                         </Item>
-                    </View>
-                    <View style={{marginTop: 15}}>
-                          <Text>Membership Start Date<Text style={{color: 'red'}}>*</Text></Text>
-                              <DatePicker
-                                 date={this.state.start_date}
-                                 onDateChange={date => this.setState({ start_date: date })}
-                                 mode = 'date'
-                                 textColor = '#3e4444'
-                              />
                     </View>
 
                     <View style={{marginTop: 15}}>

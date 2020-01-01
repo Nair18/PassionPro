@@ -1,5 +1,5 @@
 import React, { Component, Fragment,PureComponent } from 'react';
-import {StyleSheet,View, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
+import {StyleSheet,View,ScrollView, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import CreateStandardPlan from './CreateStandardPlan';
@@ -40,7 +40,7 @@ export default class Plans extends PureComponent {
 
           const { navigation } = this.props;
           console.log("pagal bana rhe hai")
-//          this.focusListener = navigation.addListener('didFocus', () => {
+          this.focusListener = navigation.addListener('didFocus', () => {
               console.log("The screen is focused")
                var key  = this.retrieveItem('key').then(res =>
                            this.setState({auth_key: res}, () => console.log("brother pls", res))
@@ -49,13 +49,13 @@ export default class Plans extends PureComponent {
                                     this.fetchDetails()
                                 }
                            })
-//          });
+          });
 
       }
 
   componentWillUnmount() {
         // Remove the event listener
-//        this.focusListener.remove();
+        this.focusListener.remove();
 
    }
   fetchDetails = () => {
@@ -131,8 +131,8 @@ export default class Plans extends PureComponent {
     return (
     <Fragment>
       <Container style={{backgroundColor: constants.screen_color}}>
-
-        <Content>
+        <ScrollView showsVerticalScrollBar={false}>
+        <Content style={{margin: 15}}>
           {this.state.planList !== null && this.state.coursetype !== null ? this.state.planList.map(plan =>
           <List>
             <ListItem avatar onPress={() => this.props.navigation.navigate('PlanInfo', {plan_data: plan, plan_id: plan["id"], gym_id: this.state.id})}>
@@ -146,6 +146,7 @@ export default class Plans extends PureComponent {
             </ListItem>
           </List>) : <Spinner color="black"/>}
         </Content>
+        </ScrollView>
         <View style={styles.addButton}>
 
                     <Button  onPress={() => this.props.navigation.navigate('CreateStandardPlan', {go_back_key: this.props.navigation.state.key, ID: this.state.id, coursetype: this.state.coursetype})} rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}}>

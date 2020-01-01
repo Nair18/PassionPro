@@ -31,12 +31,12 @@ export default class AllTrainerSubscriptions extends Component {
           stats: null,
           auth_key: null,
           workoutSection: null,
-          start_date: moment().startOf('year').format('YYYY-MM-DD'),
+          start_date: this.props.navigation.state.params.start_date,
           start_month: "JANUARY",
           end_month: "DECEMBER",
           monthLong: ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"],
           monthShort: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
-          end_date: calendarDate.format("YYYY-MM-DD"),
+          end_date: this.props.navigation.state.params.end_date,
           start_year: new Date().getFullYear(),
           show: true,
           end_year: new Date().getFullYear(),
@@ -52,7 +52,7 @@ export default class AllTrainerSubscriptions extends Component {
 
   static navigationOptions = {
       //Setting the header of the screen
-      title: 'Statistics',
+      title: 'Trainer details',
       headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
           color: constants.header_text,
@@ -240,7 +240,7 @@ export default class AllTrainerSubscriptions extends Component {
                            </View>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>Start Date</Text></Label>
+                           <Label><Text style={{fontWeight: 'bold'}}>From date</Text></Label>
                            <DatePicker
                                 date={this.state.start_date}
                                 onDateChange={date => this.setState({ start_date: date })}
@@ -249,7 +249,7 @@ export default class AllTrainerSubscriptions extends Component {
                            />
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>End Date</Text></Label>
+                           <Label><Text style={{fontWeight: 'bold'}}>To date</Text></Label>
                            <DatePicker
                              date={this.state.end_date}
                              onDateChange={date => this.setState({ end_date: date })}
@@ -277,7 +277,7 @@ export default class AllTrainerSubscriptions extends Component {
                             <Text><Text style={{fontWeight: 'bold'}}>Phone: </Text>{subs["trainer_phone"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
-                            <Text><Text  style={{fontWeight: 'bold'}}>Amount Paid: </Text>{subs["amount"]}</Text>
+                            <Text><Text  style={{fontWeight: 'bold'}}>Amount Paid: </Text>{'₹'}{subs["amount"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
                             <Text><Text style={{fontWeight: 'bold'}}>Membership start date: </Text>{subs["start_date"]}</Text>

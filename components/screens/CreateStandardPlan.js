@@ -15,7 +15,7 @@ export default class CreateStandardPlan extends Component {
       name: null,
       description: null,
       coursetype: this.props.navigation.state.params.coursetype,
-      courseType: null,
+      course_type: null,
       courseTypeName: null,
       id: this.props.navigation.state.params.ID,
       visible: false,
@@ -66,7 +66,7 @@ export default class CreateStandardPlan extends Component {
     this.setState({visible: bool})
   }
     _back = () => {
-      if(this.state.name == null || this.state.course_type == null){
+      if(this.state.name == null){
         Alert.alert(constants.incomplete_info, 'All * fields are mandatory')
         return
       }
@@ -80,8 +80,7 @@ export default class CreateStandardPlan extends Component {
                               },
                               body: JSON.stringify({
                                 "name": this.state.name,
-                                "description": this.state.description,
-                                "course_type": this.state.course_type
+                                "description": this.state.description
                               })
                           }).then(res => {
                             if(res.status == 200){
@@ -117,31 +116,6 @@ export default class CreateStandardPlan extends Component {
                       <Input placeholder="Name of the Plan" onChangeText = {text => this.setState({name: text})}/>
                     </Item>
                   </View>
-                  <View style={{marginTop: 15}}>
-                    <Label><Text style={{fontWeight: 'bold'}}>Select Fitness Program<Text style={{color: 'red'}}>*</Text></Text></Label>
-                    <ModalSelector
-                        placeholder="Select the fitness program"
-                        initValue={this.state.courseTypeName}
-                        data={this.state.coursetype}
-                        keyExtractor= {item => item.id}
-                        labelExtractor= {item => item.name}
-                        initValue={this.state.courseType}
-                        supportedOrientations={['landscape']}
-                        accessible={true}
-                        scrollViewAccessibilityLabel={'Scrollable options'}
-                        cancelButtonAccessibilityLabel={'Cancel Button'}
-                        onChange={(option)=>{
-                        this.setState({course_type: option.id, courseTypeName: option.name})
-                        }}>
-                        <TextInput
-                            style={{borderWidth:1, borderColor:'#ccc', color: 'black',padding:10, height:50}}
-                            editable={false}
-                            placeholder="Select the fitness program"
-                            value={this.state.courseTypeName}
-                        />
-
-                    </ModalSelector>
-                    </View>
                   <View style={styles.input}>
                     <Label><Text style={{fontWeight: 'bold'}}>Description</Text></Label>
                     <Item regular>

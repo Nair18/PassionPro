@@ -1,5 +1,5 @@
 import React, { Component, Fragment, PureComponent } from 'react';
-import {StyleSheet,View, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
+import {StyleSheet,View,ScrollView, TouchableOpacity, Modal, Alert, AppState, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UpdateClient from './UpdateClient';
 import ClientInfo from './ClientInfo';
@@ -33,6 +33,7 @@ export default class Clients extends PureComponent {
       dob: null,
       start_date: null,
       end_date: null,
+      error: constants.fail_error,
       gender: "MALE",
       email: null,
       id: this.props.navigation.state.params.ID
@@ -121,7 +122,7 @@ export default class Clients extends PureComponent {
                                                      );
                   }
               }
-          ).then(res => this.setState({traineeList: res["trainees"]},() => console.log(res["trainees"])))
+          ).then(res => this.setState({traineeList: res["trainees"].reverse()},() => console.log(res["trainees"])))
       }
       async retrieveItem(key){
                 try {
@@ -137,8 +138,12 @@ export default class Clients extends PureComponent {
   onSubmit = () => {
     console.log(this.state)
     if(this.state.name === null || this.state.gender === null || this.state.amount === null
-    || this.state.start_date === null || this.state.end_date === null || this.state.phone === null || this.state.email === null){
+    || this.state.start_date === null || this.state.end_date === null || this.state.phone === null || this.state.email === null || this.state.dob === null){
         Alert.alert('Incomplete Info', "All '*' fields are mandatory")
+        return
+    }
+    else if(this.state.start_date > this.state.end_date ){
+        Alert.alert(constants.warning, 'Start end cannot be greater than End date')
         return
     }
     this.setState({onProcess: true})
@@ -167,18 +172,22 @@ export default class Clients extends PureComponent {
           "start_date": this.state.start_date
         })
     }).then(res => {
+            this.setState({onProcess: false})
             if(res.status === 200){
-                this.setState({onProcess: false})
                 Alert.alert(constants.success, 'Successfully added the client')
                 this.setModalVisible(false)
             }
+            else if(res.status === 400){
+                console.log("message", res.json().then(res => this.setState({error: res.message}, () => Alert.alert(constants.failed, res.message))))
+
+            }
             else if(res.status === 401){
-                this.setState({onProccess: false})
+
                 this.props.navigation.navigate('LandingPage')
                 return null
             }
             else{
-                this.setState({onProcess: false})
+
                 Alert.alert(constants.failed, 'Something went wrong')
                 return null
             }
@@ -188,12 +197,13 @@ export default class Clients extends PureComponent {
     return (
     <Fragment>
       <Container style={{backgroundColor: '#F4EAE6'}}>
-
-        <Content>
+        <ScrollView showsVerticalScrollBar={false}>
+        <Content style={{margin: 15}}>
          {this.state.traineeList  !== null ?
-          <View style={{margin:15}}>
-            <Item rounded>
+          <View style={{margin:15, backgroundColor: 'white'}}>
+            <Item style={{padding: 5}}>
                  <Input keyboardType='numeric' onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
+                 <Icon name="md-search" size={30} />
             </Item>
           </View> : null }
           <List>
@@ -211,6 +221,7 @@ export default class Clients extends PureComponent {
                 </ListItem>) : <PageLoader/>}
            </List>
             </Content>
+            </ScrollView>
                 <View style={styles.addButton}>
                     <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
                       <Icon size={30} style={{color: 'white'}}name="md-add" />
@@ -246,7 +257,7 @@ export default class Clients extends PureComponent {
                   <Input onChangeText={text => this.setState({email: text})} />
                </Item>
                <Item style={styles.item}>
-                 <Label>DoB</Label>
+                 <Label>DoB <Text style={{color: 'red'}}>*</Text></Label>
                  <DatePicker
                                                            style={{width: 200}}
                                                            date={this.state.dob}

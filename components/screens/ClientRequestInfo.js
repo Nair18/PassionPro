@@ -147,7 +147,7 @@ export default class ClientRequestInfo extends Component {
             <Container style={{backgroundColor: 'white'}}>
             {this.state.name !== null && this.state.auth_key !== null ?
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Content style={{marginLeft: 15, marginRight: 15}}>
+                <Content style={{margin: 15}}>
 
                 <Form>
                     <Item regular style={{marginTop: 15, padding: 5}}>

@@ -14,6 +14,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import firebase from 'react-native-firebase';
 import ModalSelector from 'react-native-modal-selector';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
@@ -29,6 +30,7 @@ export default class TraineeSignUp extends Component {
             name: null,
             phone: null,
             email: null,
+            error: null,
             dob: "1995-01-01",
             onProcess: false,
             start_date: calendarDate.format("YYYY-MM-DD"),
@@ -75,15 +77,19 @@ export default class TraineeSignUp extends Component {
 
     static navigationOptions = {
               title: 'Sign up',
-              headerTitleStyle: { color: 'black', fontWeight: 'bold'},
-              headerStyle: {backgroundColor: 'white'},
-              headerTintColor: 'black'
+              headerTitleStyle: { color: 'white', fontWeight: 'bold'},
+              headerStyle: {backgroundColor: '#393e46'},
+              headerTintColor: 'white'
           }
     onSubmit = () => {
         console.log(this.state)
 
         if(this.state.name === null || this.state.email === null || this.state.phone == null || this.state.start_date == null || this.state.dob === null || this.state.gender === null || this.state.password === null){
             Alert.alert(constants.incomplete_info, 'All * fields are mandatory')
+            return
+        }
+        else if(this.state.start_date > this.state.end_date){
+            Alert.alert(constants.warning, 'Start date cannot be greater than end date')
             return
         }
         this.setState({onProcess: true})
@@ -117,6 +123,9 @@ export default class TraineeSignUp extends Component {
              Alert.alert(constants.success, 'Successfully sent the request to admin for approval')
              this.props.navigation.navigate('RequestProcessingPage')
              return
+           }
+           else if(res.status === 400){
+             console.log("message", res.json().then(res => this.setState({error: res.message}, () => Alert.alert(constants.failed, res.message))))
            }
            else{
             this.setState({onProcess: false})

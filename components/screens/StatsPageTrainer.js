@@ -90,13 +90,14 @@ export default class StatsPageTrainer extends Component {
       const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ]
-      this.setState({onProcess: false})
+
       console.log("came in the stats fetch")
       let start_year = this.state.start_year
       let end_year = this.state.end_year
       let start_month = this.state.start_month
       let end_month = this.state.end_month
       if(st === "submit"){
+        this.setState({onProcess: false})
         let sdate = this.state.start_date.split("-")
         let edate =  this.state.end_date.split("-")
         start_year = sdate[0]
@@ -186,7 +187,7 @@ export default class StatsPageTrainer extends Component {
                             </TouchableOpacity>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>Start Date</Text></Label>
+                           <Label><Text style={{fontWeight: 'bold'}}>From date</Text></Label>
                            <DatePicker
                                 date={this.state.start_date}
                                 onDateChange={date => this.setState({ start_date: date })}
@@ -195,7 +196,7 @@ export default class StatsPageTrainer extends Component {
                            />
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>End Date</Text></Label>
+                           <Label><Text style={{fontWeight: 'bold'}}>To date</Text></Label>
                            <DatePicker
                              date={this.state.end_date}
                              onDateChange={date => this.setState({ end_date: date })}

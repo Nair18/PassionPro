@@ -37,7 +37,6 @@ export default class Request extends Component{
 
         return(
             <Container style={{backgroundColor: constants.screen_color}}>
-
             <SwipeableViews style={styles.slideContainer}>
                         <Tabs>
                           <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Clients</Text></TabHeading>}>
