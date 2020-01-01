@@ -96,8 +96,8 @@ export default class Login extends PureComponent {
         return false
       }
       onSubmit = () => {
-        if(this.state.username === null || this.state.password === null){
-            Alert.alert(constants.incomplete_info, 'Username/Password cannot be blank')
+        if(this.state.username === null || this.state.password === null || this.state.password.length === 0 || this.state.username.length === 0){
+            Alert.alert(constants.warning, 'Username/Password cannot be blank')
             return
         }
         console.log("came in submit")
@@ -124,7 +124,7 @@ export default class Login extends PureComponent {
             }
             else if(res.status === 401){
                 Alert.alert(
-                              constants.no_entry,
+                              constants.failed,
                               'Wrong Username/Password',
                               [
                                 {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -201,7 +201,7 @@ export default class Login extends PureComponent {
       }
     render(){
         return(
-        <Container style={{backgroundColor: '#ffd369'}}>
+        <Container style={{backgroundColor: constants.admin_tab_background}}>
         <Fragment>
             {this.state.loading ?
                                 <View style={{justifyContent: 'center', alignItems: 'center', marginTop: '50%'}}>

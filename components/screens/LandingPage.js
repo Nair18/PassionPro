@@ -4,6 +4,7 @@ import {Header,Content,Container, Text,Button} from 'native-base';
 import StepFormTrainer from './step_form_trainer';
 import StepFormCustomer from './step_form_customer';
 import Login from './Login';
+import constants from '../constants';
 import firebase from 'react-native-firebase';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 20,
-    backgroundColor: '#ffd369'
+    backgroundColor: constants.admin_tab_background
   },
   image: {
       width: '40%',

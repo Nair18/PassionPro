@@ -97,6 +97,12 @@ export default class ClientInfo extends Component {
 
   render(){
     const {traineeDetails} = this.state
+    let active = []
+    if(traineeDetails !== null){
+        active = traineeDetails["gym_subscriptions"].filter(val => {
+            return val["is_active"] === true
+        })
+    }
     return(
        <Fragment>
         <Container style={{backgroundColor: constants.screen_color}}>
@@ -113,7 +119,7 @@ export default class ClientInfo extends Component {
                                             <Text style={styles.text}>Membership Active </Text>
                                           </View>
                                           <View style={styles.textFormat}>
-                                            <Text style={{color: this.state.active ? 'green' : 'red', fontWeight: 'bold'}}>{this.state.active ? "YES" : "NO"}</Text>
+                                            <Text style={{color: active.length>0 ? 'green' : 'red', fontWeight: 'bold'}}>{active.length>0 ? "YES" : "NO"}</Text>
                                           </View>
                     </View>
                     <View style={styles.infoView}>

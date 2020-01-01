@@ -208,7 +208,7 @@ export default class Clients extends PureComponent {
           </View> : null }
           <List>
             {this.state.traineeList !== null && this.state.onProcess == false ? this.state.traineeList.map((trainee) =>
-                <ListItem avatar onPress={() => this.props.navigation.navigate('ClientInfo', {client_id: trainee["id"], id: this.state.id, active: trainee["is_active"]})}>
+                <ListItem avatar onPress={() => this.props.navigation.navigate('ClientInfo', {client_id: trainee["id"], id: this.state.id})}>
                     <Left>
                         <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
                     </Left>
