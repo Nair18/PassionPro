@@ -13,6 +13,7 @@ export default class ClientInfo extends Component {
       id: this.props.navigation.state.params.id,
       client_id: this.props.navigation.state.params.client_id,
       courseInfo: null,
+      active: this.props.navigation.state.params.active,
       traineeDetails: null
     }
   }
@@ -109,10 +110,10 @@ export default class ClientInfo extends Component {
                 <Content style={{padding: 15}}>
                     <View style={styles.infoView}>
                                           <View style={styles.title}>
-                                            <Text style={styles.text}>Active </Text>
+                                            <Text style={styles.text}>Membership Active </Text>
                                           </View>
                                           <View style={styles.textFormat}>
-                                            <Text style={{color: 'green', fontWeight: 'bold'}}>YES</Text>
+                                            <Text style={{color: this.state.active ? 'green' : 'red', fontWeight: 'bold'}}>{this.state.active ? "YES" : "NO"}</Text>
                                           </View>
                     </View>
                     <View style={styles.infoView}>

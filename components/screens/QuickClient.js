@@ -34,7 +34,7 @@ export default class QuickClient extends Component {
                                <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
                             </Left>
                             <Body>
-                                <Text style={{fontWeight: 'bold', color: client["end_time"] < new Date().toDateString() ? constants.red_money: constants.green_money}}>{client["name"]}</Text>
+                                <Text style={{fontWeight: 'bold'}}>{client["name"]}</Text>
                                 <Text note>Membership ends on {client["end_time"] !== null ? client["end_time"].split("T")[0] : "-"}</Text>
                             </Body>
                         </ListItem>
