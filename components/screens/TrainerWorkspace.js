@@ -144,7 +144,7 @@ export default class TrainerWorkspace extends Component {
     render(){
         const {traineeDetails} = this.state
         if(traineeDetails !== null && traineeDetails["gym_subscriptions"].length>0){
-            active = traineeDetails["gym_subscriptions"].filter((v) => {
+            active = traineeDetails["course_subscriptions"].filter((v) => {
                 return v["is_active"] === true
             })
         }

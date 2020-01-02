@@ -52,7 +52,7 @@ export default class AllTrainerSubscriptions extends Component {
 
   static navigationOptions = {
       //Setting the header of the screen
-      title: 'Trainer details',
+      title: 'Personal training details',
       headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
           color: constants.header_text,
@@ -190,7 +190,7 @@ export default class AllTrainerSubscriptions extends Component {
         console.log("he is pretending")
     }
     let trainer_subs = []
-    searchText = "Search Trainer"
+    searchText = "Select Trainer"
 
     if(this.state.subscriptions !== null && this.state.subscriptions !== undefined && ("subscriptions" in this.state.subscriptions)){
 
@@ -228,34 +228,19 @@ export default class AllTrainerSubscriptions extends Component {
                 <View>
                     <Card>
                         <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black'}}>
-                            <Text style={{fontWeight: 'bold', color: 'white'}}>Filters</Text>
+                            <Text style={{fontWeight: 'bold', color: 'white'}}>Filter by trainer</Text>
                             <TouchableOpacity onPress={() => this._hideFilter(false)}>
                                 <Icon name="md-close" size={10} style={{color: 'white'}}/>
                             </TouchableOpacity>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body, justifyContent: 'center'}}>
-                           <View style={{backgroundColor: constants.card_header, padding: 10}}><Icon name="md-search" size={30} onPress={() => this.showModal(true)}/></View>
+
                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
-                            <Button transparent block style={{backgroundColor: 'white', padding: 10}} onPress={() => this.showModal(true)}><Text note>{searchText}</Text></Button>
+                            <Button transparent block style={{backgroundColor: 'white', padding: 10, justifyContent: 'space-between'}} onPress={() => this.showModal(true)}>
+                                <Text>{searchText}</Text>
+                                <Icon name="md-arrow-dropdown" />
+                            </Button>
                            </View>
-                        </CardItem>
-                        <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>From date</Text></Label>
-                           <DatePicker
-                                date={this.state.start_date}
-                                onDateChange={date => this.setState({ start_date: date })}
-                                mode = 'date'
-                                textColor = '#3e4444'
-                           />
-                        </CardItem>
-                        <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>To date</Text></Label>
-                           <DatePicker
-                             date={this.state.end_date}
-                             onDateChange={date => this.setState({ end_date: date })}
-                             mode = 'date'
-                             textColor = '#3e4444'
-                           />
                         </CardItem>
                         <CardItem footer style={{justifyContent: 'flex-end', backgroundColor: constants.card_body}}>
                             {this.state.onProcess ?
@@ -263,11 +248,14 @@ export default class AllTrainerSubscriptions extends Component {
                         </CardItem>
                     </Card>
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
+                <View style={{padding: 10, backgroundColor: "#ffd369"}}>
+                   <Text>Showing details of clients who opted for personal training between <Text style={{color: constants.text_highlight}}>{new Date(this.state.start_date).toDateString()}</Text> To <Text style={{color: constants.text_highlight}}>{new Date(this.state.end_date).toDateString()}</Text></Text>
+                </View>
                 {trainer_subs.length > 0 ? trainer_subs.map(subs =>
                 <View style={styles.cardListView}>
                      <Card>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 80, justifyContent: 'space-between'}}>
-                            <Text style={{fontWeight: 'bold'}}>Bill</Text>
+                            <Text style={{fontWeight: 'bold'}}>Training subscription</Text>
                             <Text style={{fontWeight: 'bold', color: subs["is_active"] ? constants.active_color : constants.archive_color}}>{subs["is_active"] ? "ACTIVE" : "EXPIRED"}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
@@ -286,10 +274,10 @@ export default class AllTrainerSubscriptions extends Component {
                             <Text><Text  style={{fontWeight: 'bold'}}>Amount Paid: </Text>{'₹'}{subs["amount"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
-                            <Text><Text style={{fontWeight: 'bold'}}>Membership start date: </Text>{subs["start_date"]}</Text>
+                            <Text><Text style={{fontWeight: 'bold'}}>Training start date: </Text>{subs["start_date"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
-                            <Text><Text style={{fontWeight: 'bold'}}>Membership end date: </Text>{subs["end_date"]}</Text>
+                            <Text><Text style={{fontWeight: 'bold'}}>Training end date: </Text>{subs["end_date"]}</Text>
                         </CardItem>
                      </Card>
                 </View>) : <Card style={{backgroundColor: constants.header, justifyContent: 'center', alignItems: 'center', padding: 10}}><Text note>Nothing to show</Text></Card>}
@@ -304,9 +292,10 @@ export default class AllTrainerSubscriptions extends Component {
                      onRequestClose={() => {
                      this.showModal(false)
                   }}>
+                    <ScrollView showsVerticalScrollBar={false}>
                       {this.state.trainers !== null ?
                          <View style={{margin: 15}} >
-                            <View style={{marginTop: 15}}>
+                            <View>
                                <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
                                    <Icon size={25} name="md-arrow-back"/>
                                </TouchableOpacity>
@@ -319,7 +308,7 @@ export default class AllTrainerSubscriptions extends Component {
                                <View style={{marginTop: 15}}>
                                  <List>
                                     <ScrollView>
-                                      {this.state.trainers["trainers"].length > 0 ? this.state.trainers["trainers"].map(tr =>
+                                      {this.state.trainers["trainers"].length > 0 ? this.state.trainers["trainers"].reverse().map(tr =>
                                       <ListItem onPress={() => this.selectTrainer(tr["id"])} style={{justifyContent: 'space-between'}}>
                                         <View style={{alignItems: 'flex-start'}}>
                                           <View>
@@ -338,6 +327,7 @@ export default class AllTrainerSubscriptions extends Component {
                                </View>
                             </View>
                          </View> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
+                         </ScrollView>
                   </Modal>
        </Container>
     );

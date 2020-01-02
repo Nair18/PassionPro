@@ -58,8 +58,9 @@ export default class Clients extends PureComponent {
             'Authorization': this.state.auth_key,
         }
       }).then(res => {
+        this.setState({onProcess: false})
         if(res.status !== 200){
-            this.setState({onProcess: false})
+
             Alert.alert(constants.failed, constants.fail_error)
             return null
         }

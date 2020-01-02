@@ -84,7 +84,7 @@ export default class WorkoutProgress extends Component{
       componentWillUnmount(){
         this.focusListener.remove()
       }
-      
+
       fetchDetails = () => {
          fetch(constants.API + 'current/trainee/sets?end=' + this.state.end_date + '&start=' + this.state.start_date,{
              method: 'GET',

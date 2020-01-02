@@ -52,7 +52,7 @@ export default class AllClientSubscriptions extends Component {
 
   static navigationOptions = {
       //Setting the header of the screen
-      title: 'Client search',
+      title: 'Gym membership details',
       headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
           color: constants.header_text,
@@ -190,7 +190,7 @@ export default class AllClientSubscriptions extends Component {
         console.log("he is pretending")
     }
     let trainee_subs = []
-    searchText = "Search Clients"
+    searchText = "Select Clients"
 
     if(this.state.subscriptions !== null && ("subscriptions" in this.state.subscriptions)){
 
@@ -228,46 +228,35 @@ export default class AllClientSubscriptions extends Component {
                 <View>
                     <Card>
                         <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black'}}>
-                            <Text style={{fontWeight: 'bold', color: 'white'}}>Filter on joining date</Text>
+                            <Text style={{fontWeight: 'bold', color: 'white'}}>Filter by client</Text>
                             <TouchableOpacity onPress={() => this._hideFilter(false)}>
                                 <Icon name="md-close" size={10} style={{color: 'white'}}/>
                             </TouchableOpacity>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body, justifyContent: 'center'}}>
-                           <View style={{backgroundColor: constants.card_header, padding: 10}}><Icon name="md-search" size={30} onPress={() => this.showModal(true)}/></View>
+
                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
-                            <Button transparent block style={{backgroundColor: 'white', padding: 10}} onPress={() => this.showModal(true)}><Text note>{searchText}</Text></Button>
+                            <Button transparent block style={{backgroundColor: 'white', padding: 10, justifyContent: 'space-between'}} onPress={() => this.showModal(true)}>
+                                <Text>{searchText}</Text>
+                                <Icon name="md-arrow-dropdown" />
+                            </Button>
                            </View>
                         </CardItem>
-                        <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>From date</Text></Label>
-                           <DatePicker
-                                date={this.state.start_date}
-                                onDateChange={date => this.setState({ start_date: date })}
-                                mode = 'date'
-                                textColor = '#3e4444'
-                           />
-                        </CardItem>
-                        <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
-                           <Label><Text style={{fontWeight: 'bold'}}>To date</Text></Label>
-                           <DatePicker
-                             date={this.state.end_date}
-                             onDateChange={date => this.setState({ end_date: date })}
-                             mode = 'date'
-                             textColor = '#3e4444'
-                           />
-                        </CardItem>
+
                         <CardItem footer style={{justifyContent: 'flex-end', backgroundColor: constants.card_body}}>
                             {this.state.onProcess ?
                             <Button style={{backgroundColor: 'black'}} onPress={() => this.fetchSubs("submit")}><Text>Apply</Text></Button> : <Spinner color="black" />}
                         </CardItem>
                     </Card>
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
+                <View style={{padding: 10, backgroundColor: "#ffd369"}}>
+                   <Text>Showing info of clients who joined between <Text style={{color: constants.text_highlight}}>{new Date(this.state.start_date).toDateString()}</Text> To <Text style={{color: constants.text_highlight}}>{new Date(this.state.end_date).toDateString()}</Text></Text>
+                </View>
                 {trainee_subs.length > 0 ? trainee_subs.map(subs =>
                 <View style={styles.cardListView}>
                      <Card>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 80, justifyContent: 'space-between'}}>
-                            <Text style={{fontWeight: 'bold'}}>Bill</Text>
+                            <Text style={{fontWeight: 'bold'}}>Gym subscription</Text>
                             <Text style={{fontWeight: 'bold', color: subs["is_active"] ? constants.active_color : constants.archive_color}}>{subs["is_active"] ? "ACTIVE" : "EXPIRED"}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
@@ -298,9 +287,10 @@ export default class AllClientSubscriptions extends Component {
                      onRequestClose={() => {
                      this.showModal(false)
                   }}>
+                  <ScrollView showsVerticalScrollBar={false}>
                       {this.state.clients !== null ?
                          <View style={{margin: 15}} >
-                            <View style={{marginTop: 15}}>
+                            <View>
                                <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
                                    <Icon size={25} name="md-arrow-back"/>
                                </TouchableOpacity>
@@ -332,6 +322,7 @@ export default class AllClientSubscriptions extends Component {
                                </View>
                             </View>
                          </View> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
+                         </ScrollView>
                   </Modal>
        </Container>
     );

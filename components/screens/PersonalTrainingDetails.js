@@ -1,7 +1,7 @@
 import React,{Fragment, Component} from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import {Container,Text, Content, Item, Card, CardItem, Button,Input, Header, Left,Label, Right, Body, Title, Spinner} from 'native-base';
-import {StyleSheet, View, TouchableOpacity, TextInput, ScrollView, BackHandler, Form,Modal, Alert, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, TextInput, ScrollView,AsyncStorage, BackHandler, Form,Modal, Alert, KeyboardAvoidingView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
@@ -34,6 +34,70 @@ export default class PersonalTrainingDetails extends Component{
           ],
           {cancelable: false},
         );
+  }
+
+  componentDidMount(){
+              console.log("id has been retrieved", this.state.info["id"])
+
+              const { navigation } = this.props;
+              console.log("pagal bana rhe hai")
+              this.focusListener = navigation.addListener('didFocus', () => {
+                      console.log("The screen is focused")
+                      var key  = this.retrieveItem('key').then(res =>
+                                     this.setState({auth_key: res}, () => console.log("brother pls", res))
+                                     ).then(() => {
+                                          if(this.state.auth_key !== null){
+                                              this.fetchDetails()
+                                          }
+                                     })
+              });
+
+  }
+
+  fetchDetails = () => {
+              console.log("what is the id ", this.state.info["id"])
+              let course_list = fetch(constants.API + 'current/admin/gyms/'+ this.state.info["id"] + '/trainees/'+ this.state.info["client_id"], {
+                  method: 'GET',
+                  headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                      'Authorization': this.state.auth_key,
+                  }
+              })
+              .then(
+                  res => {
+                      if(res.status === 200){
+                          return res.json()
+                      }
+                      else{
+                          this.setState({loading: false})
+                                                         Alert.alert(
+                                                           constants.failed,
+                                                           constants.fail_error,
+                                                            [
+                                                                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                                                            ],
+                                                            {cancelable: false},
+                                                         );
+                      }
+                  }
+              ).then(res => this.setState({details: res["course_subscriptions"]}))
+          }
+
+  async retrieveItem(key) {
+                    try {
+                      const retrievedItem =  await AsyncStorage.getItem(key);
+                      console.log("key retrieved")
+                      return retrievedItem;
+                    } catch (error) {
+                      console.log(error.message);
+                    }
+                    return;
+          }
+  componentWillUnmount() {
+          // Remove the event listener
+          this.focusListener.remove();
+
   }
   closeModal = () => {
     this.setState({isVisible: false})
@@ -81,7 +145,7 @@ export default class PersonalTrainingDetails extends Component{
           <View style={{marginTop: 10}}>
              <Card style={{width: '100%', padding: 15}}>
                 <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
-                   <Text style={{fontWeight: 'bold'}}>Bill</Text>
+                   <Text style={{fontWeight: 'bold'}}>Training subscription</Text>
                    <Text style={{color: "green", fontWeight: 'bold'}}>{ac["is_active"] !== null ? "ACTIVE" : "EXPIRED"}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
@@ -114,7 +178,7 @@ export default class PersonalTrainingDetails extends Component{
           <View style={{marginTop: 10}}>
                 <Card style={{width: '100%', padding: 15}}>
                     <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
-                        <Text style={{fontWeight: 'bold'}}>Bill</Text>
+                        <Text style={{fontWeight: 'bold'}}>Training subscription</Text>
                         <Text style={{color: "red", fontWeight: 'bold'}}> {ex["is_active"] !== null ? "EXPIRED" : "ACTIVE"}</Text>
                     </CardItem>
                     <CardItem style={{backgroundColor: constants.card_body}}>

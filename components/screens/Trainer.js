@@ -146,6 +146,7 @@ export default class Trainer extends PureComponent {
               "end_date": "2099-01-01"
             })
         }).then(res => {
+            this.setState({onProcess: false})
             if(res.status === 200){
                 this.setState({onProcess: false, modalVisible: false}, () => this.fetchDetails())
                 Alert.alert(constants.success, 'Successfully added trainer')

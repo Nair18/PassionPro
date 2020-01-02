@@ -27,7 +27,7 @@ import Notification from './Notification';
 import PageLoader from './PageLoader';
 import constants from '../constants';
 import TrainerProfile from './TrainerProfile';
-import {Container, Accordion,Thumbnail, Item, Textarea, Card, Badge, ListItem,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, Item, Textarea, Card, Spinner, Badge, ListItem,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 export default class Admin extends Component {
   constructor(props){
@@ -214,10 +214,12 @@ export default class Admin extends Component {
                       <CardItem header>
                          <Textarea selectable onChangeText={text => this.setState({message: text})} placeholder="Write message to your clients..."/>
                       </CardItem>
-                      <CardItem footer style={{justifyContent: 'center', alignItems: 'center', backgroundColor:'#e5dfdf'}}>
+                      <CardItem footer style={{justifyContent: 'space-between', elevation: 3}}>
+                         <Text/>
                          {this.state.onProcess === false ?
                             <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.sendMessage}><Text>Post</Text></Button>
                             : <Spinner color="black" />}
+
                       </CardItem>
                    </Card>
                 </View>

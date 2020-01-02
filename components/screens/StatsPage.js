@@ -62,7 +62,7 @@ export default class StatsPage extends Component {
 
         const { navigation } = this.props;
         console.log("pagal bana rhe hai")
-        this.focusListener = navigation.addListener('didFocus', () => {
+//       this.focusListener = navigation.addListener('didFocus', () => {
           console.log("focusing admin screen")
           var key  = this.retrieveItem('key').then(res =>
                         this.setState({auth_key: res}, () => console.log("brother pls", res))
@@ -71,7 +71,7 @@ export default class StatsPage extends Component {
                           this.fetchStats()
                         }
                       })
-        });
+//        });
 
   }
   async retrieveItem(key) {
@@ -211,14 +211,14 @@ export default class StatsPage extends Component {
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllClientSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date})}>
                      <Card>
-                        <CardItem header style={{backgroundColor: constants.card_header, height: 80}}>
+                        <CardItem header style={{backgroundColor: constants.card_header, height: 70}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Gym Membership</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.card_body}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 30}}>{'₹'}<Text style={{fontSize: 50,color: constants.green_money}}>{this.state.stats["gym_subs"]}</Text></Text>
+                            <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["gym_subs"]}</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2}}>
-                            <Text style={{fontWeight: 'bold'}}>Client details</Text>
+                            <Text style={{fontWeight: 'bold'}}>Membership details</Text>
                             <Icon size={20} name="md-arrow-round-forward" />
                         </CardItem>
                      </Card>
@@ -227,14 +227,14 @@ export default class StatsPage extends Component {
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllTrainerSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date})}>
                      <Card>
-                        <CardItem header style={{backgroundColor: constants.card_header, height: 80}}>
+                        <CardItem header style={{backgroundColor: constants.card_header, height: 70}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Personal Training</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.card_body}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 30}}>{'₹'}<Text style={{fontSize: 50,color: constants.green_money}}>{this.state.stats["pt_subs"]}</Text></Text>
+                            <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["pt_subs"]}</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2}}>
-                            <Text style={{fontWeight: 'bold'}}>Trainer details</Text>
+                            <Text style={{fontWeight: 'bold'}}>Training details</Text>
                             <Icon name="md-arrow-round-forward" size={20}/>
                         </CardItem>
                      </Card>

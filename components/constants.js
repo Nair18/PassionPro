@@ -1,3 +1,4 @@
+
 export default {
   "API": "https://passionpro.herokuapp.com/api/",
   "success": "✅ Success",
@@ -6,7 +7,7 @@ export default {
   "no_entry": "🚫 Wrong Credentials",
   "not_approved": "⚠️ Approval Pending",
   "warning": "⚠️ Warning",
-  "incomplete_info": "⛔️ Incomplete Info",
+  "incomplete_info": "⚠️ Warning",
   'header_text': 'white',
   'header': 'black',
   'logout': '#d1274b',

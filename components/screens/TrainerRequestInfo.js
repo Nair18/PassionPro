@@ -124,9 +124,10 @@ export default class TrainerRequestInfo extends Component {
                       "to_reject": this.state.cancel
                 })
             }).then(res => {
+               this.setState({onProcess: false})
                if(res.status == 200){
                  Alert.alert(constants.success, 'Action was successful')
-                 this.setState({onProcess: false})
+
                  this.props.navigation.goBack()
                  return
                }

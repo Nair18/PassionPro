@@ -116,10 +116,10 @@ export default class ClientInfo extends Component {
                 <Content style={{padding: 15}}>
                     <View style={styles.infoView}>
                                           <View style={styles.title}>
-                                            <Text style={styles.text}>Membership Active </Text>
+                                            <Text style={styles.text}>Membership </Text>
                                           </View>
                                           <View style={styles.textFormat}>
-                                            <Text style={{color: active.length>0 ? 'green' : 'red', fontWeight: 'bold'}}>{active.length>0 ? "YES" : "NO"}</Text>
+                                            <Text style={{color: active.length>0 ? 'green' : 'red', fontWeight: 'bold'}}>{active.length>0 ? "ACTIVE" : "EXPIRED"}</Text>
                                           </View>
                     </View>
                     <View style={styles.infoView}>

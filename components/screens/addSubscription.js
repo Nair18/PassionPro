@@ -194,7 +194,7 @@ export default class addSubscription extends Component {
         this.setState({onProcess: false})
         if(res.status === 200){
             Alert.alert(constants.success, 'Successfully created personal training subscription for the client')
-
+            this.props.navigation.goBack()
         }
         else if(res.status === 401){
             this.props.navigation.navigate('LandingPage')
@@ -262,29 +262,18 @@ export default class addSubscription extends Component {
                           textColor = '#3e4444'
                         />
                     </View>
-                    <View style={{marginTop: 15}}>
-                            <Label><Text style={{fontWeight: 'bold'}}>Amount<Text style={{color: 'red'}}>*</Text></Text></Label>
-                            <Item regular>
-                                <Input keyboardType='numeric' style={{backgroundColor: 'white'}}  onChangeText = {text => this.setState({amount: text})}/>
-                            </Item>
                     </View>
                     <View style={{marginTop: 15}}>
-                          <Label><Text style={{fontWeight: 'bold'}}>Duration<Text style={{color: 'red'}}>*</Text></Text></Label>
+                          <Label><Text style={{fontWeight: 'bold'}}>Enter no. of days<Text style={{color: 'red'}}>*</Text></Text></Label>
                           <Item regular style={{flexDirection: 'row'}}>
                             <Input placeholder="duration" keyboardType='numeric' onChangeText={text => this.setState({days: text})} style={{flex: 1}}/>
-                            <Picker
-                               note
-                               mode="dropdown"
-                               style={{ width: 5, flex: 1 ,backgroundColor: "#CCC"}}
-                               selectedValue={this.state.duration}
-                               onValueChange={(itemValue, itemIndex) =>
-                                   this.setState({duration: itemValue})
-                               }
-                            >
-                               <Picker.Item label="days" value="days" />
-                            </Picker>
                           </Item>
                     </View>
+                    <View style={{marginTop: 15}}>
+                          <Label><Text style={{fontWeight: 'bold'}}>Amount<Text style={{color: 'red'}}>*</Text></Text></Label>
+                          <Item regular>
+                             <Input keyboardType='numeric' style={{backgroundColor: 'white'}}  onChangeText = {text => this.setState({amount: text})}/>
+                          </Item>
                     <View style={{margin: 25}}>
                         {this.state.onProcess === false ?
                             <Button style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}} onPress={this.onSubmit}><Text style={{color: 'white'}}>Add Subscription</Text></Button>

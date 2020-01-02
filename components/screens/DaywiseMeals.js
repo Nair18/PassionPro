@@ -205,7 +205,7 @@ export default class DaywiseMeals extends Component {
         return(
             <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
-                    {this.state.planDetails !== null && plans.size > 0?
+                    {this.state.planDetails !== null ?
                       <Content style={styles.content}>
                         <View style={{marginTop: 10}}>
                             <Text>Showing result for <Text style={{fontWeight: 'bold'}}>{this.state.planDetails["name"]}</Text></Text>

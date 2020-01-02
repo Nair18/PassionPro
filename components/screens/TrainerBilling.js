@@ -133,7 +133,7 @@ export default class TrainerBilling extends PureComponent{
         this.setState({onProcess: false, modalVisible: false})
         if(res.status === 200){
             Alert.alert(constants.success, 'Successfully added payslip')
-            this.fetchDetails
+            this.fetchDetails()
         }
         else if(res.status === 401){
             this.props.navigation.navigate('LandingPage')

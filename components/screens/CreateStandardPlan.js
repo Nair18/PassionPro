@@ -83,8 +83,10 @@ export default class CreateStandardPlan extends Component {
                                 "description": this.state.description
                               })
                           }).then(res => {
+
+                            this.setState({onProcess: false})
                             if(res.status == 200){
-                                this.setState({onProcess: false})
+
                                 Alert.alert('✅ Success', 'Successfully added the plan')
                                 this.props.navigation.goBack(this.props.navigation.goBack())
                             }
@@ -92,7 +94,7 @@ export default class CreateStandardPlan extends Component {
                                this.props.navigation.navigate('LandingPage')
                             }
                             else{
-                                this.setState({onProcess: false})
+
                                 Alert.alert(constants.failed, constants.fail_error)
                             }
                           })

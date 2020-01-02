@@ -85,7 +85,7 @@ export default class MembershipDetails extends Component{
           <View style={{marginTop: 10}}>
              <Card style={{width: '100%', padding: 15}}>
                 <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
-                   <Text style={{fontWeight: 'bold'}}>Bill </Text>
+                   <Text style={{fontWeight: 'bold'}}>Membership </Text>
                    <Text style={{color: "green", fontWeight: 'bold'}}>{ac["is_active"] ? "ACTIVE" : "EXPIRED"}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
@@ -112,7 +112,7 @@ export default class MembershipDetails extends Component{
           <View style={{marginTop: 10}}>
                 <Card style={{width: '100%', padding: 15}}>
                    <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
-                       <Text style={{fontWeight: 'bold'}}>Bill</Text>
+                       <Text style={{fontWeight: 'bold'}}>Membership</Text>
                        <Text style={{color: "red", fontWeight: 'bold'}}>{ex["is_active"] !== null ? "EXPIRED" : "ACTIVE"}</Text>
                    </CardItem>
                    <CardItem style={{backgroundColor: constants.card_body}}>

@@ -36,7 +36,10 @@ export default class MealSpace extends Component {
            id: this.props.navigation.state.params.id,
            isVisible: false,
            auth_key: null,
-           planDetails: null
+           description: null,
+           name: null,
+           planDetails: null,
+           onProcess: false
         }
     }
 
@@ -81,7 +84,7 @@ export default class MealSpace extends Component {
           }
     fetchDetails = () => {
             this.setState({loading: true})
-            let course_list = fetch(constants.API + 'current/trainer/trainees/'+this.state.id + '/mealplans', {
+            let course_list = fetch(constants.API + 'current/trainer/trainees/'+ this.state.id + '/mealplans', {
                 method: 'GET',
                 headers: {
                                 'Accept': 'application/json',
@@ -119,14 +122,49 @@ export default class MealSpace extends Component {
                   return;
           }
 
+    onSubmit = () => {
+                    if(this.state.name === null){
+                        Alert.alert(constants.incomplete_info, "All '*' fields are mandatory")
+                        return
+                    }
+                    this.setState({onProcess: true})
+                    fetch(constants.API + 'current/trainer/trainees/'+ this.state.id + '/mealplans', {
+                        method: 'POST',
+                        headers: {
+                           'Accept': 'application/json',
+                           'Content-Type': 'application/json',
+                           'Authorization': this.state.auth_key,
+                        },
+                        body: JSON.stringify({
+                            "description": this.state.description,
+                            "name": this.state.name
+                        })
+                    }).then(res => {
+                        this.setState({onProcess: false})
+                        if(res.status === 200){
+                            Alert.alert(constants.success, 'Successfully added the meal plan')
+                            this.showModal(false)
+                            this.fetchDetails()
+                        }
+                        else if(res.status === 401){
+                            this.props.navigation.navigate('LandingPage')
+                            return
+                        }
+                        else{
+                            Alert.alert(constants.failed, constants.fail_error)
+                            return
+                        }
+                    }
+                    )
+    }
 
     render(){
         const {planDetails} = this.state
         return(
             <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
+                    <Content style={styles.content}>
                     {this.state.planDetails !== null ? this.state.planDetails.map(planDetails =>
-                      <Content style={styles.content}>
                         <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseMeals',{'plan_id': planDetails["id"], 'trainee_id': this.state.id})}>
                            <Card style={{backgroundColor: constants.item_card}}>
@@ -137,7 +175,8 @@ export default class MealSpace extends Component {
                            </Card>
                            </TouchableOpacity>
                         </View>
-                    </Content>)  : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
+                   )  : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
+                     </Content>
                     </ScrollView>
                     <View style={styles.addButton}>
                         <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.showModal(true)}>
@@ -162,18 +201,18 @@ export default class MealSpace extends Component {
                                {this.state.planDetails !== null ?
                                (<Form>
                                    <View style={{margin: 15}}>
-                                      <Label><Text style={{fontWeight: 'bold'}}>Meal Name</Text><Text style={{color: 'red'}}>*</Text></Label>
+                                      <Label><Text style={{fontWeight: 'bold'}}>Meal Plan Name</Text><Text style={{color: 'red'}}>*</Text></Label>
                                       <Item regular>
-                                          <Input placeholder="eg. Abs workout" onChangeText={(text) => this.setState({name: text})}/>
+                                          <Input placeholder="eg. Meal Plan Name" onChangeText={(text) => this.setState({name: text})}/>
                                       </Item>
                                    </View>
                                    <Item style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
-                                      <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Workout summary ...(Optional)" onChangeText={text => this.setState({description: text})}/>
+                                      <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Meal plan summary ...(Optional)" onChangeText={text => this.setState({description: text})}/>
                                    </Item>
                                    <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
                                       {this.state.onProcess === false ?
                                         <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
-                                            <Text>Add workout plan</Text>
+                                            <Text>Add meal plan</Text>
                                         </Button> : <Spinner color="black"/>}
                                    </View>
                                </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}

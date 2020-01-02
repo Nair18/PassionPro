@@ -150,7 +150,7 @@ export default class TrainerWorkout extends Component {
                             res => {
                                 this.setState({onProcess: false})
                                 if(res.status === 200){
-                                    Alert.alert(constants.success, 'Successfully added a day')
+                                    Alert.alert(constants.success, 'Successfully added a workout')
                                     this.setState({modalVisible: false})
                                     this.fetchDetails()
                                 }
@@ -197,7 +197,8 @@ export default class TrainerWorkout extends Component {
             constants.warning,
             'Are you sure you want to delete?',
             [
-                {text: 'OK', onPress: () => this._delete(id)}
+                {text: 'OK', onPress: () => this._delete(id)},
+                {text: 'cancel', onPress: () => console.log("ok pressed")}
             ],
             {cancelable: false}
         )
@@ -348,7 +349,7 @@ export default class TrainerWorkout extends Component {
                                                                                                                    <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
                                                                                                                     {this.state.onProcess === false ?
                                                                                                                         <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
-                                                                                                                            <Text>Add Day</Text>
+                                                                                                                            <Text>Add workout</Text>
                                                                                                                         </Button> : <Spinner color="black"/>}
                                                                                                                    </View>
                                                                                                                    </View>

@@ -154,6 +154,7 @@ export default class Sessions extends PureComponent {
             )
         })
         .then(res => {
+            this.setState({onProcess: false})
             if(res.status === 200){
                 this.setState({modalVisible: false, onProcess: false})
                 this.fetchDetails()

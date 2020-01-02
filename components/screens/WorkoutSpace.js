@@ -62,7 +62,7 @@ export default class WorkoutSpace extends Component {
            isVisible: false,
            auth_key: null,
            name: null,
-           description: null,
+           description: "description",
            planDetails: null,
            onProcess: false
         }
@@ -110,7 +110,7 @@ export default class WorkoutSpace extends Component {
 
     fetchDetails = () => {
             this.setState({loading: true})
-            let course_list = fetch(constants.API + 'current/trainer/trainees/'+this.state.id + '/plans', {
+            let course_list = fetch(constants.API + 'current/trainer/trainees/'+ this.state.id + '/plans', {
                 method: 'GET',
                 headers: {
                                 'Accept': 'application/json',
@@ -154,7 +154,7 @@ export default class WorkoutSpace extends Component {
                     return
                 }
                 this.setState({onProcess: true})
-                fetch(constants.API + 'current/trainer/trainees/'+this.state.trainee_id + '/plans', {
+                fetch(constants.API + 'current/trainer/trainees/'+ this.state.id + '/plans', {
                     method: 'POST',
                     headers: {
                        'Accept': 'application/json',
@@ -227,7 +227,7 @@ export default class WorkoutSpace extends Component {
                                                                         {this.state.planDetails !== null ?
                                                                         (<Form>
                                                                            <View style={{margin: 15}}>
-                                                                           <Label><Text style={{fontWeight: 'bold'}}>Meal Name</Text><Text style={{color: 'red'}}>*</Text></Label>
+                                                                           <Label><Text style={{fontWeight: 'bold'}}>Workout Name</Text><Text style={{color: 'red'}}>*</Text></Label>
                                                                            <Item regular>
                                                                                 <Input placeholder="eg. Abs workout" onChangeText={(text) => this.setState({name: text})}/>
                                                                            </Item>
