@@ -226,7 +226,7 @@ export default class addSubscription extends Component {
           { this.state.trainee_id !== null && this.state.trainers !== null && this.state.course !== null ? (
           <Content style={styles.content}>
             <View>
-                    <View ><Label><Text style={{fontWeight: 'bold'}}>Search Trainer<Text style={{color: 'red'}}>*</Text></Text></Label>
+                    <View ><Label><Text style={{fontWeight: 'bold'}}>Select Trainer<Text style={{color: 'red'}}>*</Text></Text></Label>
                      <View style={{padding: 10, backgroundColor: '#f4f4f4', marginTop: 15}}>
                         <TouchableOpacity onPress={() => this.showModal(true)}>
                             <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
@@ -289,9 +289,10 @@ export default class addSubscription extends Component {
                                onRequestClose={() => {
                                this.showModal(false)
                             }}>
+                                <ScrollView showsVerticalScrollBar={false}>
                                 {this.state.trainers !== null ?
                                    <View style={{margin: 15}} >
-                                      <View style={{marginTop: 15}}>
+                                      <View>
                                          <TouchableOpacity onPress={() => {this.setState({isVisible: false})}}>
                                              <Icon size={25} name="md-arrow-back"/>
                                          </TouchableOpacity>
@@ -323,6 +324,7 @@ export default class addSubscription extends Component {
                                          </View>
                                       </View>
                                    </View> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
+                                   </ScrollView>
                             </Modal>
        </Container>
     );

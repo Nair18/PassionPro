@@ -248,6 +248,7 @@ class SecondLevelCustomer extends PureComponent {
 
   return (
     <Fragment>
+    <StatusBar backgroundColor="black" barStyle="light-content"/>
     {this.state.courseInfo !== null && this.state.traineeDetails?
     <Container style={{backgroundColor: constants.screen_color}}>
 

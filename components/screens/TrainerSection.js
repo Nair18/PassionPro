@@ -177,6 +177,8 @@ export default class Admin extends Component {
         var today = new Date();
         const {trainerDetails} = this.state
     return(
+        <Fragment>
+        <StatusBar backgroundColor="black" barStyle="light-content"/>
         <Container style={{backgroundColor: constants.screen_color}}>
             {this.state.trainerDetails !== null ?
             <Content>
@@ -247,6 +249,7 @@ export default class Admin extends Component {
             </ScrollView>
             </Content> : <PageLoader/>}
         </Container>
+        </Fragment>
     );
   }
 }

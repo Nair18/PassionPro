@@ -33,6 +33,7 @@ export default class QuickClient extends Component {
             text_message = "New clients in last 30 days"
             for(let i=0;i<this.state.details.length; i++){
                 data = {
+                    "id": this.state.details[i]["id"],
                     "name": this.state.details[i]["name"],
                     "date": this.state.details[i]["start_time"]
                 }
@@ -41,8 +42,10 @@ export default class QuickClient extends Component {
         }
         else if(this.state.message === "ACTIVE_PT"){
             text = "Personal training started on "
+            text_message = "Actively taking personal training"
             for(let i=0;i<this.state.details.length; i++){
                data = {
+                   "id": this.state.details[i]["id"],
                    "name": this.state.details[i]["name"],
                    "date": this.state.details[i]["start_time"]
                }
@@ -54,6 +57,7 @@ export default class QuickClient extends Component {
                     text_message = "Personal training expiring within 1 month"
                     for(let i=0;i<this.state.details.length; i++){
                        data = {
+                           "id": this.state.details[i]["id"],
                            "name": this.state.details[i]["name"],
                            "date": this.state.details[i]["start_time"]
                        }
@@ -65,6 +69,7 @@ export default class QuickClient extends Component {
                     text_message = "Gym membership expiring within 1 month"
                     for(let i=0;i<this.state.details.length; i++){
                        data = {
+                           "id": this.state.details[i]["id"],
                            "name": this.state.details[i]["name"],
                            "date": this.state.details[i]["start_time"]
                        }

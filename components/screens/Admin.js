@@ -378,7 +378,7 @@ export default class Admin extends PureComponent {
                                                     </Card>
                                                 </TouchableOpacity>
                                              </View>
-                                             <View style={{marginTop: 25}}>
+                                             <View style={{marginTop: 20}}>
                                                 <Text style={{fontWeight: 'bold'}}>Client Overview</Text>
                                              </View>
                                              <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -460,7 +460,7 @@ export default class Admin extends PureComponent {
 
                                        </View>
                    </View>
-                   <View style={{marginTop: 25}}>
+                   <View style={{marginTop: 20}}>
                     <Text style={{fontWeight: 'bold'}}>Write up</Text>
                    </View>
                    <View style={{marginTop: 10}}>

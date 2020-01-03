@@ -159,7 +159,7 @@ export default class ClientInfo extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>{traineeDetails["address"]}</Text>
+                         <Text>{traineeDetails["address"] === null ? "NA" : traineeDetails["address"]}</Text>
                       </View>
                     </View>
 

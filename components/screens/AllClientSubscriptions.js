@@ -250,7 +250,7 @@ export default class AllClientSubscriptions extends Component {
                     </Card>
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
                 <View style={{padding: 10, backgroundColor: "#ffd369"}}>
-                   <Text>Showing info of clients who joined between <Text style={{color: constants.text_highlight}}>{new Date(this.state.start_date).toDateString()}</Text> To <Text style={{color: constants.text_highlight}}>{new Date(this.state.end_date).toDateString()}</Text></Text>
+                   <Text>Showing info of clients who joined during <Text style={{color: constants.text_highlight}}>{new Date(this.state.start_date).toDateString()}</Text> To <Text style={{color: constants.text_highlight}}>{new Date(this.state.end_date).toDateString()}</Text></Text>
                 </View>
                 {trainee_subs.length > 0 ? trainee_subs.map(subs =>
                 <View style={styles.cardListView}>

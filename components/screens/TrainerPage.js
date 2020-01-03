@@ -181,7 +181,7 @@ export default class TrainerPage extends Component {
                          <Text style={styles.text}>Address </Text>
                       </View>
                       <View style={styles.textFormat}>
-                         <Text>{trainerDetails["address"]}</Text>
+                         <Text>{trainerDetails["address"] === null ? "NA": trainerDetails["address"]}</Text>
                       </View>
                     </View>
 
