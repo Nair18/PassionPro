@@ -84,11 +84,11 @@ export default class Workspace extends Component {
             <Content style={{margin: 15}}>
                 <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TraineeMealSpace')}>
                 <View>
-                    <Card>
-                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: "#d1d1d1"}}>
+                    <Card style={{borderRadius: 10, backgroundColor: "#d1d1d1"}}>
+                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: "#d1d1d1", borderRadius: 10}}>
                             <Image source={require('./meal.jpg')} style={{height: 200, width: null, flex: 1}}/>
                         </CardItem>
-                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, elevation: 2}}>
+                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Meal Plans</Text>
                             <Icon name="md-arrow-round-forward" size={20}/>
                         </CardItem>
@@ -97,11 +97,11 @@ export default class Workspace extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TraineeWorkspace')}>
                 <View>
-                    <Card>
-                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'}}>
+                    <Card style={{backgroundColor: "black", borderRadius: 10}}>
+                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', borderRadius: 10}}>
                            <Image source={require('./workout.jpg')} style={{height: 200, width: null, flex: 1}}/>
                         </CardItem>
-                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, elevation: 2}}>
+                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Workout Plans</Text>
                             <Icon name="md-arrow-round-forward" size={20}/>
                         </CardItem>

@@ -186,15 +186,22 @@ export default class WorkoutSpace extends Component {
 
     render(){
         const {planDetails} = this.state
+        let standard_plan = []
+        let personal_plan = []
+        if(this.state.planDetails !== null ){
+            personal_plan = this.state.planDetails.filter((val) => {
+                return val["standard"] !== true
+            })
+        }
         return(
             <Container style={{backgroundColor: constants.screen_color}}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                     <Content style={styles.content}>
-                    {this.state.planDetails !== null ? this.state.planDetails.map(planDetails =>
+                    {this.state.planDetails !== null ? personal_plan.map(planDetails =>
                         <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseWorkouts',{'plan_id': planDetails["id"], 'trainee_id': this.state.id})}>
-                           <Card style={{backgroundColor: constants.item_card}}>
-                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
+                           <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, borderRadius: 10}}>
                                     <Text style={{fontWeight: 'bold'}}>{planDetails["name"]}</Text>
                                     <Icon name="md-arrow-round-forward" size={20}/>
                                 </CardItem>
@@ -205,9 +212,11 @@ export default class WorkoutSpace extends Component {
                      </Content>
                      </ScrollView>
                     <View style={styles.addButton}>
+                                            <TouchableOpacity onPress={() => this.showModal(true)}>
                                             <Button  rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.showModal(true)}>
-                                                    <Icon size={30} style={{color: 'white'}}name="md-add" />
+                                                    <Icon size={30} style={{color: 'white'}}name="md-add" onPress={() => this.showModal(true)}/>
                                             </Button>
+                                            </TouchableOpacity>
                                         </View>
                     <View>
                                                                     <Modal

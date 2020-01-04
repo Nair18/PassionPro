@@ -99,7 +99,7 @@ export default class LandingPage extends PureComponent {
                 />
 
 
-               <Text style={{fontWeight: 'bold', fontSize: 30}}>PepUp</Text>
+               <Text style={{fontWeight: 'bold', fontSize: 30}}>Mygymnasio</Text>
             </View>
             <Content style={styles.content}>
              <Fragment>

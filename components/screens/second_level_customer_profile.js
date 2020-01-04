@@ -50,7 +50,7 @@ export default class SLCProfile extends Component {
                             <Thumbnail large source={require('./client-profile.png')}/>
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', flex:1 }}>
-                            <Button block style={{backgroundColor: constants.logout}} onPress={() => {this.props.navigation.navigate('LandingPage')}}><Text>Logout</Text></Button>
+                            <Button block style={{backgroundColor: constants.logout, borderRadius: 10}} onPress={() => {this.props.navigation.navigate('LandingPage')}}><Text>Logout</Text></Button>
                         </View>
                     </View>
                 </Content>

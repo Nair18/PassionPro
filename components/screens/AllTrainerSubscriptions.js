@@ -226,8 +226,8 @@ export default class AllTrainerSubscriptions extends Component {
             <View>
                 {this.state.show ?
                 <View>
-                    <Card>
-                        <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black'}}>
+                    <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                        <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold', color: 'white'}}>Filter by trainer</Text>
                             <TouchableOpacity onPress={() => this._hideFilter(false)}>
                                 <Icon name="md-close" size={10} style={{color: 'white'}}/>
@@ -242,7 +242,7 @@ export default class AllTrainerSubscriptions extends Component {
                             </Button>
                            </View>
                         </CardItem>
-                        <CardItem footer style={{justifyContent: 'flex-end', backgroundColor: constants.card_body}}>
+                        <CardItem footer style={{justifyContent: 'flex-end', backgroundColor: constants.card_body, borderRadius: 10}}>
                             {this.state.onProcess ?
                             <Button style={{backgroundColor: 'black'}} onPress={() => this.fetchSubs("submit")}><Text>Apply</Text></Button> : <Spinner color="black" />}
                         </CardItem>
@@ -253,8 +253,8 @@ export default class AllTrainerSubscriptions extends Component {
                 </View>
                 {trainer_subs.length > 0 ? trainer_subs.map(subs =>
                 <View style={styles.cardListView}>
-                     <Card>
-                        <CardItem header style={{backgroundColor: constants.card_header, height: 80, justifyContent: 'space-between'}}>
+                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                        <CardItem header style={{backgroundColor: constants.card_header, height: 80, justifyContent: 'space-between', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Training subscription</Text>
                             <Text style={{fontWeight: 'bold', color: subs["is_active"] ? constants.active_color : constants.archive_color}}>{subs["is_active"] ? "ACTIVE" : "EXPIRED"}</Text>
                         </CardItem>
@@ -276,7 +276,7 @@ export default class AllTrainerSubscriptions extends Component {
                         <CardItem style={{backgroundColor: constants.card_body}}>
                             <Text><Text style={{fontWeight: 'bold'}}>Training start date: </Text>{subs["start_date"]}</Text>
                         </CardItem>
-                        <CardItem style={{backgroundColor: constants.card_body}}>
+                        <CardItem footer style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                             <Text><Text style={{fontWeight: 'bold'}}>Training end date: </Text>{subs["end_date"]}</Text>
                         </CardItem>
                      </Card>

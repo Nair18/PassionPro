@@ -199,11 +199,12 @@ export default class AdminWorkoutSpace extends Component {
                 <ScrollView>
 
                 <Content style={{margin: 15, padding: 10}}>
+                    <View style={{padding: 10, backgroundColor: constants.yellow}}><Text><Text style={{fontWeight: 'bold'}}>{this.state.day}</Text> workouts</Text></View>
                     {this.state.exercise !== null && this.state.exerciseList !== null && this.state.onProcess == false ? this.state.exercise.map(exercise =>
                     <View>
                       <View>
-                        <Card>
-                           <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
+                        <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                           <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between', borderRadius: 10}}>
                               <Text style={{fontWeight: 'bold'}}>{exercise["exercise"]}</Text>
                               {this.state.onProcess == false ?
                               <View>
@@ -216,7 +217,7 @@ export default class AdminWorkoutSpace extends Component {
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Reps</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Duration</Text>
                            </CardItem>
-                           <CardItem style={{flexDirection: 'row', backgroundColor: constants.card_body}}>
+                           <CardItem style={{flexDirection: 'row', backgroundColor: constants.card_body, borderRadius: 10}}>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{exercise["sets"]}</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{exercise["weights"]}kg</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{exercise["reps"]}</Text>
@@ -224,10 +225,10 @@ export default class AdminWorkoutSpace extends Component {
                            </CardItem>
                            {exercise["instructions"] !== null && exercise["instructions"].trim() !== "" ?
                            <View>
-                            <CardItem style={{backgroundColor: constants.card_body}}>
+                            <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                               <Text style={{fontWeight: 'bold', fontSize: 15}}>Instructions </Text>
                             </CardItem>
-                            <CardItem style={{backgroundColor: constants.card_body}}>
+                            <CardItem footer style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                               <Text>{exercise["instructions"]}</Text>
                             </CardItem></View> : null}
                         </Card>
@@ -240,9 +241,11 @@ export default class AdminWorkoutSpace extends Component {
                 {this.state.exercise !== null && this.state.exerciseList !== null ?
 
                                     <View style={styles.addButton}>
+                                                        <TouchableOpacity onPress={() => this.selectExercise(bodyparts)}>
                                                         <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.selectExercise(bodyparts)}>
                                                           <Icon size={30} style={{color: 'white'}}name="md-add" />
                                                         </Button>
+                                                        </TouchableOpacity>
                                                       </View>: null}
             </Container>
         );

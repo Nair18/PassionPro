@@ -31,7 +31,7 @@ export default class RequestProcessingPage extends Component {
                         <Text>Your request is successfully sent to Admin for approval ...</Text>
                     </View>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        <Text>Powered by PepUp</Text>
+                        <Text>Powered by Mygymnasio</Text>
                     </View>
                 </Fragment>
             </Content>

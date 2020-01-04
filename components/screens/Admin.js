@@ -357,8 +357,8 @@ export default class Admin extends PureComponent {
                          <View>
                                              <View style={{flex: 1}}>
                                                 <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('StatsPage', {id: this.state.gymId, gym_stats: this.state.stats})}>
-                                                    <Card style={{borderRadius: 13, backgroundColor: constants.card_body}}>
-                                                        <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 50, borderRadius: 13}}>
+                                                    <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                        <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 50, borderRadius: 10}}>
                                                             <View>
                                                                 <Text style={{ fontSize: 15}}>Total <Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>money collected</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
                                                             </View>
@@ -367,7 +367,7 @@ export default class Admin extends PureComponent {
                                                              {this.state.stats === null  ? <Spinner color="black"/> :
                                                              <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 30,color: '#2c7873'}}>{this.state.stats !== null ? this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"]): null}</Text></Text>}
                                                         </CardItem>
-                                                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: "#ebe6e6", elevation: 2, borderRadius: 13}}>
+                                                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: "#ebe6e6", elevation: 2, borderRadius: 10}}>
                                                             <View>
                                                                 <Text style={{fontWeight: 'bold'}}>Detailed Report </Text>
                                                             </View>
@@ -384,14 +384,14 @@ export default class Admin extends PureComponent {
                                              <View style={{flexDirection: 'row', marginTop: 10}}>
                                                 <View style={{flex: 1}}>
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["members_in_month"]["details"], id: this.state.gymId, message: "NEW_CLIENT"})}>
-                                                     <Card style={{borderRadius: 13, backgroundColor: constants.card_body}}>
-                                                         <CardItem header style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 13}}>
+                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                         <CardItem header style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
                                                              <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>New clients</Text></Text>
                                                          </CardItem>
                                                          <CardItem style={{backgroundColor: "#ebe6e6"}}>
                                                              <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 25, color: '#2c7873'}}>{this.state.overview !== null ? this.state.overview["members_in_month"]["count"] : null} </Text>client(s)</Text>
                                                          </CardItem>
-                                                         <CardItem footer style={{justifyContent: 'space-between', backgroundColor: '#ebe6e6', elevation: 2, borderRadius: 13}}>
+                                                         <CardItem footer style={{justifyContent: 'space-between', backgroundColor: '#ebe6e6', elevation: 2, borderRadius: 10}}>
                                                             <View />
                                                             <View>
                                                                 <Icon name="md-arrow-round-forward" size={20}/>
@@ -402,14 +402,14 @@ export default class Admin extends PureComponent {
                                                 </View>
                                                 <View style={{flex: 1}}>
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["all_pt_members"]["details"], id: this.state.gymId, message: "ACTIVE_PT"})}>
-                                                     <Card style={{borderRadius: 13, backgroundColor: constants.card_body}}>
-                                                        <CardItem style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 13}}>
+                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                        <CardItem style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
                                                              <Text style={{fontSize: 15}}><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Currently</Text> taking <Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>personal training</Text></Text>
                                                         </CardItem>
                                                         <CardItem style={{backgroundColor: '#ebe6e6'}}>
                                                              <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 25, color: '#2c7873'}}>{this.state.overview !== null ? this.state.overview["all_pt_members"]["count"] : null} </Text>client(s)</Text>
                                                         </CardItem>
-                                                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: '#ebe6e6', elevation: 2, borderRadius: 13}}>
+                                                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: '#ebe6e6', elevation: 2, borderRadius: 10}}>
                                                             <View />
                                                             <View>
                                                                <Icon name="md-arrow-round-forward" size={20}/>
@@ -422,14 +422,14 @@ export default class Admin extends PureComponent {
                                              <View style={{flexDirection: 'row'}}>
                                                  <View style={{flex: 1}}>
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["pt_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_PT"})}>
-                                                     <Card style={{borderRadius: 13, backgroundColor: constants.card_body}}>
-                                                        <CardItem style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 13}}>
+                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                        <CardItem style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
                                                              <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Personal training</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d', fontSize: 15}}>expiring</Text></Text>
                                                         </CardItem>
                                                         <CardItem style={{backgroundColor: '#ebe6e6'}}>
                                                              <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 25, color: '#9d0b0b'}}>{this.state.overview !== null ? this.state.overview["pt_expiring"]["count"] : null} </Text>client(s)</Text>
                                                         </CardItem>
-                                                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: '#ebe6e6', elevation: 2, borderRadius: 13}}>
+                                                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: '#ebe6e6', elevation: 2, borderRadius: 10}}>
                                                         <View />
                                                         <View>
                                                             <Icon name="md-arrow-round-forward" size={20}/>
@@ -440,14 +440,14 @@ export default class Admin extends PureComponent {
                                                  </View>
                                                  <View style={{flex: 1}}>
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["membership_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_MEMBER"})}>
-                                                     <Card style={{borderRadius: 13, backgroundColor: constants.card_body}}>
-                                                        <CardItem  style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 13}}>
+                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                        <CardItem  style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
                                                              <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Membership</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d', fontSize: 15}}>expiring</Text></Text>
                                                         </CardItem>
                                                         <CardItem style={{backgroundColor: '#ebe6e6'}}>
                                                              <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 25, color: '#9d0b0b'}}>{this.state.overview !== null ? this.state.overview["membership_expiring"]["count"] : null } </Text>client(s)</Text>
                                                         </CardItem>
-                                                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: '#ebe6e6', elevation: 2, borderRadius: 13}}>
+                                                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: '#ebe6e6', elevation: 2, borderRadius: 10}}>
                                                              <View />
                                                              <View>
                                                                  <Icon name="md-arrow-round-forward" size={20}/>
@@ -464,11 +464,11 @@ export default class Admin extends PureComponent {
                     <Text style={{fontWeight: 'bold'}}>Write up</Text>
                    </View>
                    <View style={{marginTop: 10}}>
-                      <Card>
-                        <CardItem header>
+                      <Card style={{borderRadius: 10}}>
+                        <CardItem header style={{borderRadius: 10}}>
                             <Textarea selectable onChangeText={text => this.setState({message: text})} placeholder="Send message to trainers and clients..."/>
                         </CardItem>
-                        <CardItem footer style={{justifyContent: 'space-between',alignItems: 'center', elevation: 2, borderColor: constants.card_header}}>
+                        <CardItem footer style={{justifyContent: 'space-between',alignItems: 'center', elevation: 2, borderColor: constants.card_header, borderRadius: 10}}>
                             <Text/>
                             <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Send</Text></Button>
                         </CardItem>

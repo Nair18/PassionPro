@@ -182,13 +182,15 @@ export default class CreateMeal extends Component {
                 <Content style={{margin: 15}}>
                     {this.state.details !== null ? this.state.details.map(meal =>
                     <View style={{marginTop: 5}}>
-                       <Card>
-                        <CardItem style={{backgroundColor: '#393e46', justifyContent: 'space-between'}}>
+                       <Card style={{backgroundColor: constants.card_body, borderRadius: 10}}>
+                        <CardItem style={{backgroundColor: '#393e46', justifyContent: 'space-between', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold', color: 'white'}}>{meal["name"]}</Text>
-                            {this.state.onProcess === false ?
-                            <Icon name="md-close" style={{color: 'white'}} size={25} onPress={() => this._deletealert(meal["id"])}/> : <Spinner color="black"/>}
+                            <TouchableOpacity onPress={() => this._deletealert(meal["id"])}>
+                                {this.state.onProcess === false ?
+                                    <Icon name="md-close" style={{color: 'white'}} size={25} onPress={() => this._deletealert(meal["id"])}/> : <Spinner color="black"/>}
+                            </TouchableOpacity>
                         </CardItem>
-                        <CardItem style={{backgroundColor: '#ebe6e6'}}>
+                        <CardItem style={{backgroundColor: '#ebe6e6', borderRadius: 10}}>
                             <Text>{meal["description"]}</Text>
                         </CardItem>
                        </Card>
@@ -196,9 +198,11 @@ export default class CreateMeal extends Component {
                 </Content>
                 </ScrollView>
                 <View style={styles.addButton}>
+                            <TouchableOpacity onPress={() => this.showModal(true)}>
                                                                 <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.showModal(true)}>
                                                                         <Icon size={30} style={{color: 'white'}}name="md-add" />
                                                                 </Button>
+                                                                </TouchableOpacity>
                                                             </View>
                 <View>
                                                 <Modal
@@ -223,9 +227,12 @@ export default class CreateMeal extends Component {
                                                             <Input placeholder="eg. Breakfast" onChangeText={(text) => this.setState({name: text})}/>
                                                        </Item>
                                                        </View>
-                                                       <Item style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
-                                                          <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Meal content here ...*" onChangeText={text => this.setState({description: text})}/>
-                                                       </Item>
+                                                       <View style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
+                                                            <Label><Text style={{fontWeight: 'bold'}}>Meal content<Text style={{color: 'red'}}>*</Text></Text></Label>
+                                                            <Item>
+                                                                <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Meal content here ..." onChangeText={text => this.setState({description: text})}/>
+                                                            </Item>
+                                                       </View>
                                                        <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
                                                        {this.state.onProcess === false ?
                                                        <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>

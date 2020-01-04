@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import ProfileSkeleton from './ProfileSkeleton';
 import IconBadge from 'react-native-icon-badge';
-
+import OfflineNotice from './OfflineNotice';
 import constants from '../constants';
 import WorkoutProgress from './WorkoutProgress';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -249,6 +249,7 @@ class SecondLevelCustomer extends PureComponent {
   return (
     <Fragment>
     <StatusBar backgroundColor="black" barStyle="light-content"/>
+    <OfflineNotice/>
     {this.state.courseInfo !== null && this.state.traineeDetails?
     <Container style={{backgroundColor: constants.screen_color}}>
 
@@ -263,14 +264,14 @@ class SecondLevelCustomer extends PureComponent {
 
             <Content padder style={styles.contentBlock}>
               <TouchableOpacity  activeOpacity={1} onPress={() => this.props.navigation.navigate('SLCProfile', {profile: this.state.traineeDetails})}>
-              <View style={{backgroundColor:'#955670',height:100, borderRadius: 50,width: '60%', flexDirection: 'row', alignItems: 'center', padding: 10}}>
+              <View style={{backgroundColor:'#955670',height:100, borderRadius: 10,width: '50%', flexDirection: 'row', alignItems: 'center', padding: 10}}>
                     <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./profile.jpg')}style={styles.thumbnail}/></View>
-                <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                <View style={{justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'}}>
                     <View style={{marginLeft: 10, flex: 1}}>
                         <Text style={{fontWeight: 'bold',color: 'white' }}>Hi, {this.state.traineeDetails["name"].split(" ")[0]}</Text>
                     </View>
                     <View style={{flex:1}}>
-                        <Icon name="md-arrow-round-forward" size={20} style={{color: 'white'}}/>
+                        <Icon name="md-arrow-round-forward"  style={{color: 'white'}}/>
                     </View>
                 </View>
               </View>
@@ -285,10 +286,10 @@ class SecondLevelCustomer extends PureComponent {
                     {this.state.courseInfo !== null ? (this.state.courseInfo["courses"].map(item =>
                     <View style={{marginTop: 10, marginRight: 10}}>
                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('ClientCourseInfo', {courseInfo: item})}>
-                       <Card style={{width: 250, height: 100}}>
-                        <ImageBackground style={{width: '100%', height: '100%', backgroundColor: "#2C3E5B"}}>
+                       <Card style={{width: 250, height: 100, borderRadius: 10}}>
+                        <ImageBackground style={{width: '100%', height: '100%', backgroundColor: "#2C3E5B", borderRadius: 10}}>
                         </ImageBackground>
-                        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', padding: 15}}>
+                        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', padding: 15, borderRadius: 10}}>
                              <Text style={{color: 'white',fontWeight: 'bold'}}>{item["name"]} <Icon name="md-arrow-round-forward"/></Text>
                            </View>
                        </Card>
@@ -304,8 +305,8 @@ class SecondLevelCustomer extends PureComponent {
                             </View>
                             <View style={styles.container}>
                                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Workspace')}>
-                                   <Card style={{backgroundColor: 'black'}}>
-                                      <CardItem header style={{backgroundColor: '#424651', justifyContent: 'space-around'}}>
+                                   <Card style={{backgroundColor: 'black', borderRadius: 10}}>
+                                      <CardItem header style={{backgroundColor: '#424651', justifyContent: 'space-around', borderRadius: 10}}>
                                             <Icon style={{color: 'white'}} size={50} name="md-bicycle"/>
                                             <Text style={{fontWeight: 'bold', color: 'white', marginLeft: 10}}> Get Set Go </Text>
                                             <Icon style={{color: 'white'}} size={20} name="md-arrow-round-forward"/>
@@ -323,10 +324,10 @@ class SecondLevelCustomer extends PureComponent {
 
                     <View style={{flex: 1, marginTop: 10}}>
                         <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('BodyWeight')}>
-                        <Card style={{height: 100, width: '100%'}}>
+                        <Card style={{height: 100, width: '100%', borderRadius: 10}}>
 
-                                <ImageBackground style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#4D0011'}}/>
-                                    <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                                <ImageBackground style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#4D0011', borderRadius: 10}}/>
+                                    <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', borderRadius: 10}}>
                                                                                                                               <Text style={{color: 'white', fontWeight: 'bold'}}>Body Weight </Text>
                                                                                                                               <Icon name="md-arrow-round-forward" style={{color: 'white'}} size={15}/>
                                                                                                                             </View>
@@ -338,10 +339,10 @@ class SecondLevelCustomer extends PureComponent {
 
                     <View style={{flex: 1, marginTop: 10 }}>
                         <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('BodyFat')}>
-                        <Card style={{height: 100, width: '100%'}}>
+                        <Card style={{height: 100, width: '100%', borderRadius: 10}}>
 
-                                <ImageBackground style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#4D0011'}}/>
-                                <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                                <ImageBackground style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#4D0011', borderRadius: 10}}/>
+                                <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', borderRadius: 10}}>
                                                                                                                           <Text style={{color: 'white', fontWeight: 'bold'}}>Body Fat </Text>
                                                                                                                           <Icon name="md-arrow-round-forward" style={{color: 'white'}} size={15}/>
                                                                                                                         </View>
@@ -353,9 +354,9 @@ class SecondLevelCustomer extends PureComponent {
 
                    <View style={{marginTop: 10}}>
                                            <TouchableOpacity activeOpacity={1} onPress= {() => this.props.navigation.navigate('WorkoutProgress')}>
-                                           <Card style={{height: 100, width: '100%'}}>
-                                               <ImageBackground  style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#4D0011'}}/>
-                                               <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                                           <Card style={{height: 100, width: '100%', borderRadius: 10}}>
+                                               <ImageBackground  style={{width: '100%', height: '100%', opacity: 0.5, backgroundColor: '#4D0011', borderRadius: 10}}/>
+                                               <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', borderRadius: 10}}>
                                                   <Text style={{color: 'white', fontWeight: 'bold', fontStyle: 'comic'}}>Workout Logs </Text>
                                                   <Icon name="md-arrow-round-forward" style={{color: 'white'}} size={15}/>
                                                </View>

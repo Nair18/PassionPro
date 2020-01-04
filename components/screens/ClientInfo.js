@@ -164,27 +164,27 @@ export default class ClientInfo extends Component {
                     </View>
 
                     <View style={{marginLeft: 15, marginTop: 25, width: '90%'}}>
-                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails', {details: traineeDetails["gym_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
                           <View>
-                                <Card style={{backgroundColor: constants.item_card}}>
-                                    <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between'}}>
+                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails', {details: traineeDetails["gym_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
+                                <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                                    <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between', borderRadius: 10}}>
                                             <Text style={{fontWeight: 'bold'}}>Membership details </Text>
                                             <Icon size={20} name="md-arrow-dropright"/>
 
                                     </CardItem>
                                 </Card>
-                          </View>
                           </TouchableOpacity>
+                          </View>
+                         <View style={{marginTop: 10}}>
                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails', {auth_key: this.state.auth_key, details: traineeDetails["course_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"], "id": this.state.id, "client_id": this.state.client_id}})}>
-                          <View>
-                               <Card style={{backgroundColor: constants.item_card}}>
-                                <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between'}}>
+                               <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                                <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between', borderRadius: 10}}>
                                    <Text style={{fontWeight: 'bold'}}>Personal Training details </Text>
                                    <Icon size={20} name="md-arrow-dropright"/>
                                 </CardItem>
                                </Card>
-                          </View>
                           </TouchableOpacity>
+                         </View>
                     </View>
                 </Content>
               </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View>}

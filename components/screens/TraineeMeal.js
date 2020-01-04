@@ -109,11 +109,11 @@ export default class TraineeMeal extends Component {
                 <Content style={{margin: 15}}>
                     {this.state.meals !== null ? this.state.meals.map(meal =>
                     <View style={{marginTop: 5}}>
-                       <Card>
-                        <CardItem style={{backgroundColor: '#393e46', justifyContent: 'space-between'}}>
+                       <Card style={{borderRadius: 10}}>
+                        <CardItem style={{backgroundColor: '#393e46', justifyContent: 'space-between', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold', color: 'white'}}>{meal["name"]}</Text>
                         </CardItem>
-                        <CardItem>
+                        <CardItem style={{borderRadius: 10}}>
                             <Text>{meal["description"]}</Text>
                         </CardItem>
                        </Card>

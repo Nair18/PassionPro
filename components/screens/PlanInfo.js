@@ -158,7 +158,7 @@ export default class CreateStandardPlan extends Component {
         card.push(
           <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AdminWorkoutSpace', {plan_day: data[i],
           plan_data: this.state.plan_data["plans"], plan_id: this.state.plan_data["id"], gym_id: this.state.gym_id})}>
-          <Card style={{marginTop: 10, backgroundColor: constants.item_card}}>
+          <Card style={{marginTop: 10, backgroundColor: constants.item_card, borderRadius: 10}}>
             <CardItem header style={styles.card_header}>
               <Text style={styles.headings}>{data[i]}</Text>
               <Icon name="md-arrow-dropright" size={20}/>
@@ -196,7 +196,7 @@ export default class CreateStandardPlan extends Component {
                   </View>
                   <View style={{margin: 20, justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={{fontWeight: 'bold', textDecorationLine: 'underline', fontSize: 20}}>
-                       Exercise
+                       Workouts
                     </Text>
                   </View>
                   <View>
@@ -227,13 +227,13 @@ export default class CreateStandardPlan extends Component {
                                    <Text style={{fontWeight: 'bold'}}>Plan name</Text>
                                 </View>
                                 <Item regular>
-                                   <Input placeholder="eg. Bench Press" value={this.state.plan_name} onChangeText={text => this.setState({plan_name: text})}/>
+                                   <Input value={this.state.plan_name} onChangeText={text => this.setState({plan_name: text})}/>
                                 </Item>
                                 <View style={{marginTop: 15}}>
                                   <Text style={{fontWeight: 'bold'}}>Description</Text>
                                 </View>
                                   <Item regular>
-                                     <Input placeholder="eg. Bench Press" value={this.state.plan_description} onChangeText={text => this.setState({plan_description: text})}/>
+                                     <Input value={this.state.plan_description} onChangeText={text => this.setState({plan_description: text})}/>
                                   </Item>
                                 <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
                                 {this.state.onProcess === false ?
@@ -273,7 +273,8 @@ export default class CreateStandardPlan extends Component {
     card_header: {
       justifyContent: 'space-between',
 
-      backgroundColor: constants.item_card
+      backgroundColor: constants.item_card,
+      borderRadius: 10
     },
     background: {
       backgroundColor: 'grey'

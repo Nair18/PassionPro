@@ -148,11 +148,11 @@ export default class Plans extends PureComponent {
         </Content>
         </ScrollView>
         <View style={styles.addButton}>
-
-                    <Button  onPress={() => this.props.navigation.navigate('CreateStandardPlan', {go_back_key: this.props.navigation.state.key, ID: this.state.id, coursetype: this.state.coursetype})} rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('CreateStandardPlan', {go_back_key: this.props.navigation.state.key, ID: this.state.id, coursetype: this.state.coursetype})}>
+                    <Button onPress={() => this.props.navigation.navigate('CreateStandardPlan', {go_back_key: this.props.navigation.state.key, ID: this.state.id, coursetype: this.state.coursetype})} rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}}>
                       <Icon size={30} style={{color: 'white'}}name="md-add" />
                     </Button>
-
+                    </TouchableOpacity>
                   </View>
       </Container>
      </Fragment>

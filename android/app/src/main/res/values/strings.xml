@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">PepUp</string>
+    <string name="app_name">Mygymnasio</string>
     <string name="default_notification_channel_id" translatable="false">Default</string>
 </resources>

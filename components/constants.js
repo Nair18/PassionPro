@@ -14,6 +14,7 @@ export default {
   'card_body': '#ebe6e6',
   'card_header': "#f4f4f4",
   'screen_color': '#F4EAE6',
+  "yellow": "#ffd369",
   'admin_tab_background': '#C68D95',
   'admin_tab_active': '#A5525F',
   'item_card': '#A76270',

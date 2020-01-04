@@ -196,9 +196,10 @@ export default class TrainerWorkout extends Component {
         Alert.alert(
             constants.warning,
             'Are you sure you want to delete?',
+
             [
-                {text: 'OK', onPress: () => this._delete(id)},
-                {text: 'cancel', onPress: () => console.log("ok pressed")}
+                {text: 'cancel', onPress: () => console.log("ok pressed")},
+                {text: 'OK', onPress: () => this._delete(id)}
             ],
             {cancelable: false}
         )
@@ -210,14 +211,16 @@ export default class TrainerWorkout extends Component {
                 <Content style={{margin: 15}}>
                     {this.state.workouts !== null ? this.state.workouts.map(workout =>
                     <View>
-                        <Card>
-                           <CardItem header style={{backgroundColor: '#393e46'}}>
+                        <Card style={{backgroundColor: constants.card_body, borderRadius: 10}}>
+                           <CardItem header style={{backgroundColor: '#393e46', borderRadius: 10}}>
                               <Left>
                                 <Text style={{fontWeight: 'bold', color: 'white'}}>{workout["exercise"]}</Text>
                               </Left>
                               <Right>
+                                <TouchableOpacity onPress={() => this._deleteCard(workout["id"])}>
                                 {this.state.onProcess === false ?
                                 <Icon onPress={() => this._deleteCard(workout["id"])} style={{color: 'white'}} size={20} name="md-close" /> : <Spinner color='black' />}
+                                </TouchableOpacity>
                               </Right>
                            </CardItem>
                            <CardItem style={{flexDirection: 'row', backgroundColor: '#ebe6e6'}}>
@@ -226,14 +229,14 @@ export default class TrainerWorkout extends Component {
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Reps</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Duration</Text>
                            </CardItem>
-                           <CardItem style={{flexDirection: 'row', backgroundColor: '#ebe6e6'}}>
+                           <CardItem style={{flexDirection: 'row', backgroundColor: '#ebe6e6', borderRadius: 10}}>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["sets"]}</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["weights"]}kg</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["reps"]}</Text>
                               <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["duration"]}m</Text>
                            </CardItem>
                            {workout["instructions"] !== null ?
-                           <CardItem style={{backgroundColor: '#ebe6e6'}}>
+                           <CardItem style={{backgroundColor: '#ebe6e6', borderRadius: 10}}>
                               <Text><Text style={{fontWeight: 'bold'}}>Instructions: </Text>{workout["instructions"]}</Text>
                            </CardItem> : null }
 
@@ -243,9 +246,11 @@ export default class TrainerWorkout extends Component {
                 </Content>
                 </ScrollView>
                 <View style={styles.addButton}>
+                  <TouchableOpacity onPress={() => this.showModal(true)}>
                   <Button  rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.showModal(true)}>
                      <Icon size={30} style={{color: 'white'}}name="md-add" />
                   </Button>
+                  </TouchableOpacity>
                 </View>
                 <View>
 
@@ -256,6 +261,7 @@ export default class TrainerWorkout extends Component {
                                                                                                               onRequestClose={() => {
                                                                                                                 this.showModal(false)
                                                                                                               }}>
+                                                                                                              <ScrollView showsVerticalScrollBar={false}>
                                                                                                               <View style={{margin: 15}}>
                                                                                                                 <TouchableOpacity onPress={() => this.showModal(false)}>
                                                                                                                 <Icon name="md-close" size={30}/>
@@ -356,6 +362,7 @@ export default class TrainerWorkout extends Component {
                                                                                                                 </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No body parts added. Please add it from the admin dashboard</Text></View>}
 
                                                                                                               </Content>
+                                                                                                              </ScrollView>
                                                                                                             </Modal>
 
                                 </View>

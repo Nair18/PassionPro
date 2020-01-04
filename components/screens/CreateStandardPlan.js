@@ -13,7 +13,7 @@ export default class CreateStandardPlan extends Component {
     super(props)
     this.state = {
       name: null,
-      description: null,
+      description: "",
       coursetype: this.props.navigation.state.params.coursetype,
       course_type: null,
       courseTypeName: null,

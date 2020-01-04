@@ -143,7 +143,7 @@ export default class TrainerWorkspace extends Component {
 
     render(){
         const {traineeDetails} = this.state
-        if(traineeDetails !== null && traineeDetails["gym_subscriptions"].length>0){
+        if(traineeDetails !== null && traineeDetails["course_subscriptions"].length>0){
             active = traineeDetails["course_subscriptions"].filter((v) => {
                 return v["is_active"] === true
             })
@@ -155,9 +155,9 @@ export default class TrainerWorkspace extends Component {
                     {this.state.traineeDetails !== null && active.length > 0 ?
                       <Content style={styles.content}>
                         <View style={{margin: 15}}>
-                                                <Card>
-                                                    <CardItem header style={{backgroundColor: constants.card_header}}>
-                                                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Client Summary</Text>
+                                                <Card style={{backgroundColor: constants.card_body, borderRadius: 10}}>
+                                                    <CardItem header style={{backgroundColor: constants.card_header, borderRadius: 10}}>
+                                                        <Text style={{fontWeight: 'bold', fontSize: 15}}>Client Summary</Text>
                                                     </CardItem>
                                                     <CardItem style={{backgroundColor: constants.card_body}}>
                                                         <Text><Text style={{fontWeight: 'bold'}}>Name:</Text> {traineeDetails["name"]}</Text>
@@ -171,7 +171,7 @@ export default class TrainerWorkspace extends Component {
                                                     <CardItem style={{backgroundColor: constants.card_body}}>
                                                         <Text><Text style={{fontWeight: 'bold'}}>PT start date:</Text> {active[0]["start_date"] !== null ? active[0]["start_date"].split("T")[0] : "NA"}</Text>
                                                     </CardItem>
-                                                    <CardItem style={{backgroundColor: constants.card_body}}>
+                                                    <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                                                         <Text><Text style={{fontWeight: 'bold'}}>PT end date:</Text> {active[0]["end_date"] !== null ? active[0]["end_date"].split("T")[0] : "NA"}</Text>
                                                     </CardItem>
                                                 </Card>
@@ -187,18 +187,18 @@ export default class TrainerWorkspace extends Component {
 
                         <View style={{marginLeft: 15, marginRight: 15}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('MealSpace', {"id": this.state.id})}>
-                           <Card style={{backgroundColor: constants.item_card}}>
-                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
+                           <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, borderRadius: 10}}>
                                 <Text style={{fontWeight: 'bold'}}>Meal Plan</Text>
                                 <Icon size={20} name="md-arrow-dropright"/>
                             </CardItem>
                            </Card>
                            </TouchableOpacity>
                         </View>
-                        <View style={{marginLeft: 15, marginRight: 15}}>
+                        <View style={{marginTop: 10, marginLeft: 15, marginRight: 15}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('WorkoutSpace', {"id": this.state.id})}>
-                              <Card style={{backgroundColor: constants.item_card}}>
-                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
+                              <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, borderRadius: 10}}>
                                   <Text style={{fontWeight: 'bold'}}>Workout Plan</Text>
                                   <Icon size={20} name="md-arrow-dropright"/>
                                 </CardItem>

@@ -121,30 +121,30 @@ export default class Menu extends Component {
                 {this.state.permission !== null && this.state.permission.includes("owner")?
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('GymLocations')}>
-                     <Card style={{backgroundColor: constants.item_card}}>
-                        <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+                     <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                        <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Switch Gym Location</Text>
-                            <Icon size={20} name="md-arrow-round-forward" />
+                            <Icon name="md-arrow-dropright" />
                         </CardItem>
                      </Card>
                    </TouchableOpacity>
                 </View> : null }
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AddExercise', {id: this.state.id})}>
-                      <Card style={{backgroundColor: constants.item_card}}>
-                         <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+                      <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                         <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
                              <Text style={{fontWeight: 'bold'}}>Add Exercise</Text>
-                               <Icon size={20} name="md-arrow-round-forward" />
+                               <Icon  name="md-arrow-dropright" />
                          </CardItem>
                       </Card>
                    </TouchableOpacity>
                 </View>
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Sessions', {id: this.state.id})}>
-                      <Card style={{backgroundColor: constants.item_card}}>
-                         <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+                      <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                         <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
                            <Text style={{fontWeight: 'bold'}}>Add Fitness Program</Text>
-                           <Icon size={20} name="md-arrow-round-forward" />
+                           <Icon name="md-arrow-dropright" />
                          </CardItem>
                       </Card>
                    </TouchableOpacity>
@@ -152,16 +152,16 @@ export default class Menu extends Component {
                 {this.state.permission !== null && this.state.permission.includes("owner") ?
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AppBilling')}>
-                     <Card style={{backgroundColor: constants.item_card}}>
-                        <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+                     <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                        <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
                            <Text style={{fontWeight: 'bold'}}>Billing Details</Text>
-                           <Icon size={20} name="md-arrow-round-forward" />
+                           <Icon name="md-arrow-dropright" />
                         </CardItem>
                      </Card>
                    </TouchableOpacity>
                 </View> : null}
                  <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
-                    <Button rounded onPress={() => {this.props.navigation.navigate('LandingPage')}}style={{height: 50, width: 150, alignItems: 'center', backgroundColor: '#d1274b', justifyContent: 'center'}}><Icon size={20} name="md-power"/><Text>Logout</Text></Button>
+                    <Button onPress={() => {this.props.navigation.navigate('LandingPage')}} style={{borderRadius: 10, alignItems: 'center', backgroundColor: '#d1274b', justifyContent: 'center'}}><Icon size={20} name="md-power"/><Text>Logout</Text></Button>
                  </View>
             </View>
             </Content>

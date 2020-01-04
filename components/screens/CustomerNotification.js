@@ -136,12 +136,11 @@ export default class CustomerNotification extends Component {
                             <CardItem>
                                 <Hyperlink linkStyle={ { color: '#2980b9'} } linkDefault={true}>
                                     <Text selectable style={ { fontSize: 15 } }>
-                                      This Valentine’s Day, get them something they’ll love from our weekly ad: https://docs.aws.amazon.com/rekognition/latest/dg/rekognition-dg.pdf
                                     </Text>
                                   </Hyperlink>
                             </CardItem>
                             <CardItem >
-                              <Button onPress={() => { Linking.openURL('https://neilpatel.com/ubersuggest/')}}><Text>Open</Text></Button>
+                              <Button onPress={ }><Text>Open</Text></Button>
                             </CardItem>
                         </Card>
                     </View>

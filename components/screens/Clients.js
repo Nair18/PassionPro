@@ -201,9 +201,9 @@ export default class Clients extends PureComponent {
         <ScrollView showsVerticalScrollBar={false}>
         <Content style={{margin: 15}}>
          {this.state.traineeList  !== null ?
-          <View style={{margin:15, backgroundColor: 'white'}}>
-            <Item style={{padding: 5}}>
-                 <Input keyboardType='numeric' onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
+          <View style={{margin:15, backgroundColor: 'white', borderRadius: 10, elevation: 1}}>
+            <Item style={{padding: 5, borderRadius: 10}}>
+                 <Input keyboardType='numeric' onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white', borderRadius: 10}} placeholder='Search by phone number'/>
                  <Icon name="md-search" size={30} />
             </Item>
           </View> : null }
@@ -224,10 +224,13 @@ export default class Clients extends PureComponent {
             </Content>
             </ScrollView>
                 <View style={styles.addButton}>
+                    <TouchableOpacity onPress={() => this.setModalVisible(true)}>
                     <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
-                      <Icon size={30} style={{color: 'white'}}name="md-add" />
+                      <Icon size={30} style={{color: 'white'}}name="md-add" onPress={() => this.setModalVisible(true)}/>
                     </Button>
+                    </TouchableOpacity>
                 </View>
+
       </Container>
 
       <View>

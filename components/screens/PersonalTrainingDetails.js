@@ -143,8 +143,8 @@ export default class PersonalTrainingDetails extends Component{
           </View>
           {active.length > 0 ? active.map(ac =>
           <View style={{marginTop: 10}}>
-             <Card style={{width: '100%', padding: 15}}>
-                <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
+             <Card style={{width: '100%', backgroundColor: constants.card_body, borderRadius: 10}}>
+                <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between', borderRadius: 10}}>
                    <Text style={{fontWeight: 'bold'}}>Training subscription</Text>
                    <Text style={{color: "green", fontWeight: 'bold'}}>{ac["is_active"] !== null ? "ACTIVE" : "EXPIRED"}</Text>
                 </CardItem>
@@ -166,17 +166,17 @@ export default class PersonalTrainingDetails extends Component{
                 <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}> Training end date:</Text> {ac["end_date"]}</Text>
                 </CardItem>
-                <CardItem style={{backgroundColor: constants.card_body}}>
+                <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ac["amount"]}</Text>
                 </CardItem>
              </Card>
-          </View>) : <View><Card style={{backgroundColor: 'black', padding: 10, alignItems: 'center'}}><Text note>Nothing to show</Text></Card></View> }
+          </View>) : <View style={{marginTop: 10}}><Card style={{backgroundColor: 'grey', padding: 10, alignItems: 'center', borderRadius: 10}}><Text>Nothing to show</Text></Card></View> }
           <View style={{marginTop: 20}}>
             <Text style={{fontWeight: 'bold'}}>Expired Subcriptions</Text>
           </View>
           { expired.length > 0 ? expired.map(ex =>
           <View style={{marginTop: 10}}>
-                <Card style={{width: '100%', padding: 15}}>
+                <Card style={{width: '100%', backgroundColor: constants.card_body, borderRadius: 10}}>
                     <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
                         <Text style={{fontWeight: 'bold'}}>Training subscription</Text>
                         <Text style={{color: "red", fontWeight: 'bold'}}> {ex["is_active"] !== null ? "EXPIRED" : "ACTIVE"}</Text>
@@ -199,18 +199,20 @@ export default class PersonalTrainingDetails extends Component{
                     <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Training end date:</Text> {ex["end_date"]}</Text>
                     </CardItem>
-                    <CardItem style={{backgroundColor: constants.card_body}}>
+                    <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ex["amount"]}</Text>
                     </CardItem>
                 </Card>
-          </View>) : <View style={{marginTop: 10}}><Card style={{backgroundColor: 'black', padding: 10, alignItems: 'center'}}><Text note>Nothing to show</Text></Card></View>}
+          </View>) : <View style={{marginTop: 10}}><Card style={{backgroundColor: 'grey', padding: 10, alignItems: 'center', borderRadius: 10}}><Text>Nothing to show</Text></Card></View>}
         </Content>
 
         </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
         <View style={styles.addButton}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('addSubscription', { id: this.state.info["id"], trainee_id: this.state.info["client_id"]})}>
                             <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.props.navigation.navigate('addSubscription', { id: this.state.info["id"], trainee_id: this.state.info["client_id"]})}>
                               <Icon size={30} style={{color: 'white'}}name="md-add" />
                             </Button>
+                            </TouchableOpacity>
                           </View>
       </Container>
     );

@@ -214,9 +214,11 @@ export default class Courses extends PureComponent {
         </Content>
         </ScrollView>
         <View style={styles.addButton}>
+                    <TouchableOpacity onPress={() => this.setModalVisible(true)}>
                     <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
                       <Icon size={30} style={{color: 'white'}}name="md-add" />
                     </Button>
+                    </TouchableOpacity>
                   </View>
       </Container>
 
@@ -276,20 +278,9 @@ export default class Courses extends PureComponent {
                     </Item>
                </View>
                <View style={{margin: 15}}>
-                    <Label><Text style={{fontWeight: 'bold'}}>Duration<Text style={{color: 'red'}}>*</Text></Text></Label>
+                    <Label><Text style={{fontWeight: 'bold'}}>Course Duration(days)<Text style={{color: 'red'}}>*</Text></Text></Label>
                     <Item regular style={{flexDirection: 'row'}}>
                         <Input placeholder="duration" keyboardType='numeric' onChangeText={text => this.setState({days: text})} style={{flex: 1}}/>
-                        <Picker
-                           note
-                           mode="dropdown"
-                           style={{ width: 5, flex: 1 ,backgroundColor: "#CCC"}}
-                           selectedValue={this.state.duration}
-                           onValueChange={(itemValue, itemIndex) =>
-                              this.setState({duration: itemValue})
-                           }
-                        >
-                           <Picker.Item label="days" value="days" />
-                        </Picker>
                     </Item>
                 </View>
 

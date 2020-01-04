@@ -109,8 +109,8 @@ export default class TraineeWorkout extends Component {
                 <Content style={{margin: 15}}>
                     {this.state.workouts !== null ? this.state.workouts.map(workout =>
                     <View style={{marginTop: 5}}>
-                       <Card>
-                         <CardItem header style={{backgroundColor: '#393e46'}}>
+                       <Card style={{borderRadius: 10}}>
+                         <CardItem header style={{backgroundColor: '#393e46', borderRadius: 10}}>
                            <Left>
                               <Text style={{fontWeight: 'bold', color: 'white'}}>{workout["exercise"]}</Text>
                            </Left>
@@ -121,14 +121,14 @@ export default class TraineeWorkout extends Component {
                            <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Reps</Text>
                            <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>Duration</Text>
                          </CardItem>
-                         <CardItem style={{flexDirection: 'row'}}>
+                         <CardItem style={{flexDirection: 'row', borderRadius: 10}}>
                            <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["sets"]}</Text>
                            <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["weights"]}kg</Text>
                            <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["reps"]}</Text>
                            <Text style={{fontWeight: 'bold', flex: 1, fontSize: 15}}>{workout["duration"]}m</Text>
                          </CardItem>
                          {workout["instructions"] !== null ?
-                         <CardItem>
+                         <CardItem style={{borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Instructions: </Text><Text>{workout["instructions"]}</Text>
                          </CardItem> : null }
 

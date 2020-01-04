@@ -200,7 +200,7 @@ export default class Trainer extends PureComponent {
 
 
   render() {
-    let actiive_list = []
+    let active_list = []
     let expired_list = []
     let trainerslist = []
     return (
@@ -209,9 +209,9 @@ export default class Trainer extends PureComponent {
         <ScrollView showsVerticalScrollBar={false}>
         <Content style={{margin: 15}}>
           {this.state.trainerList !== null ?
-                    <View style={{margin:15, backgroundColor: 'white'}}>
-                      <Item regular style={{padding: 5}}>
-                           <Input keyboardType='numeric' style={{borderColor: 'black', borderWidth: 1}} onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
+                    <View style={{margin:15, backgroundColor: 'white', borderRadius: 10, elevation: 1}}>
+                      <Item regular style={{padding: 5, borderRadius: 10}}>
+                           <Input keyboardType='numeric' style={{borderColor: 'black', borderWidth: 1, borderRadius: 10}} onChangeText = {text => this.onChangeSearchInput(text)} style={{backgroundColor: 'white'}} placeholder='Search by phone number'/>
                            <Icon name="md-search" size={30} />
                       </Item>
                     </View> : null }
@@ -230,10 +230,12 @@ export default class Trainer extends PureComponent {
         </Content>
         </ScrollView>
         <View style={styles.addButton}>
-                    <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
-                      <Icon size={30} style={{color: 'white'}}name="md-add" />
-                    </Button>
-                  </View>
+         <TouchableOpacity onPress={() => this.setModalVisible(true)}>
+           <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
+              <Icon size={30} style={{color: 'white'}}name="md-add" />
+           </Button>
+         </TouchableOpacity>
+        </View>
       </Container>
 
       <View >

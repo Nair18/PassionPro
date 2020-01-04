@@ -203,15 +203,6 @@ export default class TrainerPage extends Component {
                     </View>
                     <View style={styles.infoView}>
                                            <View style={styles.title}>
-                                             <Text style={styles.text}>Shift </Text>
-                                           </View>
-                                           <View style={styles.textFormat}>
-                                             <Text>{trainerDetails["shift"] === null ? "NA" : trainerDetails["shift"]}</Text>
-                                           </View>
-                                        </View>
-
-                    <View style={styles.infoView}>
-                                           <View style={styles.title}>
                                              <Text style={styles.text}>Certifications </Text>
                                            </View>
                                            <View style={styles.textFormat}>
@@ -221,8 +212,8 @@ export default class TrainerPage extends Component {
                     <View style={{margin: 15, width: '90%'}}>
                                                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('TrainerBilling', {trainer_id: this.state.trainer_id, id: this.state.id})}>
                                                         <View>
-                                                              <Card style={{backgroundColor: constants.item_card}}>
-                                                                  <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+                                                              <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                                                                  <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
 
                                                                           <Text style={{fontWeight: 'bold'}}>Trainer Salary details </Text>
                                                                           <Icon size={20} name="md-arrow-dropright"/>
@@ -233,8 +224,8 @@ export default class TrainerPage extends Component {
                                                         </TouchableOpacity>
                                                        <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('ClientDetails', {trainer_id: this.state.trainer_id, id: this.state.id})}>
                                                         <View style={{marginTop: 10}}>
-                                                             <Card style={{backgroundColor: constants.item_card}}>
-                                                              <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+                                                             <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                                                              <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
 
                                                                       <Text style={{fontWeight: 'bold'}}>Personal Training Client</Text>
                                                                       <Icon size={20} name="md-arrow-dropright"/>

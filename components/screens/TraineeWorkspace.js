@@ -1,5 +1,5 @@
 import React, { Component, Fragment,PureComponent } from 'react';
-import {StyleSheet,View, TouchableOpacity, Modal, Alert,TextInput, AppState, AsyncStorage} from 'react-native';
+import {StyleSheet,View, TouchableOpacity, Modal, Alert,TextInput, AppState, AsyncStorage, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import ModalSelector from 'react-native-modal-selector';
@@ -144,6 +144,7 @@ export default class TraineeWorkspace extends PureComponent {
     return (
     <Fragment>
       <Container style={{backgroundColor: constants.screen_color}}>
+       <ScrollView showsVerticalScrollBar={false}>
        {this.state.workouts !== null ?
         <Content style={{margin: 5}}>
           <View style={{margin: 10}}>
@@ -152,8 +153,8 @@ export default class TraineeWorkspace extends PureComponent {
           {pt.length > 0 ? pt.map(wk =>
           <View style={{margin: 10}}>
           <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseWorkoutTrainee', {details: wk})}>
-          <Card style={{backgroundColor: constants.item_card}}>
-            <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card}}>
+          <Card style={{backgroundColor: "#c06c84", borderRadius: 10}}>
+            <CardItem style={{justifyContent: "space-between", backgroundColor: "#c06c84", borderRadius: 10}}>
                 <View>
                     <Text style={{color: 'black', fontWeight: 'bold'}}>{wk["name"]}</Text>
                     <Text>{wk["plans"].length} workout(s)</Text>
@@ -161,15 +162,15 @@ export default class TraineeWorkspace extends PureComponent {
                 <Icon style={{color: 'black'}} size={20} name="md-arrow-round-forward"/>
             </CardItem>
           </Card>
-          </TouchableOpacity></View>) : <Card style={{padding: 10, alignItems: 'center', justifyContent: 'center'}}><Text note>Nothing to show</Text></Card> }
+          </TouchableOpacity></View>) : <View style={{margin: 10}}><Card style={{padding: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'grey', borderRadius: 10}}><Text>Nothing to show</Text></Card></View> }
           <View style={{margin: 10}}>
             <Text style={{fontWeight: 'bold'}}>Standard Plans</Text>
           </View>
           {sp.length > 0 ? sp.map( wk =>
           <View style={{margin: 10}}>
             <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseWorkoutTrainee', {details: wk})}>
-               <Card style={{backgroundColor: constants.item_card}}>
-                  <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card}}>
+               <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                  <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card, borderRadius: 10}}>
                      <View>
                         <Text style={{color: 'black', fontWeight: 'bold'}}>{wk["name"]}</Text>
                         <Text>{wk["plans"].length} workout(s)</Text>
@@ -178,9 +179,10 @@ export default class TraineeWorkspace extends PureComponent {
                   </CardItem>
                </Card>
             </TouchableOpacity>
-          </View>) : <Card style={{padding: 10, alignItems: 'center', justifyContent: 'center'}}><Text note>Nothing to show</Text></Card> }
+          </View>) : <View style={{margin: 10}}><Card style={{padding: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: 'grey'}}><Text>Nothing to show</Text></Card></View> }
 
         </Content> : <Spinner color="black"/>}
+        </ScrollView>
       </Container>
      </Fragment>
     );

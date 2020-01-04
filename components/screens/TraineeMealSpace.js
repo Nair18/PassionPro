@@ -144,8 +144,8 @@ export default class TraineeMealSpace extends PureComponent {
           {this.state.meals !== null ? this.state.meals.map(meal =>
           <View style={{margin: 5}}>
           <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseMealTrainee', {details: meal})}>
-          <Card style={{backgroundColor: constants.item_card}}>
-            <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card}}>
+          <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+            <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card, borderRadius: 10}}>
                 <View>
                     <Text style={{color: 'black', fontWeight: 'bold'}}>{meal["name"]}</Text>
                     <Text>{meal["meal_plans"].length} meal(s)</Text>

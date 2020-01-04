@@ -19,6 +19,7 @@ import Workspace from './workspace';
 import Courses from './Courses';
 import Clients from './Clients';
 import TrainerClient from './TrainerClient';
+import OfflineNotice from './OfflineNotice';
 import Plans from './Plans';
 import Trainer from './Trainer';
 import {Agenda} from 'react-native-calendars';
@@ -179,21 +180,23 @@ export default class Admin extends Component {
     return(
         <Fragment>
         <StatusBar backgroundColor="black" barStyle="light-content"/>
+        <OfflineNotice/>
+        {this.state.trainerDetails !== null ?
         <Container style={{backgroundColor: constants.screen_color}}>
-            {this.state.trainerDetails !== null ?
-            <Content>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: constants.header, elevation: 1}}>
-                                            <View style={{padding: 15}}>
-                                                <Text style={{fontWeight: 'bold', fontSize: 20, color: constants.header_text}}>{trainerDetails["gyms"][0]["name"]}</Text>
-                                                <Text note>{trainerDetails["gyms"][0]["location"]}</Text>
-                                            </View>
-                                            <View style={{justifyContent: 'center', alignItems: 'center', padding: 15}}>
-                                                <Badge style={{backgroundColor: constants.card_header}}>
-                                                    <Text style={{color: constants.header}}>Trainer</Text>
-                                                </Badge>
-                                            </View>
-                                          </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
+                                                        <View style={{padding: 15}}>
+                                                            <Text style={{fontWeight: 'bold', fontSize: 20, color: constants.header_text}}>{trainerDetails["gyms"][0]["name"]}</Text>
+                                                            <Text note>{trainerDetails["gyms"][0]["location"]}</Text>
+                                                        </View>
+                                                        <View style={{justifyContent: 'center', alignItems: 'center', padding: 15}}>
+                                                            <Badge style={{backgroundColor: constants.card_header}}>
+                                                                <Text style={{color: constants.header}}>Trainer</Text>
+                                                            </Badge>
+                                                        </View>
+                                                      </View>
+
+            <Content>
+            <ScrollView showsVerticalScrollBar={false}>
 
             <Content style={{margin: 15}}>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -209,14 +212,14 @@ export default class Admin extends Component {
 
 
                 <View style={{marginTop: 25}}>
-                    <Text style={{fontWeight: 'bold'}}>Daily Writeup</Text>
+                    <Text style={{fontWeight: 'bold'}}>Writeup</Text>
                 </View>
                 <View style={{marginTop: 15}}>
-                   <Card>
-                      <CardItem header>
+                   <Card style={{borderRadius: 10}}>
+                      <CardItem header style={{borderRadius: 10}}>
                          <Textarea selectable onChangeText={text => this.setState({message: text})} placeholder="Write message to your clients..."/>
                       </CardItem>
-                      <CardItem footer style={{justifyContent: 'space-between', elevation: 3}}>
+                      <CardItem footer style={{justifyContent: 'space-between', elevation: 3, borderRadius: 10}}>
                          <Text/>
                          {this.state.onProcess === false ?
                             <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.sendMessage}><Text>Post</Text></Button>
@@ -232,11 +235,11 @@ export default class Admin extends Component {
                 </View>
                 <View style={{marginTop: 15}}>
                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerClient')}>
-                    <Card style={{justifyContent: 'center', alignItems: 'center', backgroundColor: "#393e46"}}>
+                    <Card style={{justifyContent: 'center', alignItems: 'center', backgroundColor: "#393e46", borderRadius: 10}}>
                         <CardItem style={{height: 60, width: 60, justifyContent: 'center', alignItems: 'center', borderRadius: 30, backgroundColor: "#ffd369", marginTop: 5}}>
                             <Icon name="md-person" size={30}/>
                         </CardItem>
-                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#393e46'}}>
+                        <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#393e46', borderRadius: 10}}>
                             <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
                                 <Text style={{fontWeight: "bold", fontSize: 20, color: 'white'}}>Active Clients </Text>
                                 <Icon name="md-arrow-round-forward" size={20} style={{color: 'white'}}/>
@@ -245,10 +248,28 @@ export default class Admin extends Component {
                     </Card>
                     </TouchableOpacity>
                 </View>
+                <View style={{marginTop: 15}}>
+                    <Text style={{fontWeight: 'bold'}}>Standard Gym Plans</Text>
+                </View>
+                <View style={{marginTop: 15}}>
+                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerClient')}>
+                       <Card style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.item_card, borderRadius: 10}}>
+                           <CardItem style={{height: 60, width: 60, justifyContent: 'center', alignItems: 'center', borderRadius: 30, backgroundColor: constants.card_body, marginTop: 5}}>
+                               <Icon name="md-fitness" size={30}/>
+                           </CardItem>
+                           <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.item_card, borderRadius: 10}}>
+                               <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                                  <Text style={{fontWeight: "bold", fontSize: 20, color: 'white'}}>Gym workout plans </Text>
+                                      <Icon name="md-arrow-round-forward" size={20} style={{color: 'white'}}/>
+                               </View>
+                           </CardItem>
+                       </Card>
+                    </TouchableOpacity>
+                </View>
             </Content>
             </ScrollView>
-            </Content> : <PageLoader/>}
-        </Container>
+            </Content>
+        </Container>: <PageLoader/>}
         </Fragment>
     );
   }

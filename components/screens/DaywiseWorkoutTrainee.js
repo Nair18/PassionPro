@@ -65,7 +65,7 @@ export default class DaywiseWorkoutTrainee extends Component {
                 workout_days.set(day, arr)
             }
         }
-        const d = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+        const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
         function daysOfWeekSorter(x,y) {
            return daysOfWeek.indexOf(x)-daysOfWeek.indexOf(y);
@@ -74,13 +74,14 @@ export default class DaywiseWorkoutTrainee extends Component {
         days.sort(daysOfWeekSorter)
         return(
             <Container style={{backgroundColor: constants.screen_color}}>
-                <ScrollView>
+                <ScrollView showsVerticalScrollBar={false}>
                 <Content style={{margin: 15}}>
+
                     {this.state.details !== null ? days.map(d =>
                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TraineeWorkout', {workouts: workout_days.get(d)})}>
                     <View>
-                        <Card style={{backgroundColor: constants.item_card}}>
-                           <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card}}>
+                        <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                           <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card, borderRadius: 10}}>
                                <Text style={{color: 'black', fontWeight: 'bold'}}>{d}</Text>
                                <Icon style={{color: 'black'}} size={20} name="md-arrow-dropright"/>
                            </CardItem>

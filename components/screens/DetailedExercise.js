@@ -195,15 +195,19 @@ export default class DetailedExercise extends PureComponent {
           <Card style={{backgroundColor: constants.item_card}}>
             <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
                 <Text style={{color: 'black', fontWeight:'bold'}}>{ex["exercise_name"]}</Text>
+                <TouchableOpacity onPress={() => this.archive_exercise_alert(ex["id"])}>
                 {this.state.onProcess == false ?
-                <Icon size={25} name="md-create" style={{color: 'white'}} onPress={() => this.archive_exercise_alert(ex["id"])}/> : <Spinner color="black"/>}
+                    <Icon size={25} name="md-create" style={{color: 'white'}} onPress={() => this.archive_exercise_alert(ex["id"])}/>: <Spinner color="black"/>}
+                </TouchableOpacity>
             </CardItem>
           </Card></View>): <Spinner color="black"/>}
         </Content>
         <View style={styles.addButton}>
+                                    <TouchableOpacity onPress={() => this.setModalVisible(true)}>
                                       <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
                                         <Icon size={30} style={{color: 'white'}}name="md-add" />
                                       </Button>
+                                    </TouchableOpacity>
                                     </View>
       </Container>
       <Modal
@@ -223,7 +227,7 @@ export default class DetailedExercise extends PureComponent {
                   {this.state.exerciseList !== null && this.state.name !== null ?
                   (<Form>
                      <View style={{marginTop: 15}}>
-                        <Text style={{fontWeight: 'bold'}}>Exercise Name</Text>
+                        <Text style={{fontWeight: 'bold'}}>Workout Name</Text>
                      </View>
                      <Item regular>
                         <Input placeholder="eg. Bench Press" onChangeText={text => this.setState({exerciseName: text})}/>

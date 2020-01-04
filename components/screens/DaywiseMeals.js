@@ -130,7 +130,7 @@ export default class DaywiseMeals extends Component {
           }
 
     onSubmit = () => {
-        if(this.state.day === null || this.state.description === null || this.state.name === null){
+        if(this.state.day === null || this.state.name === null || this.state.description === null){
             Alert.alert(constants.incomplete_info, "All '*' fields are mandatory")
             return
         }
@@ -214,8 +214,8 @@ export default class DaywiseMeals extends Component {
                         {days.length > 0 ? days.map(day =>
                         <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('CreateMeal', {details: plans.get(day), plan_id: this.state.plan_id, trainee_id: this.state.trainee_id,day: day})}>
-                           <Card style={{backgroundColor: constants.item_card}}>
-                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
+                           <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, borderRadius: 10}}>
                                 <Text style={{fontWeight: 'bold'}}>{day}</Text>
                                 <Icon size={20} name="md-arrow-dropright"/>
                             </CardItem>
@@ -226,9 +226,11 @@ export default class DaywiseMeals extends Component {
                      </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
                      </ScrollView>
                         <View style={styles.addButton}>
+                                                <TouchableOpacity onPress={() => this.showModal(true)}>
                                                 <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.showModal(true)}>
-                                                        <Icon size={30} style={{color: 'white'}}name="md-add" />
+                                                        <Icon size={30} style={{color: 'white'}}name="md-add" onPress={() => this.showModal(true)}/>
                                                 </Button>
+                                                </TouchableOpacity>
                                             </View>
                         <View>
                                 <Modal
@@ -280,9 +282,12 @@ export default class DaywiseMeals extends Component {
 
                                        </Item>
                                        </View>
-                                       <Item style={{marginLeft: 15, marginRight: 15, marginTop: 10}}>
-                                          <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Meal content here ..." onChangeText={text => this.setState({description: text})}/>
-                                       </Item>
+                                       <View style={{margin: 15}}>
+                                         <Label><Text style={{fontWeight: 'bold'}}>Meal content<Text style={{color: 'red'}}>*</Text></Text></Label>
+                                         <Item>
+                                            <Textarea rowSpan={5} style={{width: '100%'}} bordered placeholder="Meal content here ..." onChangeText={text => this.setState({description: text})}/>
+                                         </Item>
+                                       </View>
                                        <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
                                        {this.state.onProcess === false ?
                                        <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>

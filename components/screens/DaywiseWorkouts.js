@@ -283,8 +283,8 @@ export default class DaywiseWorkouts extends Component {
                         {days.length > 0 ? days.map(day =>
                         <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerWorkout', {"day": day, plan_id: this.state.plan_id, "trainee_id": this.state.trainee_id, workouts: plans.get(day), exerciseList: this.state.exerciseList, body_parts: body_parts})}>
-                           <Card style={{backgroundColor: constants.item_card}}>
-                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
+                           <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                            <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, borderRadius: 10}}>
                                 <Text style={{fontWeight: 'bold'}}>{day}</Text>
                                 <Icon size={20} name="md-arrow-dropright"/>
                             </CardItem>
@@ -295,9 +295,11 @@ export default class DaywiseWorkouts extends Component {
                     </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
                     </ScrollView>
                     <View style={styles.addButton}>
+                         <TouchableOpacity onPress={() => this.setModalVisible(true)}>
                          <Button  rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
                              <Icon size={30} style={{color: 'white'}}name="md-add" />
                          </Button>
+                         </TouchableOpacity>
                     </View>
                     <View>
 
@@ -308,6 +310,7 @@ export default class DaywiseWorkouts extends Component {
                                                                                               onRequestClose={() => {
                                                                                                 this.setModalVisible(false)
                                                                                               }}>
+                                                                                              <ScrollView showsVerticalScrollBar={false}>
                                                                                               <View style={{margin: 15}}>
                                                                                                 <TouchableOpacity onPress={() => this.setModalVisible(false)}>
                                                                                                 <Icon name="md-close" size={30}/>
@@ -432,6 +435,7 @@ export default class DaywiseWorkouts extends Component {
                                                                                                 </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>No body parts added. Please add them from admin dashboard</Text></View>}
 
                                                                                               </Content>
+                                                                                              </ScrollView>
                                                                                             </Modal>
 
                 </View>

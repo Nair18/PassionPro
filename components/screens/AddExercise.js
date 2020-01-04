@@ -157,9 +157,11 @@ export default class AddExercise extends PureComponent {
           </TouchableOpacity></View>): <Spinner color="black"/>}
         </Content>
         <View style={styles.addButton}>
+          <TouchableOpacity onPress={() => this.setModalVisible(true)}>
           <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
               <Icon size={30} style={{color: 'white'}}name="md-add" />
           </Button>
+          </TouchableOpacity>
         </View>
       </Container>
       <Modal
@@ -180,12 +182,12 @@ export default class AddExercise extends PureComponent {
                         (<Form>
 
                            <Item regular style={{padding: 5}}>
-                              <Label><Text style={{fontWeight: 'bold'}}>Body part</Text><Text style={{color: 'red', fontWeight: 'bold'}}>*</Text> - </Label>
+                              <Label><Text style={{fontWeight: 'bold'}}>Body part</Text><Text style={{color: 'red', fontWeight: 'bold'}}>*</Text> -</Label>
                               <Input placeholder="eg. Biceps" onChangeText={text => this.setState({body_part: text})}/>
                            </Item>
 
                            <Item regular style={{padding: 5}}>
-                              <Label><Text style={{fontWeight: 'bold'}}>Exercise</Text><Text style={{color: 'red',fontWeight: 'bold'}}>*</Text> - </Label>
+                              <Label><Text style={{fontWeight: 'bold'}}>Workout</Text><Text style={{color: 'red',fontWeight: 'bold'}}>*</Text> -</Label>
                               <Input placeholder="eg. Bench Press" onChangeText={text => this.setState({exerciseName: text})}/>
                            </Item>
                            <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>

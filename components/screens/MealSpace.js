@@ -36,7 +36,7 @@ export default class MealSpace extends Component {
            id: this.props.navigation.state.params.id,
            isVisible: false,
            auth_key: null,
-           description: null,
+           description: "",
            name: null,
            planDetails: null,
            onProcess: false
@@ -167,8 +167,8 @@ export default class MealSpace extends Component {
                     {this.state.planDetails !== null ? this.state.planDetails.map(planDetails =>
                         <View style={{marginLeft: 15, marginRight: 15, marginTop: 5}}>
                            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('DaywiseMeals',{'plan_id': planDetails["id"], 'trainee_id': this.state.id})}>
-                           <Card style={{backgroundColor: constants.item_card}}>
-                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card}}>
+                           <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                                <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.item_card, borderRadius: 10}}>
                                     <Text style={{fontWeight: 'bold'}}>{planDetails["name"]}</Text>
                                     <Icon name="md-arrow-round-forward" size={20}/>
                                 </CardItem>
@@ -179,9 +179,11 @@ export default class MealSpace extends Component {
                      </Content>
                     </ScrollView>
                     <View style={styles.addButton}>
+                        <TouchableOpacity onPress={() => this.showModal(true)}>
                         <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.showModal(true)}>
-                                <Icon size={30} style={{color: 'white'}}name="md-add" />
+                                <Icon size={30} style={{color: 'white'}}name="md-add" onPress={() => this.showModal(true)}/>
                         </Button>
+                        </TouchableOpacity>
                     </View>
                     <View>
                        <Modal

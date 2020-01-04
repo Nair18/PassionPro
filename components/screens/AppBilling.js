@@ -118,8 +118,8 @@ export default class AppBilling extends Component{
         <ScrollView showsVerticalScrollIndicator={false}>
         <Content style={{padding: 15}}>
           <View style={{marginTop: 10}}>
-             <Card style={{width: '100%', padding: 15}}>
-                <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
+             <Card style={{width: '100%', backgroundColor: constants.card_body, borderRadius: 10}}>
+                <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between', borderRadius: 10}}>
                    <Text style={{fontWeight: 'bold'}}>Bill</Text>
                    <Text style={{color: constants.active_color, fontWeight: 'bold'}}>ACTIVE</Text>
                 </CardItem>
@@ -132,7 +132,7 @@ export default class AppBilling extends Component{
                 <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Mobile:</Text> {this.state.gymList["owner_phone"]}</Text>
                 </CardItem>
-                <CardItem style={{backgroundColor: constants.card_body}}>
+                <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                    <Text style={{fontWeight: 'bold'}}>Plan Type: <Text style={{color: constants.active_color}}> FREE </Text></Text>
                 </CardItem>
              </Card>

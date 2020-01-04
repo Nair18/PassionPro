@@ -152,7 +152,7 @@ export default class TrainerBilling extends PureComponent{
         <Content>
          {this.state.payslip !== null ? this.state.payslip.map(ps =>
           <View style={{margin: 10}}>
-             <Card style={{width: '100%', padding: 15}}>
+             <Card style={{width: '100%', padding: 15, borderRadius: 10}}>
                 <CardItem header style={{backgroundColor: constants.card_header,justifyContent: 'space-between'}}>
                    <View>
                     <Text style={{fontWeight: 'bold'}}>Payslip </Text>
@@ -170,7 +170,7 @@ export default class TrainerBilling extends PureComponent{
                 <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ps["amount"]}</Text>
                 </CardItem>
-                <CardItem>
+                <CardItem style={{ borderRadius: 10}}>
                     <Text><Text style={{fontWeight: 'bold'}}>Remark:</Text> {ps["description"]}</Text>
                 </CardItem>
              </Card>
@@ -180,9 +180,11 @@ export default class TrainerBilling extends PureComponent{
 
         </ScrollView>
         <View style={styles.addButton}>
+                            <TouchableOpacity onPress={() => this.setModalVisible(true)}>
                             <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
                               <Icon size={30} style={{color: 'white'}}name="md-add" />
                             </Button>
+                            </TouchableOpacity>
                           </View>
         <View>
                 <Modal

@@ -79,8 +79,8 @@ export default class DaywiseMealTrainee extends Component {
                     {this.state.details !== null ? days.map(d =>
                     <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TraineeMeal', {meals: meal_days.get(d)})}>
                     <View>
-                        <Card style={{backgroundColor: constants.item_card}}>
-                           <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card}}>
+                        <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                           <CardItem style={{justifyContent: "space-between", backgroundColor: constants.item_card, borderRadius: 10}}>
                                <Text style={{color: 'black', fontWeight: 'bold'}}>{d}</Text>
                                <Icon style={{color: 'black'}} size={20} name="md-arrow-dropright"/>
                            </CardItem>

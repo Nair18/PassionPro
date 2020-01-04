@@ -158,8 +158,8 @@ export default class ClientDetails extends Component{
           </View>
           {active_subs.length > 0 ? active_subs.map(subs =>
           <View style={{margin: 10}}>
-             <Card style={{width: '100%', padding: 15}}>
-                <CardItem header style={{backgroundColor: constants.card_header,justifyContent: 'space-between'}}>
+             <Card style={{width: '100%', backgroundColor: constants.card_body, borderRadius: 10}}>
+                <CardItem header style={{backgroundColor: constants.card_header,justifyContent: 'space-between', borderRadius: 10}}>
                    <View>
                     <Text style={{fontWeight: 'bold'}}>Bill </Text>
                    </View>
@@ -179,18 +179,18 @@ export default class ClientDetails extends Component{
                 <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>To date:</Text> {subs["end_date"]}</Text>
                 </CardItem>
-                <CardItem style={{backgroundColor: constants.card_body}}>
+                <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{subs["amount"]}</Text>
                 </CardItem>
              </Card>
-          </View>) : <View style={{margin: 15}}><Card style={{justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: constants.header}}><Text note>Nothing to show</Text></Card></View>}
-          <View style={{margin: 20}}>
+          </View>) : <View style={{marginLeft: 15, marginRight: 15}}><Card style={{justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: "grey", borderRadius: 10}}><Text>Nothing to show</Text></Card></View>}
+          <View style={{margin: 15}}>
             <Text style={{fontWeight: 'bold'}}>Expired Subcriptions</Text>
           </View>
           {expired_subs.length > 0 ? expired_subs.map(subs =>
           <View style={{margin: 10}}>
-                <Card style={{width: '100%', padding: 15}}>
-                    <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between'}}>
+                <Card style={{width: '100%', backgroundColor: constants.card_body, borderRadius: 10}}>
+                    <CardItem header style={{backgroundColor: constants.card_header, justifyContent: 'space-between', borderRadius: 10}}>
                         <View>
                             <Text style={{fontWeight: 'bold'}}>Bill </Text>
                         </View>
@@ -210,11 +210,11 @@ export default class ClientDetails extends Component{
                     <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>To date:</Text> {subs["end_date"]}</Text>
                     </CardItem>
-                    <CardItem style={{backgroundColor: constants.card_body}}>
+                    <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{subs["amount"]}</Text>
                     </CardItem>
                 </Card>
-          </View>) : <View style={{marginLeft: 15, marginRight: 15}}><Card style={{justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: constants.header}}><Text note>Nothing to show</Text></Card></View>}
+          </View>) : <View style={{marginLeft: 15, marginRight: 15}}><Card style={{justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: "grey", borderRadius: 10}}><Text>Nothing to show</Text></Card></View>}
 
         </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
 

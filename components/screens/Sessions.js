@@ -238,15 +238,19 @@ export default class Sessions extends PureComponent {
                     <Card style={{backgroundColor: constants.item_card}}>
                         <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
                             <Text style={{fontWeight: 'bold'}}>{coursetype["name"]}</Text>
-                            <Icon name="md-create" size={25} style={{color: 'white'}} onPress={() => this._deletealert(coursetype["id"])}/>
+                            <TouchableOpacity onPress={() => this._deletealert(coursetype["id"])}>
+                                <Icon name="md-create" size={25} style={{color: 'white'}} onPress={() => this._deletealert(coursetype["id"])}/>
+                            </TouchableOpacity>
                         </CardItem>
                     </Card>
                 </View>):<PageLoader/>}
         </Content>
         <View style={styles.addButton}>
+                    <TouchableOpacity onPress={() => this.setModalVisible(true)}>
                     <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
                       <Icon size={30} style={{color: 'white'}}name="md-add" />
                     </Button>
+                    </TouchableOpacity>
                   </View>
       </Container>
 

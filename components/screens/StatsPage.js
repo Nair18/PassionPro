@@ -177,8 +177,8 @@ export default class StatsPage extends Component {
             <View>
                 {this.state.show ?
                 <View>
-                    <Card>
-                        <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black'}}>
+                    <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                        <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold', color: 'white'}}>Filters</Text>
                             <TouchableOpacity onPress={() => this._hideFilter(false)}>
                                 <Icon name="md-close" size={10} style={{color: 'white'}}/>
@@ -202,7 +202,7 @@ export default class StatsPage extends Component {
                              textColor = '#3e4444'
                            />
                         </CardItem>
-                        <CardItem footer style={{justifyContent: 'flex-end', backgroundColor: constants.card_body}}>
+                        <CardItem footer style={{justifyContent: 'flex-end', backgroundColor: constants.card_body, borderRadius: 10}}>
                             {this.state.onProcess ?
                             <Button style={{backgroundColor: 'black'}} onPress={() => this.fetchStats("submit")}><Text>Apply</Text></Button> : <Spinner color="black" />}
                         </CardItem>
@@ -210,32 +210,32 @@ export default class StatsPage extends Component {
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllClientSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date})}>
-                     <Card>
-                        <CardItem header style={{backgroundColor: constants.card_header, height: 70}}>
+                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                        <CardItem header style={{backgroundColor: constants.card_header, height: 70, borderRadius: 10}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Gym Membership</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.card_body}}>
                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["gym_subs"]}</Text></Text>
                         </CardItem>
-                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2}}>
+                        <CardItem footer style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2, borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Membership details</Text>
-                            <Icon size={20} name="md-arrow-round-forward" />
+                            <Icon size={10} name="md-arrow-round-forward" />
                         </CardItem>
                      </Card>
                    </TouchableOpacity>
                 </View>
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllTrainerSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date})}>
-                     <Card>
-                        <CardItem header style={{backgroundColor: constants.card_header, height: 70}}>
+                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                        <CardItem header style={{backgroundColor: constants.card_header, height: 70, borderRadius: 10}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Personal Training</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.card_body}}>
                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["pt_subs"]}</Text></Text>
                         </CardItem>
-                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2}}>
+                        <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2, borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Training details</Text>
-                            <Icon name="md-arrow-round-forward" size={20}/>
+                            <Icon name="md-arrow-round-forward" size={10}/>
                         </CardItem>
                      </Card>
 

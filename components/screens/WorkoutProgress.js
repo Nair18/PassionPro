@@ -299,13 +299,13 @@ export default class WorkoutProgress extends Component{
                             />
                     </View>
                     <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
-                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Workouts</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Workout logs</Text>
                     </View>
                     <View>
                        {this.state.logs !== null && logs.has(this.state.calendarDate)  ? logs.get(this.state.calendarDate).map(log =>
                        <View style={{margin: 10}}>
-                          <Card>
-                             <CardItem header style={{backgroundColor: constants.card_header}}>
+                          <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                             <CardItem header style={{backgroundColor: constants.card_header, borderRadius: 10}}>
                                 <Text style={{fontWeight: 'bold'}}>{log["exercise"]}</Text>
                              </CardItem>
                              <CardItem style={{backgroundColor: constants.card_body}}>
@@ -317,7 +317,7 @@ export default class WorkoutProgress extends Component{
                                </View>
                              </CardItem>
 
-                             <CardItem style={{backgroundColor: constants.card_body}}>
+                             <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <View style={{flex: 1}}>
                                      <Text>{log["sets"]}</Text>
@@ -334,13 +334,15 @@ export default class WorkoutProgress extends Component{
                                </View>
                              </CardItem>
                           </Card>
-                       </View>) : <View style={{marginTop: 15}}><Card style={{backgroundColor: constants.header, justifyContent: 'center', alignItems: 'center', padding: 10}}><Text note>Nothing to show</Text></Card></View>}
+                       </View>) : <View style={{marginTop: 15}}><Card style={{backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center', padding: 10, borderRadius: 10}}><Text note>Nothing to show</Text></Card></View>}
                     </View>
                </Content> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View> }
                <View style={styles.addButton}>
+                                    <TouchableOpacity onPress={() => this.setModalVisible(true)}>
                                    <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={() => this.setModalVisible(true)}>
-                                     <Icon size={30} style={{color: 'white'}}name="md-add" />
+                                     <Icon size={30} style={{color: 'white'}}name="md-add" onPress={() => this.setModalVisible(true)}/>
                                    </Button>
+                                   </TouchableOpacity>
                                  </View>
                <Modal
                          animationType="slide"
