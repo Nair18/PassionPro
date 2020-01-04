@@ -140,7 +140,7 @@ export default class CustomerNotification extends Component {
                                   </Hyperlink>
                             </CardItem>
                             <CardItem >
-                              <Button onPress={ }><Text>Open</Text></Button>
+                              <Button><Text>Open</Text></Button>
                             </CardItem>
                         </Card>
                     </View>

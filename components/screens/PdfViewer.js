@@ -24,13 +24,6 @@ export default class PdfViewer extends Component {
     return (
      <View style={{ flex: 1 }}>
              <Header loading={this.state.loading} />
-             {this.state.url !== null ?
-             <WebView
-               source={{ uri: "https://drive.google.com/viewerng/viewer?url="+ this.state.url }}
-
-               onLoadStart={() => this.setState({ loading: true })}
-               onLoadEnd={() => this.setState({ loading: false })}
-             />: <View><Spinner color="black"/></View>}
            </View>
     );
   }

@@ -104,7 +104,7 @@ export default class Notification extends Component {
                             <CardItem>
                                 <Hyperlink linkStyle={ { color: '#2980b9'} } linkDefault={true}>
                                     <Text selectable style={ { fontSize: 15 } }>
-                                      This Valentine’s Day, get them something they’ll love from our weekly ad: https://docs.aws.amazon.com/rekognition/latest/dg/rekognition-dg.pdf
+
                                     </Text>
                                   </Hyperlink>
                             </CardItem>
