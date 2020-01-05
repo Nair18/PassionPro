@@ -7,6 +7,7 @@ import {
   TouchableNativeFeedback,
   StatusBar,
   Modal,
+  TextInput,
   TouchableHighlight,
   View,
   Alert,
@@ -270,6 +271,7 @@ export default class Admin extends PureComponent {
                                         if(res.status === 200){
                                             this.setState({sendProcess: false, visible: false})
                                             Alert.alert(constants.success, "Message was successfully delivered.")
+                                            this.setState({message: null})
                                         }
                                         else{
                                             Alert.alert(constants.failed, "Something went wrong. Message was not delivered.")
@@ -466,11 +468,13 @@ export default class Admin extends PureComponent {
                    <View style={{marginTop: 10}}>
                       <Card style={{borderRadius: 10}}>
                         <CardItem header style={{borderRadius: 10}}>
-                            <Textarea selectable onChangeText={text => this.setState({message: text})} placeholder="Send message to trainers and clients..."/>
+                            <TextInput multiline = {true} numberOfLines = {2} selectable value={this.state.message} onChangeText={text => this.setState({message: text})} placeholder="Send message to trainers and clients..."/>
                         </CardItem>
                         <CardItem footer style={{justifyContent: 'space-between',alignItems: 'center', elevation: 2, borderColor: constants.card_header, borderRadius: 10}}>
                             <Text/>
-                            <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Send</Text></Button>
+                            
+                              <Button opacity={this.state.message === null || this.state.message === '' ? 0.3 : 1} disabled={this.state.message === null || this.state.message === ''} style={{backgroundColor: 'black'}} onPress={this.showModal}><Text>Send</Text></Button>
+                           
                         </CardItem>
                       </Card>
                     </View>

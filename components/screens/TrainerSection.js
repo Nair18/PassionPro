@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  TextInput,
   TouchableNativeFeedback,
   StatusBar,
   Modal,
@@ -151,6 +152,7 @@ export default class Admin extends Component {
                                           this.setState({onProcess: false})
                                           if(res.status === 200){
                                               Alert.alert(constants.success, "Message was successfully delivered.")
+                                              this.setState({message: null})
                                           }
                                           else{
                                               Alert.alert(constants.failed, "Something went wrong. Message was not delivered.")
@@ -217,7 +219,7 @@ export default class Admin extends Component {
                 <View style={{marginTop: 15}}>
                    <Card style={{borderRadius: 10}}>
                       <CardItem header style={{borderRadius: 10}}>
-                         <Textarea selectable onChangeText={text => this.setState({message: text})} placeholder="Write message to your clients..."/>
+                         <TextInput multiline = {true} numberOfLines = {2} value = {this.state.message} selectable onChangeText={text => this.setState({message: text})} placeholder="Write message to your clients..."/>
                       </CardItem>
                       <CardItem footer style={{justifyContent: 'space-between', elevation: 3, borderRadius: 10}}>
                          <Text/>
