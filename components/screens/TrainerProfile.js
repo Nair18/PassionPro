@@ -124,7 +124,7 @@ export default class TrainerProfile extends Component {
                       </View>
                     </View>
                     <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
-                        <Button rounded onPress={() => {this.props.navigation.navigate('LandingPage')}}style={{height: 50, width: 150, alignItems: 'center', backgroundColor: '#d1274b', justifyContent: 'center'}}><Icon size={20} name="md-power"/><Text>Logout</Text></Button>
+                        <Button onPress={() => {this.props.navigation.navigate('LandingPage')}}style={{ alignItems: 'center', backgroundColor: '#d1274b', justifyContent: 'center', borderRadius: 10}}><Icon size={20} name="md-power"/><Text>Logout</Text></Button>
                     </View>
                 </Content>
             </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View> }
