@@ -95,7 +95,7 @@ export default class LandingPage extends PureComponent {
             <View style={{width: '100%', justifyContent: 'center', alignItems: 'center'}}>
                 <Image
                     style={ styles.image }
-                    source={require('./front-image.png')}
+                    source={require('./ic_launcher_round.png')}
                 />
 
 
@@ -119,16 +119,16 @@ export default class LandingPage extends PureComponent {
                 </Picker>
                 <View style={styles.button}>
                    <View style={{flex: 1}}>
-                        <Button block style={{backgroundColor: 'black'}} onPress={this._register}><Text>Back</Text></Button>
+                        <Button block style={{backgroundColor: 'black', borderRadius: 10}} onPress={this._register}><Text>Back</Text></Button>
                    </View>
                    <View style={{flex: 1}}>
-                        <Button block style={{backgroundColor: 'black', marginLeft: 10}} onPress={this._validate}><Text>Continue</Text></Button>
+                        <Button block style={{backgroundColor: 'black', marginLeft: 10, borderRadius: 10}} onPress={this._validate}><Text>Continue</Text></Button>
                    </View>
                 </View></Fragment>:
 
                 <View style={{flexDirection: 'row'}}>
                     <View style={{width: '100%', margin: 10, flex: 1}}>
-                        <Button rounded style={{backgroundColor: 'black', width: '100%', justifyContent: 'center', alignItems: 'center'}} onPress={() =>
+                        <Button style={{backgroundColor: 'black', width: '100%', justifyContent: 'center', alignItems: 'center', borderRadius: 10}} onPress={() =>
                         this.props.navigation.navigate('Login')}>
                            <Text style={{color: 'white'}}>
                               Login
@@ -136,7 +136,7 @@ export default class LandingPage extends PureComponent {
                         </Button>
                     </View>
                     <View style={{width: '100%', margin: 10, flex: 1}}>
-                        <Button rounded style={{backgroundColor: 'black', width: '100%', justifyContent: 'center', alignItems: 'center'}} onPress={this._register}>
+                        <Button style={{backgroundColor: 'black', width: '100%', justifyContent: 'center', alignItems: 'center', borderRadius: 10}} onPress={this._register}>
                            <Text style={{color: 'white'}}>
                              Register
                            </Text>
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: constants.admin_tab_background
   },
   image: {
-      width: '40%',
+      width: '70%',
       height: '40%'
     },
     content: {

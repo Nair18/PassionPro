@@ -44,6 +44,7 @@ export default class AllTrainerSubscriptions extends Component {
           trainer_id: null,
           trainee_id: null,
           onProcess: true,
+          curr: this.props.navigation.state.params.curr,
           subscriptions: null,
           trainers: null,
           data: [{"id": 1,"name": "Standard Workout"}, {"id": 2, "name": "Customize your Workout"}, {"id": 3, "name": "Workout plan by Ajay"}]
@@ -255,7 +256,7 @@ export default class AllTrainerSubscriptions extends Component {
                 <View style={styles.cardListView}>
                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 80, justifyContent: 'space-between', borderRadius: 10}}>
-                            <Text style={{fontWeight: 'bold'}}>Training subscription</Text>
+                            <Text style={{fontWeight: 'bold'}}>Personal Training</Text>
                             <Text style={{fontWeight: 'bold', color: subs["is_active"] ? constants.active_color : constants.archive_color}}>{subs["is_active"] ? "ACTIVE" : "EXPIRED"}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
@@ -271,7 +272,7 @@ export default class AllTrainerSubscriptions extends Component {
                             <Text><Text style={{fontWeight: 'bold'}}>Trainer Phone: </Text>{subs["trainer_phone"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
-                            <Text><Text  style={{fontWeight: 'bold'}}>Amount Paid: </Text>{'₹'}{subs["amount"]}</Text>
+                            <Text><Text  style={{fontWeight: 'bold'}}>Amount Paid: </Text>{this.state.curr}{subs["amount"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
                             <Text><Text style={{fontWeight: 'bold'}}>Training start date: </Text>{subs["start_date"]}</Text>

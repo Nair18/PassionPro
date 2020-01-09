@@ -90,6 +90,7 @@ import StatsPageTrainer from './components/screens/StatsPageTrainer';
 import AllClientSubscriptions from './components/screens/AllClientSubscriptions';
 import AllTrainerSubscriptions from './components/screens/AllTrainerSubscriptions'
 import addSubscription from './components/screens/addSubscription';
+
 //import all the screens we are going to switch/
 
 // To see all the requests in the chrome Dev tools in the network tab.

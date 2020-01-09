@@ -226,18 +226,18 @@ export default class addSubscription extends Component {
           { this.state.trainee_id !== null && this.state.trainers !== null && this.state.course !== null ? (
           <Content style={styles.content}>
             <View>
-                    <View ><Label><Text style={{fontWeight: 'bold'}}>Select Trainer<Text style={{color: 'red'}}>*</Text></Text></Label>
-                     <View style={{padding: 10, backgroundColor: '#f4f4f4', marginTop: 15}}>
+                    <View style={{marginTop: 15}}><Label><Text style={{fontWeight: 'bold'}}>Select Trainer<Text style={{color: 'red'}}>*</Text></Text></Label>
+                     <View style={{padding: 10, backgroundColor: '#f4f4f4'}}>
                         <TouchableOpacity onPress={() => this.showModal(true)}>
                             <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
                                 <Text>{searchText}</Text>
-                                <Icon name="md-search" size={20}/>
+                                <Icon name="md-arrow-dropdown" size={20}/>
                             </View>
                         </TouchableOpacity>
                      </View>
                     </View>
                     <View style={{marginTop: 15}}>
-                        <Label><Text style={{fontWeight: 'bold'}}>Select course<Text style={{color: 'red'}}>*</Text></Text></Label>
+                        <Label><Text style={{fontWeight: 'bold'}}>Select Fitness Package<Text style={{color: 'red'}}>*</Text></Text></Label>
                         <Item regular>
                         <Picker
                           selectedValue={this.state.course_name}
@@ -247,7 +247,7 @@ export default class addSubscription extends Component {
                               this.setState({course_id: itemValue, course_name:itemValue})
                              }
                           }>
-                          <Picker.Item label="Select course" value="null" />
+                          <Picker.Item label="Select Fitness Package" value="null" />
                           {this.state.course["courses"].map(course =>
                           <Picker.Item label={course["name"]} value={course["id"]} />)}
                         </Picker>

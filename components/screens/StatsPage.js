@@ -42,13 +42,14 @@ export default class StatsPage extends Component {
           end_year: new Date().getFullYear(),
           onLoad: true,
           onProcess: true,
+          curr: this.props.navigation.state.params.curr,
           data: [{"id": 1,"name": "Standard Workout"}, {"id": 2, "name": "Customize your Workout"}, {"id": 3, "name": "Workout plan by Ajay"}]
       }
   }
 
   static navigationOptions = {
       //Setting the header of the screen
-      title: 'Statistics',
+      title: 'Income details',
       headerStyle: {backgroundColor: constants.header},
       headerTitleStyle: {
           color: constants.header_text,
@@ -209,13 +210,13 @@ export default class StatsPage extends Component {
                     </Card>
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
                 <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllClientSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date})}>
+                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllClientSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date, curr: this.state.curr})}>
                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 70, borderRadius: 10}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Gym Membership</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.card_body}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["gym_subs"]}</Text></Text>
+                            <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.curr}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["gym_subs"]}</Text></Text>
                         </CardItem>
                         <CardItem footer style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2, borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Membership details</Text>
@@ -225,13 +226,13 @@ export default class StatsPage extends Component {
                    </TouchableOpacity>
                 </View>
                 <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllTrainerSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date})}>
+                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllTrainerSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date, curr: this.state.curr})}>
                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 70, borderRadius: 10}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Personal Training</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.card_body}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["pt_subs"]}</Text></Text>
+                            <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.curr}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["pt_subs"]}</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2, borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>Training details</Text>

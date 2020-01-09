@@ -1,3 +1,4 @@
+import DeviceInfo from 'react-native-device-info';
 
 export default {
   "API": "https://passionpro.herokuapp.com/api/",
@@ -24,5 +25,8 @@ export default {
   'active_color': 'green',
   "green_money": "#2c7873",
   "red_money": '#801336',
-  'archive_color': 'red'
+  'archive_color': 'red',
+  "version_number": DeviceInfo.getVersion(),
+  "indian_currency": '₹',
+  "dollar": '$'
 }

@@ -14,7 +14,9 @@ import {
   ScrollView,
   StatusBar,
   FlatList,
+  Modal,
   AsyncStorage,
+  Linking,
   Alert,
   AppState,
   View,ImageBackground
@@ -35,7 +37,7 @@ import Calendar from '../calendar/Calendar';
 import type Moment from 'moment';
 import Workspace from './workspace';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Container, Accordion,Thumbnail, List, Card,ListItem,CheckBox, CardItem, Header,Badge, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, List, Card,ListItem,CheckBox, Spinner, CardItem, Header,Form, Label,Badge, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 import type {Notification} from 'react-native-firebase';
 import firebase from 'react-native-firebase';
 
@@ -56,6 +58,8 @@ class SecondLevelCustomer extends PureComponent {
             auth_key: null,
             courseInfo: null,
             BadgeCount: 1,
+            onProcess: false,
+            update_visible: false,
             traineeDetails: null
         }
     }
@@ -81,6 +85,7 @@ class SecondLevelCustomer extends PureComponent {
         const { navigation } = this.props;
         console.log("pagal bana rhe hai")
         this.focusListener = navigation.addListener('didFocus', () => {
+                this.getUpdateInfo()
                 var key  = this.retrieveItem('key').then(res =>
                 this.setState({auth_key: res}, () => console.log("brother pls", res))
                 ).then(() => this.fetchDetails())
@@ -89,6 +94,11 @@ class SecondLevelCustomer extends PureComponent {
     componentWillUnmount(){
         this.focusListener.remove();
 
+    }
+
+    takeToAppStore = () => {
+        this.setState({update_visible: false, onProcess: false})
+        Linking.openURL("https://play.google.com/store/apps/details?id=com.passionpro")
     }
 
     async checkPermission() {
@@ -175,6 +185,20 @@ class SecondLevelCustomer extends PureComponent {
                  * */
 
         }
+
+    async getUpdateInfo(){
+        console.log("checking for updates")
+        fetch(constants.API + 'open/version', {
+                method: 'GET'
+            }).then((res) => {
+               return res.text()
+            }).then(data => {
+                if(data !== constants.version_number){
+                    this.setState({update_visible: true})
+                }
+            }
+            )
+    }
 
     fetchDetails = () => {
         fetch(constants.API + 'current/trainee/courses',{
@@ -278,7 +302,7 @@ class SecondLevelCustomer extends PureComponent {
               </TouchableOpacity>
               <Content style={{marginTop: 20}}>
                 <View>
-                  <Text style={{fontWeight: 'bold', color: 'black'}}>Popular Courses</Text>
+                  <Text style={{fontWeight: 'bold', color: 'black'}}>Popular Fitness Packages</Text>
                 </View>
                   <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
@@ -369,7 +393,30 @@ class SecondLevelCustomer extends PureComponent {
             </ScrollView>
 
           </Container> : <ProfileSkeleton/>}
-
+            <View>
+                                        <Modal
+                                          animationType="slide"
+                                          transparent={true}
+                                          visible={this.state.update_visible}
+                                        >
+                                          <View style = {styles.modal}>
+                                          <Content style={styles.content}>
+                                            <Form>
+                                               <View style={{marginTop: 20}}>
+                                               <Label><Text style={{fontWeight: 'bold'}}>Update Available</Text></Label>
+                                                <View style={{paddingTop: 20}}><Text>Please update to latest version of the app for better experience.</Text></View>
+                                               </View>
+                                               <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 25}}>
+                                               {this.state.onProcess === false ?
+                                               <Button block onPress={this.takeToAppStore} style={{backgroundColor: constants.green_money}}>
+                                                 <Text>Update</Text>
+                                               </Button> : <Spinner color="black"/>}
+                                               </View>
+                                            </Form>
+                                          </Content>
+                                          </View>
+                                        </Modal>
+                                      </View>
           </Fragment>
   );
 }};
@@ -396,6 +443,17 @@ const styles = StyleSheet.create({
      justifyContent: 'center',
      alignItems: 'center'
   },
+  modal: {
+          backgroundColor : constants.card_header,
+          height: 250 ,
+          width: '80%',
+          borderRadius:10,
+          borderWidth: 1,
+          borderColor: '#fff',
+          marginTop: 80,
+          marginLeft: 40,
+          padding: 15
+      },
   notificationButton: {
     backgroundColor: 'white',
     padding: 10

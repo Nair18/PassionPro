@@ -197,15 +197,15 @@ export default class Login extends PureComponent {
                 <Content style={{marginTop: 50, margin: 25}}>
                     <View>
                         <View style={{marginTop: 15}}>
-                            <Input style={{backgroundColor: 'white'}} placeholder="Phone number" keyboardType='numeric' onChangeText={(text) => this.setState({username: text})}
+                            <Input style={{backgroundColor: 'white', borderRadius: 10}} placeholder="Phone number" keyboardType='numeric' onChangeText={(text) => this.setState({username: text})}
                                                                         value={this.state.username}/>
                         </View>
                         <View style={{marginTop: 15}}>
-                            <Input style={{backgroundColor: 'white'}} secureTextEntry={true} placeholder="Password" onChangeText={(value) => this.setState({password: value})}/>
+                            <Input style={{backgroundColor: 'white', borderRadius: 10}} secureTextEntry={true} placeholder="Password" onChangeText={(value) => this.setState({password: value})}/>
                         </View>
                     </View>
                     <View style={{marginTop: 15}}>
-                       <Button disabled={this.state.loading} block style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}} onPress={this.onSubmit}>
+                       <Button disabled={this.state.loading} block style={{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', borderRadius: 10}} onPress={this.onSubmit}>
                            <Text style={{color: 'white'}}>Login</Text>
                        </Button>
                     </View>

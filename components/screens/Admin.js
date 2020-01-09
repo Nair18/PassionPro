@@ -10,11 +10,13 @@ import {
   TextInput,
   TouchableHighlight,
   View,
+  Linking,
   Alert,
   Dimensions,
   AsyncStorage,
   AppState,
 } from 'react-native';
+import * as RNLocalize from "react-native-localize";
 import constants from '../constants';
 import PassKey from './PassKey';
 import Overview from './Overview';
@@ -30,7 +32,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AdminProfile from './AdminProfile';
 import AddExercise from './AddExercise';
 import FinancialHistory from './FinancialHistory';
-import {Container, Badge, Accordion,Thumbnail, Card,ListItem, Spinner,Textarea,Radio, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right,CheckBox} from 'native-base';
+import {Container, Badge, Accordion,Thumbnail, Card,ListItem, Form, Label, Spinner,Textarea,Radio, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right,CheckBox} from 'native-base';
 
 
 const { width } = Dimensions.get('window');
@@ -48,10 +50,13 @@ export default class Admin extends PureComponent {
       gymDetails: null,
       overview: null,
       auth_key: null,
+      onProcess: false,
       loading: true,
       loading2: true,
+      update_visible: false,
       message: null,
       gymId: null,
+      curr: constants.indian_currency,
       checked1: false,
       checked2: false,
       start_month: "JANUARY",
@@ -79,11 +84,12 @@ export default class Admin extends PureComponent {
   }
 
   componentDidMount() {
-
+      console.log("version", constants.version_number)
       const { navigation } = this.props;
       console.log("pagal bana rhe hai")
       this.focusListener = navigation.addListener('didFocus', () => {
         console.log("focusing admin screen")
+        this.getUpdateInfo()
         var key  = this.retrieveItem(['key', 'id']).then(res =>
                       this.setState({auth_key: res}, () => console.log("brother pls", res))
                     ).then(() => {
@@ -91,6 +97,20 @@ export default class Admin extends PureComponent {
                     })
       });
 
+  }
+
+  async getUpdateInfo(){
+    console.log("checking for updates")
+    fetch(constants.API + 'open/version', {
+            method: 'GET'
+        }).then((res) => {
+           return res.text()
+        }).then(data => {
+            if(data !== constants.version_number){
+                this.setState({update_visible: true})
+            }
+        }
+        )
   }
   async retrieveItem(keys) {
        let auth_key = null
@@ -180,7 +200,7 @@ export default class Admin extends PureComponent {
                                );
                              }
                            }).then(res => {
-                             this.setState({gymDetails: res, loading: false})
+                             this.setState({gymDetails: res, loading: false}, () => this._storeData("feature", res["is_full_featured"]))
                              return res["data"]["gyms"]
                            }).then( id => {
                                 if(id !== null){
@@ -284,11 +304,17 @@ export default class Admin extends PureComponent {
     }
   }
 
+  takeToAppStore = () => {
+    this.setState({update_visible: false, onProcess: false})
+    Linking.openURL("https://play.google.com/store/apps/details?id=com.passionpro")
+  }
+
   timeToString = (time) => {
       const date = new Date(time);
       return date.toISOString().split('T')[0];
   }
   render(){
+
     Date.prototype.monthNames = [
               "January", "February", "March",
               "April", "May", "June",
@@ -334,20 +360,22 @@ export default class Admin extends PureComponent {
                   <ScrollView showsVerticalScrollIndicator={false}>
                   <Content padder style={styles.contentBlock}>
                      {this.state.gymId !== null ?
-                     <View style={{ width: width, height: 85 }}>
+                     <View style={{ width: width, height: 85, backgroundColor: "#D5ABB2" }}>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
                             <View style={styles.thumbnailAlign}>
-                                <TouchableOpacity activeOpacity={1} key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./bank-icon.jpg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Courses</Text></View></TouchableOpacity>
-                                <TouchableOpacity activeOpacity={1} key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text style={{fontSize: 15}}>Plans</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={3} onPress={() => this.props.navigation.navigate('Clients', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./client.png')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Clients</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={4} onPress={() => this.props.navigation.navigate('Trainer', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Trainers</Text></View></TouchableOpacity>
+                                <TouchableOpacity activeOpacity={1} key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./exercise.jpg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Packages</Text></View></TouchableOpacity>
+                               {this.state.gymDetails !== null && this.state.gymDetails["is_full_featured"] ? <View><TouchableOpacity activeOpacity={1} key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text style={{fontSize: 15}}>Plans</Text></View></TouchableOpacity>
+
                                 <TouchableOpacity activeOpacity={1} key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Requests</Text></View></TouchableOpacity>
-                                <TouchableOpacity activeOpacity={1} key={8} onPress={() => this.props.navigation.navigate('AdminProfile',{ID: this.state.gymId, navigation: this.props.navigation})}>
+                               </View>: null }<TouchableOpacity activeOpacity={1} key={8} onPress={() => this.props.navigation.navigate('AdminProfile',{ID: this.state.gymId, navigation: this.props.navigation})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Profile</Text></View></TouchableOpacity>
                             </View>
                          </ScrollView>
@@ -358,16 +386,16 @@ export default class Admin extends PureComponent {
                    <View>
                          <View>
                                              <View style={{flex: 1}}>
-                                                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('StatsPage', {id: this.state.gymId, gym_stats: this.state.stats})}>
+                                                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('StatsPage', {id: this.state.gymId, gym_stats: this.state.stats, curr: this.state.curr})}>
                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                                                         <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 50, borderRadius: 10}}>
                                                             <View>
-                                                                <Text style={{ fontSize: 15}}>Total <Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>money collected</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
+                                                                <Text style={{ fontSize: 15}}>Total <Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>income</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
                                                             </View>
                                                         </CardItem>
                                                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#ebe6e6'}}>
                                                              {this.state.stats === null  ? <Spinner color="black"/> :
-                                                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{'₹'}<Text style={{fontSize: 30,color: '#2c7873'}}>{this.state.stats !== null ? this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"]): null}</Text></Text>}
+                                                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.curr}<Text style={{fontSize: 30,color: '#2c7873'}}>{this.state.stats !== null ? this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"]): null}</Text></Text>}
                                                         </CardItem>
                                                         <CardItem footer style={{justifyContent: 'space-between', backgroundColor: "#ebe6e6", elevation: 2, borderRadius: 10}}>
                                                             <View>
@@ -462,9 +490,12 @@ export default class Admin extends PureComponent {
 
                                        </View>
                    </View>
+                   {this.state.gymDetails !== null && this.state.gymDetails["is_full_featured"] ?
+                   <View>
                    <View style={{marginTop: 20}}>
                     <Text style={{fontWeight: 'bold'}}>Write up</Text>
                    </View>
+
                    <View style={{marginTop: 10}}>
                       <Card style={{borderRadius: 10}}>
                         <CardItem header style={{borderRadius: 10}}>
@@ -477,7 +508,31 @@ export default class Admin extends PureComponent {
                            
                         </CardItem>
                       </Card>
-                    </View>
+                    </View></View> : null}
+                    <View style={{backgroundColor: 'grey'}}>
+                            <Modal
+                              animationType="slide"
+                              transparent={true}
+                              visible={this.state.update_visible}
+                            >
+                              <View style = {styles.modal}>
+                              <Content style={styles.content}>
+                                <Form>
+                                   <View style={{marginTop: 20}}>
+                                   <Label><Text style={{fontWeight: 'bold'}}>Update Available</Text></Label>
+                                    <View style={{paddingTop: 20}}><Text>Please update to latest version of the app for better experience.</Text></View>
+                                   </View>
+                                   <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 25}}>
+                                   {this.state.onProcess === false ?
+                                   <Button block onPress={this.takeToAppStore} style={{backgroundColor: constants.green_money}}>
+                                     <Text>Update</Text>
+                                   </Button> : <Spinner color="black"/>}
+                                   </View>
+                                </Form>
+                              </Content>
+                              </View>
+                            </Modal>
+                          </View>
                     <Modal
                                         animationType = {"fade"}
                                         transparent = {false}
@@ -598,6 +653,17 @@ const styles = StyleSheet.create({
       height: 15,
       flex:1,
       paddingTop: 30
+    },
+  modal: {
+        backgroundColor : constants.card_header,
+        height: 250 ,
+        width: '80%',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginTop: 80,
+        marginLeft: 40,
+        padding: 15
     },
   headerTitle: {
     color: 'black',

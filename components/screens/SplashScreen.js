@@ -81,10 +81,15 @@ export default class SplashScreen extends Component {
       return roles;
    }
 
+   resolve = () => {
+       console.log("splash screen")
+   }
+
+
+
    componentDidMount(){
         var key  = this.retrieveItem(['role', 'key', 'id']).then(res => {
-                       console.log(res)
-                       return JSON.parse(res)
+                        return JSON.parse(res)
                    }).then(res => {
                         if(res!==null){
                             if(res === "OWNERADMIN" || res === "OWNERADMINTRAINER" || res === "ADMIN" || res === "ADMINTRAINER" || res === "OWNER"){
@@ -112,13 +117,13 @@ export default class SplashScreen extends Component {
         <Container style={styles.container}>
             <StatusBar backgroundColor='black' barStyle='light-content' />
             <View style={{ height: '70%', width: '70%', borderRadius: 100,padding: '5%', justifyContent: 'center', alignItems: 'center'}}>
-               <Image style={styles.image}  source={require('./hulk.jpg')} resizeMode='contain'/>
+               <Image style={styles.image}  source={require('./ic_launcher_round.png')} resizeMode='contain'/>
             </View>
             <Content style={styles.content}>
                 <Fragment>
                     <View style={{marginLeft: '15%', width: '70%', justifyContent: 'center', alignItems: 'center'}}>
-                        <Text>Unleashing the hulk in you ...</Text>
-                        <Text note>Powered by PassionPro</Text>
+                        <Text>Hustle for that muscle</Text>
+                        <Text note>Powered by Mygymnasio</Text>
                     </View>
                     <View>
                         <Spinner color = 'black'/>

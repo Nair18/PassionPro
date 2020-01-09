@@ -31,6 +31,7 @@ export default class Menu extends Component {
       workoutType: null,
       permission: null,
       id: null,
+      feature: true,
       workoutSection: null,
       onLoad: true
   }
@@ -66,6 +67,9 @@ export default class Menu extends Component {
               else if(m[0] === 'id' && m[1] !== null){
                 this.setState({id: parseInt(m[1])})
               }
+              else if(m[0] === "feature"){
+                this.setState({feature: m[1]})
+              }
             } catch (error) {
               console.log(error.message);
             }
@@ -75,7 +79,7 @@ export default class Menu extends Component {
     }
   componentDidMount(){
      StatusBar.setHidden(false);
-     var key  = this.retrieveItem(['role', 'id']).then(res => {
+     var key  = this.retrieveItem(['role', 'id', 'feature']).then(res => {
          console.log(res)
          return JSON.parse(res)
      }).then(res => {
@@ -129,7 +133,9 @@ export default class Menu extends Component {
                      </Card>
                    </TouchableOpacity>
                 </View> : null }
+                {this.state.feature ?
                 <View style={styles.cardListView}>
+
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AddExercise', {id: this.state.id})}>
                       <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
                          <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
@@ -138,7 +144,7 @@ export default class Menu extends Component {
                          </CardItem>
                       </Card>
                    </TouchableOpacity>
-                </View>
+                </View>: null}
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Sessions', {id: this.state.id})}>
                       <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>

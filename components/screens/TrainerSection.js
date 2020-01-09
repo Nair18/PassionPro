@@ -11,6 +11,7 @@ import {
   Modal,
   AsyncStorage,
   Alert,
+  Linking,
   TouchableHighlight,
   View,
 
@@ -29,7 +30,7 @@ import Notification from './Notification';
 import PageLoader from './PageLoader';
 import constants from '../constants';
 import TrainerProfile from './TrainerProfile';
-import {Container, Accordion,Thumbnail, Item, Textarea, Card, Spinner, Badge, ListItem,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
+import {Container, Accordion,Thumbnail, Item, Textarea,Form,Label, Card, Spinner, Badge, ListItem,CheckBox, CardItem,Tab,Tabs, Header, Title, Content, Button, Left, Body, Text,Right} from 'native-base';
 
 export default class Admin extends Component {
   constructor(props){
@@ -38,6 +39,7 @@ export default class Admin extends Component {
       date: new Date(),
       visible: false,
       items: {},
+      update_visible: false,
       message: null,
       trainerDetails: null,
       onProcess: false
@@ -54,6 +56,7 @@ export default class Admin extends Component {
         console.log("pagal bana rhe hai")
         this.focusListener = navigation.addListener('didFocus', () => {
           console.log("focusing admin screen")
+          this.getUpdateInfo()
           var key  = this.retrieveItem(['key', 'id']).then(res =>{
               this.setState({auth_key: res[0]}, () => console.log("brother pls", res))
               return res[1]
@@ -84,6 +87,25 @@ export default class Admin extends Component {
             }
         })
         return [auth_key, id];
+  }
+
+  async getUpdateInfo(){
+      console.log("checking for updates")
+      fetch(constants.API + 'open/version', {
+              method: 'GET'
+          }).then((res) => {
+             return res.text()
+          }).then(data => {
+              if(data !== constants.version_number){
+                  this.setState({update_visible: true})
+              }
+          }
+          )
+  }
+
+  takeToAppStore = () => {
+      this.setState({update_visible: false, onProcess: false})
+      Linking.openURL("https://play.google.com/store/apps/details?id=com.passionpro")
   }
 
   _storeData = async (data) => {
@@ -272,6 +294,31 @@ export default class Admin extends Component {
             </ScrollView>
             </Content>
         </Container>: <PageLoader/>}
+        <View>
+                                                                <Modal
+                                                                  animationType="slide"
+                                                                  transparent={true}
+                                                                  visible={this.state.update_visible}
+                                                                >
+                                                                  <View style = {styles.modal}>
+                                                                  <Content style={styles.content}>
+                                                                    <Form>
+                                                                       <View style={{marginTop: 20}}>
+                                                                       <Label><Text style={{fontWeight: 'bold'}}>Update Available</Text></Label>
+                                                                        <View style={{paddingTop: 20}}><Text>Please update to latest version of the app for better experience.</Text></View>
+                                                                       </View>
+                                                                       <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 25}}>
+                                                                       {this.state.onProcess === false ?
+                                                                       <Button block onPress={this.takeToAppStore} style={{backgroundColor: constants.green_money}}>
+                                                                         <Text>Update</Text>
+                                                                       </Button> : <Spinner color="black"/>}
+                                                                       </View>
+                                                                    </Form>
+                                                                  </Content>
+                                                                  </View>
+                                                                </Modal>
+                                                              </View>
+
         </Fragment>
     );
   }
@@ -282,4 +329,15 @@ thumbnailBlock: {
    width: 80,
 
   },
+  modal: {
+          backgroundColor : constants.card_header,
+          height: 250 ,
+          width: '80%',
+          borderRadius:10,
+          borderWidth: 1,
+          borderColor: '#fff',
+          marginTop: 80,
+          marginLeft: 40,
+          padding: 15
+      }
 })

@@ -41,6 +41,7 @@ export default class AllClientSubscriptions extends Component {
           show: true,
           end_year: new Date().getFullYear(),
           onLoad: true,
+          curr: this.props.navigation.state.params.curr,
           trainee_id: null,
           trainer_id: null,
           onProcess: true,
@@ -256,7 +257,7 @@ export default class AllClientSubscriptions extends Component {
                 <View style={styles.cardListView}>
                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 80, justifyContent: 'space-between', borderRadius: 10}}>
-                            <Text style={{fontWeight: 'bold'}}>Gym subscription</Text>
+                            <Text style={{fontWeight: 'bold'}}>Gym Membership</Text>
                             <Text style={{fontWeight: 'bold', color: subs["is_active"] ? constants.active_color : constants.archive_color}}>{subs["is_active"] ? "ACTIVE" : "EXPIRED"}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
@@ -266,7 +267,7 @@ export default class AllClientSubscriptions extends Component {
                             <Text><Text style={{fontWeight: 'bold'}}>Phone: </Text>{subs["trainee_phone"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
-                            <Text><Text  style={{fontWeight: 'bold'}}>Amount Paid: </Text>{'₹'}{subs["amount"]}</Text>
+                            <Text><Text  style={{fontWeight: 'bold'}}>Amount Paid: </Text>{this.state.curr}{subs["amount"]}</Text>
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body}}>
                             <Text><Text style={{fontWeight: 'bold'}}>Membership start date: </Text>{subs["start_date"]}</Text>

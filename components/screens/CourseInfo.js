@@ -20,7 +20,7 @@ export default class CourseInfo extends Component {
     }
   }
   static navigationOptions = {
-    title: 'Course Info',
+    title: 'Package Info',
     headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
     headerStyle: {backgroundColor: constants.header},
     headerTintColor: constants.header_text

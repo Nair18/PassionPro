@@ -128,7 +128,7 @@ export default class GymLocations extends PureComponent {
           <List>
               <ListItem avatar onPress={() => this._gymSwitcher(gyms["id"])}>
                   <Left>
-                    <Thumbnail source={require('./exercise.jpg')}/>
+                    <Thumbnail source={require('./bank-icon.jpg')}/>
                   </Left>
                   <Body>
                       <View>

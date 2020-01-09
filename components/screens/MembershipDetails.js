@@ -136,13 +136,7 @@ export default class MembershipDetails extends Component{
         </Content>
         </ScrollView> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View>}
 
-        <View style={styles.addButton}>
-                            <TouchableOpacity>
-                            <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}}>
-                              <Icon size={30} style={{color: 'white'}}name="md-add" />
-                            </Button>
-                            </TouchableOpacity>
-                          </View>
+
       </Container>
     );
   }

@@ -31,7 +31,7 @@ export default class Courses extends PureComponent {
         };
   }
   static navigationOptions = {
-    title: 'Courses',
+    title: 'Fitness Packages',
     tabBarVisible: false,
     headerTitleStyle: { color: constants.header_text, fontWeight: 'bold'},
     headerStyle: {backgroundColor: constants.header},
@@ -170,7 +170,7 @@ export default class Courses extends PureComponent {
                 this.fetchDetails()
                 Alert.alert(
                    '✅ Success',
-                   'Course added successfully 😀',
+                   'Package added successfully 😀',
                    [
                       {text: 'OK', onPress: () => console.log('OK Pressed')},
                    ],
@@ -202,7 +202,7 @@ export default class Courses extends PureComponent {
             {this.state.coursetype !== null && this.state.courseList !== null ? this.state.courseList.map(course =>
             <ListItem key={course["id"]} avatar onPress={() => this.props.navigation.navigate('CourseInfo', {ID: course["id"], GYM_ID: this.state.id})}>
               <Left style={{margin: 5}}>
-                <Thumbnail source={require('./bank-icon.jpg')} style={{backgroundColor: 'black'}} />
+                <Thumbnail source={require('./exercise.jpg')} style={{backgroundColor: 'black'}} />
               </Left>
               <Body>
                 <Text style={{fontWeight: 'bold'}}>{course["name"]}</Text>
@@ -266,9 +266,9 @@ export default class Courses extends PureComponent {
                </View>
 
                <View style={{margin: 15}}>
-                    <Label><Text style={{fontWeight: 'bold'}}>Course Name<Text style={{color: 'red'}}>*</Text></Text></Label>
+                    <Label><Text style={{fontWeight: 'bold'}}>Package Name<Text style={{color: 'red'}}>*</Text></Text></Label>
                     <Item regular>
-                        <Input placeholder="Course Name" onChangeText={(text) => this.setState({courseName: text})}/>
+                        <Input placeholder="Package Name" onChangeText={(text) => this.setState({courseName: text})}/>
                     </Item>
                </View>
                <View style={{margin: 15}}>
@@ -278,7 +278,7 @@ export default class Courses extends PureComponent {
                     </Item>
                </View>
                <View style={{margin: 15}}>
-                    <Label><Text style={{fontWeight: 'bold'}}>Course Duration(days)<Text style={{color: 'red'}}>*</Text></Text></Label>
+                    <Label><Text style={{fontWeight: 'bold'}}>Duration(days)<Text style={{color: 'red'}}>*</Text></Text></Label>
                     <Item regular style={{flexDirection: 'row'}}>
                         <Input placeholder="duration" keyboardType='numeric' onChangeText={text => this.setState({days: text})} style={{flex: 1}}/>
                     </Item>
@@ -287,7 +287,7 @@ export default class Courses extends PureComponent {
                <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
                {this.state.onProcess === false ?
                <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
-                 <Text>Create course</Text>
+                 <Text>Create Fitness Package</Text>
                </Button> : <Spinner color="black"/>}
                </View>
             </Form>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Text>loading ...</Text></View>}
