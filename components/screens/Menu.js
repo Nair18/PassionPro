@@ -133,7 +133,7 @@ export default class Menu extends Component {
                      </Card>
                    </TouchableOpacity>
                 </View> : null }
-                {this.state.feature ?
+                {this.state.feature !== null ?
                 <View style={styles.cardListView}>
 
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AddExercise', {id: this.state.id})}>

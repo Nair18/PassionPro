@@ -42,7 +42,7 @@ export default class LandingPage extends PureComponent {
    }
 
    async _checkout(){
-    const retrievedItem = await AsyncStorage.multiRemove(['key', 'role', 'id']);
+    const retrievedItem = await AsyncStorage.multiRemove(['key', 'role', 'id', 'feature']);
    }
    componentDidMount(){
        console.log("calling checkout")

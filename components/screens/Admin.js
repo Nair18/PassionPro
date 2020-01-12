@@ -200,7 +200,7 @@ export default class Admin extends PureComponent {
                                );
                              }
                            }).then(res => {
-                             this.setState({gymDetails: res, loading: false}, () => this._storeData("feature", res["is_full_featured"]))
+                             this.setState({gymDetails: res, loading: false}, () => this._storeData("feature", res["data"]["is_full_featured"]))
                              return res["data"]["gyms"]
                            }).then( id => {
                                 if(id !== null){
@@ -359,7 +359,7 @@ export default class Admin extends PureComponent {
                   </View>
                   <ScrollView showsVerticalScrollIndicator={false}>
                   <Content padder style={{marginLeft: 5}}>
-                     {this.state.gymId !== null ?
+                     {this.state.gymId !== null && this.state.gymDetails !== null ?
                      <View style={{ width: width, height: 85, backgroundColor: "#D5ABB2", borderRadius:10 }}>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
@@ -370,12 +370,13 @@ export default class Admin extends PureComponent {
                             <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Trainers</Text></View></TouchableOpacity>
                                 <TouchableOpacity activeOpacity={1} key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./exercise.jpg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Packages</Text></View></TouchableOpacity>
-                               {this.state.gymDetails !== null && this.state.gymDetails["is_full_featured"] ? <View><TouchableOpacity activeOpacity={1} key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
+                               {this.state.gymDetails["data"]["is_full_featured"] === true ? (<View style={{flexDirection: 'row'}}><TouchableOpacity activeOpacity={1} key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text style={{fontSize: 15}}>Plans</Text></View></TouchableOpacity>
 
                                 <TouchableOpacity activeOpacity={1} key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Requests</Text></View></TouchableOpacity>
-                               </View>: null }<TouchableOpacity activeOpacity={1} key={8} onPress={() => this.props.navigation.navigate('AdminProfile',{ID: this.state.gymId, navigation: this.props.navigation})}>
+                               </View>) : null }
+                               <TouchableOpacity activeOpacity={1} key={8} onPress={() => this.props.navigation.navigate('AdminProfile',{ID: this.state.gymId, navigation: this.props.navigation})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./profile.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Profile</Text></View></TouchableOpacity>
                             </View>
                          </ScrollView>
@@ -490,7 +491,7 @@ export default class Admin extends PureComponent {
 
                                        </View>
                    </View>
-                   {this.state.gymDetails !== null && this.state.gymDetails["is_full_featured"] ?
+                   {(this.state.gymDetails !== null && this.state.gymDetails["data"]["is_full_featured"] === true) ?
                    <View>
                    <View style={{marginTop: 20}}>
                     <Text style={{fontWeight: 'bold'}}>Write up</Text>
