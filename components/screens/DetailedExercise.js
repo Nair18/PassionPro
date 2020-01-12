@@ -157,15 +157,15 @@ export default class DetailedExercise extends PureComponent {
         })
       }
       archive_exercise_alert = (id) => {
-//        Alert.alert(constants.warning, 'Are you sure you want to delete?',
-//            [
-//                {
-//                    text: 'Cancel',
-//                    style: 'cancel',
-//                },
-//                {text: 'OK', onPress: () => this.archive_exercise(id)},
-//            ],
-//        )
+        Alert.alert(constants.warning, 'Are you sure you want to delete?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {text: 'OK', onPress: () => this.archive_exercise(id)},
+            ],
+        )
 
           if(this.state.exerciseList !== null){
             let ex = []
@@ -187,7 +187,6 @@ export default class DetailedExercise extends PureComponent {
     return (
     <Fragment>
       <Container style={{backgroundColor: constants.screen_color}}>
-
         <Content style={{margin: 15}}>
           <View style={{margin: 5}}><Text>Showing result for <Text style={{fontWeight: 'bold'}}>{this.state.name}</Text></Text></View>
           {this.state.exerciseList !== null  ? this.state.exerciseList.map(ex =>
@@ -197,7 +196,7 @@ export default class DetailedExercise extends PureComponent {
                 <Text style={{color: 'black', fontWeight:'bold'}}>{ex["exercise_name"]}</Text>
                 <TouchableOpacity onPress={() => this.archive_exercise_alert(ex["id"])}>
                 {this.state.onProcess == false ?
-                    <Icon size={25} name="md-create" style={{color: 'white'}} onPress={() => this.archive_exercise_alert(ex["id"])}/>: <Spinner color="black"/>}
+                    <Icon size={25} name="md-close" style={{color: 'white'}} onPress={() => this.archive_exercise_alert(ex["id"])}/>: <Spinner color="black"/>}
                 </TouchableOpacity>
             </CardItem>
           </Card></View>): <Spinner color="black"/>}

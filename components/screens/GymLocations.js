@@ -6,7 +6,7 @@ import ClientInfo from './ClientInfo';
 import constants from '../constants';
 import PageLoader from './PageLoader';
 import DatePicker from 'react-native-datepicker';
-import { Container, Header, Content, List, ListItem, Form, Left, Spinner, Item, Input, Label,Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
+import { Container, Header, Content, List, ListItem,Card, CardItem, Form, Left, Spinner, Item, Input, Label,Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
 import { debounce } from "lodash";
 
 export default class GymLocations extends PureComponent {
@@ -123,21 +123,23 @@ export default class GymLocations extends PureComponent {
     <Fragment>
       <Container style={{backgroundColor: constants.screen_color}}>
 
-        <Content>
-          {this.state.gymList !== null ? this.state.gymList.map(gyms =>
+        <Content style={{margin: 10}}>
           <List>
-              <ListItem avatar onPress={() => this._gymSwitcher(gyms["id"])}>
-                  <Left>
+          {this.state.gymList !== null ? this.state.gymList.map(gyms =>
+
+              <TouchableOpacity onPress={() => this._gymSwitcher(gyms["id"])}>
+              <Card style={styles.items}>
+                  <View style={{flex: 1, padding: 5}}>
                     <Thumbnail source={require('./bank-icon.jpg')}/>
-                  </Left>
-                  <Body>
+                  </View>
+                  <View style={{flex: 4, padding: 5}}>
                       <View>
                         <Text style={{fontWeight: 'bold'}}>{gyms["name"]}</Text>
                         <Text note>{gyms["location"]}</Text>
                       </View>
-                   </Body>
-              </ListItem>
-           </List>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
+                   </View>
+              </Card></TouchableOpacity>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View>}
+            </List>
             </Content>
       </Container>
      </Fragment>
@@ -150,6 +152,17 @@ const styles = StyleSheet.create({
     right: 30,
     bottom: 30,
   },
+  items: {
+      elevation: 2,
+      padding: 10,
+      backgroundColor: constants.card_header,
+      marginTop: 2,
+      marginLeft: 15,
+      marginRight: 15,
+      justifyContent: 'space-around',
+      flexDirection: 'row',
+      borderRadius: 10
+      },
   item: {
     margin: 15
   }

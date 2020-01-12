@@ -90,7 +90,7 @@ import StatsPageTrainer from './components/screens/StatsPageTrainer';
 import AllClientSubscriptions from './components/screens/AllClientSubscriptions';
 import AllTrainerSubscriptions from './components/screens/AllTrainerSubscriptions'
 import addSubscription from './components/screens/addSubscription';
-
+import addMembership from './components/screens/addMembership';
 //import all the screens we are going to switch/
 
 // To see all the requests in the chrome Dev tools in the network tab.
@@ -137,7 +137,8 @@ const AdminPage = createStackNavigator({
     StatsPageTrainer: {screen: StatsPageTrainer},
     AllClientSubscriptions: {screen: AllClientSubscriptions},
     AllTrainerSubscriptions: {screen: AllTrainerSubscriptions},
-    addSubscription: {screen: addSubscription}
+    addSubscription: {screen: addSubscription},
+    addMembership: {screen: addMembership},
   },
   {
     initialRouteName: 'Admin'

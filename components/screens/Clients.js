@@ -6,7 +6,7 @@ import ClientInfo from './ClientInfo';
 import constants from '../constants';
 import PageLoader from './PageLoader';
 import DatePicker from 'react-native-datepicker'
-import { Container, Header, Content, List, ListItem, Form, Left, Item, Input,Spinner, Label,Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
+import { Container, Header, Content, List, ListItem, Form, Left, Card, CardItem, Item, Input,Spinner, Label,Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
 import { debounce } from "lodash";
 
 export default class Clients extends PureComponent {
@@ -209,17 +209,18 @@ export default class Clients extends PureComponent {
           </View> : null }
           <List>
             {this.state.traineeList !== null && this.state.onProcess == false ? this.state.traineeList.map((trainee) =>
-                <ListItem avatar onPress={() => this.props.navigation.navigate('ClientInfo', {client_id: trainee["id"], id: this.state.id})}>
-                    <Left>
+                <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('ClientInfo', {client_id: trainee["id"], id: this.state.id})}>
+                <Card style={styles.items}>
+                    <View style={{flex:1, padding: 5}}>
                         <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
-                    </Left>
-                   <Body>
+                    </View>
+                   <View style={{flex: 4, padding: 5}}>
                         <View>
                         <Text style={{fontWeight: 'bold', color: trainee["is_active"] ? '#2c7873' : '#9d0b0b'}}>{trainee["name"]}</Text>
                         <Text note>Mobile - {trainee["phone"]}</Text>
                         </View>
-                   </Body>
-                </ListItem>) : <PageLoader/>}
+                   </View>
+                </Card></TouchableOpacity>) : <PageLoader/>}
            </List>
             </Content>
             </ScrollView>
@@ -395,6 +396,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 30,
     bottom: 30,
+  },
+  items: {
+  elevation: 2,
+  padding: 10,
+  backgroundColor: constants.card_header,
+  marginTop: 2,
+  marginLeft: 15,
+  marginRight: 15,
+  justifyContent: 'space-around',
+  flexDirection: 'row',
+  borderRadius: 10
   },
   item: {
     margin: 15

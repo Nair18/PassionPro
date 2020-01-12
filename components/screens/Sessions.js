@@ -235,12 +235,10 @@ export default class Sessions extends PureComponent {
         <Content style={{margin: 15}}>
             {this.state.coursetype !== null ? this.state.coursetype.map(coursetype =>
                 <View style={{marginTop: 5}}>
-                    <Card style={{backgroundColor: constants.item_card}}>
-                        <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between'}}>
+                    <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                        <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold'}}>{coursetype["name"]}</Text>
-                            <TouchableOpacity onPress={() => this._deletealert(coursetype["id"])}>
-                                <Icon name="md-create" size={25} style={{color: 'white'}} onPress={() => this._deletealert(coursetype["id"])}/>
-                            </TouchableOpacity>
+                            <Text/>
                         </CardItem>
                     </Card>
                 </View>):<PageLoader/>}

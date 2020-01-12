@@ -82,20 +82,21 @@ export default class QuickClient extends Component {
             <ScrollView showsVerticalScrollBar={false}>
             <Content style={{margin: 15}}>
                 {this.state.details !== null && this.state.details.length > 0 && text_message !== null ?
-                <View style={{backgroundColor: "#ffd369", padding: 10}}>
+                <View style={{backgroundColor: "#ffd369", padding: 10, borderRadius: 10, margin: 15}}>
                     <Text>{text_message}</Text>
                 </View> : null}
                 <List>
                     {this.state.details !== null ? this.state.details.length > 0 ? clients.map(client =>
-                        <ListItem avatar onPress={() => this.props.navigation.navigate('ClientInfo', {id: this.state.id, client_id: client["id"]})}>
-                            <Left>
+                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('ClientInfo', {id: this.state.id, client_id: client["id"]})}>
+                        <Card style={styles.items}>
+                            <View style={{flex: 1, padding: 5}}>
                                <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
-                            </Left>
-                            <Body>
+                            </View>
+                            <View style={{flex: 4, padding: 5}}>
                                 <Text style={{fontWeight: 'bold'}}>{client["name"]}</Text>
                                 <Text note>{text}{client["date"] !== null ? client["date"].split("T")[0] : "-"}</Text>
-                            </Body>
-                        </ListItem>
+                            </View>
+                        </Card></TouchableOpacity>
                     ): <Card style={{backgroundColor: constants.header, padding: 10, justifyContent: 'center', alignItems: 'center'}}><Text note>Nothing to show</Text></Card> : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/></View>}
                 </List>
             </Content>
@@ -104,3 +105,26 @@ export default class QuickClient extends Component {
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  addButton: {
+    position: 'absolute',
+    right: 30,
+    bottom: 30,
+  },
+  items: {
+    elevation: 2,
+    padding: 10,
+    backgroundColor: constants.card_header,
+    marginTop: 2,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    borderRadius: 10
+    },
+  item: {
+    margin: 15
+  }
+});

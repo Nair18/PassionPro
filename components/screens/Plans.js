@@ -5,7 +5,7 @@ import MultiSelect from 'react-native-multiple-select';
 import CreateStandardPlan from './CreateStandardPlan';
 import PlanInfo from './PlanInfo';
 import constants from '../constants'
-import { Container, Header, Content, List, Spinner, ListItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
+import { Container, Header, Content, List, Spinner, ListItem,Card, CardItem, Form, Textarea, Left, Item, Input, Body,Button, Picker, Right, Thumbnail, Text } from 'native-base';
 
 
 export default class Plans extends PureComponent {
@@ -133,18 +133,19 @@ export default class Plans extends PureComponent {
       <Container style={{backgroundColor: constants.screen_color}}>
         <ScrollView showsVerticalScrollBar={false}>
         <Content style={{margin: 15}}>
+        <List>
           {this.state.planList !== null && this.state.coursetype !== null ? this.state.planList.map(plan =>
-          <List>
-            <ListItem avatar onPress={() => this.props.navigation.navigate('PlanInfo', {plan_data: plan, plan_id: plan["id"], gym_id: this.state.id})}>
-              <Left>
+            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('PlanInfo', {plan_data: plan, plan_id: plan["id"], gym_id: this.state.id})}>
+            <Card style={styles.items}>
+              <View style={{flex: 1, padding: 5}}>
                 <Thumbnail source={require('./crisis-plan.jpg')}style={{backgroundColor: 'black'}} />
-              </Left>
-              <Body>
+              </View>
+              <View style={{flex: 4, padding: 5}}>
                 <Text style={{fontWeight: 'bold'}}>{plan["name"]}</Text>
 
-              </Body>
-            </ListItem>
-          </List>) : <Spinner color="black"/>}
+              </View>
+            </Card></TouchableOpacity>) : <Spinner color="black"/>}
+          </List>
         </Content>
         </ScrollView>
         <View style={styles.addButton}>
@@ -164,6 +165,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 30,
     bottom: 30,
+  },
+  items: {
+      elevation: 2,
+      padding: 10,
+      backgroundColor: constants.card_header,
+      marginTop: 2,
+      marginLeft: 15,
+      marginRight: 15,
+      justifyContent: 'space-around',
+      flexDirection: 'row',
+      borderRadius: 10
   },
   content: {
     margin: 15

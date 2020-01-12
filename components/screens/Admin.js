@@ -358,9 +358,9 @@ export default class Admin extends PureComponent {
                     </View>
                   </View>
                   <ScrollView showsVerticalScrollIndicator={false}>
-                  <Content padder style={styles.contentBlock}>
+                  <Content padder style={{marginLeft: 5}}>
                      {this.state.gymId !== null ?
-                     <View style={{ width: width, height: 85, backgroundColor: "#D5ABB2" }}>
+                     <View style={{ width: width, height: 85, backgroundColor: "#D5ABB2", borderRadius:10 }}>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
                             <View style={styles.thumbnailAlign}>
@@ -390,7 +390,7 @@ export default class Admin extends PureComponent {
                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                                                         <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 50, borderRadius: 10}}>
                                                             <View>
-                                                                <Text style={{ fontSize: 15}}>Total <Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>income</Text> in <Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
+                                                                <Text style={{ fontSize: 15}}><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Total income in </Text><Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
                                                             </View>
                                                         </CardItem>
                                                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#ebe6e6'}}>
@@ -416,7 +416,7 @@ export default class Admin extends PureComponent {
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["members_in_month"]["details"], id: this.state.gymId, message: "NEW_CLIENT"})}>
                                                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                                                          <CardItem header style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
-                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>New clients</Text></Text>
+                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>New Gym Clients</Text></Text>
                                                          </CardItem>
                                                          <CardItem style={{backgroundColor: "#ebe6e6"}}>
                                                              <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 25, color: '#2c7873'}}>{this.state.overview !== null ? this.state.overview["members_in_month"]["count"] : null} </Text>client(s)</Text>
@@ -434,7 +434,7 @@ export default class Admin extends PureComponent {
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["all_pt_members"]["details"], id: this.state.gymId, message: "ACTIVE_PT"})}>
                                                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                                                         <CardItem style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
-                                                             <Text style={{fontSize: 15}}><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Currently</Text> taking <Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>personal training</Text></Text>
+                                                             <Text style={{fontSize: 15}}><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Active </Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>PT Clients</Text></Text>
                                                         </CardItem>
                                                         <CardItem style={{backgroundColor: '#ebe6e6'}}>
                                                              <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 25, color: '#2c7873'}}>{this.state.overview !== null ? this.state.overview["all_pt_members"]["count"] : null} </Text>client(s)</Text>
@@ -454,7 +454,7 @@ export default class Admin extends PureComponent {
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["pt_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_PT"})}>
                                                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                                                         <CardItem style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
-                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Personal training</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d', fontSize: 15}}>expiring</Text></Text>
+                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>PT</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d', fontSize: 15}}>Expiring</Text></Text>
                                                         </CardItem>
                                                         <CardItem style={{backgroundColor: '#ebe6e6'}}>
                                                              <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 25, color: '#9d0b0b'}}>{this.state.overview !== null ? this.state.overview["pt_expiring"]["count"] : null} </Text>client(s)</Text>
@@ -472,7 +472,7 @@ export default class Admin extends PureComponent {
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["membership_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_MEMBER"})}>
                                                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                                                         <CardItem  style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
-                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Membership</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d', fontSize: 15}}>expiring</Text></Text>
+                                                             <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Membership</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d', fontSize: 15}}>Expiring</Text></Text>
                                                         </CardItem>
                                                         <CardItem style={{backgroundColor: '#ebe6e6'}}>
                                                              <Text style={{fontWeight: 'bold'}}><Text style={{fontWeight: 'bold', fontSize: 25, color: '#9d0b0b'}}>{this.state.overview !== null ? this.state.overview["membership_expiring"]["count"] : null } </Text>client(s)</Text>
@@ -512,23 +512,21 @@ export default class Admin extends PureComponent {
                     <View style={{backgroundColor: 'grey'}}>
                             <Modal
                               animationType="slide"
-                              transparent={true}
+                              transparent={false}
                               visible={this.state.update_visible}
                             >
                               <View style = {styles.modal}>
                               <Content style={styles.content}>
-                                <Form>
-                                   <View style={{marginTop: 20}}>
-                                   <Label><Text style={{fontWeight: 'bold'}}>Update Available</Text></Label>
-                                    <View style={{paddingTop: 20}}><Text>Please update to latest version of the app for better experience.</Text></View>
-                                   </View>
-                                   <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 25}}>
+                                <Card style={{elevation: 0}}>
+                                   <CardItem header><Text style={{fontWeight: 'bold'}}>Update Available</Text></CardItem>
+                                    <CardItem><Text>Please update to latest version of the app for better experience.</Text></CardItem>
+                                   <CardItem footer style={{justifyContent: 'center', alignItems: 'center'}}>
                                    {this.state.onProcess === false ?
-                                   <Button block onPress={this.takeToAppStore} style={{backgroundColor: constants.green_money}}>
-                                     <Text>Update</Text>
-                                   </Button> : <Spinner color="black"/>}
-                                   </View>
-                                </Form>
+                                        <Button onPress={this.takeToAppStore} style={{backgroundColor: constants.green_money}}>
+                                            <Text>Update</Text>
+                                        </Button> : <Spinner color="black"/>}
+                                   </CardItem>
+                                </Card>
                               </Content>
                               </View>
                             </Modal>
@@ -603,6 +601,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: "#D5ABB2",
     padding: 5,
+    borderRadius: 10
   },
   todayPlan: {
     marginTop: 10
@@ -655,8 +654,8 @@ const styles = StyleSheet.create({
       paddingTop: 30
     },
   modal: {
-        backgroundColor : constants.card_header,
-        height: 250 ,
+        backgroundColor : 'white',
+        height: '50%' ,
         width: '80%',
         borderRadius:10,
         borderWidth: 1,

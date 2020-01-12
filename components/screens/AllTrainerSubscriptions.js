@@ -230,9 +230,7 @@ export default class AllTrainerSubscriptions extends Component {
                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold', color: 'white'}}>Filter by trainer</Text>
-                            <TouchableOpacity onPress={() => this._hideFilter(false)}>
-                                <Icon name="md-close" size={10} style={{color: 'white'}}/>
-                            </TouchableOpacity>
+                            <Text />
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body, justifyContent: 'center'}}>
 
@@ -249,8 +247,8 @@ export default class AllTrainerSubscriptions extends Component {
                         </CardItem>
                     </Card>
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
-                <View style={{padding: 10, backgroundColor: "#ffd369"}}>
-                   <Text>Showing info of clients who opted for personal training during <Text style={{color: constants.text_highlight}}>{new Date(this.state.start_date).toDateString()}</Text> To <Text style={{color: constants.text_highlight}}>{new Date(this.state.end_date).toDateString()}</Text></Text>
+                <View style={{padding: 10, backgroundColor: "#ffd369", borderRadius: 10}}>
+                   <Text>Showing info of clients who took personal training during <Text style={{color: constants.text_highlight}}>{new Date(this.state.start_date).toDateString()}</Text> To <Text style={{color: constants.text_highlight}}>{new Date(this.state.end_date).toDateString()}</Text></Text>
                 </View>
                 {trainer_subs.length > 0 ? trainer_subs.map(subs =>
                 <View style={styles.cardListView}>

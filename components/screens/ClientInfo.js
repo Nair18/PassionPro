@@ -165,7 +165,7 @@ export default class ClientInfo extends Component {
 
                     <View style={{marginLeft: 15, marginTop: 25, width: '90%'}}>
                           <View>
-                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails', {details: traineeDetails["gym_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
+                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails', {client_id: this.state.client_id, details: traineeDetails["gym_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
                                 <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
                                     <CardItem style={{backgroundColor: constants.item_card, padding: 15, justifyContent: 'space-between', borderRadius: 10}}>
                                             <Text style={{fontWeight: 'bold'}}>Membership details </Text>

@@ -136,8 +136,8 @@ android {
         applicationId "com.passionpro"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "2.0"
+        versionCode 4
+        versionName "2.3"
         multiDexEnabled true
     }
     splits {

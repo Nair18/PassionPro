@@ -155,12 +155,6 @@ export default class PersonalTrainingDetails extends Component{
                     <Text><Text style={{fontWeight: 'bold'}}>Trainer phone:</Text> {ac["phone"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
-                    <Text><Text style={{fontWeight: 'bold'}}>Client Name:</Text> {this.state.info["name"]}</Text>
-                </CardItem>
-                <CardItem style={{backgroundColor: constants.card_body}}>
-                    <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> {this.state.info["mobile"]}</Text>
-                </CardItem>
-                <CardItem style={{backgroundColor: constants.card_body}}>
                    <Text><Text style={{fontWeight: 'bold'}}>Training start date:</Text> {ac["start_date"]}</Text>
                 </CardItem>
                 <CardItem style={{backgroundColor: constants.card_body}}>
@@ -187,12 +181,7 @@ export default class PersonalTrainingDetails extends Component{
                     <CardItem style={{backgroundColor: constants.card_body}}>
                          <Text><Text style={{fontWeight: 'bold'}}>Trainer phone:</Text> {ex["phone"]}</Text>
                     </CardItem>
-                    <CardItem style={{backgroundColor: constants.card_body}}>
-                         <Text><Text style={{fontWeight: 'bold'}}>Client Name:</Text> {this.state.info["name"]}</Text>
-                    </CardItem>
-                    <CardItem style={{backgroundColor: constants.card_body}}>
-                         <Text><Text style={{fontWeight: 'bold'}}>Client Phone:</Text> {this.state.info["mobile"]}</Text>
-                    </CardItem>
+
                     <CardItem style={{backgroundColor: constants.card_body}}>
                         <Text><Text style={{fontWeight: 'bold'}}>Training start date:</Text> {ex["start_date"]}</Text>
                     </CardItem>

@@ -7,7 +7,7 @@ import constants from '../constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
 import PageLoader from './PageLoader';
-import { Container, Content, List, ListItem, Form, Textarea,Label, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
+import { Container, Content, List, ListItem, Form,Card, CardItem, Textarea,Label, Left, Item, Input, Spinner,Body,Button, Picker, Right, Thumbnail, Text, Toast } from 'native-base';
 
 
 export default class Courses extends PureComponent {
@@ -197,19 +197,19 @@ export default class Courses extends PureComponent {
     <Fragment>
       <Container style={{backgroundColor: constants.screen_color}}>
         <ScrollView showsVerticalScrollBar={false}>
-        <Content style={{margin: 15}}>
+        <Content style={{margin: 10}}>
           <List>
             {this.state.coursetype !== null && this.state.courseList !== null ? this.state.courseList.map(course =>
-            <ListItem key={course["id"]} avatar onPress={() => this.props.navigation.navigate('CourseInfo', {ID: course["id"], GYM_ID: this.state.id})}>
-              <Left style={{margin: 5}}>
+            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('CourseInfo', {ID: course["id"], GYM_ID: this.state.id})}>
+            <Card key={course["id"]} style={styles.items}>
+              <View style={{flex: 1, padding: 5}}>
                 <Thumbnail source={require('./exercise.jpg')} style={{backgroundColor: 'black'}} />
-              </Left>
-              <Body>
+              </View>
+              <View style={{flex: 4, padding: 5}}>
                 <Text style={{fontWeight: 'bold'}}>{course["name"]}</Text>
                 <Text note>{course["course_type"]}</Text>
-              </Body>
-
-            </ListItem>): <PageLoader/>}
+              </View>
+            </Card></TouchableOpacity>): <PageLoader/>}
           </List>
         </Content>
         </ScrollView>
@@ -240,7 +240,7 @@ export default class Courses extends PureComponent {
             {this.state.coursetype !== null ?
             (<Form>
                <View style={{margin: 15}}>
-                       <Label><Text style={{fontWeight: 'bold'}}>Select fitness program<Text style={{color: 'red'}}>*</Text></Text></Label>
+                       <Label><Text style={{fontWeight: 'bold'}}>Select Fitness Program<Text style={{color: 'red'}}>*</Text></Text></Label>
                        <ModalSelector
                            placeholder="Select the fitness program"
                            initValue={this.state.courseTypeName}
@@ -286,7 +286,7 @@ export default class Courses extends PureComponent {
 
                <View last style={{alignItems: 'center',justifyContent: 'center', marginTop: 15}}>
                {this.state.onProcess === false ?
-               <Button onPress={this.onSubmit} style={{backgroundColor: 'black'}}>
+               <Button onPress={this.onSubmit} style={{backgroundColor: 'black', borderRadius: 10}}>
                  <Text>Create Fitness Package</Text>
                </Button> : <Spinner color="black"/>}
                </View>
@@ -305,6 +305,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 30,
     bottom: 30,
+  },
+  items: {
+    elevation: 2,
+    padding: 10,
+    backgroundColor: constants.card_header,
+    marginTop: 2,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    borderRadius: 10
   },
   content: {
 

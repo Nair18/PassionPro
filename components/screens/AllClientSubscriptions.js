@@ -230,9 +230,7 @@ export default class AllClientSubscriptions extends Component {
                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black', borderRadius: 10}}>
                             <Text style={{fontWeight: 'bold', color: 'white'}}>Filter by client</Text>
-                            <TouchableOpacity onPress={() => this._hideFilter(false)}>
-                                <Icon name="md-close" size={10} style={{color: 'white'}}/>
-                            </TouchableOpacity>
+                            <Text />
                         </CardItem>
                         <CardItem style={{backgroundColor: constants.card_body, justifyContent: 'center'}}>
 
@@ -250,7 +248,7 @@ export default class AllClientSubscriptions extends Component {
                         </CardItem>
                     </Card>
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
-                <View style={{padding: 10, backgroundColor: "#ffd369"}}>
+                <View style={{padding: 10, backgroundColor: "#ffd369", borderRadius: 10}}>
                    <Text>Showing info of clients who joined during <Text style={{color: constants.text_highlight}}>{new Date(this.state.start_date).toDateString()}</Text> To <Text style={{color: constants.text_highlight}}>{new Date(this.state.end_date).toDateString()}</Text></Text>
                 </View>
                 {trainee_subs.length > 0 ? trainee_subs.map(subs =>

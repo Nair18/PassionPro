@@ -180,10 +180,8 @@ export default class StatsPage extends Component {
                 <View>
                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black', borderRadius: 10}}>
-                            <Text style={{fontWeight: 'bold', color: 'white'}}>Filters</Text>
-                            <TouchableOpacity onPress={() => this._hideFilter(false)}>
-                                <Icon name="md-close" size={10} style={{color: 'white'}}/>
-                            </TouchableOpacity>
+                            <Text style={{fontWeight: 'bold', color: 'white'}}>Filter by date <Text note>(Year-Month-Date)</Text></Text>
+                            <Text />
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-around', backgroundColor: constants.card_body}}>
                            <Label><Text style={{fontWeight: 'bold'}}>From Date</Text></Label>
@@ -208,6 +206,7 @@ export default class StatsPage extends Component {
                             <Button style={{backgroundColor: 'black'}} onPress={() => this.fetchStats("submit")}><Text>Apply</Text></Button> : <Spinner color="black" />}
                         </CardItem>
                     </Card>
+
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllClientSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date, curr: this.state.curr})}>
@@ -219,7 +218,7 @@ export default class StatsPage extends Component {
                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.curr}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["gym_subs"]}</Text></Text>
                         </CardItem>
                         <CardItem footer style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2, borderRadius: 10}}>
-                            <Text style={{fontWeight: 'bold'}}>Membership details</Text>
+                            <Text style={{fontWeight: 'bold'}}>Gym Membership Details</Text>
                             <Icon size={10} name="md-arrow-round-forward" />
                         </CardItem>
                      </Card>
@@ -235,7 +234,7 @@ export default class StatsPage extends Component {
                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.curr}<Text style={{fontSize: 30,color: constants.green_money}}>{this.state.stats["pt_subs"]}</Text></Text>
                         </CardItem>
                         <CardItem style={{justifyContent: 'space-between', backgroundColor: constants.card_body, elevation: 2, borderRadius: 10}}>
-                            <Text style={{fontWeight: 'bold'}}>Training details</Text>
+                            <Text style={{fontWeight: 'bold'}}>Personal Training Details</Text>
                             <Icon name="md-arrow-round-forward" size={10}/>
                         </CardItem>
                      </Card>

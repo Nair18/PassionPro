@@ -5,7 +5,7 @@ import TrainerPage from './TrainerPage';
 import DatePicker from 'react-native-datepicker';
 import constants from '../constants';
 import PageLoader from './PageLoader';
-import { Container, Header, Content, List, ListItem, Form, Left, Item,Spinner, Input, Body,Button, Picker, Right, Thumbnail, Label,Text } from 'native-base';
+import { Container, Header, Content, List, ListItem, Form,Card,CardItem, Left, Item,Spinner, Input, Body,Button, Picker, Right, Thumbnail, Label,Text } from 'native-base';
 import {debounce} from 'lodash';
 
 export default class Trainer extends PureComponent {
@@ -217,15 +217,16 @@ export default class Trainer extends PureComponent {
                     </View> : null }
           <List>
             {this.state.trainerList !== null && this.state.onProcess == false ? this.state.trainerList.map(trainer =>
-            <ListItem avatar style={{padding: 5}} onPress={() => this.props.navigation.navigate('TrainerPage', {id: this.state.id, trainer_id: trainer["id"]})}>
-              <Left>
+            <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerPage', {id: this.state.id, trainer_id: trainer["id"]})}>
+            <Card style={styles.items}>
+              <View style={{flex: 1, padding: 5}}>
                 <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
-              </Left>
-              <Body>
+              </View>
+              <View style={{flex: 4, padding: 5}}>
                 <Text style={{fontWeight: 'bold', color: trainer["is_active"] ? '#2c7873' : '#9d0b0b'}}>{trainer["name"]}</Text>
                 <Text note>Mobile - {trainer["phone"]}</Text>
-              </Body>
-            </ListItem>): <PageLoader/>}
+              </View>
+            </Card></TouchableOpacity>): <PageLoader/>}
           </List>
         </Content>
         </ScrollView>
@@ -373,6 +374,17 @@ const styles = StyleSheet.create({
     right: 30,
     bottom: 30,
   },
+  items: {
+    elevation: 2,
+    padding: 10,
+    backgroundColor: constants.card_header,
+    marginTop: 2,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    borderRadius: 10
+    },
   item: {
     margin: 15
   }

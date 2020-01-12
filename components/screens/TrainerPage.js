@@ -146,7 +146,7 @@ export default class TrainerPage extends Component {
                 <Content style={{padding: 15}}>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                         <Text style={styles.text}>Active </Text>
+                         <Text style={styles.text}>Active: </Text>
                       </View>
                       <View style={styles.textFormat}>
                          <Text style={{fontWeight: 'bold', color: trainerDetails["is_active"] ? "green" : "red"}}>{trainerDetails["is_active"] ? "YES" : "NO"}</Text>
@@ -154,7 +154,7 @@ export default class TrainerPage extends Component {
                     </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                        <Text style={styles.text}>Name </Text>
+                        <Text style={styles.text}>Name: </Text>
                       </View>
                       <View style={styles.textFormat}>
                         <Text>{trainerDetails["name"]}</Text>
@@ -162,7 +162,7 @@ export default class TrainerPage extends Component {
                     </View>
                     <View style={styles.infoView}>
                         <View style={styles.title}>
-                            <Text style={styles.text}>Age </Text>
+                            <Text style={styles.text}>Age: </Text>
                         </View>
                         <View style={styles.textFormat}>
                             <Text>{trainerDetails["age"]}</Text>
@@ -170,7 +170,7 @@ export default class TrainerPage extends Component {
                     </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                        <Text style={styles.text}>Mobile </Text>
+                        <Text style={styles.text}>Mobile: </Text>
                       </View>
                       <View style={styles.textFormat}>
                          <Text>{trainerDetails["phone"]}</Text>
@@ -178,7 +178,7 @@ export default class TrainerPage extends Component {
                     </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                         <Text style={styles.text}>Address </Text>
+                         <Text style={styles.text}>Address: </Text>
                       </View>
                       <View style={styles.textFormat}>
                          <Text>{trainerDetails["address"] === null ? "NA": trainerDetails["address"]}</Text>
@@ -187,7 +187,7 @@ export default class TrainerPage extends Component {
 
                     <View style={styles.infoView}>
                        <View style={styles.title}>
-                          <Text style={styles.text}>Contract Start Date </Text>
+                          <Text style={styles.text}>Contract Start Date: </Text>
                        </View>
                        <View style={styles.textFormat}>
                           <Text>{trainerDetails["start_date"] === null ? "NA" : trainerDetails["start_date"]}</Text>
@@ -198,7 +198,7 @@ export default class TrainerPage extends Component {
                          <Text style={styles.text}>Contract End Date </Text>
                        </View>
                        <View style={styles.textFormat}>
-                         <Text>{trainerDetails["end_date"] === null ? "NA" : trainerDetails["end_date"]}</Text>
+                         <Text>{trainerDetails["end_date"] === null || new Date(trainerDetails["end_date"]) > new Date("01-Jan-2050") ? "NA" : trainerDetails["end_date"]}</Text>
                        </View>
                     </View>
                     <View style={styles.infoView}>

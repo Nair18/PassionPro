@@ -110,10 +110,10 @@ class AdminProfile extends Component {
                         </View>
                     </View>
                 </Content>
-                <Content style={{padding: 15}}>
+                <Content style={{paddingLeft: 15}}>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                        <Text style={styles.text}>Name </Text>
+                        <Text style={styles.text}>Name: </Text>
                       </View>
                       <View style={styles.textFormat}>
                         <Text>{this.state.admin_profile["name"]}</Text>
@@ -121,7 +121,7 @@ class AdminProfile extends Component {
                     </View>
                     <View style={styles.infoView}>
                         <View style={styles.title}>
-                            <Text style={styles.text}>Age </Text>
+                            <Text style={styles.text}>Age: </Text>
                         </View>
                         <View style={styles.textFormat}>
                             <Text>{this.state.admin_profile["age"]}</Text>
@@ -129,7 +129,7 @@ class AdminProfile extends Component {
                     </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                        <Text style={styles.text}>Username/Mobile </Text>
+                        <Text style={styles.text}>Username/Mobile: </Text>
                       </View>
                       <View style={styles.textFormat}>
                          <Text>{this.state.admin_profile["mobile"]}</Text>
@@ -137,7 +137,7 @@ class AdminProfile extends Component {
                     </View>
                     <View style={styles.infoView}>
                       <View style={styles.title}>
-                         <Text style={styles.text}>Address </Text>
+                         <Text style={styles.text}>Address: </Text>
                       </View>
                       <View style={styles.textFormat}>
                          <Text>{this.state.admin_profile["address"] === null ? "NA" : this.state.admin_profile["address"]}</Text>
@@ -146,7 +146,7 @@ class AdminProfile extends Component {
 
                     <View style={styles.infoView}>
                        <View style={styles.title}>
-                          <Text style={styles.text}>Permissions </Text>
+                          <Text style={styles.text}>Permissions: </Text>
                        </View>
                        <View style={styles.textFormat}>
                           <Text>{data}</Text>

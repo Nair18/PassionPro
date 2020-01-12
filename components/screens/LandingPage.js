@@ -93,13 +93,13 @@ export default class LandingPage extends PureComponent {
         <Container style={styles.container}>
             <StatusBar backgroundColor='black' barStyle='light-content' />
             <View style={{width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-                <Image
-                    style={ styles.image }
-                    source={require('./ic_launcher_round.png')}
-                />
+                <View style={{ height: '70%', width: '70%', borderRadius: 100,padding: '10%', justifyContent: 'center', alignItems: 'center'}}>
+                               <Image style={styles.image}  source={require('./ic_launcher_round.png')} resizeMode='contain'/>
+                            </View>
 
 
-               <Text style={{fontWeight: 'bold', fontSize: 30}}>Mygymnasio</Text>
+               <Text style={{fontWeight: 'bold', fontSize: 25}}>Mygymnasio</Text>
+               <Text>v{constants.version_number}</Text>
             </View>
             <Content style={styles.content}>
              <Fragment>
@@ -138,7 +138,7 @@ export default class LandingPage extends PureComponent {
                     <View style={{width: '100%', margin: 10, flex: 1}}>
                         <Button style={{backgroundColor: 'black', width: '100%', justifyContent: 'center', alignItems: 'center', borderRadius: 10}} onPress={this._register}>
                            <Text style={{color: 'white'}}>
-                             Register
+                             Sign up
                            </Text>
                         </Button>
                     </View>

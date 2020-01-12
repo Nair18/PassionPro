@@ -272,24 +272,6 @@ export default class Admin extends Component {
                     </Card>
                     </TouchableOpacity>
                 </View>
-                <View style={{marginTop: 15}}>
-                    <Text style={{fontWeight: 'bold'}}>Standard Gym Plans</Text>
-                </View>
-                <View style={{marginTop: 15}}>
-                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerClient')}>
-                       <Card style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.item_card, borderRadius: 10}}>
-                           <CardItem style={{height: 60, width: 60, justifyContent: 'center', alignItems: 'center', borderRadius: 30, backgroundColor: constants.card_body, marginTop: 5}}>
-                               <Icon name="md-fitness" size={30}/>
-                           </CardItem>
-                           <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: constants.item_card, borderRadius: 10}}>
-                               <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
-                                  <Text style={{fontWeight: "bold", fontSize: 20, color: 'white'}}>Gym workout plans </Text>
-                                      <Icon name="md-arrow-round-forward" size={20} style={{color: 'white'}}/>
-                               </View>
-                           </CardItem>
-                       </Card>
-                    </TouchableOpacity>
-                </View>
             </Content>
             </ScrollView>
             </Content>

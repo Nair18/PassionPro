@@ -81,7 +81,7 @@ export default class CourseInfo extends Component {
         else if(res.status === 200){
             this._cancel()
                         this.setState({saveProcess: false})
-                        Alert.alert(constants.success, 'Course was successfully updated.')
+                        Alert.alert(constants.success, 'Info was successfully updated.')
                         this.fetchDetails()
         }
         else{

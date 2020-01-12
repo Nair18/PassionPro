@@ -101,17 +101,18 @@ export default class TrainerRequest extends Component {
                 <Content style={{padding: 15}}>
                     <List>
                         {this.state.request !== null ? this.state.request.map(req =>
-                        <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerRequestInfo', {details: req, ID: this.state.id})}>
-                            <Left>
+                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerRequestInfo', {details: req, ID: this.state.id})}>
+                        <Card styles={styles.items}>
+                            <View style={{flex: 1, padding: 5}}>
                                <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
-                            </Left>
-                            <Body>
+                            </View>
+                            <View style={{flex: 4, padding: 5}}>
                                 <View>
-                                <Text style={{fontWeight: 'bold'}}>{req["name"]}</Text>
-                                <Text note>Mobile - {req["phone"]}</Text>
+                                    <Text style={{fontWeight: 'bold'}}>{req["name"]}</Text>
+                                    <Text note>Mobile - {req["phone"]}</Text>
                                 </View>
-                            </Body>
-                        </ListItem>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}
+                            </View>
+                        </Card></TouchableOpacity>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}
                     </List>
 
                 </Content>
@@ -133,5 +134,16 @@ const styles = StyleSheet.create({
   },
   content: {
 
-  }
+  },
+   items: {
+        elevation: 2,
+        padding: 10,
+        backgroundColor: constants.card_header,
+        marginTop: 2,
+        marginLeft: 15,
+        marginRight: 15,
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        borderRadius: 10
+        }
 });
