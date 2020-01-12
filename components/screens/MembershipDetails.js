@@ -225,13 +225,13 @@ export default class MembershipDetails extends Component{
                        <Text><Text style={{fontWeight: 'bold'}}>Mobile:</Text> {this.state.info["mobile"]}</Text>
                    </CardItem>
                    <CardItem style={{backgroundColor: constants.card_body}}>
-                       <Text><Text style={{fontWeight: 'bold'}}>Membership start date:</Text> {expired["start_date"]}</Text>
+                       <Text><Text style={{fontWeight: 'bold'}}>Membership start date:</Text> {ex["start_date"]}</Text>
                    </CardItem>
                    <CardItem style={{backgroundColor: constants.card_body}}>
-                       <Text><Text style={{fontWeight: 'bold'}}>Membership end date:</Text> {expired["end_date"]}</Text>
+                       <Text><Text style={{fontWeight: 'bold'}}>Membership end date:</Text> {ex["end_date"]}</Text>
                    </CardItem>
                    <CardItem style={{backgroundColor: constants.card_body, borderRadius: 10}}>
-                       <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{expired["amount"]}</Text>
+                       <Text><Text style={{fontWeight: 'bold'}}>Amount Paid:</Text> {'₹'}{ex["amount"]}</Text>
                    </CardItem>
                 </Card>
           </View>): <View style={{marginTop: 10}}><Card style={{backgroundColor: 'grey', padding: 10, alignItems: 'center', borderRadius: 10}}><Text>Nothing to show</Text></Card></View>}
