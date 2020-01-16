@@ -388,7 +388,7 @@ export default class Admin extends PureComponent {
                          <View>
                                              <View style={{flex: 1}}>
                                                 <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('StatsPage', {id: this.state.gymId, gym_stats: this.state.stats, curr: this.state.curr})}>
-                                                    <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                    <Card style={{borderRadius: 10, backgroundColor: constants.card_body, borderColor: constants.admin_tab_active}}>
                                                         <CardItem  style={{justifyContent: 'space-between', backgroundColor: "#f4f4f4", height: 50, borderRadius: 10}}>
                                                             <View>
                                                                 <Text style={{ fontSize: 15}}><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Total income in </Text><Text style={{fontWeight: 'bold', fontSize: 20, color: '#4d80e4'}}>{new Date().getFullYear()}</Text></Text>
@@ -415,7 +415,7 @@ export default class Admin extends PureComponent {
                                              <View style={{flexDirection: 'row', marginTop: 10}}>
                                                 <View style={{flex: 1}}>
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["members_in_month"]["details"], id: this.state.gymId, message: "NEW_CLIENT"})}>
-                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body, borderColor: constants.admin_tab_active}}>
                                                          <CardItem header style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
                                                              <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>New Gym Clients</Text></Text>
                                                          </CardItem>
@@ -433,7 +433,7 @@ export default class Admin extends PureComponent {
                                                 </View>
                                                 <View style={{flex: 1}}>
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["all_pt_members"]["details"], id: this.state.gymId, message: "ACTIVE_PT"})}>
-                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body, borderColor: constants.admin_tab_active}}>
                                                         <CardItem style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
                                                              <Text style={{fontSize: 15}}><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Active </Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>PT Clients</Text></Text>
                                                         </CardItem>
@@ -453,7 +453,7 @@ export default class Admin extends PureComponent {
                                              <View style={{flexDirection: 'row'}}>
                                                  <View style={{flex: 1}}>
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["pt_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_PT"})}>
-                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body, borderColor: constants.admin_tab_active}}>
                                                         <CardItem style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
                                                              <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>PT</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d', fontSize: 15}}>Expiring</Text></Text>
                                                         </CardItem>
@@ -471,7 +471,7 @@ export default class Admin extends PureComponent {
                                                  </View>
                                                  <View style={{flex: 1}}>
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["membership_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_MEMBER"})}>
-                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
+                                                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body, borderColor: constants.admin_tab_active}}>
                                                         <CardItem  style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
                                                              <Text><Text style={{fontWeight: 'bold', color: '#4d80e4', fontSize: 15}}>Membership</Text> <Text style={{fontWeight: 'bold', color: '#da2d2d', fontSize: 15}}>Expiring</Text></Text>
                                                         </CardItem>

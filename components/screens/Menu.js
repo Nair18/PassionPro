@@ -31,7 +31,7 @@ export default class Menu extends Component {
       workoutType: null,
       permission: null,
       id: null,
-      feature: true,
+      feature: false,
       workoutSection: null,
       onLoad: true
   }
@@ -133,13 +133,13 @@ export default class Menu extends Component {
                      </Card>
                    </TouchableOpacity>
                 </View> : null }
-                {this.state.feature !== null ?
+                {this.state.feature === "true" ?
                 <View style={styles.cardListView}>
 
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AddExercise', {id: this.state.id})}>
                       <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
                          <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
-                             <Text style={{fontWeight: 'bold'}}>Add Exercise</Text>
+                             <Text style={{fontWeight: 'bold'}}>Add Workout</Text>
                                <Icon  name="md-arrow-dropright" />
                          </CardItem>
                       </Card>
