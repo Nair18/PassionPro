@@ -14,7 +14,8 @@ export default class TrainerPage extends Component {
       id: this.props.navigation.state.params.id,
       trainer_id: this.props.navigation.state.params.trainer_id,
       trainerDetails: null,
-      onProcess: false
+      onProcess: false,
+      role: null
     }
   }
   static navigationOptions = {
@@ -32,7 +33,7 @@ export default class TrainerPage extends Component {
               this.focusListener = navigation.addListener('didFocus', () => {
                       console.log("The screen is focused")
                     });
-              var key  = this.retrieveItem('key').then(res =>
+              var key  = this.retrieveItem('key', 'id', 'role').then(res =>
                  this.setState({auth_key: res}, () => console.log("brother pls", res))
                  ).then(() => {
                       if(this.state.auth_key !== null){
@@ -72,14 +73,25 @@ export default class TrainerPage extends Component {
           }
 
   async retrieveItem(key) {
-                    try {
-                      const retrievedItem =  await AsyncStorage.getItem(key);
-                      console.log("key retrieved")
-                      return retrievedItem;
-                    } catch (error) {
-                      console.log(error.message);
-                    }
-                    return;
+                    let auth_key = null
+                    const retrievedItem =  await AsyncStorage.multiGet(keys);
+                           retrievedItem.map(m => {
+                              try {
+                                if(m[0] === 'key'){
+                                   auth_key = m[1]
+                                }
+                                else if(m[0] === 'id' && m[1] !== null && m[1] !== "{}" && m[1] !== "null"){
+//                                   this.setState({gymId: parseInt(m[1])}, () => console.log("key set hai boss", m[1]))
+                                }
+                                else if(m[0] === 'role' && m[1] !== null){
+                                   this.setState({role: m[1]}, () => console.log("fetched role", m[1]))
+                                }
+                                console.log("key retrieved")
+                              } catch (error) {
+                                console.log(error.message);
+                              }
+                           })
+                           return auth_key;
           }
   componentWillUnmount() {
           // Remove the event listener
@@ -210,6 +222,7 @@ export default class TrainerPage extends Component {
                                            </View>
                                         </View>
                     <View style={{margin: 15, width: '90%'}}>
+                                                        { this.state.role !== "PERSONAL_TRAINER" ?
                                                         <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('TrainerBilling', {trainer_id: this.state.trainer_id, id: this.state.id})}>
                                                         <View>
                                                               <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
@@ -221,7 +234,7 @@ export default class TrainerPage extends Component {
                                                                   </CardItem>
                                                               </Card>
                                                         </View>
-                                                        </TouchableOpacity>
+                                                        </TouchableOpacity> : null }
                                                        <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('ClientDetails', {trainer_id: this.state.trainer_id, id: this.state.id})}>
                                                         <View style={{marginTop: 10}}>
                                                              <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>

@@ -44,7 +44,7 @@ export default class TrainerClient extends Component {
 
             const { navigation } = this.props;
             console.log("pagal bana rhe hai")
-            this.focusListener = navigation.addListener('didFocus', () => {
+//            this.focusListener = navigation.addListener('didFocus', () => {
                     console.log("The screen is focused")
                     var key  = this.retrieveItem('key').then(res =>
                                this.setState({auth_key: res}, () => console.log("brother pls", res))
@@ -53,12 +53,12 @@ export default class TrainerClient extends Component {
                                         this.fetchDetails()
                                     }
                                })
-            });
+//            });
         }
 
     componentWillUnmount() {
               // Remove the event listener
-              this.focusListener.remove();
+//              this.focusListener.remove();
 
           }
     fetchDetails = () => {
@@ -106,22 +106,45 @@ export default class TrainerClient extends Component {
         return(
             <Container style={{backgroundColor: constants.screen_color}}>
                 <Content>
+                    <List style={{margin: 10}}>
                     {this.state.traineeList !== null ? this.state.traineeList.map(trainee =>
-                    <List>
-                       <ListItem avatar onPress={() => this.props.navigation.navigate('TrainerWorkspace', {id: trainee["id"]})}>
-                          <Left>
+                       <TouchableOpacity onPress={() => this.props.navigation.navigate('TrainerWorkspace', {id: trainee["id"]})}>
+                       <Card style={styles.items}>
+                          <View style={{flex: 1, padding: 5}}>
                             <Thumbnail source={require('./profile.jpg' )} />
-                          </Left>
-                          <Body>
+                          </View>
+                          <View style={{flex: 4, padding: 5}}>
                                     <Text style={{fontWeight: 'bold'}}>{trainee["name"]}</Text>
                                     <Text note>Mobile - {trainee["phone"]}</Text>
-                          </Body>
+                          </View>
 
-                       </ListItem>
-                    </List>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View> }
+                       </Card></TouchableOpacity>) : <View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black" /></View> }
+                    </List>
                 </Content>
             </Container>
         );
 
     }
 }
+
+const styles = StyleSheet.create({
+  addButton: {
+    position: 'absolute',
+    right: 30,
+    bottom: 30,
+  },
+  items: {
+    elevation: 2,
+    padding: 10,
+    backgroundColor: constants.card_header,
+    marginTop: 2,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    borderRadius: 10
+    },
+  item: {
+    margin: 15
+  }
+});

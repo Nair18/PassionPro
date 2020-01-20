@@ -14,7 +14,8 @@ export default class ClientInfo extends Component {
       client_id: this.props.navigation.state.params.client_id,
       courseInfo: null,
       active: this.props.navigation.state.params.active,
-      traineeDetails: null
+      traineeDetails: null,
+      role: null
     }
   }
   static navigationOptions = {
@@ -32,7 +33,7 @@ export default class ClientInfo extends Component {
             console.log("pagal bana rhe hai")
             this.focusListener = navigation.addListener('didFocus', () => {
                     console.log("The screen is focused")
-                    var key  = this.retrieveItem('key').then(res =>
+                    var key  = this.retrieveItem('key', 'id', 'role').then(res =>
                                    this.setState({auth_key: res}, () => console.log("brother pls", res))
                                    ).then(() => {
                                         if(this.state.auth_key !== null){
@@ -74,14 +75,25 @@ export default class ClientInfo extends Component {
         }
 
   async retrieveItem(key) {
-                  try {
-                    const retrievedItem =  await AsyncStorage.getItem(key);
-                    console.log("key retrieved")
-                    return retrievedItem;
-                  } catch (error) {
-                    console.log(error.message);
-                  }
-                  return;
+                 let auth_key = null
+                 const retrievedItem =  await AsyncStorage.multiGet(keys);
+                        retrievedItem.map(m => {
+                           try {
+                             if(m[0] === 'key'){
+                                auth_key = m[1]
+                             }
+                             else if(m[0] === 'id' && m[1] !== null && m[1] !== "{}" && m[1] !== "null"){
+//                                this.setState({gymId: parseInt(m[1])}, () => console.log("key set hai boss", m[1]))
+                             }
+                             else if(m[0] === 'role' && m[1] !== null){
+                                this.setState({role: m[1]}, () => console.log("fetched role", m[1]))
+                             }
+                             console.log("key retrieved")
+                           } catch (error) {
+                             console.log(error.message);
+                           }
+                        })
+                        return auth_key;
         }
   componentWillUnmount() {
         // Remove the event listener
@@ -164,6 +176,7 @@ export default class ClientInfo extends Component {
                     </View>
 
                     <View style={{marginLeft: 15, marginTop: 25, width: '90%'}}>
+                          { this.state.role !== "PERSONAL_TRAINER" ?
                           <View>
                           <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails', {client_id: this.state.client_id, details: traineeDetails["gym_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
                                 <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
@@ -174,7 +187,7 @@ export default class ClientInfo extends Component {
                                     </CardItem>
                                 </Card>
                           </TouchableOpacity>
-                          </View>
+                          </View> : null }
                          <View style={{marginTop: 10}}>
                          <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('PersonalTrainingDetails', {auth_key: this.state.auth_key, details: traineeDetails["course_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"], "id": this.state.id, "client_id": this.state.client_id}})}>
                                <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>

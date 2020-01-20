@@ -134,7 +134,29 @@ export default class Admin extends Component {
                              .then(response => {
                                if (response.status === 200) {
                                  return response.json();
-                               } else {
+                               }
+                               else if(response.status === 403){
+                                 fetch(constants.API + 'current/admin/gyms/'+  gym_id + '/make-me-trainer', {
+                                    method: 'PUT',
+                                    headers: {
+                                       'Accept': 'application/json',
+                                       'Content-Type': 'application/json',
+                                       'Authorization': this.state.auth_key,
+                                    }
+                                 }).then(res => {
+                                    if(res.status === 200){
+                                        console.log("processing")
+                                        this.fetchDetails()
+                                        return null
+                                    }
+                                    else {
+
+                                        console.log("hello", res.json().then(res => {Alert.alert(constants.warning,res.message)}))
+                                        return null
+                                    }
+                                 })
+                               }
+                               else {
                                  this.setState({loading: false})
                                  Alert.alert(
                                    constants.failed,
@@ -146,11 +168,17 @@ export default class Admin extends Component {
                                  );
                                }
                              }).then(res => {
-                               this.setState({trainerDetails: res, loading: false}, () => {
-                                   if(gym_id_arg === null && res !== null){
-                                     this._storeData(res["gyms"][0])
-                                   }
-                               })
+                               if(res === null){
+                                 console.log("yha aaya null ko leke")
+                                 this.fetchDetails()
+                               }
+                               else{
+                                    this.setState({trainerDetails: res, loading: false}, () => {
+                                        if(gym_id_arg === null && res !== null){
+                                            this._storeData(res["gyms"][0])
+                                        }
+                                    })
+                               }
 
                              })
 
@@ -205,7 +233,7 @@ export default class Admin extends Component {
         <Fragment>
         <StatusBar backgroundColor="black" barStyle="light-content"/>
         <OfflineNotice/>
-        {this.state.trainerDetails !== null ?
+        {this.state.trainerDetails !== null && this.state.trainerDetails != undefined?
         <Container style={{backgroundColor: constants.screen_color}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: constants.header, elevation: 1}}>
                                                         <View style={{padding: 15}}>

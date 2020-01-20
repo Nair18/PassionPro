@@ -65,6 +65,7 @@ export default class Admin extends PureComponent {
       end_year: parseInt(new Date().getFullYear()),
       sub_type: "GYM",
       stats: null,
+      role: null,
       sendProcess: false,
     }
   }
@@ -90,7 +91,7 @@ export default class Admin extends PureComponent {
       this.focusListener = navigation.addListener('didFocus', () => {
         console.log("focusing admin screen")
         this.getUpdateInfo()
-        var key  = this.retrieveItem(['key', 'id']).then(res =>
+        var key  = this.retrieveItem(['key', 'id', 'role']).then(res =>
                       this.setState({auth_key: res}, () => console.log("brother pls", res))
                     ).then(() => {
                         this.fetchDetails()
@@ -122,6 +123,9 @@ export default class Admin extends PureComponent {
             }
             else if(m[0] === 'id' && m[1] !== null && m[1] !== "{}" && m[1] !== "null"){
                this.setState({gymId: parseInt(m[1])}, () => console.log("key set hai boss", m[1]))
+            }
+            else if(m[0] === 'role' && m[1] !== null){
+               this.setState({role: m[1]}, () => console.log("fetched role", m[1]))
             }
             console.log("key retrieved")
           } catch (error) {
@@ -339,6 +343,15 @@ export default class Admin extends PureComponent {
             return val["id"] === this.state.gymId
         })
     }
+
+    stats = null
+    if(this.state.stats!== null && this.state.role !== "PERSONAL_TRAINER"){
+        stats = this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"])
+    }
+    else if(this.state.stats!== null){
+        stats = this.state.stats["pt_subs"] === null ? 0 : this.state.stats["pt_subs"]
+    }
+
     return(
 
       <Fragment>
@@ -396,7 +409,7 @@ export default class Admin extends PureComponent {
                                                         </CardItem>
                                                         <CardItem style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#ebe6e6'}}>
                                                              {this.state.stats === null  ? <Spinner color="black"/> :
-                                                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.curr}<Text style={{fontSize: 30,color: '#2c7873'}}>{this.state.stats !== null ? this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"]): null}</Text></Text>}
+                                                             <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.state.curr}<Text style={{fontSize: 30,color: '#2c7873'}}>{stats}</Text></Text>}
                                                         </CardItem>
                                                         <CardItem footer style={{justifyContent: 'space-between', backgroundColor: "#ebe6e6", elevation: 2, borderRadius: 10}}>
                                                             <View>
@@ -470,6 +483,7 @@ export default class Admin extends PureComponent {
                                                      </TouchableOpacity>
                                                  </View>
                                                  <View style={{flex: 1}}>
+                                                     {this.state.role !== null && this.state.role !== 'PERSONAL_TRAINER' ?
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["membership_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_MEMBER"})}>
                                                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body, borderColor: constants.admin_tab_active}}>
                                                         <CardItem  style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
@@ -485,7 +499,7 @@ export default class Admin extends PureComponent {
                                                              </View>
                                                         </CardItem>
                                                      </Card>
-                                                     </TouchableOpacity>
+                                                     </TouchableOpacity> : null }
                                                  </View>
                                              </View>
 

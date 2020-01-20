@@ -145,6 +145,18 @@ export default class Menu extends Component {
                       </Card>
                    </TouchableOpacity>
                 </View>: null}
+                {this.state.feature === "true" ?
+                                <View style={styles.cardListView}>
+
+                                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerSection')}>
+                                      <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
+                                         <CardItem style={{backgroundColor: constants.item_card, justifyContent: 'space-between', borderRadius: 10}}>
+                                             <Text style={{fontWeight: 'bold'}}>Switch to trainer screen</Text>
+                                               <Icon  name="md-arrow-dropright" />
+                                         </CardItem>
+                                      </Card>
+                                   </TouchableOpacity>
+                                </View>: null}
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('Sessions', {id: this.state.id})}>
                       <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>
