@@ -34,7 +34,7 @@ export default class ClientInfo extends Component {
             console.log("pagal bana rhe hai")
             this.focusListener = navigation.addListener('didFocus', () => {
                     console.log("The screen is focused")
-                    var key  = this.retrieveItem('key', 'id', 'role', 'trainer').then(res =>
+                    var key  = this.retrieveItem(['key', 'id', 'role', 'trainer']).then(res =>
                                    this.setState({auth_key: res}, () => console.log("brother pls", res))
                                    ).then(() => {
                                         if(this.state.auth_key !== null){
@@ -75,7 +75,7 @@ export default class ClientInfo extends Component {
             ).then(res => this.setState({traineeDetails: res}))
         }
 
-  async retrieveItem(key) {
+  async retrieveItem(keys) {
                  let auth_key = null
                  const retrievedItem =  await AsyncStorage.multiGet(keys);
                         retrievedItem.map(m => {

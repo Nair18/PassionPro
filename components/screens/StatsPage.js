@@ -67,7 +67,7 @@ export default class StatsPage extends Component {
         console.log("pagal bana rhe hai")
 //       this.focusListener = navigation.addListener('didFocus', () => {
           console.log("focusing admin screen")
-          var key  = this.retrieveItem('key', 'role', 'id', 'trainer').then(res =>
+          var key  = this.retrieveItem(['key', 'role', 'id', 'trainer']).then(res =>
                         this.setState({auth_key: res}, () => console.log("brother pls", res))
                       ).then(() => {
                         if(this.state.id !== null){
@@ -77,7 +77,7 @@ export default class StatsPage extends Component {
 //        });
 
   }
-  async retrieveItem(key) {
+  async retrieveItem(keys) {
             let auth_key = null
             const retrievedItem =  await AsyncStorage.multiGet(keys);
                    retrievedItem.map(m => {

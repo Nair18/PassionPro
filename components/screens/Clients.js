@@ -29,13 +29,14 @@ export default class Clients extends PureComponent {
       emergency_person: null,
       relation_with_person: null,
       name: null,
-      amount: null,
+      amount: 0,
       dob: null,
       start_date: null,
       end_date: null,
       error: constants.fail_error,
       gender: "MALE",
       email: null,
+      trainer: null,
       id: this.props.navigation.state.params.ID
     };
 
@@ -87,7 +88,7 @@ export default class Clients extends PureComponent {
           const { navigation } = this.props;
           console.log("pagal bana rhe hai")
           console.log("The screen is focused")
-          var key  = this.retrieveItem('key').then(res =>
+          var key  = this.retrieveItem(['key', 'trainer']).then(res =>
              this.setState({auth_key: res}, () => console.log("brother pls", res))
              ).then(() => {
                      if(this.state.auth_key !== null){
@@ -125,15 +126,29 @@ export default class Clients extends PureComponent {
               }
           ).then(res => this.setState({traineeList: res["trainees"].reverse()},() => console.log(res["trainees"])))
       }
-      async retrieveItem(key){
-                try {
-                  const retrievedItem =  await AsyncStorage.getItem(key);
-                  console.log("key retrieved")
-                  return retrievedItem;
-                } catch (error) {
-                  console.log(error.message);
-                }
-                return;
+      async retrieveItem(keys){
+                let auth_key = null
+                       const retrievedItem =  await AsyncStorage.multiGet(keys);
+                       retrievedItem.map(m => {
+                          try {
+                            if(m[0] === 'key'){
+                               auth_key = m[1]
+                            }
+                            else if(m[0] === 'id' && m[1] !== null && m[1] !== "{}" && m[1] !== "null"){
+//                               this.setState({gymId: parseInt(m[1])}, () => console.log("key set hai boss", m[1]))
+                            }
+                            else if(m[0] === 'trainer' && m[1] !== null){
+                                 this.setState({trainer: m[1]}, () => console.log("fetched role", m[1]))
+                            }
+                            else if(m[0] === 'role' && m[1] !== null){
+                               this.setState({role: m[1]}, () => console.log("fetched role", m[1]))
+                            }
+                            console.log("key retrieved")
+                          } catch (error) {
+                            console.log(error.message);
+                          }
+                       })
+                       return auth_key;
       }
 
   onSubmit = () => {
@@ -362,7 +377,8 @@ export default class Clients extends PureComponent {
                                          onDateChange={(date) => {this.setState({end_date: date})}}
                                        />
                               </Item>
-
+                {this.state.trainer !== 'true' ?
+                                <View>
                 <Item style={styles.item}>
                                 <Label>Amount Paid <Text style={{color: 'red'}}>*</Text> - </Label>
                                 <Input keyboardType="numeric" onChangeText={text => this.setState({amount: parseInt(text)})} />
@@ -376,6 +392,7 @@ export default class Clients extends PureComponent {
                <Item style={styles.item}>
                  <Input keyboardType="numeric" placeholder="Emergency Phone number" onChangeText={text => this.setState({emergency_phone: text})}/>
                </Item>
+               </View> : null }
                {this.state.onProcess == false ?
                     <View last style={{alignItems: 'center',justifyContent: 'center', margin: 15, }}>
                         <Button style={{backgroundColor: 'black'}} onPress={this.onSubmit}>
