@@ -15,7 +15,8 @@ export default class ClientInfo extends Component {
       courseInfo: null,
       active: this.props.navigation.state.params.active,
       traineeDetails: null,
-      role: null
+      role: null,
+      trainer: null
     }
   }
   static navigationOptions = {
@@ -33,7 +34,7 @@ export default class ClientInfo extends Component {
             console.log("pagal bana rhe hai")
             this.focusListener = navigation.addListener('didFocus', () => {
                     console.log("The screen is focused")
-                    var key  = this.retrieveItem('key', 'id', 'role').then(res =>
+                    var key  = this.retrieveItem('key', 'id', 'role', 'trainer').then(res =>
                                    this.setState({auth_key: res}, () => console.log("brother pls", res))
                                    ).then(() => {
                                         if(this.state.auth_key !== null){
@@ -84,6 +85,9 @@ export default class ClientInfo extends Component {
                              }
                              else if(m[0] === 'id' && m[1] !== null && m[1] !== "{}" && m[1] !== "null"){
 //                                this.setState({gymId: parseInt(m[1])}, () => console.log("key set hai boss", m[1]))
+                             }
+                             else if(m[0] === 'trainer' && m[1] !== null){
+                                 this.setState({trainer: m[1]}, () => console.log("fetched role", m[1]))
                              }
                              else if(m[0] === 'role' && m[1] !== null){
                                 this.setState({role: m[1]}, () => console.log("fetched role", m[1]))
@@ -176,7 +180,7 @@ export default class ClientInfo extends Component {
                     </View>
 
                     <View style={{marginLeft: 15, marginTop: 25, width: '90%'}}>
-                          { this.state.role !== "PERSONAL_TRAINER" ?
+                          { this.state.trainer !== "true" ?
                           <View>
                           <TouchableOpacity activeOpacity={1} onPress = {() => this.props.navigation.navigate('MembershipDetails', {client_id: this.state.client_id, details: traineeDetails["gym_subscriptions"], info: {"name": traineeDetails["name"], "mobile": traineeDetails["mobile"]}})}>
                                 <Card style={{backgroundColor: constants.item_card, borderRadius: 10}}>

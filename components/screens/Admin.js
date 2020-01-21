@@ -204,7 +204,10 @@ export default class Admin extends PureComponent {
                                );
                              }
                            }).then(res => {
-                             this.setState({gymDetails: res, loading: false}, () => this._storeData("feature", res["data"]["is_full_featured"]))
+                             this.setState({gymDetails: res, loading: false}, () => {
+                                this._storeData("feature", res["data"]["is_full_featured"])
+                                this._storeData("trainer", res["data"]["is_personal_trainer"])
+                             })
                              return res["data"]["gyms"]
                            }).then( id => {
                                 if(id !== null){
@@ -345,7 +348,7 @@ export default class Admin extends PureComponent {
     }
 
     stats = null
-    if(this.state.stats!== null && this.state.role !== "PERSONAL_TRAINER"){
+    if(this.state.stats!== null && this.state.gymDetails !== null && this.state.gymDetails["data"]["is_personal_trainer"] !== true){
         stats = this.state.stats["net"] - (this.state.stats["trainer_salaries"] === null ? 0 : this.state.stats["trainers_salaries"])
     }
     else if(this.state.stats!== null){
@@ -483,7 +486,7 @@ export default class Admin extends PureComponent {
                                                      </TouchableOpacity>
                                                  </View>
                                                  <View style={{flex: 1}}>
-                                                     {this.state.role !== null && this.state.role !== 'PERSONAL_TRAINER' ?
+                                                     {this.state.gymDetails["data"]["is_personal_trainer"] !== true ?
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["membership_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_MEMBER"})}>
                                                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body, borderColor: constants.admin_tab_active}}>
                                                         <CardItem  style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>

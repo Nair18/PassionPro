@@ -43,6 +43,7 @@ export default class StatsPage extends Component {
           onLoad: true,
           role: null,
           onProcess: true,
+          trainer: null,
           curr: this.props.navigation.state.params.curr,
           data: [{"id": 1,"name": "Standard Workout"}, {"id": 2, "name": "Customize your Workout"}, {"id": 3, "name": "Workout plan by Ajay"}]
       }
@@ -66,7 +67,7 @@ export default class StatsPage extends Component {
         console.log("pagal bana rhe hai")
 //       this.focusListener = navigation.addListener('didFocus', () => {
           console.log("focusing admin screen")
-          var key  = this.retrieveItem('key', 'role', 'id').then(res =>
+          var key  = this.retrieveItem('key', 'role', 'id', 'trainer').then(res =>
                         this.setState({auth_key: res}, () => console.log("brother pls", res))
                       ).then(() => {
                         if(this.state.id !== null){
@@ -86,6 +87,9 @@ export default class StatsPage extends Component {
                         }
                         else if(m[0] === 'id' && m[1] !== null && m[1] !== "{}" && m[1] !== "null"){
 //                           this.setState({gymId: parseInt(m[1])}, () => console.log("key set hai boss", m[1]))
+                        }
+                        else if(m[0] === 'trainer' && m[1] !== null){
+                             this.setState({trainer: m[1]}, () => console.log("fetched role", m[1]))
                         }
                         else if(m[0] === 'role' && m[1] !== null){
                            this.setState({role: m[1]}, () => console.log("fetched role", m[1]))
@@ -220,7 +224,7 @@ export default class StatsPage extends Component {
                     </Card>
 
                 </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
-                {this.state.role !== "PERSONAL_TRAINER" ?
+                {this.state.trainer !== "true" ?
                 <View style={styles.cardListView}>
                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllClientSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date, curr: this.state.curr})}>
                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
