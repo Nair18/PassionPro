@@ -31,6 +31,7 @@ export default class Menu extends Component {
       workoutType: null,
       permission: null,
       id: null,
+      trainer: false,
       feature: false,
       workoutSection: null,
       onLoad: true
@@ -64,8 +65,8 @@ export default class Menu extends Component {
               else if(m[0] === 'id' && m[1] === null){
                 //
               }
-              else if(m[0] === 'id' && m[1] !== null){
-                this.setState({id: parseInt(m[1])})
+              else if(m[0] === 'trainer' && m[1] !== null){
+                this.setState({trainer: parseInt(m[1])})
               }
               else if(m[0] === "feature"){
                 this.setState({feature: m[1]})
@@ -79,7 +80,7 @@ export default class Menu extends Component {
     }
   componentDidMount(){
      StatusBar.setHidden(false);
-     var key  = this.retrieveItem(['role', 'id', 'feature']).then(res => {
+     var key  = this.retrieveItem(['role', 'id', 'feature', 'trainer']).then(res => {
          console.log(res)
          return JSON.parse(res)
      }).then(res => {
@@ -145,7 +146,7 @@ export default class Menu extends Component {
                       </Card>
                    </TouchableOpacity>
                 </View>: null}
-                {this.state.feature === "true" ?
+                {this.state.feature === "true" && this.state.trainer === "true"?
                                 <View style={styles.cardListView}>
 
                                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerSection')}>

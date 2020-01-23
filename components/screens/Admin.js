@@ -489,7 +489,7 @@ export default class Admin extends PureComponent {
                                                                                                  </View>: null}
 
                                                  <View style={{flex: 1}}>
-                                                     {this.state.gymDetails["data"]["is_personal_trainer"] !== false ?
+                                                     {this.state.gymDetails["data"]["is_personal_trainer"] !== true ?
                                                      <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('QuickClient', {details: this.state.overview["membership_expiring"]["details"], id: this.state.gymId, message: "EXPIRE_MEMBER"})}>
                                                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body, borderColor: constants.admin_tab_active}}>
                                                         <CardItem  style={{backgroundColor: "#f4f4f4", height: 70, borderRadius: 10}}>
