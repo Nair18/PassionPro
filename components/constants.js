@@ -1,7 +1,7 @@
 import DeviceInfo from 'react-native-device-info';
 
 export default {
-  "API": "http://206.189.134.208:8080/gym/swagger-ui.html/api/",
+  "API": "http://206.189.134.208:8080/gym/api/",
   "success": "✅ Success",
   "failed": "❌ Failed",
   "fail_error": "Something went wrong 😭",
