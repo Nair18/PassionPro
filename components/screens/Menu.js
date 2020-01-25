@@ -63,10 +63,10 @@ export default class Menu extends Component {
                 roles = m[1]
               }
               else if(m[0] === 'id' && m[1] === null){
-                //
+                this.setState({id: parseInt(m[1])})
               }
               else if(m[0] === 'trainer' && m[1] !== null){
-                this.setState({trainer: parseInt(m[1])})
+                this.setState({trainer: m[1]})
               }
               else if(m[0] === "feature"){
                 this.setState({feature: m[1]})
