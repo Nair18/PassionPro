@@ -62,7 +62,7 @@ export default class Menu extends Component {
               if(m[0] === 'role'){
                 roles = m[1]
               }
-              else if(m[0] === 'id' && m[1] === null){
+              else if(m[0] === 'id' && m[1] !== null){
                 this.setState({id: parseInt(m[1])})
               }
               else if(m[0] === 'trainer' && m[1] !== null){
@@ -80,6 +80,7 @@ export default class Menu extends Component {
     }
   componentDidMount(){
      StatusBar.setHidden(false);
+     console.log("yha aaya mei")
      var key  = this.retrieveItem(['role', 'id', 'feature', 'trainer']).then(res => {
          console.log(res)
          return JSON.parse(res)
@@ -114,6 +115,8 @@ export default class Menu extends Component {
 
   }
   render(){
+    console.log("id loaded", this.state.id)
+    console.log("persmission loaded", this.state.permission)
     const { navigate } = this.props.navigation;
 
     return(
