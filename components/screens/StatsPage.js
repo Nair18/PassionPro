@@ -242,7 +242,7 @@ export default class StatsPage extends Component {
                    </TouchableOpacity>
                 </View> : null }
                 <View style={styles.cardListView}>
-                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllTrainerSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date, curr: this.state.curr})}>
+                   <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('AllTrainerSubscriptions', {"id": this.state.id, start_date: this.state.start_date, end_date: this.state.end_date, curr: this.state.curr, trainer: this.state.trainer})}>
                      <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{backgroundColor: constants.card_header, height: 70, borderRadius: 10}}>
                             <Text>Total money received for <Text style={{fontWeight: 'bold', color: constants.text_highlight}}>Personal Training</Text></Text>

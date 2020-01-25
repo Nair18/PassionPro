@@ -24,6 +24,7 @@ export default class Request extends Component{
         this.state={
             id: this.props.navigation.state.params.ID,
             auth_key: null,
+            trainer: this.props.navigation.state.params.trainer
         }
     }
     static navigationOptions = {
@@ -42,9 +43,10 @@ export default class Request extends Component{
                           <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Clients</Text></TabHeading>}>
                               <ClientRequest ID = {this.state.id} navigation = {this.props.navigation} />
                           </Tab>
+                          {this.state.trainer !== "true" ? 
                           <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Trainer</Text></TabHeading>}>
                             <TrainerRequest ID = {this.state.id} navigation = {this.props.navigation} />
-                          </Tab>
+                          </Tab>: null}
                         </Tabs>
             </SwipeableViews>
             </Container>

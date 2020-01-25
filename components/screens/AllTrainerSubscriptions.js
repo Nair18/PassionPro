@@ -44,6 +44,7 @@ export default class AllTrainerSubscriptions extends Component {
           trainer_id: null,
           trainee_id: null,
           onProcess: true,
+          trainer: this.props.navigation.state.params.trainer,
           curr: this.props.navigation.state.params.curr,
           subscriptions: null,
           trainers: null,
@@ -225,7 +226,7 @@ export default class AllTrainerSubscriptions extends Component {
           <Content style={styles.content}>
             <Content>
             <View>
-                {this.state.show ?
+                {this.state.show && this.state.trainer !== "true" ?
                 <View>
                     <Card style={{borderRadius: 10, backgroundColor: constants.card_body}}>
                         <CardItem header style={{justifyContent: 'space-between', backgroundColor: 'black', borderRadius: 10}}>
@@ -246,7 +247,7 @@ export default class AllTrainerSubscriptions extends Component {
                             <Button style={{backgroundColor: 'black'}} onPress={() => this.fetchSubs("submit")}><Text>Apply</Text></Button> : <Spinner color="black" />}
                         </CardItem>
                     </Card>
-                </View> : <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end'}}><Button style={{backgroundColor: 'black'}} onPress={() => this._hideFilter(true)}><Text>Filters</Text></Button></View>}
+                </View> : null}
                 <View style={{padding: 10, backgroundColor: "#ffd369", borderRadius: 10}}>
                    <Text>Showing info of clients who took personal training during <Text style={{color: constants.text_highlight}}>{new Date(this.state.start_date).toDateString()}</Text> To <Text style={{color: constants.text_highlight}}>{new Date(this.state.end_date).toDateString()}</Text></Text>
                 </View>

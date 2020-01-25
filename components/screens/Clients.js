@@ -155,7 +155,7 @@ export default class Clients extends PureComponent {
     console.log(this.state)
     if(this.state.name === null || this.state.gender === null || this.state.amount === null
     || this.state.start_date === null || this.state.end_date === null || this.state.phone === null || this.state.email === null || this.state.dob === null){
-        Alert.alert('Incomplete Info', "All '*' fields are mandatory")
+        Alert.alert(constants.warning, "All '*' fields are mandatory")
         return
     }
     else if(this.state.start_date > this.state.end_date ){

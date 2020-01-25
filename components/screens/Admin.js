@@ -58,7 +58,7 @@ export default class Admin extends PureComponent {
       gymId: null,
       curr: constants.indian_currency,
       checked1: false,
-      checked2: false,
+      checked2: true,
       start_month: "JANUARY",
       start_year: (new Date().getFullYear()),
       end_month: "DECEMBER",
@@ -207,6 +207,7 @@ export default class Admin extends PureComponent {
                              this.setState({gymDetails: res, loading: false}, () => {
                                 this._storeData("feature", res["data"]["is_full_featured"])
                                 this._storeData("trainer", res["data"]["is_personal_trainer"])
+                               
                              })
                              return res["data"]["gyms"]
                            }).then( id => {
@@ -382,14 +383,15 @@ export default class Admin extends PureComponent {
                             <View style={styles.thumbnailAlign}>
                                 <TouchableOpacity activeOpacity={1} key={3} onPress={() => this.props.navigation.navigate('Clients', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./client.png')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Clients</Text></View></TouchableOpacity>
+                                {this.state.gymDetails["data"]["is_personal_trainer"] !== true ?
                                 <TouchableOpacity activeOpacity={1} key={4} onPress={() => this.props.navigation.navigate('Trainer', {ID: this.state.gymId})}>
-                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Trainers</Text></View></TouchableOpacity>
+                            <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./trainer.jpeg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Trainers</Text></View></TouchableOpacity> : null }
                                 <TouchableOpacity activeOpacity={1} key={1} onPress={() => this.props.navigation.navigate('Courses', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./exercise.jpg')}style={styles.thumbnail}/><Text style={{fontSize: 15}}>Packages</Text></View></TouchableOpacity>
                                {this.state.gymDetails["data"]["is_full_featured"] === true ? (<View style={{flexDirection: 'row'}}><TouchableOpacity activeOpacity={1} key={2} onPress={() => this.props.navigation.navigate('Plans', {ID: this.state.gymId})}>
                             <View style={styles.thumbnailBlock}><Thumbnail medium source={require('./crisis-plan.jpg')} style={styles.thumbnail}/><Text style={{fontSize: 15}}>Plans</Text></View></TouchableOpacity>
 
-                                <TouchableOpacity activeOpacity={1} key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId})}>
+                                <TouchableOpacity activeOpacity={1} key={5} onPress={() => this.props.navigation.navigate('Request', {ID: this.state.gymId, trainer: this.state.gymDetails["data"]["is_personal_trainer"]})}>
                             <View style={styles.thumbnailBlock}><Thumbnail source={require('./requests.jpg')} medium style={styles.thumbnail}/><Text style={{fontSize: 15}}>Requests</Text></View></TouchableOpacity>
                                </View>) : null }
                                <TouchableOpacity activeOpacity={1} key={8} onPress={() => this.props.navigation.navigate('AdminProfile',{ID: this.state.gymId, navigation: this.props.navigation})}>
@@ -520,7 +522,7 @@ export default class Admin extends PureComponent {
                    <View style={{marginTop: 10}}>
                       <Card style={{borderRadius: 10}}>
                         <CardItem header style={{borderRadius: 10}}>
-                            <TextInput multiline = {true} numberOfLines = {2} selectable value={this.state.message} onChangeText={text => this.setState({message: text})} placeholder="Send message to trainers and clients..."/>
+                            <TextInput multiline = {true} numberOfLines = {2} selectable value={this.state.message} onChangeText={text => this.setState({message: text})} placeholder="Send message to your members..."/>
                         </CardItem>
                         <CardItem footer style={{justifyContent: 'space-between',alignItems: 'center', elevation: 2, borderColor: constants.card_header, borderRadius: 10}}>
                             <Text/>
@@ -570,6 +572,7 @@ export default class Admin extends PureComponent {
                                             </View>
                                             <View style={{marginTop: '10%', marginLeft: '25%'}}>
                                                     <ScrollView>
+                                                              { this.state.gymDetails['date']['is_personal_trainer'] !== "true" ?
                                                               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                                                 <View style={{flex: 2}}>
                                                                     <Text>All the trainers</Text>
@@ -580,7 +583,7 @@ export default class Admin extends PureComponent {
                                                                         onPress={this.checkCheck1}
                                                                     />
                                                                 </View>
-                                                              </View>
+                                                              </View> : null }
                                                               <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                                                                 <View style={{flex: 2}}>
                                                                     <Text>All the clients</Text>
