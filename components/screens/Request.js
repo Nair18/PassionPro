@@ -43,7 +43,7 @@ export default class Request extends Component{
                           <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Clients</Text></TabHeading>}>
                               <ClientRequest ID = {this.state.id} navigation = {this.props.navigation} />
                           </Tab>
-                          {this.state.trainer !== "true" ? 
+                          {this.state.trainer !== true ?
                           <Tab heading={<TabHeading style={{backgroundColor: constants.header}}><Text style={{color: constants.header_text}}>Trainer</Text></TabHeading>}>
                             <TrainerRequest ID = {this.state.id} navigation = {this.props.navigation} />
                           </Tab>: null}

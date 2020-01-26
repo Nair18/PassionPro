@@ -572,7 +572,7 @@ export default class Admin extends PureComponent {
                                             </View>
                                             <View style={{marginTop: '10%', marginLeft: '25%'}}>
                                                     <ScrollView>
-                                                              { this.state.gymDetails['date']['is_personal_trainer'] !== "true" ?
+                                                              { this.state.gymDetails['data']['is_personal_trainer'] !== true ?
                                                               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                                                 <View style={{flex: 2}}>
                                                                     <Text>All the trainers</Text>
