@@ -145,6 +145,9 @@ export default class TrainerRequestInfo extends Component {
               headerTintColor: 'black'
           }
     render(){
+        if(this.props.navigation.state.params.details !== null){
+            console.log("age is the number", this.state.age)
+        }
         let courseList=[]
         if(this.state.courseData !== null){
             for(let i=0;i<this.state.courseData.length; i++){
@@ -163,32 +166,34 @@ export default class TrainerRequestInfo extends Component {
                 <Form>
                     <Item regular style={{padding: 5, marginTop: 15}}>
                         <Label>Name - </Label>
-                          <Input value={this.state.name} editable={false} style={{fontWeight: 'bold', fontSize: 15}}/>
+                          <Input value={this.state.name} editable={false} style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                     </Item>
 
                     <Item regular style={{padding: 5, marginTop: 15}}>
                                             <Label>Phone number - </Label>
-                                              <Input  value={this.state.personal_contact} editable={false} style={{fontWeight: 'bold', fontSize: 15}}/>
+                                              <Input  value={this.state.personal_contact} editable={false} style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                                         </Item>
                     <Item regular style={{padding: 5, marginTop: 15}}>
                                             <Label>Email - </Label>
-                                              <Input value={this.state.email} editable={false} style={{fontWeight: 'bold', fontSize: 15}}/>
+                                              <Input value={this.state.email} editable={false} style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                                         </Item>
-                    <Item regular style={{padding: 5, marginTop: 15}}>
-                                            <Label>Age - </Label>
-                                              <Input  value={this.state.age} editable={false} style={{fontWeight: 'bold', fontSize: 15}}/>
-                                        </Item>
+                     <Item regular style={{padding: 5, marginTop: 15}}>
+                                                                <Label>Age - </Label>
+                                                                <View style={{backgroundColor: '#f4f4f4', width: '100%'}}>
+                                                                  <Text editable={false} style={{fontWeight: 'bold', padding: 15, fontSize: 15}}>{this.state.age}</Text>
+                                                                </View>
+                                                            </Item>
                     <Item regular style={{padding: 5, marginTop: 15}}>
                                             <Label>Address - </Label>
-                                              <Input value={this.state.address} editable={false} style={{fontWeight: 'bold', fontSize: 15}}/>
+                                              <Input value={this.state.address}  style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                                         </Item>
                     <Item regular style={{padding: 5, marginTop: 15}}>
                                              <Label>Gender - </Label>
-                                               <Input value={this.state.gender} editable={false} style={{fontWeight: 'bold', fontSize: 15}}/>
+                                               <Input value={this.state.gender} editable={false} style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                                          </Item>
                     <Item regular style={{padding: 5, marginTop: 15}}>
                                              <Label>Shift - </Label>
-                                               <Input keyboardType="numeric" value={this.state.shift} onChangeText={text => this.setState({shift: text})}/>
+                                               <Input keyboardType="numeric" value={this.state.shift} style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}} onChangeText={text => this.setState({shift: text})}/>
                                          </Item>
 
                                          <View style={{marginTop: 15}}>
@@ -205,20 +210,20 @@ export default class TrainerRequestInfo extends Component {
                                                    </View>
 
                      <Item regular style={{padding: 5, marginTop: 15}}>
-                                             <Label>Certifications - </Label>
-                                               <Input editable={false} value={this.state.certification} style={{fontWeight: 'bold', fontSize: 15}}/>
+
+                                               <Input  placeholder="Certifications" value={this.state.certification} style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                                          </Item>
                      <Item regular style={{padding: 5, marginTop: 15}}>
-                                             <Label>Emergency contact person</Label>
-                                               <Input editable={false} value={this.state.emergency_contact_name} style={{fontWeight: 'bold', fontSize: 15}}/>
+
+                                               <Input  placeholder="Emergency contact person" value={this.state.emergency_contact_name} style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                                          </Item>
                     <Item regular style={{padding: 5, marginTop: 15}}>
-                                            <Label>Emergency contact number - </Label>
-                                              <Input editable={false} value={this.state.emergency_contact} style={{fontWeight: 'bold', fontSize: 15}}/>
+
+                                              <Input  placeholder="Emergency contact number" value={this.state.emergency_contact} style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                                         </Item>
                     <Item regular style={{padding: 5, marginTop: 15}}>
-                                            <Label>Relation with the person - </Label>
-                                              <Input value={this.state.relation} editable={false} style={{fontWeight: 'bold', fontSize: 15}}/>
+
+                                              <Input value={this.state.relation} placeholder="Relation with the person"  style={{fontWeight: 'bold', fontSize: 15, backgroundColor: '#f4f4f4'}}/>
                                         </Item>
                      </Form>
                     <View style={{ flexDirection: 'row'}}>

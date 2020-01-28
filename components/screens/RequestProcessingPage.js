@@ -27,11 +27,11 @@ export default class RequestProcessingPage extends Component {
             </View>
             <Content style={styles.content}>
                 <Fragment>
-                    <View style={{marginLeft: '15%', width: '70%', justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={{marginLeft: '15%', width: '70%', justifyContent: 'center', alignItems: 'center', marginTop: '5%'}}>
                         <Text>Your request is successfully sent to Admin for approval ...</Text>
                     </View>
-                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        <Text>Powered by Mygymnasio</Text>
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 25}}>
+                        <Text style={{fontWeight: 'bold'}}>Powered by Mygymnasio</Text>
                     </View>
                 </Fragment>
             </Content>

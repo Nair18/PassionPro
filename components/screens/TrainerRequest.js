@@ -98,30 +98,27 @@ export default class TrainerRequest extends Component {
     render(){
         return(
             <Container style={{backgroundColor: constants.screen_color}}>
-                <Content style={{padding: 15}}>
-                    <List>
-                        {this.state.request !== null ? this.state.request.map(req =>
-                        <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerRequestInfo', {details: req, ID: this.state.id})}>
-                        <Card styles={styles.items}>
-                            <View style={{flex: 1, padding: 5}}>
-                               <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
-                            </View>
-                            <View style={{flex: 4, padding: 5}}>
-                                <View>
-                                    <Text style={{fontWeight: 'bold'}}>{req["name"]}</Text>
-                                    <Text note>Mobile - {req["phone"]}</Text>
-                                </View>
-                            </View>
-                        </Card></TouchableOpacity>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}
-                    </List>
-
-                </Content>
-               <View style={styles.addButton}>
-                                       <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={this.fetchDetails}>
-                                            <Icon size={30} style={{color: 'white'}}name="md-refresh-circle" />
-                                       </Button>
-                                    </View>
-            </Container>
+                            <Content style={{padding: 15}}>
+                                <List>
+                                    {this.state.request !== null ? this.state.request.map(req =>
+                                    <TouchableOpacity activeOpacity={1} onPress={() => this.props.navigation.navigate('TrainerRequestInfo',{ details: req, ID: this.state.id})}>
+                                    <Card style={styles.items}>
+                                        <View style={{flex: 1, padding: 5}}>
+                                            <Thumbnail source={require('./profile.jpg')} style={{backgroundColor: 'black'}} />
+                                        </View>
+                                        <View style={{flex: 4, padding: 5}}>
+                                            <Text style={{fontWeight: 'bold'}}>{req["name"]}</Text>
+                                            <Text note>Mobile - {req["phone"]}</Text>
+                                        </View>
+                                    </Card></TouchableOpacity>) : (<View style={{justifyContent: 'center', alignItems: 'center'}}><Spinner color="black"/><Text>loading ....</Text></View>)}
+                                </List>
+                            </Content>
+                            <View style={styles.addButton}>
+                                                <Button rounded style={{height: 50, width: 50, alignItems: 'center', backgroundColor: 'black', justifyContent: 'center'}} onPress={this.fetchDetails}>
+                                                  <Icon size={30} style={{color: 'white'}}name="md-refresh-circle" />
+                                                </Button>
+                                              </View>
+                        </Container>
         );
     }
 }
