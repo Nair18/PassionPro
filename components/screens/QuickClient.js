@@ -59,7 +59,7 @@ export default class QuickClient extends Component {
                        data = {
                            "id": this.state.details[i]["id"],
                            "name": this.state.details[i]["name"],
-                           "date": this.state.details[i]["start_time"]
+                           "date": this.state.details[i]["end_time"]
                        }
                        clients.push(data)
                     }
@@ -71,7 +71,7 @@ export default class QuickClient extends Component {
                        data = {
                            "id": this.state.details[i]["id"],
                            "name": this.state.details[i]["name"],
-                           "date": this.state.details[i]["start_time"]
+                           "date": this.state.details[i]["end_time"]
                        }
                        clients.push(data)
                     }
