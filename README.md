@@ -1,15 +1,16 @@
-# Full-fledged ready-to-use multi-tenant gym management app built in react-native 
+# 👨🏼‍🏭 Full-fledged ready-to-use multi-tenant gym management app built in react-native 
 <p>The project has 50+ screens and actions. 
 The backend of this project is powered by Java Springboot, contributed by Atul - https://github.com/atulkgupta9.
 Currently we are not so actively working on this project but if this project interests you, see my contact below.
 </p>
 
-<br><b>Purpose of building this app</b><br>
+## 💁‍♂️ Purpose of building this app
 <p>
-This app was built with a purpose of solving a problem in mind, by me and my batchmate(atulkgupta9). We wanted to build a one-stop-solution software for all training/fitness centers from on-boarding clients to manage their online presence. We had good technical knowledge to build it but lacked business skills. We couldn't convert our idea into a workable business model. This project has some things that are private and I feel not correct to reveal publicly. Overall its a full-fledged app that anyone can get started with.
+This app was built with a purpose of solving a problem, digitising small-medium gyms. We wanted to build a one-stop-solution software for all training/fitness centers from on-boarding clients to manage their online presence. Due to some reasons we couldnt continue with this work and now we have decided to open source it. Overall its a full-fledged app that anyone can get started with.
 </p>
-<br><b>Who can use this app</b><br>
-<p>
+
+## 🚀 Features
+
 <p> App supports 3 logins -- Owner, Trainer, Client. 
 <ul>
 <li>Gym Owners 
@@ -21,12 +22,15 @@ This app was built with a purpose of solving a problem in mind, by me and my bat
 </ul>
 </p>
 
-<b>Sample of owner screen</b>
+## 👇 Sample of owner screens
 
-![](ezgif.com-resize.gif)                                  
+# ![](ezgif.com-resize.gif)                                  
 
+## 🐛 Issues
+Feel free to file bugs or code improvements that you find are necessary. This is my first time building mobile app and writing react-native code. Professionally I write only backend code. 
 
-<b>Pre-requisite</b>
+## 👷 Installation pre-requisites
+
 <ul>
 	<li>Android Studio(optional)</li>
 	<li>Android Emulator</li>
@@ -34,7 +38,8 @@ This app was built with a purpose of solving a problem in mind, by me and my bat
 	<li>native-base (>=2.13)</li>
 </ul>
 
-<b>Run the project</b>
+## 🏃 Run the project
+
 <ul>
 	<li>install the pre-requisite</li>
 	<li>set the emualtor path</li>
@@ -43,7 +48,7 @@ This app was built with a purpose of solving a problem in mind, by me and my bat
 	<li>run react-native android</li>
 </ul>
 
-<b>Contact me</b>
+## 👀 Find me here
 <ul>
 <li>Mail - nair.svnit@gmail.com</li>
 <li>LinkedIn - https://www.linkedin.com/in/karthiknair18/</li>
