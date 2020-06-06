@@ -1,3 +1,5 @@
+# Mygymnasio 
+![](rsz_mygymnasio.png)
 # 👨🏼‍🏭 Full-fledged ready-to-use multi-tenant gym management app built in react-native 
 <p>The project has 50+ screens and actions. 
 The backend of this project is powered by Java Springboot, contributed by Atul - https://github.com/atulkgupta9.
@@ -13,12 +15,32 @@ This app was built with a purpose of solving a problem, digitising small-medium 
 
 <p> App supports 3 logins -- Owner, Trainer, Client. 
 <ul>
-<li>Gym Owners 
-	<p>Manage your clients, trainers, trainer salaries, personal training clients, keep track of gym's income and much more. Manage multiple gyms at one place.</p></li>
-<li>Personal Trainers
-	<p>Easily manage your online clients. Create and share meal and workout plans, send messages, create fitness packages, track income generated and much more.</p></li>
-<li>Gym Clients
-	<p>Clients can view the free/premium plans provided by their gyms/personal trainers. Can log their daily workouts(Exercie, weight lifted, time spent, calories burnt). Track weight, fat percentage. View pdfs of their workout/meal plans. Keep track of their membership plans and expiry.</p></li>
+<li><b>Gym Owners</b> 
+	<ul>
+		<li>Send real-time messages to trainers and clients</li>
+		<li>Manage your clients</li>
+		<li>Manage trainers</li>
+		<li>Track trainer salaries</li>
+		<li>Track personal training clients</li>
+		<li>Track gym's expenses
+		<li>Manage multi-location gyms at one place</li>
+	</ul>
+<li><b>Personal Trainers</b>
+	<ul>
+		<li>Easily manage your offline/online clients across multiple locations</li>
+		<li>Create and share meal and workout pdfs</li>
+		<li>send real-time messages</li>
+		<li>Track income generated and much more</li>
+	</ul>
+<li><b>Gym Clients</b>
+	<ul>
+		<li>Your one-pass for a multi-location gym chain.
+		<li>Clients can view the free/premium plans provided by their gyms/personal trainers</li>
+		<li>Can log their daily workouts(Exercie, weight lifted, time spent, calories burnt)</li>
+		<li>Track weight, fat percentage</li>
+		<li>View pdfs of their workout/meal plans</li>
+		<li>Keep track of their membership plans and expiry</li>
+	</ul>
 </ul>
 </p>
 
