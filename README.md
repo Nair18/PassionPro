@@ -23,7 +23,7 @@ This app was built with a purpose of solving a problem in mind, by me and my bat
 
 <b>Sample of owner screen</b>
 
-![](ezgif.com-resize.gif)
+   -----------------------------------------   ![](ezgif.com-resize.gif)  -------------------------------------------
 
 <b>Pre-requisite</b>
 <ul>
