@@ -1,6 +1,8 @@
 # Full-fledged ready-to-use multi-tenant gym management app built in react-native 
 <p>The project has 50+ screens and actions. 
-The backend of this project is powered by Java Springboot, contributed by Atul - https://github.com/atulkgupta9.</p>
+The backend of this project is powered by Java Springboot, contributed by Atul - https://github.com/atulkgupta9.
+Currently we are not so actively working on this project but if this project interests you, see my contact below.
+</p>
 
 <br><b>Purpose of building this app</b><br>
 <p>
@@ -28,7 +30,7 @@ This app was built with a purpose of solving a problem in mind, by me and my bat
 	<li>Android Studio(optional)</li>
 	<li>Android Emulator</li>
 	<li>react-native (>= 0.6)</li>
-	<li>native-base</li>
+	<li>native-base (>=2.13)</li>
 </ul>
 
 <b>Run the project</b>
@@ -39,5 +41,10 @@ This app was built with a purpose of solving a problem in mind, by me and my bat
 	<li>launch the emulator</li>
 	<li>run react-native android</li>
 </ul>
-	
+
+<b>Contact me</b>
+<ul>
+<li>Mail - nair.svnit@gmail.com</li>
+<li>LinkedIn - https://www.linkedin.com/in/karthiknair18/</li>
+</ul>
 
