@@ -15,6 +15,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.RNFirebasePackage;
+import com.facebook.react.BuildConfig;
 import java.util.List;
 
 

@@ -133,9 +133,9 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.passionpro"
+        applicationId "com.passionpro.nw"
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion 29
         versionCode 18
         versionName "3.0.0"
         multiDexEnabled true
