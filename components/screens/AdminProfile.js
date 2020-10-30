@@ -112,6 +112,14 @@ class AdminProfile extends Component {
                 </Content>
                 <Content style={{paddingLeft: 15}}>
                     <View style={styles.infoView}>
+                         <View style={styles.title}>
+                            <Text style={styles.text}>Passkey: </Text>
+                         </View>
+                         <View style={styles.textFormat}>
+                            <Text>{this.state.id}</Text>
+                         </View>
+                    </View>
+                    <View style={styles.infoView}>
                       <View style={styles.title}>
                         <Text style={styles.text}>Name: </Text>
                       </View>

@@ -1,4 +1,4 @@
-package com.passionpro;
+package com.passionpro.nw;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;

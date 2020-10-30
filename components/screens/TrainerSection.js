@@ -105,7 +105,7 @@ export default class Admin extends Component {
 
   takeToAppStore = () => {
       this.setState({update_visible: false, onProcess: false})
-      Linking.openURL("https://play.google.com/store/apps/details?id=com.passionpro")
+      Linking.openURL("https://play.google.com/store/apps/details?id=com.passionpro.nw")
   }
 
   _storeData = async (data) => {

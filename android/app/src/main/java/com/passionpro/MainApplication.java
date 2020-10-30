@@ -1,9 +1,10 @@
-package com.passionpro;
+package com.passionpro.nw;
 
 import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.PackageList;
+import com.facebook.react.common.build.ReactBuildConfig;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
@@ -15,7 +16,6 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.RNFirebasePackage;
-import com.facebook.react.BuildConfig;
 import java.util.List;
 
 
@@ -24,7 +24,7 @@ public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
     public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
+      return ReactBuildConfig.DEBUG;
     }
 
 
